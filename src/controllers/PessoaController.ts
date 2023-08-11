@@ -7,7 +7,7 @@ class PessoaController {
     async getByID(req:Request, res:Response){
         try {
             const { person_id } = req.params;
-            const resultSet = await getPersonByID();
+            //const resultSet = await getPersonByID();
             return successResponseService(res, resultSet);
         } catch (error) {
             return errorResponseService(res);
@@ -22,6 +22,5 @@ class PessoaController {
 
 
 }
-
 
 export default PessoaController;

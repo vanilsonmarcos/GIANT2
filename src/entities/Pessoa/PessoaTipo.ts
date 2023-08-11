@@ -1,5 +1,5 @@
 interface PessoaTipo {
-    id: String,
+    id: Number,
     nome: String
 }
 

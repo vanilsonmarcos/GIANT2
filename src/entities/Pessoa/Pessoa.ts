@@ -2,7 +2,7 @@ import PessoaEndereco from "./PessoaEndereco";
 import PessoaTipo from "./PessoaTipo";
 
 interface Pessoa {
-    id: Number
+    id?: Number
     nome: String,
     pessoa_tipo: PessoaTipo,
     data_nascimento: Date,
