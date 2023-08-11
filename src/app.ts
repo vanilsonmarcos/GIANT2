@@ -1,5 +1,5 @@
 import express, { Application, Request, Response } from "express";
-import PORT from "./port.ts";
+import PORT from "./port";
 
 
 const APP: Application = express();
