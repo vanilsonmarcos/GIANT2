@@ -1,16 +1,22 @@
 import express, { Application, Request, Response } from "express";
-import PORT from "./port";
+import port from "./port";
 
 
-const APP: Application = express();
+const app: Application = express();
 
-APP.use("/", (req: Request, res: Response) => {
+/** Bootstrap application */
+app.disable('x-powered-by');
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ extended: true }));
+
+
+app.use("/", (req: Request, res: Response) => {
     res.send("REQUEST SENT SUCCESSFULLY");
 });
 
-APP.listen(PORT, () => {
-    console.log(`Server is running in port ${PORT}`);
+app.listen(port, () => {
+    console.log(`Server is running in port ${port}`);
 });
 
-export default APP;
+export default app;
 

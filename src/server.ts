@@ -1,6 +1,6 @@
 import http from 'http';
-import APP from './app'
+import app from './app'
 
-const httpServer = http.createServer(APP);
+const httpServer = http.createServer(app);
 
 export default httpServer;
