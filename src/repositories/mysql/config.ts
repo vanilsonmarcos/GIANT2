@@ -10,5 +10,4 @@ const config = {
     listPerPage: 10,
 }
 
-
 export default config;
