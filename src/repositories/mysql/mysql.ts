@@ -1,10 +1,10 @@
 import mysql from 'mysql2/promise';
 import config from "./config";
  
-async function query(sql:String, params:String[]) {
+async function query(sql:string) {
     const connection = await mysql.createConnection(config.db);
     
-    const [results, ] = await connection.execute(sql, params);
+    const [results, ] = await connection.execute(sql);
 
     return results;
 }

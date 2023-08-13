@@ -3,7 +3,7 @@ const config = {
         host:"localhost",
         user:"root",
         password: "root",
-        database: "Giant",
+        database: "Giant_DB",
         connectTimeout: 60000,
 
     },

@@ -1,10 +1,11 @@
 import Router from 'express';
+import pessoaRoutes from './pessoaRoutes';
 
-const ROUTES = Router();
+const routes = Router();
 
 
 
-//ROUTES.use();
+routes.use(pessoaRoutes);
 
 
 export default Router;

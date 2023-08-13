@@ -1,19 +1,26 @@
 import { Router } from "express";
 import PessoaController from "../controllers/PessoaController";
 
-const personRoutes = Router();
+const pessoaRoutes = Router();
 
 
 /** Get person by it attributes */
-personRoutes.get('people', new PessoaController().getAll());
-personRoutes.get('person/:id', new PessoaController().getByID());
-personRoutes.get('person/:nbi', new PessoaController().getByNBI());
+pessoaRoutes.get('pessoa/', new PessoaController().getAll);
+pessoaRoutes.get('pessoa/:id', new PessoaController().getByID);
+pessoaRoutes.get('pessoa/:nbi', new PessoaController().getByNBI);
 
 
 /**Get person by Address attributes*/
 
-personRoutes.get('person/:email', new PessoaController().getByEmail());
-personRoutes.get('person/:telefone', new PessoaController().getByPhoneNumber());
+pessoaRoutes.get('pessoa/:email', new PessoaController().getByEmail);
+pessoaRoutes.get('pessoa/:telefone', new PessoaController().getByPhoneNumber);
 
 
-export default personRoutes;
+pessoaRoutes.post('pessoa/', new PessoaController().novaPessoa);
+pessoaRoutes.put('pessoa/', new PessoaController().actualizarPessoa);
+pessoaRoutes.delete('pessoa/:id', new PessoaController().removerPessoa);
+
+
+
+
+export default pessoaRoutes;
