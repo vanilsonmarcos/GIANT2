@@ -1,6 +1,8 @@
+import VeiculoCategoria from "./VeiculoCategoria";
+
 interface Veiculo {
     id?: Number,
-    veiculo_categoria_id: Number,
+    veiculo_categoria: VeiculoCategoria ,
     matricula: String,
     marca: String,
     modelo: String,
@@ -12,8 +14,8 @@ interface Veiculo {
     cilindrada: number,
     ref_chassi: String,
     descricao: String,
-    inserido_por: Number,
-    actualizado_por: Number 
+    inserido_por?: Number,
+    actualizado_por?: Number 
 }
 
 export default Veiculo;

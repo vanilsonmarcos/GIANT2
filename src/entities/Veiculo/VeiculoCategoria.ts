@@ -1,6 +1,7 @@
 interface VeiculoCategoria {
     id: number,
-    nome: string
+    nome: String, 
+    descrição?: String
 }
 
 export default VeiculoCategoria;
