@@ -10,7 +10,6 @@ interface ApoliceCobertura {
     removido_por: Number,
     valor_a_pagar: Number,
     desconto: Number
-
 }
 
 export default ApoliceCobertura;

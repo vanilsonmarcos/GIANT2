@@ -6,7 +6,7 @@ import { formatDateToDDMMYYY } from "../../utils/helper";
 
 function generatePessoa(data: RowDataPacket): Pessoa {
     console.log(data)
-    let pessoaTipo:PessoaTipo = {
+    let pessoaTipo: PessoaTipo = {
         id: data['PESSOA_TIPO_ID'],
         nome: data['NOME_TIPO'],
     }
@@ -17,11 +17,11 @@ function generatePessoa(data: RowDataPacket): Pessoa {
         email: data['EMAIL']
     };
 
-    let pessoa:Pessoa={   
+    let pessoa: Pessoa = {
         id: data['ID'],
         pessoa_tipo: pessoaTipo,
         nome: data['NOME'],
-        data_nascimento:  formatDateToDDMMYYY(data['DATA_NASCIMENTO']),
+        data_nascimento: formatDateToDDMMYYY(data['DATA_NASCIMENTO']),
         sexo: data['SEXO'],
         nbi: data['NBI'],
         nif: data['NIF'],
