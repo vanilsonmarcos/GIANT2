@@ -1,27 +1,33 @@
+import { RowDataPacket } from "mysql2";
 import Pessoa from "./Pessoa";
 import PessoaEndereco from "./PessoaEndereco";
 import PessoaTipo from "./PessoaTipo";
+import { formatDateToDDMMYYY } from "../../utils/helper";
 
-function generatePessoa(data): Pessoa {
-    let pessoaTipo:PessoaTipo;
-    pessoaTipo.id = data.PESSOA_TIPO_ID;
-    pessoaTipo.nome = data.PESSOA_TIPO_NOME;
+function generatePessoa(data: RowDataPacket): Pessoa {
+    console.log(data)
+    let pessoaTipo:PessoaTipo = {
+        id: data['PESSOA_TIPO_ID'],
+        nome: data['NOME_TIPO'],
+    }
 
-    let pessoaEndereco: PessoaEndereco;
-    pessoaEndereco.email = data.EMAIL;
-    pessoaEndereco.telefone = data.TELEFONE;
-    pessoaEndereco.telefone_alt = data.TELEFONE_ALTERNATIVO;
+    let pessoaEndereco: PessoaEndereco = {
+        telefone: data['TELEFONE'],
+        telefone_alt: data['TELEFONE_ALTERNATIVO'],
+        email: data['EMAIL']
+    };
 
-    let pessoa:Pessoa;
-    pessoa.id = data.ID;
-    pessoa.pessoa_tipo = pessoaTipo;
-    pessoa.nome = data.NOME;
-    pessoa.data_nascimento = data.DATA_NASCIMENTO;
-    pessoa.sexo = data.SEXO;
-    pessoa.nbi = data.NBI;
-    pessoa.nif = data.NIF;
-    pessoa.estado_civil = data.ESTADO_CIVIL;
-    pessoa.endereco = pessoaEndereco;
+    let pessoa:Pessoa={   
+        id: data['ID'],
+        pessoa_tipo: pessoaTipo,
+        nome: data['NOME'],
+        data_nascimento:  formatDateToDDMMYYY(data['DATA_NASCIMENTO']),
+        sexo: data['SEXO'],
+        nbi: data['NBI'],
+        nif: data['NIF'],
+        estado_civil: data['ESTADO_CIVIL'],
+        endereco: pessoaEndereco,
+    }
 
     return pessoa;
 }

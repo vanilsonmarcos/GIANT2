@@ -5,7 +5,7 @@ interface Pessoa {
     id?: Number
     nome: String,
     pessoa_tipo: PessoaTipo,
-    data_nascimento: Date,
+    data_nascimento: String,
     sexo: String,
     nbi: String,
     nif: String,

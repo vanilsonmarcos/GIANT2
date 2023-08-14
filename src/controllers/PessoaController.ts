@@ -1,10 +1,11 @@
 import { Request, Response } from "express";
-import { query } from "../repositories/mysql/mysql";
-import PessoaRepository from "../repositories/mysql/PessoaRepository";
 import Pessoa from "../entities/Pessoa/Pessoa";
+import IPessoaRepository from "../repositories/IPessoaRepository";
+import PessoaRepository from "../repositories/mysql/PessoaRepository";
 class PessoaController {
-    constructor() {
 
+    constructor() {
+       
     }
 
     // Read/Query a person 
@@ -21,8 +22,8 @@ class PessoaController {
         })
 
     } catch (error) {
-        const code = 401;
-        const message = `Os dados da pessoa não foram encontrados`;
+        const code = 404;
+        const message = `Os dados das pessoas não foram encontrados`;
         const data = {}
         res.json({
             code,

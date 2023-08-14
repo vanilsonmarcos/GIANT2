@@ -8,4 +8,4 @@ const routes = Router();
 routes.use(pessoaRoutes);
 
 
-export default Router;
+export default routes;

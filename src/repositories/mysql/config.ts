@@ -2,8 +2,8 @@ const config = {
     db: {
         host:"localhost",
         user:"root",
-        password: "root",
-        database: "Giant_DB",
+        password: "agoraoununca",
+        database: "giant_db",
         connectTimeout: 60000,
 
     },
