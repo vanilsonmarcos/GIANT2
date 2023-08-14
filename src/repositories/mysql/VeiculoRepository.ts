@@ -4,14 +4,16 @@ import IVeiculoReposiroty from "../IVeiculoRepository";
 import { query } from './mysql';
 import generateVeiculo from "../../entities/Apolice/Veiculo/Helper";
 import IVeiculoCategoria from "../IVeiculoCategoria";
+import VeiculoCategoria from "../../entities/Apolice/Veiculo/VeiculoCategoria";
 
-class VeiculoRepository implements IVeiculoReposiroty<Veiculo>, IVeiculoCategoria<Veiculo>{
+class VeiculoRepository implements IVeiculoReposiroty<Veiculo>, IVeiculoCategoria<VeiculoCategoria>{
     private primeTable = 'veiculo';
     private secondTable = "veiculo_categoria";
 
     constructor() {
         
     }
+
 
 
     async getVeiculoByMatricola(matricula: String): Promise<Boolean | Veiculo> {
@@ -109,6 +111,42 @@ class VeiculoRepository implements IVeiculoReposiroty<Veiculo>, IVeiculoCategori
         const result: RowDataPacket = await query(`DELETE FROM ${this.primeTable} WHERE id=${id}`) as RowDataPacket;
         if (result.affectedRows) {
             return true;
+        }
+        return false;
+    }
+
+
+    async getAllVeiculoCategoria(): Promise<VeiculoCategoria[]> {
+        const sql: string = `SELECT * FROM ${this.secondTable} LIMIT 100` ;
+
+        const data: RowDataPacket[] = await query(sql) as  RowDataPacket[] ;
+        let veiculo_categorias:VeiculoCategoria[] = [];
+        if (data) {
+            for (const item of data) {
+                const veiculo_categoria:VeiculoCategoria = {
+                    id: item["ID"],
+                    nome: item["NOME"],
+                    descricao: item["DESCRICAO"]
+                }
+                veiculo_categorias.push(veiculo_categoria);
+            }
+        }
+        return veiculo_categorias;
+    }
+
+
+    async getVeiculoCategoriaByID(id: String): Promise<VeiculoCategoria | Boolean> {
+        const sql: string = `SELECT * FROM ${this.secondTable} WHERE ID =${id} LIMIT 1` ;
+
+        const data : RowDataPacket[] = await query(sql) as  RowDataPacket[];
+        if (data) {
+
+                const veiculo_categoria:VeiculoCategoria = {
+                    id: data[0]["ID"],
+                    nome: data[0]["NOME"],
+                    descricao: data[0]["DESCRICAO"]
+                }
+                return veiculo_categoria;
         }
         return false;
     }
