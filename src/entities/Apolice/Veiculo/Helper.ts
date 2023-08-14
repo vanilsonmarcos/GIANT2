@@ -1,6 +1,6 @@
 import { RowDataPacket } from "mysql2";
 import Veiculo from "./Veiculo";
-import VeiculoCategoria from "./VeiculoCategoria";
+import VeiculoCategoria from "../../Veiculo/VeiculoCategoria";
 
 function generateVeiculo(data: RowDataPacket): Veiculo {
     let VeiculoCategoria: VeiculoCategoria = {

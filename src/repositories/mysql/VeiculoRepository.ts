@@ -1,10 +1,11 @@
 import { RowDataPacket } from "mysql2/promise";
-import Veiculo from "../../entities/Veiculo/Veiculo";
-import IVeiculoReposiroty from "../IVehiculoRepository";
+import Veiculo from "../../entities/Apolice/Veiculo/Veiculo";
+import IVeiculoReposiroty from "../IVeiculoRepository";
 import { query } from './mysql';
-import generateVeiculo from "../../entities/Veiculo/Helper";
+import generateVeiculo from "../../entities/Apolice/Veiculo/Helper";
+import IVeiculoCategoria from "../IVeiculoCategoria";
 
-class VeiculoRepository implements IVeiculoReposiroty<Veiculo>{
+class VeiculoRepository implements IVeiculoReposiroty<Veiculo>, IVeiculoCategoria<Veiculo>{
     private primeTable = 'veiculo';
     private secondTable = "veiculo_categoria";
 
