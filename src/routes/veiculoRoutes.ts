@@ -6,7 +6,7 @@ const veiculoController: VeiculoController = new VeiculoController();
 /** Get person by it attributes */
 veiculoRoutes.get('/veiculo/', veiculoController.getAll);
 veiculoRoutes.get('/veiculo/:id', veiculoController.getByID);
-veiculoRoutes.get('/veiculo/matricola/:id', veiculoController.getByMatricula);
+veiculoRoutes.get('/veiculo/matricola/:matriicula', veiculoController.getByMatricula);
 
 
 veiculoRoutes.post('/veiculo/', veiculoController.novoVeiculo);
