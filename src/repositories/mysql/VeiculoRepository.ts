@@ -14,9 +14,7 @@ class VeiculoRepository implements IVeiculoReposiroty<Veiculo>, IVeiculoCategori
         
     }
 
-
-
-    async getVeiculoByMatricola(matricula: String): Promise<Boolean | Veiculo> {
+    async getVeiculoByMatricula(matricula: String): Promise<Boolean | Veiculo> {
         const sql: string = `SELECT veiculo.* , veiculo_categoria.ID AS CATEGORIA_ID,
         veiculo_categoria.NOME AS CATEGORIA_NOME
         FROM veiculo
