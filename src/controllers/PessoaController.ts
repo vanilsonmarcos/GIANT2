@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import Pessoa from "../entities/Pessoa/Pessoa";
-import IPessoaRepository from "../repositories/IPessoaRepository";
 import PessoaRepository from "../repositories/mysql/PessoaRepository";
 class PessoaController {
 
@@ -23,7 +22,7 @@ class PessoaController {
 
     } catch (error) {
         const code = 404;
-        const message = `Os dados das pessoas não foram encontrados`;
+        const message = `Occoreu um erro ao colectar dos dados da pessoa`;
         const data = {}
         res.json({
             code,
