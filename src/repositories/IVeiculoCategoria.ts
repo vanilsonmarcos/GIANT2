@@ -1,4 +1,4 @@
-import VeiculoCategoria from "../entities/Veiculo/VeiculoCategoria";
+import VeiculoCategoria from "../entities/Apolice/Veiculo/VeiculoCategoria";
 
 interface IVeiculoCategoria<T extends VeiculoCategoria> {
     getAllVeiculoCategoria():Promise<T[]> ;
