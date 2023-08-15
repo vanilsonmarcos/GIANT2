@@ -10,7 +10,7 @@ interface Apolice {
     data_fim: Date,
     apolice_fracionamento_id: Number,
     apolice_estado_id: Number,
-    valor_premio: Number,
+    valor_premio?: Number,
     inserido_por: Number,
     actualizado_por: Number,
     removido_por: Number,
