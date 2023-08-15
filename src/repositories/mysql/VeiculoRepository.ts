@@ -126,7 +126,6 @@ class VeiculoRepository implements IVeiculoReposiroty<Veiculo>, IVeiculoCategori
                 const veiculo_categoria:VeiculoCategoria = {
                     id: item["ID"],
                     nome: item["NOME"],
-                    descricao: item["DESCRICAO"]
                 }
                 veiculo_categorias.push(veiculo_categoria);
             }
@@ -144,7 +143,6 @@ class VeiculoRepository implements IVeiculoReposiroty<Veiculo>, IVeiculoCategori
                 const veiculo_categoria:VeiculoCategoria = {
                     id: data[0]["ID"],
                     nome: data[0]["NOME"],
-                    descricao: data[0]["DESCRICAO"]
                 }
                 return veiculo_categoria;
         }
