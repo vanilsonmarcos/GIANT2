@@ -8,8 +8,8 @@ import { query } from "./mysql";
 import IGenericRepository from "../IGenericRepository";
 import Apolice from "../../entities/Apolice/Apolice";
 
-class ApoliceRepository implements  IGenericRepository<Apolice>,IApoliceEstado<ApoliceEstado>, IApoliceTipo<ApoliceTipo> {
-    constructor() {}
+class ApoliceRepository implements IGenericRepository<Apolice>, IApoliceEstado<ApoliceEstado>, IApoliceTipo<ApoliceTipo> {
+    constructor() { }
     async getAll(): Promise<Apolice[]> {
         const sql: string = `
             SELECT 
@@ -35,11 +35,11 @@ class ApoliceRepository implements  IGenericRepository<Apolice>,IApoliceEstado<A
             LIMIT 100; 
         ` ;
 
-        const data: RowDataPacket[] = await query(sql) as  RowDataPacket[] ;
-        let apolices:Apolice[] = [];
+        const data: RowDataPacket[] = await query(sql) as RowDataPacket[];
+        let apolices: Apolice[] = [];
         if (data) {
             for (const item of data) {
-                const apolice:Apolice = generateApolice(item);
+                const apolice: Apolice = generateApolice(item);
                 apolices.push(apolice);
             }
         }
@@ -70,7 +70,7 @@ class ApoliceRepository implements  IGenericRepository<Apolice>,IApoliceEstado<A
             INNER JOIN apolice_fracionamento ON apolice.APOLICE_FRACIONAMENTO_ID = apolice_fracionamento.ID
             LIMIT 1; 
         ` ;
-        const data: RowDataPacket[] = await query(sql) as  RowDataPacket[] ;
+        const data: RowDataPacket[] = await query(sql) as RowDataPacket[];
         if (data) {
             return generateApolice(data[0]);
         }
@@ -78,20 +78,52 @@ class ApoliceRepository implements  IGenericRepository<Apolice>,IApoliceEstado<A
     }
 
     async create(item: Apolice): Promise<Boolean> {
-       
-        
+        const result: RowDataPacket = await query(
+            `INSERT INTO apolice 
+            (APOLICE_TIPO_ID ,NUMERO, SEGURADO_ID, DATA_INICIO, DATA_FIM, APOLICE_FRACIONAMENTO_ID, APOLICE_ESTADO_ID, VALOR_PREMIO) 
+            VALUES 
+            (${item.apolice_tipo_id}, ${item.numero}, ${item.segurado_id}, 
+            '${item.data_inicio}', '${item.data_fim}', ${item.apolice_fracionamento_id}, 
+            ${item.apolice_estado_id}, ${item.valor_premio})`
+        ) as RowDataPacket;
+
+        if (result.affectedRows) {
+            return true;
+        }
+        return false;
+
     }
 
     async update(id: string, item: Apolice): Promise<Boolean> {
-        throw new Error("Method not implemented.");
+        const result: RowDataPacket = await query(
+            `UPDATE SET 
+                APOLICE_TIPO_ID = ${item.apolice_tipo_id},
+                NUMERO = ${item.numero},
+                SEGURADO_ID = ${item.segurado_id},
+                DATA_INICIO = ${item.data_inicio},
+                DATA_FIM = ${item.data_fim},
+                APOLICE_FRACIONAMENTO_ID = ${item.apolice_fracionamento_id},
+                APOLICE_ESTADO_ID = ${item.apolice_estado_id},
+                VALOR_PREMIO = ${item.valor_premio},
+            WHERE id=${id}`
+        ) as RowDataPacket;
+
+        if (result.affectedRows) {
+            return true;
+        }
+        return false;
     }
 
     async delete(id: String): Promise<Boolean> {
-        throw new Error("Method not implemented.");
+        const result: RowDataPacket = await query(`DELETE FROM apolice WHERE id=${id}`) as RowDataPacket;
+        if (result.affectedRows) {
+            return true;
+        }
+        return false;
     }
 
     async getApoliceTipoByApoliceID(id: String): Promise<Boolean | ApoliceTipo> {
-        const data:RowDataPacket= await query(
+        const data: RowDataPacket = await query(
             `SELECT apolice_tipo.* 
             FROM apolice
             INNER JOIN apolice_tipo
@@ -106,7 +138,7 @@ class ApoliceRepository implements  IGenericRepository<Apolice>,IApoliceEstado<A
     }
 
     async addApoliceTipo(apoliceTipo: ApoliceTipo): Promise<Boolean> {
-        const result:RowDataPacket = await query(
+        const result: RowDataPacket = await query(
             `INSERT INTO apolice_tipo (SIGLA, NOME, DESCRICAO) 
             VALUES ('${apoliceTipo.sigla}', '${apoliceTipo.nome}', '${apoliceTipo.descricao}')`
         ) as RowDataPacket;
@@ -117,7 +149,7 @@ class ApoliceRepository implements  IGenericRepository<Apolice>,IApoliceEstado<A
     }
 
     async getApoliceEstadoByApoliceID(id: String): Promise<Boolean | ApoliceEstado> {
-        const data:RowDataPacket= await query(
+        const data: RowDataPacket = await query(
             `SELECT apolice_estado.* 
             FROM apolice
             INNER JOIN apolice_estado
@@ -132,7 +164,7 @@ class ApoliceRepository implements  IGenericRepository<Apolice>,IApoliceEstado<A
     }
     // this method change/update the state o apolice estado
     async setApoliceEstadoByApoliceID(id: String, apoliceEstado: ApoliceEstado): Promise<Boolean | ApoliceEstado> {
-        const result:RowDataPacket = await query(
+        const result: RowDataPacket = await query(
             `UPDATE apolice 
             SET APOLICE_ESTADO_ID=${apoliceEstado.id}
             WHERE id=${id}`

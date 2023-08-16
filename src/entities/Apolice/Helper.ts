@@ -29,49 +29,15 @@ function generateApoliceEstado(data: RowDataPacket): ApoliceEstado {
 
 
 function generateApolice(data: RowDataPacket): Apolice {
-    let apolice_tipo: ApoliceTipo = {
-        id: data['APOLICE_TIPO_ID'],
-        sigla: data['APOLICE_TIPO_SIGLA'],
-        nome: data['APOLICE_TIPO_NOME'],
-        descricao: data['APOLICE_TIPO_DESCRICAO']
-
-    };
-    
-    let apolice_estado: ApoliceEstado = {
-        id: data['APOLICE_ESTADO_ID'],
-        nome: data['APOLICE_ESTADO_NOME'],
-        descricao: data['APOLICE_ESTADO_DESCRICAO']
-
-    };
-
-    let apolice_segurado: ApoliceSegurado = {
-        id: data['APOLICE_SEGURADO_ID'],
-        nome: data['SEGURADO_NOME'],
-        pessoa_tipo_id: data['SEGURADO_TIPO'],
-        data_nascimento: data['SEGURADO_DATA_NASCIMENTO'],
-        sexo: data['SEGURADO_SEXO'],
-        nbi: data['SEGURADO_NBI'],
-        nif: data['SEGURADO_NIF'],
-        estado_civil: data['SEGURADO_ESTADO_CIVIL']
-
-    };
-
-    let apolice_fracionamento:ApoliceFracionamento = {
-        id: data['APOLICE_FRACIONAMENTO_ID'],
-        fracionado_em: data['FRACIONADO_EM'],
-        no_fracoes: data['NO_FRACOES']
-    }
-
     let apolice: Apolice = {
         id: data['ID'],
-        apolice_tipo: apolice_tipo,
+        apolice_tipo_id: data['APOLICE_TIPO_ID'],
         numero: data['ID'],
-        segurado: apolice_segurado,
-        tomador: data['ID'],
+        segurado_id: data['APOLICE_SEGURADO_ID'],
         data_inicio: data['DATA_INICIO'],
         data_fim: data['DATA_FIM'],
-        apolice_fracionamento: apolice_fracionamento,
-        apolice_estado: apolice_estado,
+        apolice_fracionamento_id: data['APOLICE_FRACIONAMENTO_ID'],
+        apolice_estado_id: data['APOLICE_ESTADO_ID'],
         valor_premio: data['VALOR_PREMIO'],
     }
     return apolice;

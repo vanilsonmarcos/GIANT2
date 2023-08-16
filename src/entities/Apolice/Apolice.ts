@@ -8,7 +8,7 @@ import ApoliceTipo from "./ApoliceTipo";
 
 interface Apolice {
     id?: Number,
-    apolice_tipo: ApoliceTipo,
+    apolice_tipo_id: Number,
     numero: String,
     segurado_id: Number,
     tomador?: Pessoa[],
