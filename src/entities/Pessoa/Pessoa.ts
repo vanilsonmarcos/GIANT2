@@ -10,7 +10,7 @@ interface Pessoa {
     nbi: String,
     nif: String,
     estado_civil: String
-    endereco: PessoaEndereco
+    endereco?: PessoaEndereco
 }
 
 export default Pessoa;

@@ -3,43 +3,90 @@ import ApoliceEstado from "../../entities/Apolice/ApoliceEstado";
 import IApoliceEstado from "../IApoliceEstado";
 import IApoliceTipo from "../IApoliceTipo";
 import ApoliceTipo from "../../entities/Apolice/ApoliceTipo";
-import { generateApoliceEstado, generateApoliceTipo } from "../../entities/Apolice/Helper";
+import { generateApolice, generateApoliceEstado, generateApoliceTipo } from "../../entities/Apolice/Helper";
 import { query } from "./mysql";
 import IGenericRepository from "../IGenericRepository";
 import Apolice from "../../entities/Apolice/Apolice";
 
 class ApoliceRepository implements  IGenericRepository<Apolice>,IApoliceEstado<ApoliceEstado>, IApoliceTipo<ApoliceTipo> {
     constructor() {}
-    getAll(): Promise<Apolice[]> {
-        const sql: string = `SELECT * FROM pessoa 
-        INNER JOIN pessoa_endereco ON 
-        pessoa.ID=pessoa_endereco.PESSOA_ID 
-        INNER JOIN pessoa_tipo ON
-        pessoa.PESSOA_TIPO_ID = pessoa_tipo.ID LIMIT 100` ;
+    async getAll(): Promise<Apolice[]> {
+        const sql: string = `
+            SELECT 
+                apolice.*,
+                apolice_estado.NOME AS APOLICE_ESTADO_NOME,
+                apolice_estado.DESCRICAO AS APOLICE_ESTADO_DESCRICAO,
+                apolice_tipo.SIGLA AS APOLICE_TIPO_SIGLA,
+                apolice_tipo.NOME AS APOLICE_TIPO_NOME,
+                apolice_tipo.DESCRICAO AS APOLICE_TIPO_DESCRICAO,
+                segurado.NOME AS SEGURADO_NOME,
+                segurado.TIPO AS SEGURADO_TIPO,
+                segurado.DATA_NASCIMENTO AS SEGURADO_DATA_NASCIMENTO,
+                segurado.SEXO AS SEGURADO_SEXO,
+                segurado.NBI AS SEGURADO_NBI,
+                segurado.NIF AS SEGURADO_NIF,
+                segurado.ESTADO_CIVIL AS SEGURADO_ESTADO_CIVIL,
+                apolice_fracionamento.FRACIONADO_EM, apolice_fracionamento.NO_FRACOES
+            FROM apolice
+            INNER JOIN pessoa AS segurado ON apolice.SEGURADO_ID = pessoa.ID
+            INNER JOIN apolice_estado ON apolice.APOLICE_ESTADO_ID = apolice_estado.ID
+            INNER JOIN apolice_tipo ON apolice.APOLICE_TIPO_ID = apolice_tipo.ID
+            INNER JOIN apolice_fracionamento ON apolice.APOLICE_FRACIONAMENTO_ID = apolice_fracionamento.ID
+            LIMIT 100; 
+        ` ;
+
         const data: RowDataPacket[] = await query(sql) as  RowDataPacket[] ;
         let apolices:Apolice[] = [];
         if (data) {
             for (const item of data) {
-                const apolice:Apolice = generatePessoa(item);
+                const apolice:Apolice = generateApolice(item);
                 apolices.push(apolice);
             }
         }
         return apolices;
     }
 
-    getByID(id: String): Promise<Boolean | Apolice> {
+    async getByID(id: String): Promise<Boolean | Apolice> {
+        const sql: string = `
+            SELECT 
+                apolice.*,
+                apolice_estado.NOME AS APOLICE_ESTADO_NOME,
+                apolice_estado.DESCRICAO AS APOLICE_ESTADO_DESCRICAO,
+                apolice_tipo.SIGLA AS APOLICE_TIPO_SIGLA,
+                apolice_tipo.NOME AS APOLICE_TIPO_NOME,
+                apolice_tipo.DESCRICAO AS APOLICE_TIPO_DESCRICAO,
+                segurado.NOME AS SEGURADO_NOME,
+                segurado.TIPO AS SEGURADO_TIPO,
+                segurado.DATA_NASCIMENTO AS SEGURADO_DATA_NASCIMENTO,
+                segurado.SEXO AS SEGURADO_SEXO,
+                segurado.NBI AS SEGURADO_NBI,
+                segurado.NIF AS SEGURADO_NIF,
+                segurado.ESTADO_CIVIL AS SEGURADO_ESTADO_CIVIL,
+                apolice_fracionamento.FRACIONADO_EM, apolice_fracionamento.NO_FRACOES
+            FROM apolice
+            INNER JOIN pessoa AS segurado ON apolice.SEGURADO_ID = pessoa.ID
+            INNER JOIN apolice_estado ON apolice.APOLICE_ESTADO_ID = apolice_estado.ID
+            INNER JOIN apolice_tipo ON apolice.APOLICE_TIPO_ID = apolice_tipo.ID
+            INNER JOIN apolice_fracionamento ON apolice.APOLICE_FRACIONAMENTO_ID = apolice_fracionamento.ID
+            LIMIT 1; 
+        ` ;
+        const data: RowDataPacket[] = await query(sql) as  RowDataPacket[] ;
+        if (data) {
+            return generateApolice(data[0]);
+        }
+        return false;
+    }
+
+    async create(item: Apolice): Promise<Boolean> {
+       
+        
+    }
+
+    async update(id: string, item: Apolice): Promise<Boolean> {
         throw new Error("Method not implemented.");
     }
 
-    create(item: Apolice): Promise<Boolean> {
-        throw new Error("Method not implemented.");
-    }
-
-    update(id: string, item: Apolice): Promise<Boolean> {
-        throw new Error("Method not implemented.");
-    }
-    
-    delete(id: String): Promise<Boolean> {
+    async delete(id: String): Promise<Boolean> {
         throw new Error("Method not implemented.");
     }
 
