@@ -44,9 +44,7 @@ class PessoaRepository implements IPessoaRepository<Pessoa> {
         if (data) {
             return generatePessoa(data[0]);
         }
-
         return false;
-
     }
 
     async create(item: Pessoa): Promise<Boolean> {

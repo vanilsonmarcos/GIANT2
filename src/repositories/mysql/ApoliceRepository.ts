@@ -3,13 +3,21 @@ import ApoliceEstado from "../../entities/Apolice/ApoliceEstado";
 import IApoliceEstado from "../IApoliceEstado";
 import IApoliceTipo from "../IApoliceTipo";
 import ApoliceTipo from "../../entities/Apolice/ApoliceTipo";
-import { generateApolice, generateApoliceEstado, generateApoliceTipo } from "../../entities/Apolice/Helper";
+import { generataApoliceFracionamento, generateApolice, generateApoliceEstado, generateApoliceItemSegurado, generateApoliceTipo } from "../../entities/Apolice/Helper";
 import { query } from "./mysql";
 import IGenericRepository from "../IGenericRepository";
 import Apolice from "../../entities/Apolice/Apolice";
+import IApoliceTomador from "../IApoliceTomador";
+import IApoliceFracionamento from "../IApoliceFracionamento";
+import ApoliceFracionamento from "../../entities/Apolice/ApoliceFracionamento";
+import ApoliceItemSegurado from "../../entities/Apolice/ApoliceItemSegurado";
+import IApoliceItemSegurado from "../IApoliceItemSegurado";
 
-class ApoliceRepository implements IGenericRepository<Apolice>, IApoliceEstado<ApoliceEstado>, IApoliceTipo<ApoliceTipo> {
+class ApoliceRepository implements IGenericRepository<Apolice>, IApoliceEstado<ApoliceEstado>, 
+    IApoliceTipo<ApoliceTipo>, IApoliceFracionamento<ApoliceFracionamento>,
+    IApoliceItemSegurado<ApoliceItemSegurado>{
     constructor() { }
+
     async getAll(): Promise<Apolice[]> {
         const sql: string = `
             SELECT 
@@ -175,6 +183,80 @@ class ApoliceRepository implements IGenericRepository<Apolice>, IApoliceEstado<A
         }
         return false;
     }
+
+    async getApoliceFracionamentoByApoliceID(id: String): Promise<Boolean | ApoliceFracionamento> {
+        const sql: string = `
+            SELECT apolice_fracionamento.*
+            FROM apolice
+            INNER JOIN apolice_fracionamento ON apolice.APOLICE_FRACIONAMENTO_ID = apolice_fracionamento.ID
+            WHERE apolice.ID=${id}
+            LIMIT 1; 
+        ` ;
+        const data: RowDataPacket[] = await query(sql) as RowDataPacket[];
+        if (data) {
+            return generataApoliceFracionamento(data[0]);
+        }
+        return false;
+    }
+
+    async setApoliceFracionamentoByApoliceID(id: String, apoliceFracionamento: ApoliceFracionamento): Promise<Boolean> {
+        const sql: string = `
+            UPDATE apolice
+            SET APOLICE_FRACIONAMENTO_ID = ${apoliceFracionamento.id}
+            WHERE ID = ${id};
+        `;
+        const result: RowDataPacket = await query(sql) as RowDataPacket;
+
+        if (result.affectedRows) {
+            return true;
+        }
+        return false;
+    }
+
+    async getAllItemsByApoliceID(id: String): Promise<Boolean | ApoliceItemSegurado[]> {
+        const data: RowDataPacket[] = await query(`
+            SELECT * 
+            FROM apolice_item_segurado
+            WHERE APOLICE_ID=${id} 
+            LIMIT 1`
+        ) as RowDataPacket [];
+        let apoliceItemSegurados:ApoliceItemSegurado[] = [];
+        if (data) {
+            for (const item of data) {
+                const pessoa:ApoliceItemSegurado = generateApoliceItemSegurado(item);
+                apoliceItemSegurados.push(pessoa);
+            }
+            return apoliceItemSegurados;
+        }
+        return false;
+    }
+
+    async removeItemByApoliceID(id: String, item: ApoliceItemSegurado): Promise<Boolean> {
+        const result: RowDataPacket = await query(`
+        DELETE FROM apolice_item_segurado
+        WHERE APOLICE_ID=${id} AND ITEM_ID=${item.item_id}
+        `) as RowDataPacket;
+        if (result.affectedRows) {
+            return true;
+        }
+        return false;
+    }
+
+    async AddItemByApoliceID(id: String, item: ApoliceItemSegurado): Promise<Boolean> {
+        const result = await query(
+            `INSERT INTO apolice_item_segurado
+            (APOLICE_TIPO_ID, ITEM_ID, APOLICE_ID) 
+            VALUES 
+            (${item.apolice_tipo_id}, '${item.item_id}', '${item.apolice_id}')`
+        ) as RowDataPacket;  
+        if (result.affectedRows) {
+            return true;
+        }
+        return false;
+    }
+
+    
+
 
 }
 

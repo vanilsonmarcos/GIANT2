@@ -5,6 +5,7 @@ import Apolice from "./Apolice";
 import ApoliceTomador from "./ApoliceTomador";
 import ApoliceSegurado from "./ApoliceSegurado";
 import ApoliceFracionamento from "./ApoliceFracionamento";
+import ApoliceItemSegurado from "./ApoliceItemSegurado";
 
 
 function generateApoliceTipo(data: RowDataPacket): ApoliceTipo {
@@ -42,4 +43,30 @@ function generateApolice(data: RowDataPacket): Apolice {
     }
     return apolice;
 }
-export {generateApoliceTipo, generateApoliceEstado, generateApolice};
+
+function generataApoliceFracionamento(data: RowDataPacket): ApoliceFracionamento {
+    let apoliceFracionamento: ApoliceFracionamento = {
+        id: data['ID'],
+        fracionado_em: data['FRACIONAMENTO_EM'],
+        no_fracoes: data['APOLICE_FRACIONAMENTO_ID']
+    }
+    return apoliceFracionamento
+    
+}
+
+
+function generateApoliceItemSegurado(data: RowDataPacket): ApoliceItemSegurado {
+    let apoliceItemSegurado: ApoliceItemSegurado = {
+        id: data['ID'],
+        apolice_tipo_id: data['ID'],
+        apolice_id: data['ID'],
+        item_id:data['ID'],
+    }
+    return apoliceItemSegurado
+}
+
+export {
+    generateApoliceTipo, generateApoliceEstado, 
+    generateApolice, generataApoliceFracionamento, 
+    generateApoliceItemSegurado
+}; 
