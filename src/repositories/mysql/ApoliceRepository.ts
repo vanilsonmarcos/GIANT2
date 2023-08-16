@@ -5,9 +5,43 @@ import IApoliceTipo from "../IApoliceTipo";
 import ApoliceTipo from "../../entities/Apolice/ApoliceTipo";
 import { generateApoliceEstado, generateApoliceTipo } from "../../entities/Apolice/Helper";
 import { query } from "./mysql";
+import IGenericRepository from "../IGenericRepository";
+import Apolice from "../../entities/Apolice/Apolice";
 
-class ApoliceRepository implements IApoliceEstado<ApoliceEstado>, IApoliceTipo<ApoliceTipo>, Ia {
+class ApoliceRepository implements  IGenericRepository<Apolice>,IApoliceEstado<ApoliceEstado>, IApoliceTipo<ApoliceTipo> {
     constructor() {}
+    getAll(): Promise<Apolice[]> {
+        const sql: string = `SELECT * FROM pessoa 
+        INNER JOIN pessoa_endereco ON 
+        pessoa.ID=pessoa_endereco.PESSOA_ID 
+        INNER JOIN pessoa_tipo ON
+        pessoa.PESSOA_TIPO_ID = pessoa_tipo.ID LIMIT 100` ;
+        const data: RowDataPacket[] = await query(sql) as  RowDataPacket[] ;
+        let apolices:Apolice[] = [];
+        if (data) {
+            for (const item of data) {
+                const apolice:Apolice = generatePessoa(item);
+                apolices.push(apolice);
+            }
+        }
+        return apolices;
+    }
+
+    getByID(id: String): Promise<Boolean | Apolice> {
+        throw new Error("Method not implemented.");
+    }
+
+    create(item: Apolice): Promise<Boolean> {
+        throw new Error("Method not implemented.");
+    }
+
+    update(id: string, item: Apolice): Promise<Boolean> {
+        throw new Error("Method not implemented.");
+    }
+    
+    delete(id: String): Promise<Boolean> {
+        throw new Error("Method not implemented.");
+    }
 
     async getApoliceTipoByApoliceID(id: String): Promise<Boolean | ApoliceTipo> {
         const data:RowDataPacket= await query(
