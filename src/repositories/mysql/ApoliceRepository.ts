@@ -81,6 +81,7 @@ class ApoliceRepository implements IGenericRepository<Apolice>, IApoliceEstado<A
             INNER JOIN apolice_estado ON apolice.APOLICE_ESTADO_ID = apolice_estado.ID
             INNER JOIN apolice_tipo ON apolice.APOLICE_TIPO_ID = apolice_tipo.ID
             INNER JOIN apolice_fracionamento ON apolice.APOLICE_FRACIONAMENTO_ID = apolice_fracionamento.ID
+            WHERE apolice.ID=${id}
             LIMIT 1; 
         ` ;
         const data: RowDataPacket[] = await query(sql) as RowDataPacket[];
