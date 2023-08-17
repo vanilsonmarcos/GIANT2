@@ -11,6 +11,8 @@ apoliceRoutes.get('/apolice/:id', apoliceController.getApoliceByID);
 apoliceRoutes.post('/apolice/', apoliceController.criarApolice);
 apoliceRoutes.put('/apolice/', apoliceController.actualizarApolice);
 apoliceRoutes.delete('/apolice/:id', apoliceController.removerApolice);
+apoliceRoutes.delete('/apolice/:id', apoliceController.removerApolice);
+
 
 
 export default apoliceRoutes;
