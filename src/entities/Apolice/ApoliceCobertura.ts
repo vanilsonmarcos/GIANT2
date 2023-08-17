@@ -6,8 +6,8 @@ interface ApoliceCobertura {
     nome: String,
     descricao: String,
     inserido_por: Number,
-    actualizado_por: Number,
-    removido_por: Number,
+    actualizado_por?: Number,
+    removido_por?: Number,
     valor_a_pagar: Number,
     desconto: Number
 }

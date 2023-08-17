@@ -1,8 +1,9 @@
 import ApoliceCobertura from "../entities/Apolice/ApoliceCobertura";
 
-interface IApoliceCoberturas<T extends ApoliceCobertura> {
+interface IApoliceCobertura<T extends ApoliceCobertura> {
     getAllApoliceCoberturaByApoliceID(id: String): Promise<T[]|Boolean>;
-    setApoliceCoberturaByApoliceID():Promise<Boolean>;
+    getAllApoliceCoberturaByApoliceTypeID(id: String):Promise<T[]|Boolean>;
+    addApoliceCoberturaByApoliceID(id:String ,ApoliceCobertura:ApoliceCobertura):Promise<Boolean>;
 }
 
-export default IApoliceCoberturas;
+export default IApoliceCobertura;

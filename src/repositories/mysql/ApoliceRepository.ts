@@ -3,7 +3,7 @@ import ApoliceEstado from "../../entities/Apolice/ApoliceEstado";
 import IApoliceEstado from "../IApoliceEstado";
 import IApoliceTipo from "../IApoliceTipo";
 import ApoliceTipo from "../../entities/Apolice/ApoliceTipo";
-import { generataApoliceFracionamento, generateApolice, generateApoliceEstado, generateApoliceItemSegurado, generateApoliceTipo } from "../../entities/Apolice/Helper";
+import { generataApoliceFracionamento, generateApolice, generateApoliceCobertura, generateApoliceEstado, generateApoliceItemSegurado, generateApolicePagamento, generateApoliceTipo } from "../../entities/Apolice/Helper";
 import { query } from "./mysql";
 import IGenericRepository from "../IGenericRepository";
 import Apolice from "../../entities/Apolice/Apolice";
@@ -12,10 +12,15 @@ import IApoliceFracionamento from "../IApoliceFracionamento";
 import ApoliceFracionamento from "../../entities/Apolice/ApoliceFracionamento";
 import ApoliceItemSegurado from "../../entities/Apolice/ApoliceItemSegurado";
 import IApoliceItemSegurado from "../IApoliceItemSegurado";
+import IApolicePagamento from "../IApolicePagamento";
+import ApolicePagamento from "../../entities/Apolice/ApolicePagamento";
+import IApoliceCobertura from "../IApoliceCobertura";
+import ApoliceCobertura from "../../entities/Apolice/ApoliceCobertura";
 
-class ApoliceRepository implements IGenericRepository<Apolice>, IApoliceEstado<ApoliceEstado>, 
+class ApoliceRepository implements IGenericRepository<Apolice>, IApoliceEstado<ApoliceEstado>,
     IApoliceTipo<ApoliceTipo>, IApoliceFracionamento<ApoliceFracionamento>,
-    IApoliceItemSegurado<ApoliceItemSegurado>{
+    IApoliceItemSegurado<ApoliceItemSegurado>, IApolicePagamento<ApolicePagamento>,
+    IApoliceCobertura<ApoliceCobertura>{
     constructor() { }
 
     async getAll(): Promise<Apolice[]> {
@@ -219,11 +224,11 @@ class ApoliceRepository implements IGenericRepository<Apolice>, IApoliceEstado<A
             FROM apolice_item_segurado
             WHERE APOLICE_ID=${id} 
             LIMIT 1`
-        ) as RowDataPacket [];
-        let apoliceItemSegurados:ApoliceItemSegurado[] = [];
+        ) as RowDataPacket[];
+        let apoliceItemSegurados: ApoliceItemSegurado[] = [];
         if (data) {
             for (const item of data) {
-                const pessoa:ApoliceItemSegurado = generateApoliceItemSegurado(item);
+                const pessoa: ApoliceItemSegurado = generateApoliceItemSegurado(item);
                 apoliceItemSegurados.push(pessoa);
             }
             return apoliceItemSegurados;
@@ -248,15 +253,113 @@ class ApoliceRepository implements IGenericRepository<Apolice>, IApoliceEstado<A
             (APOLICE_TIPO_ID, ITEM_ID, APOLICE_ID) 
             VALUES 
             (${item.apolice_tipo_id}, '${item.item_id}', '${item.apolice_id}')`
-        ) as RowDataPacket;  
+        ) as RowDataPacket;
         if (result.affectedRows) {
             return true;
         }
         return false;
     }
 
-    
+    async getApolicePagamentoByApoliceID(id: String): Promise<Boolean | ApolicePagamento> {
+        const data: RowDataPacket[] = await query(`
+            SELECT * 
+            FROM apolice_pagamento
+            WHERE apolice_pagamento.APOLICE_ID = ${id} 
+            LIMIT 1`
+        ) as RowDataPacket[];
+        if (data) {
+            const apolicePagamento: ApolicePagamento = generateApolicePagamento(data[0]);
+            return apolicePagamento;
+        }
+        return false;
+    }
 
+    async getAllApolicePagamentoByApoliceID(id: String): Promise<Boolean | ApolicePagamento[]> {
+        const data: RowDataPacket[] = await query(`
+        SELECT * 
+        FROM apolice_pagamento
+        WHERE apolice_pagamento.APOLICE_ID = ${id}`
+        ) as RowDataPacket[];
+        let apolicePagamentos: ApolicePagamento[] = [];
+        if (data) {
+            for (const item of data) {
+                const apolicePagamento: ApolicePagamento = generateApolicePagamento(item);
+                apolicePagamentos.push(apolicePagamento);
+            }
+            return apolicePagamentos;
+        }
+        return false;
+    }
+
+    async addApolicePagamentoByApoliceID(id: String, ApolicePagamento: ApolicePagamento): Promise<Boolean> {
+        const result: RowDataPacket = await query(
+            `INSERT INTO apolice_pagamento
+            (APOLICE_ID, DESCONTOS, VALOR_PAGO)
+            VALUES
+            (${id}, ${ApolicePagamento.descontos}, ${ApolicePagamento.valor_pago})
+            `
+        ) as RowDataPacket;
+
+        if (result.affectedRows) {
+            return true;
+        }
+        return false;
+    }
+
+    async getAllApoliceCoberturaByApoliceID(id: String): Promise<Boolean | ApoliceCobertura[]> {
+        const data: RowDataPacket[] = await query(`
+        SELECT * 
+        FROM apolice_cobertura
+        INNER JOIN cobertura 
+        ON apolice_cobertura.COBERTURA_ID=cobertura.ID
+        WHERE apolice_cobertura.APOLICE_ID=${id}
+        `
+        ) as RowDataPacket[];
+        let apoliceCoberturas: ApoliceCobertura[] = [];
+        if (data) {
+            for (const item of data) {
+                const apoliceCobertura: ApoliceCobertura = generateApoliceCobertura(item);
+                apoliceCoberturas.push(apoliceCobertura);
+            }
+            return apoliceCoberturas;
+        }
+        return false;
+    }
+
+    async getAllApoliceCoberturaByApoliceTypeID(id: String): Promise<Boolean | ApoliceCobertura[]> {
+        const data: RowDataPacket[] = await query(`
+        SELECT * 
+        FROM apolice_cobertura
+        INNER JOIN cobertura 
+        ON apolice_cobertura.COBERTURA_ID=cobertura.ID
+        WHERE cobertura.APOLICE_TIPO_ID=${id}
+        `
+        ) as RowDataPacket[];
+        let apoliceCoberturas: ApoliceCobertura[] = [];
+        if (data) {
+            for (const item of data) {
+                const apoliceCobertura: ApoliceCobertura = generateApoliceCobertura(item);
+                apoliceCoberturas.push(apoliceCobertura);
+            }
+            return apoliceCoberturas;
+        }
+        return false;
+    }
+
+    async addApoliceCoberturaByApoliceID(id:String, apoliceCobertura: ApoliceCobertura): Promise<Boolean> {
+        const result: RowDataPacket = await query(
+            `INSERT INTO apolice_cobertura
+            (APOLICE_ID, COBERTURA_ID, VALOR_PAGO, DESCONTO)
+            VALUES
+            (${id}, ${apoliceCobertura.id}, ${apoliceCobertura.valor_a_pagar}, ${apoliceCobertura.desconto})
+            `
+        ) as RowDataPacket;
+
+        if (result.affectedRows) {
+            return true;
+        }
+        return false;
+    }
 
 }
 
