@@ -139,3 +139,5 @@ class ApoliceController {
 
     }
 }
+
+export default ApoliceController;
