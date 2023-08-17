@@ -69,6 +69,43 @@ class ApoliceController {
         }
     }
 
+
+    async criarApolice(req:Request, res:Response) {
+        const apolice:Apolice = req.body;
+        try {
+            const result:Boolean = await new ApoliceRepository().create(apolice);
+
+            if (!result) {
+                let code = 401;
+                let message = "Ocorreu um erro ao criar a apólice";
+                let data = apolice;
+                res.json({
+                    code,
+                    message,
+                    data
+                });
+            }
+            let code = 200;
+            let message = "A apólice foi criada com sucesso";
+            let data = apolice;
+            res.json({
+                code,
+                message,
+                data
+            });
+        } catch (error) {
+            let code = 401;
+            let message = "Ocorreu um erro ao criar a apólice";
+            let data = {}
+            res.json({
+                code,
+                message,
+                data,
+                error
+            })
+        }
+    }
+
     async actualizarApolice(req: Request, res:Response) {
         const { id } = req.params;
         const apolice: Apolice = req.body
@@ -132,10 +169,6 @@ class ApoliceController {
                 data
             })
         }
-
-    }
-
-    async actualizarApoliceEstado(req:Request, res:Response) {
 
     }
 }
