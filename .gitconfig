@@ -1,0 +1,10 @@
+[user]
+    name = vanilsonmarcos
+    email = vm@infoco.ao
+
+[credential]
+    helper = store
+
+[credential "https://github.com"]
+    username = vanilsonmarcos
+    token = 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
