@@ -96,6 +96,11 @@ function generateApoliceCobertura(data:RowDataPacket): ApoliceCobertura {
     return apoliceCobertura
 }
 
+
+function validateApolice(apolice: Apolice): any {
+    
+} 
+
 export {
     generateApoliceTipo, generateApoliceEstado, 
     generateApolice, generataApoliceFracionamento, 
