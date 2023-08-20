@@ -7,3 +7,5 @@ interface VeiculoCategoria {
 }
 
 export default VeiculoCategoria;
+
+

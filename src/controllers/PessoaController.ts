@@ -22,7 +22,7 @@ class PessoaController {
 
     } catch (error) {
         const code = 404;
-        const message = `Occoreu um erro ao colectar dos dados da pessoa`;
+        const message = `Occoreu um erro ao colectar dos dados das pessoas`;
         const data = {}
         res.json({
             code,
