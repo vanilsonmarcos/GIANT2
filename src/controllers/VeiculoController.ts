@@ -22,8 +22,8 @@ class VeiculoController {
             })
     
         } catch (error) {
-            const code = 404;
-            const message = `Os dados ddos veiculos não foram encontrados`;
+            const code = 401;
+            const message = `Os dados dos veiculos não foram encontrados`;
             const data = {}
             res.json({
                 code,
