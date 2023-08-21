@@ -1,8 +1,11 @@
 import { Router } from "express";
 import CoberturaController from "../controllers/CoberturaController";
+import CoberturaRepository from "../repositories/mysql/CoberturaRepository";
 
 
-const coberturaController: CoberturaController = new CoberturaController();
+const cobertura = new CoberturaRepository();
+
+const coberturaController = new CoberturaController(cobertura);
 const coberturaRoutes =  Router();
 
 coberturaRoutes.get('/cobertura/', coberturaController.getAll)

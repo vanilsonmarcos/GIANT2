@@ -1,16 +1,20 @@
 import { Request, Response } from "express";
 import CoberturaRepository from "../repositories/mysql/CoberturaRepository";
 import Cobertura from "../entities/Cobertura";
+import IGenericRepository from "../repositories/IGenericRepository";
 
 class CoberturaController {
-    constructor() {
+    private repo: CoberturaRepository;
 
+    constructor(repository:IGenericRepository<Cobertura>) {
+        this.repo = repository;
     }
 
     // Read/Query  
     async getAll(req: Request, res: Response) {
         try {
-            const coberturas: Cobertura[] = await new CoberturaRepository().getAll();
+            console.log(this.repo.getAll())
+            const coberturas: Cobertura[] =  await this.repo.getAll();
             const code = 200;
             const message = "Dados das Coberturas foram encontrados com sucesso";
             const data = coberturas;
@@ -21,6 +25,7 @@ class CoberturaController {
             })
     
         } catch (error) {
+            console.log(error);
             const code = 404;
             const message = `Occoreu um erro ao colectar dos dados das Coberturas`;
             const data = {}

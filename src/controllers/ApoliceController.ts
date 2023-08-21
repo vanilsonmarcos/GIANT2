@@ -95,8 +95,8 @@ class ApoliceController {
 
             //end of data validation
 
-            const result: Boolean = await new ApoliceRepository().create(apolice);
-            if (!result) {
+            const result = await new ApoliceRepository().create(apolice);
+            if (typeof result === 'boolean') {
                 let code = 401;
                 let message = "Ocorreu um erro ao criar a apólice";
                 let data = apolice;

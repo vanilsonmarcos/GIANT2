@@ -5,30 +5,30 @@ import IGenericRepository from "../IGenericRepository";
 import { query } from "./mysql";
 import { generateCobertura } from "../../entities/Apolice/Helper";
 
-class CoberturaRepository implements IGenericRepository<Cobertura>, ICobertura {
+class CoberturaRepository implements IGenericRepository<Cobertura>{
     constructor() { }
-    async isCoberturaBase(id: String): Promise<Boolean> {
+    // async isCoberturaBase(id: String): Promise<Boolean> {
 
-        const sql: string = `
-        SELECT 
-            cobertura.*,  
-            apolice_tipo.ID as APOLICE_TIPO_ID,  
-            apolice_tipo.SIGLA as APOLICE_TIPO_SIGLA, 
-            apolice_tipo.NOME as APOLICE_TIPO_NOME,
-            apolice_tipo.DESCRICAO as APOLICE_TIPO_DESCRICAO
-        FROM cobertura 
-        INNER JOIN apolice_tipo 
-        ON cobertura.APOLICE_TIPO_ID=apolice_tipo.ID
-        WHERE cobertura.ID=${id}
-        ` ;
-        const data: RowDataPacket[] = await query(sql) as RowDataPacket[];
+    //     const sql: string = `
+    //     SELECT 
+    //         cobertura.*,  
+    //         apolice_tipo.ID as APOLICE_TIPO_ID,  
+    //         apolice_tipo.SIGLA as APOLICE_TIPO_SIGLA, 
+    //         apolice_tipo.NOME as APOLICE_TIPO_NOME,
+    //         apolice_tipo.DESCRICAO as APOLICE_TIPO_DESCRICAO
+    //     FROM cobertura 
+    //     INNER JOIN apolice_tipo 
+    //     ON cobertura.APOLICE_TIPO_ID=apolice_tipo.ID
+    //     WHERE cobertura.ID=${id}
+    //     ` ;
+    //     const data: RowDataPacket[] = await query(sql) as RowDataPacket[];
 
-        if (data) {
-            const cobertura: Cobertura = generateCobertura(data[0]);
-            return cobertura.cobertura_base;
-        }
-        return false;
-    }
+    //     if (data) {
+    //         const cobertura: Cobertura = generateCobertura(data[0]);
+    //         return cobertura.cobertura_base;
+    //     }
+    //     return false;
+    // }
 
     async getAll(): Promise<Cobertura[]> {
         const sql: string = `
@@ -89,7 +89,7 @@ class CoberturaRepository implements IGenericRepository<Cobertura>, ICobertura {
                 DESCONTO
             ) VALUES (
                 '${item.apolice_tipo.id}', 
-                '${item.cobertura_base}', 
+                '${item.cobertura_base? 1: 0}', 
                 '${item.sigla}', 
                 '${item.nome}', 
                 '${item.descricao}', 
@@ -114,7 +114,7 @@ class CoberturaRepository implements IGenericRepository<Cobertura>, ICobertura {
             cobertura 
         SET 
             APOLICE_TIPO_ID = ${item.apolice_tipo.id},
-            COBERTURA_BASE =  ${item.cobertura_base},
+            COBERTURA_BASE =  ${item.cobertura_base? 1 : 0},
             SIGLA =  ${item.sigla},
             NOME =  ${item.nome},
             DESCRICAO =  ${item.descricao},

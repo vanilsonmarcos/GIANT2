@@ -116,7 +116,7 @@ function generateCobertura(data:RowDataPacket): Cobertura {
         data_actualizacao: data['DATA_ACTUALIZACAO'],
         valor_pagar: data['VALOR_PAGAR'],
         desconto: data['DESCONTO'],
-        cobertura_base: data['COBERTURA_BASE']
+        cobertura_base: data['COBERTURA_BASE']=== 1 //
     };
     
     return cobertura;
