@@ -66,8 +66,8 @@ Todas a requisições retornam um objecto json com o codigo http de retorno, a m
 ```
 
 ## Veiculo
-O veiculo é uma entidade que faz parte dos items a serem segurados dentro de uma apolice de seguro automóvel e um veiculo possui uma categoria que define o preço na qual o veiculo deve ser cobrado.
 
+O veiculo é uma entidade que faz parte dos items a serem segurados dentro de uma apolice de seguro automóvel e um veiculo possui uma categoria que define o preço na qual o veiculo deve ser cobrado.
 
 Visualizar Veiculos
 Metodo: GET
@@ -303,13 +303,261 @@ em caso de error retorna:
 }
 ```
 
-
 ## Veiculo Categoraia
-
 
 ## Apolice
 
+## Apolice Pagamento
+
+Visualizar "Pagamento de uma apólice" apolice pagamento pelo id da apólice
+Metodo: GET
+URL: /apolice_pagamento/:id
+Resposta:
+em caso de sucesso retorna:
+
+```json
+{
+    code: 200,
+    message: "Os pagamentos associados a apólice foram carregados com sucesso",
+    data: { ApolicePagamento 1 }, 
+    
+}
+```
+
+em caso de erro
+ ```json
+ {
+    code: 401,
+    message:"Ocorreu um erro na pesquisa do(s) pagamento(s) associados a apólice",
+    data: {},
+    error: {error}
+ }
+ ```
+
+Visualizar "Pagamentos de uma apólice" apolice pagamento pelo id da apólice
+Metodo: GET
+URL: /apolice_pagamento/
+Resposta:
+em caso de sucesso retorna:
+
+```json
+{
+    code: 200,
+    message: "Os pagamentos associados a apólice foram carregados com sucesso",
+    data: [
+        { ApolicePagamento 1 }, { ApolicePagamento 2}
+    ] 
+    
+}
+```
+
+em caso de erro
+ ```json
+ {
+    code: 401,
+    message:"Ocorreu um erro na pesquisa do(s) pagamento(s) associados a apólice",
+    data: {},
+    error: {error}
+ }
+ ```
+
+
 ## Preço Cilindrada
+
+Visualizar preco_cilindrada
+Metodo: GET
+URL: /preco_cilindrada/
+Resposta:
+em caso de sucesso retorna:
+
+```json
+{
+    code: 200,
+    message: "Dados dos preços por cilindrada foram encontrados com sucesso",
+    data: [
+        {precoCilindrada 1 }, {precoCilindrada 2}, {...}
+    ]
+}
+```
+
+em caso de erro retorna:
+
+```json
+{
+    code: 401,
+    message: "Ocorreu um erro ao colectar os dados  dos preços por cilindrada",
+    data: {}, 
+    error: {erro}
+}
+```
+
+Visualizar preco_cilindrada pelo id 
+Metodo: GET
+URL: /preco_cilindrada/:id
+Resposta:
+em caso de sucesso retorna:
+
+```json
+{
+    code: 200,
+    message: "Dados dos preços por cilindrada foram encontrados com sucesso",
+    data: { precoCilindrada 1 }
+    
+}
+```
+
+em caso de erro retorna:
+
+```json
+{
+    code: 401,
+    message: "Ocorreu um erro ao inserir os dados preço por cilindrada",
+    data: {}, 
+    error: {erro}
+}
+```
+
+Adicionar novo Preço por cilindrada
+Metodo POST:
+URL: /preco_cilindrada/
+Body:
+
+```json
+{
+    id?: Number,
+    nome: String,
+    lotacao: Number,
+    veiculo_categoria: VeiculoCategoria,
+    premio_trimestral: Number,
+    premio_semestral:Number,
+    premio_anual: Number,
+    peso_kg: Number,
+    cilindrada_min: Number,
+    cilindrada_max: Number,
+}
+```
+
+Resposta:
+em caso de sucesso retorna o objecto inserido com o id definido.
+
+```json
+{
+    code: 200,
+    message: "Dados do preço por cilindrada inseridos com sucesso",
+    data: {
+        id?: Number,
+        nome: String,
+        lotacao: Number,
+        veiculo_categoria: VeiculoCategoria,
+        premio_trimestral: Number,
+        premio_semestral:Number,
+        premio_anual: Number,
+        peso_kg: Number,
+        cilindrada_min: Number,
+        cilindrada_max: Number,
+    }
+}
+```
+
+em caso de erro retorna:
+
+```json
+{
+    code: 401,
+    message: "Ocorreu um erro ao inserir os dados preço por cilindrada",
+    data: {},
+    error: {error}
+}
+```
+
+Actualizar Preço por cilindrada
+Metodo PUT:
+URL: /preco_cilindrada/:id
+Body:
+
+```json
+{
+    id?: Number,
+    nome: String,
+    lotacao: Number,
+    veiculo_categoria: VeiculoCategoria,
+    premio_trimestral: Number,
+    premio_semestral:Number,
+    premio_anual: Number,
+    peso_kg: Number,
+    cilindrada_min: Number,
+    cilindrada_max: Number,
+}
+```
+
+Resposta:
+em caso de sucesso retorna o objecto inserido com o id definido.
+
+```json
+{
+    code: 200,
+    message: "Dados do preço por cilindrada actualizados com sucesso",
+    data: {
+        id?: Number,
+        nome: String,
+        lotacao: Number,
+        veiculo_categoria: VeiculoCategoria,
+        premio_trimestral: Number,
+        premio_semestral:Number,
+        premio_anual: Number,
+        peso_kg: Number,
+        cilindrada_min: Number,
+        cilindrada_max: Number,
+    }
+}
+```
+
+em caso de erro retorna:
+
+```json
+{
+    code: 401,
+    message: "Ocorreu um erro ao actualizar os dados do preço cilindrada",
+    data: {},
+    error: {error}
+}
+```
+
+Remover Preço por Cilindrada
+Metodo DELETE:
+URL: /preco_cilindrada/:id
+Resposta:
+em caso de sucesso retorna:
+
+```json
+{
+    code: 200,
+    message: "Dados do preço cilindrada removidos com sucesso",
+    data: {
+            id?: Number,
+            nome: String,
+            lotacao: Number,
+            veiculo_categoria: VeiculoCategoria,
+            premio_trimestral: Number,
+            premio_semestral:Number,
+            premio_anual: Number,
+            peso_kg: Number,
+            cilindrada_min: Number,
+            cilindrada_max: Number,
+        }
+}
+```
+
+em caso de error retorna:
+
+```json
+{
+    code: 401,
+    message: "Ocorreu um erro ao remover os dados do preço cilindrada",
+    data: {},
+    error: {error}
+}
+```
 
 ## Pessoa
 
@@ -592,3 +840,4 @@ em caso de error retorna:
     error: {error}
 }
 ```
+

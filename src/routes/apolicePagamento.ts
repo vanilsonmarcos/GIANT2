@@ -1,16 +1,15 @@
 import { Router } from "express";
 
-import ApoliceController from "../controllers/ApoliceController";
 import ApolicePagamentoConttroller from "../controllers/ApolicePagamentoController";
 
 const apolicePagamentoRoutes = Router();
 
-const apolicePgamanetoController:ApolicePagamentoConttroller = new ApolicePagamentoConttroller();
-const routeName:String = "apolicepagamento"; 
+const apolicePagamentoController:ApolicePagamentoConttroller = new ApolicePagamentoConttroller();
+const routeName:String = "apolice_pagamento"; 
 
-apolicePagamentoRoutes.get(`/${routeName}/`, apolicePgamanetoController.getAllApolicePagamentoByApoliceID);
-apolicePagamentoRoutes.get(`/${routeName}/:id`, apolicePgamanetoController.getApolicePagamentoByApoliceID);
-apolicePagamentoRoutes.post(`/${routeName}/`, apolicePgamanetoController.addApolicePagamentoByApoliceID);
+// apolicePagamentoRoutes.get("/apolice_pagamento/", apolicePagamentoController.getAllApolicePagamentoByApoliceID);
+apolicePagamentoRoutes.get("/apolice_pagamento/:id", apolicePagamentoController.getApolicePagamentoByApoliceID);
+apolicePagamentoRoutes.post("/apolice_pagamento/", apolicePagamentoController.addApolicePagamentoByApoliceID);
 
 
 

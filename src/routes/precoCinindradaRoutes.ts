@@ -4,11 +4,11 @@ const precoCilindradaRoutes = Router();
 
 const precoCilindradaController: PrecoCilindradaController = new PrecoCilindradaController();
 /** Get person by it attributes */
-precoCilindradaRoutes.get('/precocilindrada/', precoCilindradaController.getAll);
-precoCilindradaRoutes.get('/precocilindrada/:id', precoCilindradaController.getByID);
+precoCilindradaRoutes.get('/preco_cilindrada/', precoCilindradaController.getAll);
+precoCilindradaRoutes.get('/preco_cilindrada/:id', precoCilindradaController.getByID);
 
-precoCilindradaRoutes.post('/precocilindrada/', precoCilindradaController.novoPrecoCilindrada);
-precoCilindradaRoutes.put('/precocilindrada/:id', precoCilindradaController.actualizarPrecoCilindrada);
-precoCilindradaRoutes.delete('/precocilindrada/:id', precoCilindradaController.removerPrecoCilindrada);
+precoCilindradaRoutes.post('/preco_cilindrada/', precoCilindradaController.novoPrecoCilindrada);
+precoCilindradaRoutes.put('/preco_cilindrada/:id', precoCilindradaController.actualizarPrecoCilindrada);
+precoCilindradaRoutes.delete('/preco_cilindrada/:id', precoCilindradaController.removerPrecoCilindrada);
 
 export default precoCilindradaRoutes;

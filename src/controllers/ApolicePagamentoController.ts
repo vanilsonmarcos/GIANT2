@@ -25,7 +25,7 @@ class ApolicePagamentoConttroller {
             }
 
             let code = 200;
-            let message = "O pagamento associados a apólice não carregado com sucesso";
+            let message = "Os pagamentos associados a apólice foram carregados com sucesso";
             let data = result;
             res.json({
                 code,
