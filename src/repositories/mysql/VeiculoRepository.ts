@@ -65,7 +65,7 @@ class VeiculoRepository implements IVeiculoReposiroty<Veiculo>, IVeiculoCategori
         return false;
 
     }
-    async create(item: Veiculo): Promise<Boolean> {      
+    async create(item: Veiculo): Promise<Veiculo | Boolean > {      
         const result = await query(
             `INSERT INTO ${this.primeTable}
             (VEICULO_CATEGORIA_ID, MATRICULA, MARCA, MODELO, ANO_AQUISICAO, CAPITAL_AQUISICAO,
@@ -75,13 +75,15 @@ class VeiculoRepository implements IVeiculoReposiroty<Veiculo>, IVeiculoCategori
             '${item.peso_bruto}', '${item.n_lotacao}', '${item.ano_fabrico}', '${item.cilindrada}' '${item.ref_chassi}', '${item.descricao}')`
         ) as RowDataPacket;  
         if (result.affectedRows) {
-            return true;
+            // Set the id to the object after insert in database
+            item.id = result.insertId;
+            return item;
         }
         return false;
     }
 
 
-    async update(id: string, item: Veiculo): Promise<Boolean> {
+    async update(id: string, item: Veiculo): Promise<Veiculo | Boolean> {
         const result: RowDataPacket = await query(`
         UPDATE ${this.primeTable} SET
         VEICULO_CATEGORIA_ID = ${item.veiculo_categoria.id},
@@ -100,7 +102,7 @@ class VeiculoRepository implements IVeiculoReposiroty<Veiculo>, IVeiculoCategori
         ) as RowDataPacket;
 
         if (result.affectedRows) {
-            return true;
+            return item;
         }
         return false;
     }

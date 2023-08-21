@@ -47,7 +47,7 @@ class PessoaRepository implements IPessoaRepository<Pessoa> {
         return false;
     }
 
-    async create(item: Pessoa): Promise<Boolean> {
+    async create(item: Pessoa): Promise<Pessoa | Boolean> {
         const result:RowDataPacket = await query(
             `INSERT INTO ${this.primeTable} 
             (PESSOA_TIPO_ID, NOME, DATA_NASCIMENTO, SEXO, NBI, NIF, ESTADO_CIVIL) 
@@ -61,8 +61,10 @@ class PessoaRepository implements IPessoaRepository<Pessoa> {
             VALUES 
             (${result.insertId}, '${item.endereco.telefone}', '${item.endereco.telefone_alt}', '${item.endereco.email}')`
         ) as RowDataPacket;  
-        if (result.affectedRows && result_two.affectedRows) {
-            return true;
+        if (result.affectedRows && result_two.affectedRows) { 
+            item.id = result.insertId;
+            return item;
+
         }
         return false;
     }
@@ -71,7 +73,7 @@ class PessoaRepository implements IPessoaRepository<Pessoa> {
         const result:RowDataPacket = await query(`UPDATE ${this.primeTable} 
             SET PESSOA_TIPO_ID=${item.pessoa_tipo.id}, NOME='${item.nome}', DATA_NASCIMENTO=${formatDDMMYYYYToMySQLDate(item.data_nascimento as string)}, 
             SEXO='${item.sexo}', NBI='${item.nbi}', NIF='${item.nif}', ESTADO_CIVIL='${item.estado_civil}'
-            WHERE id=${id}`
+            WHERE ID=${id}`
         ) as RowDataPacket;
 
         const result_two: RowDataPacket = await query(`UPDATE ${this.secondTable} 

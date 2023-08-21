@@ -7,11 +7,11 @@ class ApolicePagamentoConttroller {
     constructor() { }
 
 
-    async getApolicePagamentoByApoliceID(req: Request, res: Response) {
+    async getApolicePagamentoByID(req: Request, res: Response) {
         const { id } = req.params;
         try {
             const result = await new ApoliceRepository()
-                .getApolicePagamentoByApoliceID(id);
+                .getApolicePagamentoByID(id);
             if (!result) {
                 let code = 401;
                 let message = "Não foi possivel encontrar o pagamanero associado a apólice";

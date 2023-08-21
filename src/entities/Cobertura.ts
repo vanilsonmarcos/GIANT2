@@ -1,0 +1,19 @@
+import ApoliceTipo from "./Apolice/ApoliceTipo";
+
+interface Cobertura {
+    id?: Number,
+    sigla: String,
+    nome: String,
+    descricao: String,
+    apolice_tipo: ApoliceTipo,
+    inserido_por?: Number,
+    actualizado_por?: Number,
+    removido_por?: Number,
+    data_criacao?: String,
+    data_actualizacao?: String,
+    valor_pagar: Number,
+    desconto: Number,
+    cobertura_base: Boolean
+}
+
+export default Cobertura;

@@ -336,7 +336,7 @@ em caso de erro
 
 Visualizar "Pagamentos de uma apólice" apolice pagamento pelo id da apólice
 Metodo: GET
-URL: /apolice_pagamento/
+URL: /apolice_pagamento/apolice/:id
 Resposta:
 em caso de sucesso retorna:
 
@@ -356,6 +356,45 @@ em caso de erro
  {
     code: 401,
     message:"Ocorreu um erro na pesquisa do(s) pagamento(s) associados a apólice",
+    data: {},
+    error: {error}
+ }
+ ```
+
+Adicionar  "Pagamentos de uma apólice" apolice pagamento pelo id da apólice
+Metodo: POST
+URL: /apolice_pagamento/
+Body: 
+```json
+{
+    id: Number,
+    apolice_id: Number,
+    descontos: Number,
+    valor_pago: Number,
+    inserido_por?: number,
+    data_insercao: String,
+}
+```
+
+Resposta:
+em caso de sucesso retorna:
+
+```json
+{
+    id: Number,
+    apolice_id: Number,
+    descontos: Number,
+    valor_pago: Number,
+    inserido_por?: number,
+    data_insercao: String,
+}
+```
+
+em caso de erro
+ ```json
+ {
+    code: 401,
+    message: "Ocorreu um erro ao  adicionar/associar o pagamento a apólice",
     data: {},
     error: {error}
  }

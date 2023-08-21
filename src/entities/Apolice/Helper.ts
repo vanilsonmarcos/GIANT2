@@ -9,6 +9,7 @@ import ApoliceItemSegurado from "./ApoliceItemSegurado";
 import ApolicePagamento from "./ApolicePagamento";
 import { formatDateToDDMMYYY } from "../../utils/helper";
 import ApoliceCobertura from "./ApoliceCobertura";
+import Cobertura from "../Cobertura";
 
 
 function generateApoliceTipo(data: RowDataPacket): ApoliceTipo {
@@ -96,6 +97,31 @@ function generateApoliceCobertura(data:RowDataPacket): ApoliceCobertura {
     return apoliceCobertura
 }
 
+function generateCobertura(data:RowDataPacket): Cobertura {
+    let cobertura: Cobertura = {
+        id: data['ID'],
+        sigla: data['SIGLA'],
+        nome: data['NOME'],
+        descricao: data['DESCRICAO'],
+        apolice_tipo: {
+            id: data['APOLICE_TIPO_ID'],
+            sigla: data['APOLICE_TIPO_SIGLA'],
+            nome: data['APOLICE_TIPO_NOME'],
+            descricao:data['APOLICE_TIPO_DESCRICAO']
+        },
+        inserido_por: data['INSERIDO_POR'],
+        actualizado_por: data['ACTUALIZADO_POR'],
+        removido_por: data['REMOVIDO_POR'],
+        data_criacao: data['DATA_CRIACAO'],
+        data_actualizacao: data['DATA_ACTUALIZACAO'],
+        valor_pagar: data['VALOR_PAGAR'],
+        desconto: data['DESCONTO'],
+        cobertura_base: data['COBERTURA_BASE']
+    };
+    
+    return cobertura;
+}
+
 
 function validateApolice(apolice: Apolice): any {
     
@@ -105,5 +131,5 @@ export {
     generateApoliceTipo, generateApoliceEstado, 
     generateApolice, generataApoliceFracionamento, 
     generateApoliceItemSegurado, generateApolicePagamento,
-    generateApoliceCobertura
+    generateApoliceCobertura, generateCobertura
 }; 

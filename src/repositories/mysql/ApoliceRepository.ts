@@ -91,7 +91,7 @@ class ApoliceRepository implements IGenericRepository<Apolice>, IApoliceEstado<A
         return false;
     }
 
-    async create(item: Apolice): Promise<Boolean> {
+    async create(item: Apolice): Promise<Apolice | Boolean> {
         const result: RowDataPacket = await query(
             `INSERT INTO apolice 
             (APOLICE_TIPO_ID ,NUMERO, SEGURADO_ID, DATA_INICIO, DATA_FIM, APOLICE_FRACIONAMENTO_ID, APOLICE_ESTADO_ID, VALOR_PREMIO) 
@@ -102,13 +102,14 @@ class ApoliceRepository implements IGenericRepository<Apolice>, IApoliceEstado<A
         ) as RowDataPacket;
 
         if (result.affectedRows) {
-            return true;
+            item.id = result.insertId; 
+            return item;
         }
         return false;
 
     }
 
-    async update(id: string, item: Apolice): Promise<Boolean> {
+    async update(id: string, item: Apolice): Promise<Apolice | Boolean> {
         const result: RowDataPacket = await query(
             `UPDATE SET 
                 APOLICE_TIPO_ID = ${item.apolice_tipo_id},
@@ -123,7 +124,7 @@ class ApoliceRepository implements IGenericRepository<Apolice>, IApoliceEstado<A
         ) as RowDataPacket;
 
         if (result.affectedRows) {
-            return true;
+            return item;
         }
         return false;
     }
@@ -261,11 +262,11 @@ class ApoliceRepository implements IGenericRepository<Apolice>, IApoliceEstado<A
         return false;
     }
 
-    async getApolicePagamentoByApoliceID(id: String): Promise<Boolean | ApolicePagamento> {
+    async getApolicePagamentoByID(id: String): Promise<Boolean | ApolicePagamento> {
         const data: RowDataPacket[] = await query(`
             SELECT * 
             FROM apolice_pagamento
-            WHERE apolice_pagamento.APOLICE_ID = ${id} 
+            WHERE apolice_pagamento.ID = ${id} 
             LIMIT 1`
         ) as RowDataPacket[];
         if (data) {

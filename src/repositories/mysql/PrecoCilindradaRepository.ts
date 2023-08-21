@@ -47,7 +47,7 @@ class PrecoCilindradaRepository implements IGenericRepository<PrecoCilindrada> {
         return false;
     }
 
-    async create(item: PrecoCilindrada): Promise<Boolean> {
+    async create(item: PrecoCilindrada): Promise<PrecoCilindrada | Boolean> {
         const result = await query(
             `INSERT INTO ${this.primeTable}
             (NOME,LOTACAO,VEICULO_CATEGORIA_ID, PREMIO_TRIMESTRAL, PREMIO_SEMESTRAL, 
@@ -57,12 +57,13 @@ class PrecoCilindradaRepository implements IGenericRepository<PrecoCilindrada> {
              ${item.premio_anual}, ${item.peso_kg}, ${item.cilindrada_min}, ${item.cilindrada_max})`
         ) as RowDataPacket;  
         if (result.affectedRows) {
-            return true;
+            item.id = result.insertId;
+            return item;
         }
         return false;
     }
 
-    async update(id: string, item: PrecoCilindrada): Promise<Boolean> {
+    async update(id: string, item: PrecoCilindrada): Promise<PrecoCilindrada | Boolean> {
         const result: RowDataPacket = await query(`
         UPDATE ${this.primeTable} SET
         NOME = '${item.nome}',
@@ -78,7 +79,7 @@ class PrecoCilindradaRepository implements IGenericRepository<PrecoCilindrada> {
         ) as RowDataPacket;
 
         if (result.affectedRows) {
-            return true;
+            return item;
         }
         return false;
     }
