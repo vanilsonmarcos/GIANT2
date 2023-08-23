@@ -26,7 +26,6 @@ class CoberturaService {
                 throw Error("Não foi encontrado a Cobertura com o referente id");
             }
             return result;
-          
         } catch (error) {
             throw Error("Ocorreu um erro ao carregar os dados da Cobertura");
         }
@@ -34,15 +33,23 @@ class CoberturaService {
 
     async criar(cobertura: Cobertura) {
         try {
-            await this.repo.create(cobertura); 
+            const result = await this.repo.create(cobertura);
+            if (typeof result === "boolean") {
+                throw Error("Ocorreu um erro ao criar a Cobertura");
+            }
+            return result;
         } catch (error) {
-            throw Error("Ocorreu um erro ao criar os dados da Cobertura");
+            throw Error("Ocorreu um erro ao criar a Cobertura");
         }
     } 
 
     async actualizar(id: String, cobertura: Cobertura) {
         try {
-            await this.repo.update(id, cobertura); 
+            const result = await this.repo.update(id, cobertura);
+            if(typeof result === "boolean"){
+                throw Error("Ocorreu um erro ao actualizar os dados da cobertura");
+            }
+            return result;
         } catch (error) {
             throw Error("Ocorreu um erro ao actualizar os dados da Cobertura");
         }
@@ -50,7 +57,11 @@ class CoberturaService {
 
     async remover(id: String) {
         try {
-            await this.repo.delete(id); 
+            const result = await this.repo.delete(id);
+            if (!result) {
+                throw Error("Ocorreu um erro ao remover a Cobertura");
+            }
+            return result 
         } catch (error) {
             throw Error("Ocorreu erro ao remover os dados da Cobertura");
         }
