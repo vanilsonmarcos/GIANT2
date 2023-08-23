@@ -4,31 +4,35 @@ import ICobertura from "../ICobertura";
 import IGenericRepository from "../IGenericRepository";
 import { query } from "./mysql";
 import { generateCobertura } from "../../entities/Apolice/Helper";
+import { Service } from "typedi";
 
-class CoberturaRepository implements IGenericRepository<Cobertura>{
-    constructor() { }
-    // async isCoberturaBase(id: String): Promise<Boolean> {
+@Service()
+class CoberturaRepository implements IGenericRepository<Cobertura>, ICobertura{
+    constructor() { 
+        console.log("This is the constructor of the CoberturaRepository");
+    }
+    async isCoberturaBase(id: String): Promise<Boolean> {
 
-    //     const sql: string = `
-    //     SELECT 
-    //         cobertura.*,  
-    //         apolice_tipo.ID as APOLICE_TIPO_ID,  
-    //         apolice_tipo.SIGLA as APOLICE_TIPO_SIGLA, 
-    //         apolice_tipo.NOME as APOLICE_TIPO_NOME,
-    //         apolice_tipo.DESCRICAO as APOLICE_TIPO_DESCRICAO
-    //     FROM cobertura 
-    //     INNER JOIN apolice_tipo 
-    //     ON cobertura.APOLICE_TIPO_ID=apolice_tipo.ID
-    //     WHERE cobertura.ID=${id}
-    //     ` ;
-    //     const data: RowDataPacket[] = await query(sql) as RowDataPacket[];
+        const sql: string = `
+        SELECT 
+            cobertura.*,  
+            apolice_tipo.ID as APOLICE_TIPO_ID,  
+            apolice_tipo.SIGLA as APOLICE_TIPO_SIGLA, 
+            apolice_tipo.NOME as APOLICE_TIPO_NOME,
+            apolice_tipo.DESCRICAO as APOLICE_TIPO_DESCRICAO
+        FROM cobertura 
+        INNER JOIN apolice_tipo 
+        ON cobertura.APOLICE_TIPO_ID=apolice_tipo.ID
+        WHERE cobertura.ID=${id}
+        ` ;
+        const data: RowDataPacket[] = await query(sql) as RowDataPacket[];
 
-    //     if (data) {
-    //         const cobertura: Cobertura = generateCobertura(data[0]);
-    //         return cobertura.cobertura_base;
-    //     }
-    //     return false;
-    // }
+        if (data) {
+            const cobertura: Cobertura = generateCobertura(data[0]);
+            return cobertura.cobertura_base;
+        }
+        return false;
+    }
 
     async getAll(): Promise<Cobertura[]> {
         const sql: string = `
