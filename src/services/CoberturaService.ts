@@ -1,9 +1,10 @@
 import 'reflect-metadata';
-import { Service, Inject, Container } from "typedi";
+import { Service, Inject } from "typedi";
 import Cobertura from "../entities/Cobertura";
 import IGenericRepository from "../repositories/IGenericRepository";
 import CoberturaRepository from "../repositories/mysql/CoberturaRepository";
 
+// Add the business logic here
 @Service()
 class CoberturaService {
     @Inject(() => CoberturaRepository) 
@@ -12,59 +13,23 @@ class CoberturaService {
     constructor () {}
 
     async getAll(): Promise<Cobertura[]> {
-        try {
-            return await this.repo.getAll();         
-        } catch (error) {
-            throw Error("Ocorreu um erro ao carregar os dados das Coberturas");
-        }
+        return await this.repo.getAll();         
     }
 
     async getByID(id: String): Promise<Cobertura>{
-        try {
-            const result = await this.repo.getByID(id);
-            if(typeof result === "boolean" ) {
-                throw Error("Não foi encontrado a Cobertura com o referente id");
-            }
-            return result;
-        } catch (error) {
-            throw Error("Ocorreu um erro ao carregar os dados da Cobertura");
-        }
+        return await this.repo.getByID(id);
     }
 
-    async criar(cobertura: Cobertura) {
-        try {
-            const result = await this.repo.create(cobertura);
-            if (typeof result === "boolean") {
-                throw Error("Ocorreu um erro ao criar a Cobertura");
-            }
-            return result;
-        } catch (error) {
-            throw Error("Ocorreu um erro ao criar a Cobertura");
-        }
+    async criar(cobertura: Cobertura): Promise<Cobertura> {
+        return await this.repo.create(cobertura);
     } 
 
     async actualizar(id: String, cobertura: Cobertura) {
-        try {
-            const result = await this.repo.update(id, cobertura);
-            if(typeof result === "boolean"){
-                throw Error("Ocorreu um erro ao actualizar os dados da cobertura");
-            }
-            return result;
-        } catch (error) {
-            throw Error("Ocorreu um erro ao actualizar os dados da Cobertura");
-        }
+        return await this.repo.update(id, cobertura);
     }
 
-    async remover(id: String) {
-        try {
-            const result = await this.repo.delete(id);
-            if (!result) {
-                throw Error("Ocorreu um erro ao remover a Cobertura");
-            }
-            return result 
-        } catch (error) {
-            throw Error("Ocorreu erro ao remover os dados da Cobertura");
-        }
+    async remover(id: String): Promise<Boolean> {
+        return await this.repo.delete(id);
     }
 }
 

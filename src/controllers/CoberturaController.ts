@@ -55,9 +55,9 @@ class CoberturaController {
     }
     
     async nova(req: Request, res: Response) {
-        const cobertura: Cobertura = req.body;
+        const cb: Cobertura = req.body;
         try {
-            const cobertura: Cobertura = await this.coberturaService.criar(cobertura);
+            const cobertura: Cobertura = await this.coberturaService.criar(cb);
             const response = {
                 code: 200,
                 message: "Dados da Cobertura inseridos com sucesso",

@@ -1,8 +1,8 @@
 interface IGenericRepository <T>{
     getAll(): Promise<T[]>;
-    getByID(id: String): Promise<T | Boolean>;
-    create(item: T):Promise<T | Boolean> ;
-    update(id: String, item: T):Promise<T | Boolean>;
+    getByID(id: String): Promise<T>;
+    create(item: T):Promise<T> ;
+    update(id: String, item: T):Promise<T>;
     delete(id: String): Promise<Boolean>;
 }
 

@@ -56,7 +56,7 @@ class CoberturaRepository implements IGenericRepository<Cobertura>, ICobertura{
         }
         return coberturas;
     }
-    async getByID(id: String): Promise<Boolean | Cobertura> {
+    async getByID(id: String): Promise<Cobertura> {
         const sql: string = `
         SELECT 
             cobertura.*,  
@@ -75,10 +75,10 @@ class CoberturaRepository implements IGenericRepository<Cobertura>, ICobertura{
             const cobertura: Cobertura = generateCobertura(data[0]);
             return cobertura;
         }
-        return false;
-
+        throw Error("Não foram encontrados os dados da Cobertura");
     }
-    async create(item: Cobertura): Promise<Boolean | Cobertura> {
+
+    async create(item: Cobertura): Promise<Cobertura> {
         const result: RowDataPacket = await query(
             `INSERT INTO cobertura(
                 APOLICE_TIPO_ID,
@@ -109,10 +109,10 @@ class CoberturaRepository implements IGenericRepository<Cobertura>, ICobertura{
             return item;
 
         }
-        return false;
+        throw Error("Ocorreu um erro ao criar a Cobertura");
     }
 
-    async update(id: string, item: Cobertura): Promise<Boolean | Cobertura> {
+    async update(id: string, item: Cobertura): Promise<Cobertura> {
         const result: RowDataPacket = await query(`
         UPDATE 
             cobertura 
@@ -133,7 +133,7 @@ class CoberturaRepository implements IGenericRepository<Cobertura>, ICobertura{
         if (result.affectedRows) {
             return item;
         }
-        return false;
+        throw Error("Ocorreu um erro ao actualizar od dados da Cobertura")
 
     }
 
