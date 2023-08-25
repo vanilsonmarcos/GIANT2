@@ -8,10 +8,10 @@ const coberturaService: CoberturaService = Container.get(CoberturaService);
 const coberturaController = new CoberturaController(coberturaService);
 const coberturaRoutes =  Router();
 
-coberturaRoutes.get('/cobertura/', coberturaController.getAll);
-coberturaRoutes.get('/cobertura/:id', coberturaController.getByID);
-coberturaRoutes.post('/cobertura/', coberturaController.novaCobertura);
-coberturaRoutes.put('/cobertura/', coberturaController.actualizarCobertura);
-coberturaRoutes.delete('/cobertura/', coberturaController.removerCobertura);
+coberturaRoutes.get('/cobertura/', coberturaController.getAll.bind(coberturaController));
+coberturaRoutes.get('/cobertura/:id', coberturaController.getByID.bind(coberturaController));
+coberturaRoutes.post('/cobertura/', coberturaController.nova.bind(coberturaController));
+coberturaRoutes.put('/cobertura/', coberturaController.actualizar.bind(coberturaController));
+coberturaRoutes.delete('/cobertura/', coberturaController.remover.bind(coberturaController));
 
 export default coberturaRoutes;

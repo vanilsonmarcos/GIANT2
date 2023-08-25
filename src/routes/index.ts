@@ -8,11 +8,11 @@ import coberturaRoutes from './coberturaRoutes';
 
 const routes = Router();
 
-routes.use(pessoaRoutes);
-routes.use(veiculoRoutes);
-routes.use(precoCilindradaRoutes);
-routes.use(apoliceRoutes);
-routes.use(apolicePagamentoRoutes);
+// routes.use(pessoaRoutes);
+// routes.use(veiculoRoutes);
+// routes.use(precoCilindradaRoutes);
+// routes.use(apoliceRoutes);
+// routes.use(apolicePagamentoRoutes);
 routes.use(coberturaRoutes);
 
 export default routes;
