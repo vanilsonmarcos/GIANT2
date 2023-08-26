@@ -5,44 +5,97 @@ import Cobertura from '../../src/entities/Cobertura';
 
 const COBERTURA_URL = "/cobertura/";
 
+let cobertura: Cobertura;
 
-describe("It should get all Coberturas", () => {
-    test(`GET ${COBERTURA_URL}`,  async() => {
-        request(app)
-        .get(COBERTURA_URL)
-        .expect("Content-Type", /json/)
-        .expect(200);
-    });
+beforeEach(() => {
+    cobertura = {
+        sigla: "CTES",
+        nome: "Cobertura Teste",
+        descricao: "",
+        apolice_tipo: {
+            id: 1,
+            sigla: "AUTO",
+            nome: "Apólice de Seguro Automóvel",
+            descricao: "Considerado um seguro obrigatório em Angola, o Seguro Automóvel deve segurar a responsabilidade civil perante terceiros, transportados ou não, decorrente de lesões causadas por veículos terrestres a motor, seus reboques e semi-reboques, velocípedes e bicicletas. Adicionalmente pode ser contratado um seguro para danos próprios, que, de acordo com as condições gerais e específicas da apólice pode cobrir os riscos não previstos no âmbito do seguro obrigatório de responsabilidade civil automóvel, podendo abranger as seguintes coberturas: Responsabilidade Civil Facultativa; Choque, Colisão e Capotamento; Furto ou Roubo; Incêndio, Raio ou Explosão; Quebra Isolada de Vidros; Fenómenos da Natureza; Greves, Tumultos e Alterações da Ordem Pública; Privação de Uso; Ocupantes da Viatura; e outras garantias que venham a ser contratadas."
+        },
+        valor_pagar: 0,
+        desconto: 0,
+        cobertura_base: false
+    };
 });
 
-describe("It should get Cobertura by id", () => {
-    test("GET /", () => {
-        const cobertura_id = 1;
-        request(app)
-        .get(`${COBERTURA_URL}`)
-        .expect("Content-Type", /json/)
-        .expect((res) => {
-            const c: Cobertura = res.body.data;
-            return expect(c.id).toContainEqual(cobertura_id)
-        })
-        .expect(200);
+describe("It should perform all operations about Coberturas", () => {
+
+    it('should get all Coberturas', async () => {
+        await request(app)
+            .get(COBERTURA_URL)
+            .expect('Content-Type', /json/)
+            .expect(200);
     });
-});
 
-// describe("It should insert Cobertura at the database", () => {
-//     test("GET /", () => {
-        
-//     });
-// });
+    it('should get Cobertura by id', async () => {
+        // const response = await request(app)
+        //     .post(`${COBERTURA_URL}`)
+        //     .send(cobertura);
 
-// describe("It should update Cobertura at the database", () => {
-//     test("GET /", () => {
-        
-//     });
-// });
+        const coberturaId = 1; //response.body.data.id;
 
-// describe("It should delete Cobertura at the database", () => {
-//     test("GET /", () => {
-        
-//     });
-// });
+        await request(app)
+            .get(`${COBERTURA_URL}${coberturaId}`)
+            .expect('Content-Type', /json/)
+            .expect(200)
+            .expect((res) => {
+                const c: Cobertura = res.body.data;
+                expect(c.id).toEqual(coberturaId);
+            });
+    });
+
+    it('should insert Cobertura into the database', async () => {
+        const response = await request(app)
+            .post(`${COBERTURA_URL}`)
+            .send(cobertura);
+
+        const c: Cobertura = response.body.data;
+        expect(c.id).toBeDefined();
+        expect(c.sigla).toEqual(cobertura.sigla);
+    }); 
+
+    it('should update Cobertura in the database', async () => {
+        const novoNome = 'TESTC';
+        const updatedCobertura = { ...cobertura, nome: novoNome };
+
+        const response = await request(app)
+            .post(`${COBERTURA_URL}`)
+            .send(cobertura);
+
+        const coberturaId = response.body.data.id;
+
+        await request(app)
+            .put(`${COBERTURA_URL}${coberturaId}`)
+            .send(updatedCobertura)
+            .expect('Content-Type', /json/)
+            .expect(200)
+            .expect((res) => {
+                const c: Cobertura = res.body.data;
+                expect(c.nome).toEqual(novoNome);
+            });
+    });
+
+
+    it('should delete Cobertura from the database', async () => {
+        const response = await request(app)
+            .post(`${COBERTURA_URL}`)
+            .send(cobertura);
+
+        const coberturaId = response.body.data.id;
+
+        await request(app)
+            .delete(`${COBERTURA_URL}${coberturaId}`)
+            .expect('Content-Type', /json/)
+            .expect(200)
+            .expect((res) => {
+                const isDeleted = res.body.data;
+                expect(isDeleted).toBe(true);
+            });
+    });
+}); 

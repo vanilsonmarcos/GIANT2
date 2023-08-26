@@ -14,9 +14,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/", cors(corsOptions), routes);
 
-app.listen(port, () => {
-    console.log(`Server is running in port ${port}`);
-});
+app.listen(port, () => {});
 
 export default app;
 
