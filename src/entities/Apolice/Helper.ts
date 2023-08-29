@@ -97,7 +97,7 @@ function generateApoliceCobertura(data:RowDataPacket): ApoliceCobertura {
     return apoliceCobertura
 }
 
-function generateCobertura(data:RowDataPacket): Cobertura {
+function generateCobertura(data:RowDataPacket): Cobertura { 
     let cobertura: Cobertura = {
         id: data['ID'],
         sigla: data['SIGLA'],
@@ -109,9 +109,6 @@ function generateCobertura(data:RowDataPacket): Cobertura {
             nome: data['APOLICE_TIPO_NOME'],
             descricao:data['APOLICE_TIPO_DESCRICAO']
         },
-        inserido_por: data['INSERIDO_POR'],
-        actualizado_por: data['ACTUALIZADO_POR'],
-        removido_por: data['REMOVIDO_POR'],
         data_criacao: data['DATA_CRIACAO'],
         data_actualizacao: data['DATA_ACTUALIZACAO'],
         valor_pagar: data['VALOR_PAGAR'],

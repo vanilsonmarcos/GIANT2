@@ -9,7 +9,6 @@ import { Service } from "typedi";
 @Service()
 class CoberturaRepository implements IGenericRepository<Cobertura>, ICobertura{
     constructor() { 
-        console.log("This is the constructor of the CoberturaRepository");
     }
     async isCoberturaBase(id: String): Promise<Boolean> {
 
@@ -86,22 +85,16 @@ class CoberturaRepository implements IGenericRepository<Cobertura>, ICobertura{
                 SIGLA,
                 NOME,
                 DESCRICAO,
-                INSERIDO_POR,
-                ACTUALIZADO_POR,
-                REMOVIDO_POR,
                 VALOR_PAGAR,
                 DESCONTO
             ) VALUES (
                 '${item.apolice_tipo.id}', 
-                '${item.cobertura_base? 1: 0}', 
+                ${item.cobertura_base? 1: 0}, 
                 '${item.sigla}', 
                 '${item.nome}', 
-                '${item.descricao}', 
-                '${item.inserido_por}', 
-                '${item.actualizado_por}',
-                '${item.removido_por}',
-                '${item.valor_pagar}',
-                '${item.desconto}')`
+                '${item.descricao}',
+                ${item.valor_pagar},
+                ${item.desconto})`
         ) as RowDataPacket;
 
         if (result.affectedRows) {
@@ -119,13 +112,10 @@ class CoberturaRepository implements IGenericRepository<Cobertura>, ICobertura{
         SET 
             APOLICE_TIPO_ID = ${item.apolice_tipo.id},
             COBERTURA_BASE =  ${item.cobertura_base? 1 : 0},
-            SIGLA =  ${item.sigla},
-            NOME =  ${item.nome},
-            DESCRICAO =  ${item.descricao},
-            INSERIDO_POR =  ${item.inserido_por},
-            ACTUALIZADO_POR =  ${item.actualizado_por},
-            REMOVIDO_POR =  ${item.removido_por},
-            VALOR_PAGAR =  ${item.removido_por},
+            SIGLA =  '${item.sigla}',
+            NOME =  '${item.nome}',
+            DESCRICAO =  '${item.descricao}',
+            VALOR_PAGAR =  ${item.valor_pagar},
             DESCONTO =  ${item.desconto}
         WHERE ID=${id}`
         ) as RowDataPacket;

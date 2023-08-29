@@ -21,6 +21,7 @@ class CoberturaService {
     }
 
     async criar(cobertura: Cobertura): Promise<Cobertura> {
+
         return await this.repo.create(cobertura);
     } 
 
@@ -29,6 +30,7 @@ class CoberturaService {
     }
 
     async remover(id: String): Promise<Boolean> {
+        // check if object exist
         return await this.repo.delete(id);
     }
 }
