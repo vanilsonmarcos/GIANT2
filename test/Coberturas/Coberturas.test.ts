@@ -6,8 +6,6 @@ import Cobertura from '../../src/entities/Cobertura';
 const COBERTURA_URL = "/cobertura/";
 
 
-
-
 describe("It should perform all operations about Coberturas", () => {
     let cobertura: Cobertura;
     beforeAll(() => {
@@ -36,89 +34,49 @@ describe("It should perform all operations about Coberturas", () => {
         const c: Cobertura = response.body.data;
         expect(c).toBeDefined();
 
-        cobertura.id = c.id;
+        cobertura = c;
+    });
+
+    it('should get Cobertura by id', async () => {
+        await request(app)
+            .get(`${COBERTURA_URL}${cobertura.id}`)
+            .expect('Content-Type', /json/)
+            .expect(200)
+            .expect((res) => {
+                const c: Cobertura = res.body.data;
+                expect(c.id).toEqual(cobertura.id);
+            });
+    });
+
+    it('should get all Coberturas', async () => {
+        await request(app)
+            .get(COBERTURA_URL)
+            .expect('Content-Type', /json/)
+            .expect(200);
+    });
+
+    it('should update Cobertura in the database', async () => {
+        const novoNome = 'TESTC';
+        const updatedCobertura = { ...cobertura, nome: novoNome };
+
+        await request(app)
+            .put(`${COBERTURA_URL}`)
+            .send(updatedCobertura)
+            .expect('Content-Type', /json/)
+            .expect(200)
+            .expect((res) => {
+                const c: Cobertura = res.body.data;
+                expect(c.nome).toEqual(novoNome);
+            });
     });
 
 
-    afterAll(() => {
-        it('should delete Cobertura from the database', async () => {
-            const cobertura_id = cobertura.id;
-            await request(app)
-                .delete(`${COBERTURA_URL}${cobertura_id}`)                
-                .expect('Content-Type', /json/)
-                .expect(200)
-                .expect((res) => {
-                    const data = res.body.data;
-                    expect(data.code).toBe(200);
-                });
-        });
+    it('should delete Cobertura from the database', async () => {
+        const cobertura_id = cobertura.id;
+        const result = await request(app)
+            .delete(`${COBERTURA_URL}${cobertura_id}`)
+            .expect('Content-Type', /json/)
+            .expect(200);
     });
 
-
-
-
-    // it('should get all Coberturas', async () => {
-    //     await request(app)
-    //         .get(COBERTURA_URL)
-    //         .expect('Content-Type', /json/)
-    //         .expect(200);
-    // });
-
-    //     it('should get Cobertura by id', async () => {
-    //         // const response = await request(app)
-    //         //     .post(`${COBERTURA_URL}`)
-    //         //     .send(cobertura);
-
-    //         const coberturaId = 1; //response.body.data.id;
-
-    //         await request(app)
-    //             .get(`${COBERTURA_URL}${coberturaId}`)
-    //             .expect('Content-Type', /json/)
-    //             .expect(200)
-    //             .expect((res) => {
-    //                 const c: Cobertura = res.body.data;
-    //                 expect(c.id).toEqual(coberturaId);
-    //             });
-    //     });
-
-
-
-    //     it('should update Cobertura in the database', async () => {
-    //         const novoNome = 'TESTC';
-    //         const updatedCobertura = { ...cobertura, nome: novoNome };
-
-    //         const response = await request(app)
-    //             .post(`${COBERTURA_URL}`)
-    //             .send(cobertura);
-
-    //         const coberturaId = response.body.data.id;
-
-    //         await request(app)
-    //             .put(`${COBERTURA_URL}${coberturaId}`)
-    //             .send(updatedCobertura)
-    //             .expect('Content-Type', /json/)
-    //             .expect(200)
-    //             .expect((res) => {
-    //                 const c: Cobertura = res.body.data;
-    //                 expect(c.nome).toEqual(novoNome);
-    //             });
-    //     });
-
-
-    //     it('should delete Cobertura from the database', async () => {
-    //         const response = await request(app)
-    //             .post(`${COBERTURA_URL}`)
-    //             .send(cobertura);
-
-    //         const coberturaId = response.body.data.id;
-
-    //         await request(app)
-    //             .delete(`${COBERTURA_URL}${coberturaId}`)
-    //             .expect('Content-Type', /json/)
-    //             .expect(200)
-    //             .expect((res) => {
-    //                 const isDeleted = res.body.data;
-    //                 expect(isDeleted).toBe(true);
-    //             });
-    //     });
 }); 

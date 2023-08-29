@@ -83,9 +83,11 @@ class CoberturaController {
         if (!parsedData.success) {
             return handleParsingError(res, parsedData.error);
         }
+        
         if (parsedData.data.id === undefined){
             return handleParsingError(res, new Error("O Id da cobertura não foi criado"));
         }
+
         try {
             const cobertura: Cobertura = await this.coberturaService.actualizar(parsedData.data.id.toString(), parsedData.data);
             const response = {
