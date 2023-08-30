@@ -1,23 +1,22 @@
 import { Router } from "express";
 import PessoaController from "../controllers/PessoaController";
+import PessoaService from "../services/PessoaService";
 const pessoaRoutes = Router();
 
-const pessoaController: PessoaController = new PessoaController();
-/** Get person by it attributes */
-pessoaRoutes.get('/pessoa/', pessoaController.getAll);
-pessoaRoutes.get('/pessoa/:id', pessoaController.getByID);
-pessoaRoutes.get('/pessoa/nbi/:nbi', pessoaController.getByNBI);
+const pessoaService: PessoaService = new PessoaService()
+const pessoaController: PessoaController = new PessoaController(pessoaService);
 
-/**Get person by Address attributes*/
+pessoaRoutes.get('/pessoa/', pessoaController.getAll.bind(pessoaController));
+pessoaRoutes.get('/pessoa/:id', pessoaController.getByID.bind(pessoaController));
+pessoaRoutes.get('/pessoa/nbi/:nbi', pessoaController.getByNBI.bind(pessoaController));
+pessoaRoutes.get('/pessoa/nif/:nif', pessoaController.getByNIF.bind(pessoaController));
 
-pessoaRoutes.get('/pessoa/email/:email', pessoaController.getByEmail);
-pessoaRoutes.get('/pessoa/telefone/:telefone', pessoaController.getByPhoneNumber);
+pessoaRoutes.get('/pessoa/email/:email', pessoaController.getByEmail.bind(pessoaController));
+pessoaRoutes.get('/pessoa/telefone/:telefone', pessoaController.getByPhoneNumber.bind(pessoaController));
 
-
-pessoaRoutes.post('/pessoa/', pessoaController.novaPessoa);
-pessoaRoutes.put('/pessoa/:id', pessoaController.actualizarPessoa);
-pessoaRoutes.delete('/pessoa/:id', pessoaController.removerPessoa);
-
+pessoaRoutes.post('/pessoa/', pessoaController.criar.bind(pessoaController));
+pessoaRoutes.put('/pessoa/:id', pessoaController.actualizar.bind(pessoaController));
+pessoaRoutes.delete('/pessoa/:id', pessoaController.remover.bind(pessoaController));
 
 
 

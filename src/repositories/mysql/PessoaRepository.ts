@@ -4,13 +4,13 @@ import { query } from "./mysql";
 import { RowDataPacket } from 'mysql2/promise';
 import generatePessoa from "../../entities/Pessoa/Helper";
 import { formatDDMMYYYYToMySQLDate } from "../../utils/helper";
+import { Service } from "typedi";
 
-
+@Service()
 class PessoaRepository implements IPessoaRepository<Pessoa> {
     private primeTable = 'pessoa';
     private secondTable = "pessoa_endereco";
     private thirdTable = "pessoa_tipo";
-
 
     constructor() {
     }
@@ -32,7 +32,7 @@ class PessoaRepository implements IPessoaRepository<Pessoa> {
         return pessoas;
     }
 
-    async getByID(id: String): Promise<Boolean | Pessoa> {
+    async getByID(id: String): Promise<Pessoa> {
         const data:RowDataPacket= await query(
             `SELECT * FROM ${this.primeTable} 
             INNER JOIN ${this.secondTable} ON 
@@ -41,13 +41,13 @@ class PessoaRepository implements IPessoaRepository<Pessoa> {
             ${this.primeTable}.PESSOA_TIPO_ID = ${this.thirdTable}.ID
             WHERE ${this.primeTable}.ID=${id} LIMIT 1`
         ) as RowDataPacket;
-        if (data) {
-            return generatePessoa(data[0]);
+        if (!data) {
+            throw Error("Não foi possivel encontrar os dados da pessoa");
         }
-        return false;
+        return generatePessoa(data[0]);
     }
 
-    async create(item: Pessoa): Promise<Pessoa | Boolean> {
+    async create(item: Pessoa): Promise<Pessoa> {
         const result:RowDataPacket = await query(
             `INSERT INTO ${this.primeTable} 
             (PESSOA_TIPO_ID, NOME, DATA_NASCIMENTO, SEXO, NBI, NIF, ESTADO_CIVIL) 
@@ -66,10 +66,10 @@ class PessoaRepository implements IPessoaRepository<Pessoa> {
             return item;
 
         }
-        return false;
+        throw Error("Ocorreu um erro ao criar os dados da pessoa");
     }
 
-    async update(id: string, item: Pessoa): Promise<Boolean> {
+    async update(id: string, item: Pessoa): Promise<Pessoa> {
         const result:RowDataPacket = await query(`UPDATE ${this.primeTable} 
             SET PESSOA_TIPO_ID=${item.pessoa_tipo.id}, NOME='${item.nome}', DATA_NASCIMENTO=${formatDDMMYYYYToMySQLDate(item.data_nascimento as string)}, 
             SEXO='${item.sexo}', NBI='${item.nbi}', NIF='${item.nif}', ESTADO_CIVIL='${item.estado_civil}'
@@ -82,9 +82,9 @@ class PessoaRepository implements IPessoaRepository<Pessoa> {
         ) as RowDataPacket;
 
         if (result.affectedRows && result_two.affectedRows) {
-            return true;
+            return item;
         }
-        return false;
+        throw Error("Ocorreu um erro ao actualizar od dados da pessoa")
     }
 
     async delete(id: String): Promise<Boolean> {
@@ -95,7 +95,7 @@ class PessoaRepository implements IPessoaRepository<Pessoa> {
         return false;
     }
 
-    async getPersonByPhoneNumber(phone_number: String): Promise<Pessoa | Boolean> {
+    async getPersonByPhoneNumber(phone_number: String): Promise<Pessoa> {
         const data: RowDataPacket = await query(
             `SELECT * FROM ${this.primeTable} 
             INNER JOIN ${this.secondTable} ON 
@@ -105,13 +105,13 @@ class PessoaRepository implements IPessoaRepository<Pessoa> {
             WHERE ${this.secondTable}.TELEFONE=${phone_number} LIMIT 1`
         ) as RowDataPacket;
        
-        if (data) {
-            return generatePessoa(data[0]);
+        if (!data) {
+            throw Error("Não foram encontrados os dados da pessoa");
         }
-        return false;
+        return generatePessoa(data[0]);
     }
 
-    async getPersonByEmail(email: String): Promise<Pessoa | Boolean> {
+    async getPersonByEmail(email: String): Promise<Pessoa> {
         const data: RowDataPacket = await query(
             `SELECT * FROM ${this.primeTable} 
             INNER JOIN ${this.secondTable} ON 
@@ -120,13 +120,13 @@ class PessoaRepository implements IPessoaRepository<Pessoa> {
             ${this.primeTable}.PESSOA_TIPO_ID = ${this.thirdTable}.ID
             WHERE ${this.secondTable}.EMAIL='${email}' LIMIT 1`
         ) as RowDataPacket;
-        if (data) {
-            return generatePessoa(data[0]);
+        if (!data) {
+            throw Error("Não Foram encontrados os dados da pessoa");
         }
-        return false;
+        return generatePessoa(data[0]);
     }
 
-    async getPersonByNIF(nif: String): Promise<Pessoa | Boolean> {
+    async getPersonByNIF(nif: String): Promise<Pessoa> {
         const data: RowDataPacket = await query(
             `SELECT * FROM ${this.primeTable} 
             INNER JOIN ${this.secondTable} ON 
@@ -135,13 +135,13 @@ class PessoaRepository implements IPessoaRepository<Pessoa> {
             ${this.primeTable}.PESSOA_TIPO_ID = ${this.thirdTable}.ID
             WHERE ${this.primeTable}.NIF=${nif} LIMIT 1`
         ) as RowDataPacket;
-        if (data) {
-            return generatePessoa(data[0]);
+        if (!data) {
+            throw Error("Não foram encontrados os dados da pessoa");
         }
-        return false;
+        return generatePessoa(data[0]);
     }
 
-    async getPersonByNBI(nbi: String): Promise<Pessoa | Boolean> {
+    async getPersonByNBI(nbi: String): Promise<Pessoa>{
         const data: RowDataPacket = await query(
             `SELECT * FROM ${this.primeTable} 
             INNER JOIN ${this.secondTable} ON 
@@ -150,11 +150,10 @@ class PessoaRepository implements IPessoaRepository<Pessoa> {
             ${this.primeTable}.PESSOA_TIPO_ID = ${this.thirdTable}.ID
             WHERE ${this.primeTable}.NBI=${nbi} LIMIT 1`
         ) as RowDataPacket;
-        if (data) {
-            return generatePessoa(data[0]);
+        if (!data) {
+            throw Error("Não foram encotrados os dados da pessoa");
         }
-        return false;
-
+        return generatePessoa(data[0]);
     }
 }
 

@@ -50,4 +50,15 @@ function addYearToDate(dateString:String) {
 }
 
 
-export { emptyOrRow, formatDateToDDMMYYY, formatDDMMYYYYToMySQLDate, isValidDateFormatDDMMYYYY, addYearToDate }
+function isNotEmptyArray<T>(arr: T[]): Boolean {
+    return arr.length > 0; 
+}
+
+export { 
+    emptyOrRow, 
+    formatDateToDDMMYYY, 
+    formatDDMMYYYYToMySQLDate, 
+    isValidDateFormatDDMMYYYY, 
+    addYearToDate,
+    isNotEmptyArray
+}

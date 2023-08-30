@@ -21,7 +21,6 @@ class CoberturaService {
     }
 
     async criar(cobertura: Cobertura): Promise<Cobertura> {
-
         return await this.repo.create(cobertura);
     } 
 

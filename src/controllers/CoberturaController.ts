@@ -85,7 +85,7 @@ class CoberturaController {
         }
         
         if (parsedData.data.id === undefined){
-            return handleParsingError(res, new Error("O Id da cobertura não foi criado"));
+            return handleParsingError(res, Error("O Id da cobertura não foi criado"));
         }
 
         try {

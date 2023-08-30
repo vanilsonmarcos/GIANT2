@@ -7,7 +7,6 @@ import { faker } from '@faker-js/faker';
 
 const COBERTURA_URL = "/cobertura/";
 
-
 describe("It should perform all operations about Coberturas", () => {
     let cobertura: Cobertura ;
     beforeAll(() => {
@@ -59,7 +58,6 @@ describe("It should perform all operations about Coberturas", () => {
             });
     });
 
-
     it('should delete Cobertura from the database', async () => {
         const cobertura_id = cobertura.id;
         const result = await request(app)
@@ -67,5 +65,4 @@ describe("It should perform all operations about Coberturas", () => {
             .expect('Content-Type', /json/)
             .expect(200);
     });
-
 }); 

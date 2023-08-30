@@ -1,232 +1,234 @@
 import { Request, Response } from "express";
 import Pessoa from "../entities/Pessoa/Pessoa";
 import PessoaRepository from "../repositories/mysql/PessoaRepository";
-class PessoaController {
+import PessoaService from "../services/PessoaService";
 
-    constructor() {
-       
-    }
+    class PessoaController {
 
-    // Read/Query a person 
-    async getAll(req: Request, res: Response) {
-    try {
-        const pessoas: Pessoa[] = await new PessoaRepository().getAll();
-        const code = 200;
-        const message = "Dados das pessoas foram encontrados com sucesso";
-        const data = pessoas;
-        res.json({
-            code,
-            message,
-            data
-        })
+        private pessoaService: PessoaService;
 
-    } catch (error) {
-        const code = 404;
-        const message = `Occoreu um erro ao colectar dos dados das pessoas`;
-        const data = {}
-        res.json({
-            code,
-            message,
-            data,
-            error
-        })
-    }
-
-}
-
-async getByID(req: Request, res: Response) {
-    const { id } = req.params;
-    try {
-        const pessoa = await new PessoaRepository().getByID(id);
-        let code = 200;
-        let message = "Dados da pessoa foram encontrados com sucesso";
-        let data = pessoa;
-        res.json({
-            code,
-            message,
-            data
-        })
-
-    } catch (error) {
-        let code = 401;
-        let message = `Os dados da pessoa não foram encontrados usando o id de utilizador : ${id}`;
-        let data = {}
-        res.json({
-            code,
-            message,
-            data,
-            error
-        })
-    }
-
-}
-
-async getByNBI(req: Request, res: Response) {
-    const { nbi } = req.params;
-    try {
-        const pessoa = await new PessoaRepository().getPersonByNBI(nbi);
-        let code = 200;
-        let message = "Dados da pessoa foram encontrados com sucesso";
-        let data = pessoa;
-        res.json({
-            code,
-            message,
-            data
-        })
-
-    } catch (error) {
-        let code = 401;
-        let message = `Os dados da pessoa não foram encontrados usando o numero de bilhete de identidade: ${nbi}`;
-        let data = {}
-        res.json({
-            code,
-            message,
-            data,
-            error
-        })
-    }
-
-}
-
-async getByEmail(req: Request, res: Response) {
-    const { email } = req.params;
-    try {
-        const pessoa = await new PessoaRepository().getPersonByEmail(email);
-        let code = 200;
-        let message = "Dados da pessoa foram encontrados com sucesso";
-        let data = pessoa;
-        res.json({
-            code,
-            message,
-            data
-        })
-
-    } catch (error) {
-        let code = 401;
-        let message = `Os dados da pessoa não foram encontrados usando o email: ${email}`;
-        let data = {}
-        res.json({
-            code,
-            message,
-            data,
-            error
-        })
-    }
-
-}
-
-async getByPhoneNumber(req: Request, res: Response) {
-    const { numero_telefone } = req.params
-    try {
-        const pessoa = await new PessoaRepository().getPersonByPhoneNumber(numero_telefone);
-        let code = 200;
-        let message = "Dados da pessoa foram encontrados com sucesso";
-        let data = pessoa;
-        res.json({
-            code,
-            message,
-            data
-        })
-
-    } catch (error) {
-        let code = 401;
-        let message = `Os dados da pessoa não foram encontrados usando o numero de telefone: ${numero_telefone}`;
-        let data = {}
-        res.json({
-            code,
-            message,
-            data,
-            error
-        })
-    }
-}
-
-
-// Create a new person 
-async novaPessoa(req: Request, res: Response) {
-    const pessoa: Pessoa = req.body; // parse body to person data
-    try {
-        const result = await new PessoaRepository().create(pessoa);
-        let code = 200;
-        let message = "Dados da pessoa inseridos com sucesso";
-        let data = pessoa;
-        res.json({
-            code,
-            message,
-            data
-        })
-
-    } catch (error) {
-        let code = 401;
-        let message = "Ocorreu um erro ao inserir os dados da Pessoa";
-        let data = {}
-        res.json({
-            code,
-            message,
-            data,
-            error
-        })
-    }
-
-}
-// Update an existent person
-
-async actualizarPessoa(req: Request, res: Response) {
-    const { id } = req.params;
-    const pessoa: Pessoa = req.body
-    try {
-        const result = await new PessoaRepository().update(id, pessoa);
-        let code = 200;
-        let message = "Dados da pessoa actualizados com sucesso";
-        let data = pessoa;
-        res.json({
-            code,
-            message,
-            data
-        });
-    } catch (error) {
-        let code = 401;
-        let message = "Ocorreu um erro ao actualizar os dados da Pessoa";
-        let data = {}
-        res.json({
-            code,
-            message,
-            data,
-            error
-        })
-    }
-}
-
-// Delete a person 
-
-async removerPessoa(req: Request, res: Response) {
-    const { id } = req.params;
-    try {
-        const result = await new PessoaRepository().delete(id);
-
-        if (result) {
-            let code = 200; // this is ok code 
-            let message = "Dados da Pessoa removidos com sucesso";
-            let data = {};
-            res.json({
-                code,
-                message,
-                data,
-            })
+        constructor(pService: PessoaService) {
+            this.pessoaService = pService;
         }
 
-    } catch (error) {
-        let data = {};
-        let message = "Ocorreu um erro ao remover os dados do sistema";
-        let code = 401; // this is ok code 
-        res.json({
-            code,
-            message,
-            data
-        })
+        async getAll(req: Request, res: Response) {
+            try {
+                const pessoas: Pessoa[] = await this.pessoaService.getAll();
+                const response = {
+                    code: 200,
+                    message: "Dados das pessoas foram encontrados com sucesso",
+                    data: pessoas
+                }
+                return res.json(response);
+            } catch (error) {
+                const response = {
+                    code: 404,
+                    message: "Occoreu um erro ao colectar dos dados das pessoas",
+                    data: {},
+                    eroor: error
+                }
+                return res.json(response);
+            }
+
+        }
+
+        async getByID(req: Request, res: Response) {
+            const { id } = req.params;
+            try {
+                const pessoa = await this.pessoaService.getByID(id);
+                const response = {
+                    code: 200,
+                    message: "Dados da pessoa foram encontrados com sucesso",
+                    data: pessoa
+                }
+                res.json(response);
+
+            } catch (error) {
+                const response = {
+                    code: 401,
+                    message: "Os dados da pessoa não foram encontrados usando o id de utilizador",
+                    data: {},
+                    error: error
+                }
+                res.json(response);
+            }
+
+        }
+
+        async getByNBI(req: Request, res: Response) {
+            const { nbi } = req.params;
+            try {
+                const pessoa = await this.pessoaService.getByNBI(nbi);
+
+                const response = {
+                    code: 200,
+                    message: "Dados da pessoa foram encontrados com sucesso",
+                    data: pessoa
+                }
+                res.json(response);
+
+            } catch (error) {
+                const response = {
+                    code: 401,
+                    message: "Os dados da pessoa não foram encontrados usando o nbi",
+                    data: {},
+                    error: error
+                }
+                res.json(response);
+            }
+        }
+
+        async getByNIF(req: Request, res: Response) {
+            const { nif } = req.params;
+            try {
+                const pessoa = await this.pessoaService.getByNIF(nif);
+
+                const response = {
+                    code: 200,
+                    message: "Dados da pessoa foram encontrados com sucesso",
+                    data: pessoa
+                }
+                res.json(response);
+
+            } catch (error) {
+                const response = {
+                    code: 401,
+                    message: "Os dados da pessoa não foram encontrados usando o nif",
+                    data: {},
+                    error: error
+                }
+                res.json(response);
+            }
+        }
+
+        async getByEmail(req: Request, res: Response) {
+            const { email } = req.params;
+            try {
+                const pessoa = await this.pessoaService.getByEmail(email);
+
+                const response = {
+                    code: 200,
+                    message: "Dados da pessoa foram encontrados com sucesso",
+                    data: pessoa
+                }
+                return res.json(response);
+
+            } catch (error) {
+                const response = {
+                    code: 401,
+                    message: "Os dados da pessoa não foram encontrados usando o email",
+                    data: {},
+                    error: error
+                }
+                return res.json(response);
+            }
+
+        }
+
+        async getByPhoneNumber(req: Request, res: Response) {
+            const { numero_telefone } = req.params
+            try {
+                const pessoa = await new PessoaRepository().getPersonByPhoneNumber(numero_telefone);
+                const response = {
+                    code: 200,
+                    message: "Dados da pessoa foram encontrados com sucesso",
+                    data: pessoa
+                }
+                return res.json(response)
+
+            } catch (error) {
+                const response = {
+                    code: 401,
+                    message: "Os dados da pessoa não foram encontrados usando o numero de telefone",
+                    data: {}
+                }
+                return res.json(response);
+            }
+        }
+
+
+        async criar(req: Request, res: Response) {
+            const pessoa: Pessoa = req.body; // parse body to person data
+            try {
+                const novaPessoa = await this.pessoaService.criar(pessoa);
+                const response = {
+                    code: 200,
+                    message: "Dados da pessoa inseridos com sucesso",
+                    data: novaPessoa
+                }
+                return res.json(response);
+
+            } catch (error) {
+                const response = {
+                    code: 401,
+                    message: "Ocorreu um erro ao inserir os dados da Pessoa",
+                    data: {}
+                }
+                return res.json(response);
+            }
+        }
+
+        async actualizar(req: Request, res: Response) {
+            const pessoa: Pessoa = req.body
+
+            if (pessoa.id === undefined){
+                return handleParsingError(res, Error("O Id da cobertura não foi criado"));
+            }
+
+            try {
+                const novaPessoa = await this.pessoaService.actualizar(pessoa.id.toString(), pessoa);
+
+                const response = {
+                    code: 200,
+                    message: "Dados da pessoa actualizados com sucesso",
+                    data: novaPessoa
+                }
+                res.json(response);
+            } catch (error) {
+                const response = {
+                    code: 401,
+                    message: "Ocorreu um erro ao actualizar os dados da Pessoa",
+                    data: {}
+                }
+                return res.json(response);
+            }
+        }
+
+        async remover(req: Request, res: Response) {
+            const { id } = req.params;
+            try {
+                const result = await this.pessoaService.remover(id);
+
+                if (result) {
+                    const response = {
+                        code: 200,
+                        message: "Dados da Pessoa removidos com sucesso",
+                        data: {}
+                    }
+                    return res.json(response);
+                }
+
+            } catch (error) {
+                const response = {
+                    code: 401,
+                    message: "Ocorreu um erro ao remover os dados do sistema",
+                    data: {}
+                }
+                return res.json(response);
+            }
+
+        }
     }
-}
 
-}
+    const handleParsingError = (res: Response, error: any) => {
+        const response = {
+            code: 401,
+            message: "Ocorreu um erro ao validar os dados inseridos da pessoa",
+            data: {},
+            error: error,
+        };
+        return res.json(response);
+    }
+    
 
-export default PessoaController;
+    export default PessoaController;
