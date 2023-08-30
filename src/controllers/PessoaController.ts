@@ -25,7 +25,7 @@ import PessoaService from "../services/PessoaService";
                     code: 404,
                     message: "Occoreu um erro ao colectar dos dados das pessoas",
                     data: {},
-                    eroor: error
+                    error: error
                 }
                 return res.json(response);
             }

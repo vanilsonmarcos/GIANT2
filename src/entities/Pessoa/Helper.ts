@@ -5,7 +5,6 @@ import PessoaTipo from "./PessoaTipo";
 import { formatDateToDDMMYYY } from "../../utils/helper";
 
 function generatePessoa(data: RowDataPacket): Pessoa {
-    console.log(data)
     let pessoaTipo: PessoaTipo = {
         id: data['PESSOA_TIPO_ID'],
         nome: data['NOME_TIPO'],
