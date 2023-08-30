@@ -2,27 +2,16 @@ import request from 'supertest';
 
 import app from "../../src/app";
 import Cobertura from '../../src/entities/Cobertura';
+import MockCobertura from './mock/MockCobertura';
+import { faker } from '@faker-js/faker';
 
 const COBERTURA_URL = "/cobertura/";
 
 
 describe("It should perform all operations about Coberturas", () => {
-    let cobertura: Cobertura;
+    let cobertura: Cobertura ;
     beforeAll(() => {
-        cobertura = {
-            sigla: "CTES",
-            nome: "Cobertura Teste",
-            descricao: "",
-            apolice_tipo: {
-                id: 1,
-                sigla: "AUTO",
-                nome: "Apólice de Seguro Automóvel",
-                descricao: "Considerado um seguro obrigatório em Angola, o Seguro Automóvel deve segurar a responsabilidade civil perante terceiros, transportados ou não, decorrente de lesões causadas por veículos terrestres a motor, seus reboques e semi-reboques, velocípedes e bicicletas. Adicionalmente pode ser contratado um seguro para danos próprios, que, de acordo com as condições gerais e específicas da apólice pode cobrir os riscos não previstos no âmbito do seguro obrigatório de responsabilidade civil automóvel, podendo abranger as seguintes coberturas: Responsabilidade Civil Facultativa; Choque, Colisão e Capotamento; Furto ou Roubo; Incêndio, Raio ou Explosão; Quebra Isolada de Vidros; Fenómenos da Natureza; Greves, Tumultos e Alterações da Ordem Pública; Privação de Uso; Ocupantes da Viatura; e outras garantias que venham a ser contratadas."
-            },
-            valor_pagar: 0,
-            desconto: 0,
-            cobertura_base: false
-        };
+        cobertura = MockCobertura;
     });
 
     it('should insert Cobertura into the database and get the id', async () => {
@@ -56,7 +45,7 @@ describe("It should perform all operations about Coberturas", () => {
     });
 
     it('should update Cobertura in the database', async () => {
-        const novoNome = 'TESTC';
+        const novoNome = faker.lorem.words(10);
         const updatedCobertura = { ...cobertura, nome: novoNome };
 
         await request(app)

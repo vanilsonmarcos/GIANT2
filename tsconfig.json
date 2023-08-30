@@ -9,7 +9,8 @@
     
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "strictPropertyInitialization": false // this one is for preventing the typescript errors while using @Inject()
+    "strictPropertyInitialization": false,
+    "moduleResolution": "Node"
       
   },
   "exclude": [
