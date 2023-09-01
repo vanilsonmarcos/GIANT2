@@ -1,177 +1,141 @@
 import { Request, Response } from "express";
 import VeiculoRepository from "../repositories/mysql/VeiculoRepository";
 import Veiculo from "../entities/Apolice/Veiculo/Veiculo";
+import VeiculoService from "../services/Veiculoservice";
 
 class VeiculoController {
-
-    constructor() {
-       
+    private veiculoService: VeiculoService;
+    constructor(vService: VeiculoService) {
+        this.veiculoService = vService;
     }
 
-    // Read/Query a person 
     async getAll(req: Request, res: Response) {
         try {
-            const veiculo: Veiculo[] = await new VeiculoRepository().getAll();
-            const code = 200;
-            const message = "Dados dos veiculos foram encontrados com sucesso";
-            const data = veiculo;
-            res.json({
-                code,
-                message,
-                data
-            })
-    
+            const veiculo: Veiculo[] = await this.veiculoService.getAll();
+            const response = {
+                code: 200,
+                message: "Dados dos veículos encontrados com sucesso",
+                data: veiculo
+            };
+            res.json(response)
         } catch (error) {
-            const code = 401;
-            const message = `Os dados dos veiculos não foram encontrados`;
-            const data = {}
-            res.json({
-                code,
-                message,
-                data,
-                error
-            })
+            const response = {
+                code: 401,
+                message: "Os dados dos veículos não foram encontrados",
+                data:  {},
+                error: error
+            };
+            res.json(response)
         }
-    
     }
-    
+
     async getByID(req: Request, res: Response) {
         const { id } = req.params;
         try {
             const veiculo = await new VeiculoRepository().getByID(id);
-            let code = 200;
-            let message = "Dados do veiculo foram encontrados com sucesso";
-            let data = veiculo;
-            res.json({
-                code,
-                message,
-                data
-            })
-    
+            const response = {
+                code: 200,
+                message: "Dados do veículo foram encontrados com sucesso",
+                data: veiculo
+            };
+            res.json(response);
         } catch (error) {
-            let code = 401;
-            let message = `Os dados do veiculo não foram encontrados usando o id de utilizador : ${id}`;
-            let data = {}
-            res.json({
-                code,
-                message,
-                data,
-                error
-            })
+            const response = {
+                code: 401,
+                message: "",
+                data: {},
+                error: error
+            };
+            res.json(response);
         }
-    
+
     }
+    
     async getByMatricula(req: Request, res: Response) {
         const { matricula } = req.params;
         try {
             const veiculo = await new VeiculoRepository().getVeiculoByMatricula(matricula);
-            let code = 200;
-            let message = "Dados do veiculo foram encontrados com sucesso";
-            let data = veiculo;
-            res.json({
-                code,
-                message,
-                data
-            })
-    
+            const response = {
+                code: 200,
+                message: "Dados do veículo foram encontrados com sucesso",
+                data: veiculo
+            };
+            res.json(response);
         } catch (error) {
-            let code = 401;
-            let message = `Os dados do veiculo não foram encontrados usando o id de utilizador : ${matricula}`;
-            let data = {}
-            res.json({
-                code,
-                message,
-                data,
-                error
-            })
+            const response = {
+                code:401,
+                message: "Os dados do veiculo não foram encontrados usando o a matricula",
+                data: {},
+                error: error
+            };
+            res.json(response);
         }
-    
+
     }
 
-
-    
-    // Create a new person 
-    async novoVeiculo(req: Request, res: Response) {
-        const veiculo: Veiculo = req.body; // parse body to person data
+    async criar(req: Request, res: Response) {
+        const v: Veiculo = req.body; // parse body to person data
         try {
-            const result = await new VeiculoRepository().create(veiculo);
-            let code = 200;
-            let message = "Dados da veiculo inseridos com sucesso";
-            let data = veiculo;
-            res.json({
-                code,
-                message,
-                data
-            })
-    
+            const result = await new VeiculoRepository().create(v);
+            const response = {
+                code: 200,
+                message: "Dados da veículo inseridos com sucesso",
+                data: result
+            };
+            res.json(response);
         } catch (error) {
-            let code = 401;
-            let message = "Ocorreu um erro ao inserir os dados da veiculo";
-            let data = {}
-            res.json({
-                code,
-                message,
-                data,
-                error
-            })
+            const response = {
+                code: 401,
+                message: "Ocorreu um erro ao inserir os dados da veiculo",
+                data: {},
+                error: error
+            }
+            res.json(response);
         }
-    
     }
-    // Update an existent person
-    
-    async actualizarVeiculo(req: Request, res: Response) {
+
+    async actualizar(req: Request, res: Response) {
         const { id } = req.params;
-        const veiculo: Veiculo = req.body
+        const v: Veiculo = req.body
         try {
-            const result = await new VeiculoRepository().update(id, veiculo);
-            let code = 200;
-            let message = "Dados da pessoa actualizados com sucesso";
-            let data = veiculo;
-            res.json({
-                code,
-                message,
-                data
-            });
+            const veiculo = await new VeiculoRepository().update(id, v);
+            const response = {
+                code: 200,
+                message: "Dados do veículo actualizados com sucesso",
+                data: veiculo
+            };
+            res.json(response);
         } catch (error) {
-            let code = 401;
-            let message = "Ocorreu um erro ao actualizar os dados da Pessoa";
-            let data = {}
-            res.json({
-                code,
-                message,
-                data,
-                error
-            })
+            const response = {
+                code: 401,
+                message: "Ocorreu um erro ao actualizar os dados da veículo",
+                data: {},
+                error: error
+            }
+            res.json(response);
         }
     }
-    
-    // Delete a person 
-    
-    async removerVeiculo(req: Request, res: Response) {
+
+    async remover(req: Request, res: Response) {
         const { id } = req.params;
         try {
             const result = await new VeiculoRepository().delete(id);
-    
             if (result) {
-                let code = 200; // this is ok code 
-                let message = "Dados do veiculo removidos com sucesso";
-                let data = {};
-                res.json({
-                    code,
-                    message,
-                    data,
-                })
+                const response = {
+                    code: 200, 
+                    message: "Dados do veiculo removidos com sucesso",
+                    data: {}
+                };
+                res.json(response);
             }
-    
         } catch (error) {
-            let data = {};
-            let message = "Ocorreu um erro ao remover os dados do veiculo";
-            let code = 401; // this is ok code 
-            res.json({
-                code,
-                message,
-                data
-            })
+            const response = {
+                code: 401,
+                message:"Ocorreu um erro ao remover os dados do veiculo", 
+                data: {},
+                error: error
+            };
+            res.json(response);
         }
     }
 }

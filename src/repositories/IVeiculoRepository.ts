@@ -1,7 +1,7 @@
 import IGenericRepository from "./IGenericRepository";
 
 interface IVeiculoReposiroty<T> extends IGenericRepository<T> {
-    getVeiculoByMatricula(matricula: String): Promise<T |Boolean>;
+    getVeiculoByMatricula(matricula: String): Promise<T>;
 }
 
 export default IVeiculoReposiroty;

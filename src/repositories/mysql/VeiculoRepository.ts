@@ -14,7 +14,7 @@ class VeiculoRepository implements IVeiculoReposiroty<Veiculo>, IVeiculoCategori
         
     }
 
-    async getVeiculoByMatricula(matricula: String): Promise<Boolean | Veiculo> {
+    async getVeiculoByMatricula(matricula: String): Promise<Veiculo> {
         const sql: string = `SELECT veiculo.* , veiculo_categoria.ID AS CATEGORIA_ID,
         veiculo_categoria.NOME AS CATEGORIA_NOME
         FROM veiculo
@@ -23,12 +23,10 @@ class VeiculoRepository implements IVeiculoReposiroty<Veiculo>, IVeiculoCategori
         WHERE veiculo.MATRICULA = '${matricula}'
         LIMIT 1` ;
         const data: RowDataPacket[] = await query(sql) as  RowDataPacket[] ;
-        if (data) {
-            return generateVeiculo(data[0]);
+        if (!data) {
+            throw Error("Não Foi encontrado um veiculo com a matricula referenciada");
         }
-
-        return false;
-       
+        return generateVeiculo(data[0]);     
     }
     
     async getAll(): Promise<Veiculo[]> {
@@ -49,7 +47,7 @@ class VeiculoRepository implements IVeiculoReposiroty<Veiculo>, IVeiculoCategori
         return veiculos;
     }
 
-    async getByID(id: String): Promise<Boolean | Veiculo> {
+    async getByID(id: String): Promise<Veiculo> {
         const data:RowDataPacket= await query(
             `SELECT ${this.primeTable}.* , ${this.secondTable}.ID AS CATEGORIA_ID,
             ${this.secondTable}.NOME AS CATEGORIA_NOME
@@ -58,14 +56,14 @@ class VeiculoRepository implements IVeiculoReposiroty<Veiculo>, IVeiculoCategori
             ${this.primeTable}.VEICULO_CATEGORIA_ID = ${this.secondTable}.ID 
             WHERE ${this.primeTable}.ID=${id} LIMIT 1`
         ) as RowDataPacket;
-        if (data) {
-            return generateVeiculo(data[0]);
+        if (!data) {
+            throw Error("Não Foi encontrado um veiculo com a matricula referenciada");
         }
-
-        return false;
+        
+        return generateVeiculo(data[0]);
 
     }
-    async create(item: Veiculo): Promise<Veiculo | Boolean > {      
+    async create(item: Veiculo): Promise<Veiculo> {      
         const result = await query(
             `INSERT INTO ${this.primeTable}
             (VEICULO_CATEGORIA_ID, MATRICULA, MARCA, MODELO, ANO_AQUISICAO, CAPITAL_AQUISICAO,
@@ -79,11 +77,11 @@ class VeiculoRepository implements IVeiculoReposiroty<Veiculo>, IVeiculoCategori
             item.id = result.insertId;
             return item;
         }
-        return false;
+        throw Error("Ocorreu um erro ao criar o veiculo");
     }
 
 
-    async update(id: string, item: Veiculo): Promise<Veiculo | Boolean> {
+    async update(id: string, item: Veiculo): Promise<Veiculo> {
         const result: RowDataPacket = await query(`
         UPDATE ${this.primeTable} SET
         VEICULO_CATEGORIA_ID = ${item.veiculo_categoria.id},
@@ -104,7 +102,7 @@ class VeiculoRepository implements IVeiculoReposiroty<Veiculo>, IVeiculoCategori
         if (result.affectedRows) {
             return item;
         }
-        return false;
+        throw Error("Ocorreu um erro ao actualizar od dados do veiculo")
     }
 
     async delete(id: String): Promise<Boolean> {
@@ -134,7 +132,7 @@ class VeiculoRepository implements IVeiculoReposiroty<Veiculo>, IVeiculoCategori
     }
 
 
-    async getVeiculoCategoriaByID(id: String): Promise<VeiculoCategoria | Boolean> {
+    async getVeiculoCategoriaByID(id: String): Promise<VeiculoCategoria> {
         const sql: string = `SELECT * FROM ${this.secondTable} WHERE ID =${id} LIMIT 1` ;
 
         const data : RowDataPacket[] = await query(sql) as  RowDataPacket[];
@@ -146,7 +144,8 @@ class VeiculoRepository implements IVeiculoReposiroty<Veiculo>, IVeiculoCategori
                 }
                 return veiculo_categoria;
         }
-        return false;
+        throw Error("Ocorreu um erro ao carregar a categoria do veiculo")
+
     }
 
 }
