@@ -64,7 +64,6 @@ class PessoaRepository implements IPessoaRepository<Pessoa> {
         if (result.affectedRows && result_two.affectedRows) { 
             item.id = result.insertId;
             return item;
-
         }
         throw Error("Ocorreu um erro ao criar os dados da pessoa");
     }
