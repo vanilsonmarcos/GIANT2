@@ -1,9 +1,8 @@
 import request from 'supertest';
-
+import { faker } from '@faker-js/faker';
 import app from "../../src/app";
 import Cobertura from '../../src/entities/Cobertura';
 import MockCobertura from './mock/MockCobertura';
-import { faker } from '@faker-js/faker';
 
 const COBERTURA_URL = "/cobertura/";
 
