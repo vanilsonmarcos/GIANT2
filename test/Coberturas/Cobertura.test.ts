@@ -44,7 +44,7 @@ describe("It should perform all operations related with Coberturas", () => {
 
     it('should update Cobertura in the database', async () => {
         const novoNome = faker.lorem.words(10);
-        const updatedCobertura = { ...cobertura, nome: novoNome };
+        const updatedCobertura: Cobertura = { ...cobertura, nome: novoNome };
 
         await request(app)
             .put(`${COBERTURA_URL}`)

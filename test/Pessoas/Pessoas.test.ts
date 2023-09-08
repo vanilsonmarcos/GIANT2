@@ -7,7 +7,7 @@ import MockPessoa from "./Mock/MockPessoa.test";
 const PESSOA_URL = "/pessoa/";
 
 describe("It should perform all operations related with Pessoa", () => {
-    let pessoa;
+    let pessoa: Pessoa;
 
     beforeAll(() => {
         pessoa = MockPessoa;
@@ -67,7 +67,7 @@ describe("It should perform all operations related with Pessoa", () => {
 
     it("should get pessoa by nif ", async () => {
         await request(app)
-        .get(`${PESSOA_URL}${pessoa.id}`)
+        .get(`${PESSOA_URL}${pessoa.nif}`)
         .expect('Content-Type', /json/)
         .expect(200)
         .expect((res) => {
@@ -79,7 +79,7 @@ describe("It should perform all operations related with Pessoa", () => {
 
     it("should get pessoa by nbi ", async () => {
         await request(app)
-        .get(`${PESSOA_URL}${pessoa.id}`)
+        .get(`${PESSOA_URL}${pessoa.nbi}`)
         .expect('Content-Type', /json/)
         .expect(200)
         .expect((res) => {
@@ -90,7 +90,7 @@ describe("It should perform all operations related with Pessoa", () => {
 
     it("should update an existent pessoa ", async () => {
         const novoNome = faker.lorem.words(10);
-        const updatedPessoa = { ...pessoa, nome: novoNome };
+        const updatedPessoa: Pessoa = { ...pessoa, nome: novoNome };
 
         await request(app)
             .put(`${PESSOA_URL}`)
