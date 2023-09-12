@@ -3,7 +3,7 @@ import IPessoaRepository from "../IPessoaRepository";
 import { query } from "./mysql";
 import { RowDataPacket } from 'mysql2/promise';
 import generatePessoa from "../../entities/Pessoa/Helper";
-import { formatDDMMYYYYToMySQLDate } from "../../utils/helper";
+import { formatDDMMYYYYToMySQLDate, jsDateToMysqlDate } from "../../utils/helper";
 import { Service } from "typedi";
 
 @Service()
@@ -52,7 +52,7 @@ class PessoaRepository implements IPessoaRepository<Pessoa> {
             `INSERT INTO ${this.primeTable} 
             (PESSOA_TIPO_ID, NOME, DATA_NASCIMENTO, SEXO, NBI, NIF, ESTADO_CIVIL) 
             VALUES 
-            ('${item.pessoa_tipo.id}', '${item.nome}', '${item.data_nascimento}', '${item.sexo}', '${item.nbi}', '${item.nif}', '${item.estado_civil}')`
+            ('${item.pessoa_tipo.id}', '${item.nome}', '${jsDateToMysqlDate(item.data_nascimento)}', '${item.sexo}', '${item.nbi}', '${item.nif}', '${item.estado_civil}')`
         ) as RowDataPacket;
       
         const result_two = await query(
@@ -61,6 +61,7 @@ class PessoaRepository implements IPessoaRepository<Pessoa> {
             VALUES 
             (${result.insertId}, '${item.endereco.telefone}', '${item.endereco.telefone_alt}', '${item.endereco.email}')`
         ) as RowDataPacket;  
+
         if (result.affectedRows && result_two.affectedRows) { 
             item.id = result.insertId;
             return item;
@@ -70,7 +71,7 @@ class PessoaRepository implements IPessoaRepository<Pessoa> {
 
     async update(id: string, item: Pessoa): Promise<Pessoa> {
         const result:RowDataPacket = await query(`UPDATE ${this.primeTable} 
-            SET PESSOA_TIPO_ID=${item.pessoa_tipo.id}, NOME='${item.nome}', DATA_NASCIMENTO=${formatDDMMYYYYToMySQLDate(item.data_nascimento as string)}, 
+            SET PESSOA_TIPO_ID=${item.pessoa_tipo.id}, NOME='${item.nome}', DATA_NASCIMENTO=${jsDateToMysqlDate(item.data_nascimento)}, 
             SEXO='${item.sexo}', NBI='${item.nbi}', NIF='${item.nif}', ESTADO_CIVIL='${item.estado_civil}'
             WHERE ID=${id}`
         ) as RowDataPacket;

@@ -8,6 +8,28 @@ function emptyOrRow(rows: RowDataPacket) {
     return rows
 }
 
+
+function jsDateToMysqlDate(date:Date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const mysqlDate = `${year}-${month}-${day}`;
+    return mysqlDate;
+}
+
+function mysqlDateToJsDate(mysqlDate: String) {
+    const dateParts = mysqlDate.split('-');
+    if (dateParts.length === 3) {
+      const year = parseInt(dateParts[0]);
+      const month = parseInt(dateParts[1]) - 1; // JavaScript months are 0-based
+      const day = parseInt(dateParts[2]);
+      
+      return new Date(year, month, day);
+    } else {
+      throw new Error('Invalid MySQL date format. Expected "YYYY-MM-DD".');
+    }
+  }
+
 function formatDateToDDMMYYY(current_date: string): string {
     return new Date(current_date).toLocaleDateString("en-GB");
 }
@@ -17,6 +39,9 @@ function formatDDMMYYYYToMySQLDate(ddmmyyyyDate: string): string {
     const mysqlDate = `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
     return mysqlDate;
 }
+
+
+
 
 
 function isValidDateFormatDDMMYYYY(dateString: string): boolean {
@@ -36,7 +61,7 @@ function isValidDateFormatDDMMYYYY(dateString: string): boolean {
     return true;
 }
 
-function addYearToDate(dateString:String) {
+function addYearToDate(dateString: String) {
     const [day, month, year] = dateString.split('/').map(Number);
     const originalDate = new Date(year, month - 1, day); // Month is zero-indexed
 
@@ -51,14 +76,16 @@ function addYearToDate(dateString:String) {
 
 
 function isNotEmptyArray<T>(arr: T[]): Boolean {
-    return arr.length > 0; 
+    return arr.length > 0;
 }
 
-export { 
-    emptyOrRow, 
-    formatDateToDDMMYYY, 
-    formatDDMMYYYYToMySQLDate, 
-    isValidDateFormatDDMMYYYY, 
+export {
+    emptyOrRow,
+    jsDateToMysqlDate,
+    mysqlDateToJsDate,
+    formatDateToDDMMYYY,
+    formatDDMMYYYYToMySQLDate,
+    isValidDateFormatDDMMYYYY,
     addYearToDate,
     isNotEmptyArray
 }

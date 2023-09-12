@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import { Router } from "express";
 import VeiculoController from "../controllers/VeiculoController";
 import Container from "typedi";
-import VeiculoService from "../services/Veiculoservice";
+import VeiculoService from '../services/VeiculoService';
 
 const veiculoService: VeiculoService = Container.get(VeiculoService);
 const veiculoController: VeiculoController = new VeiculoController(veiculoService);

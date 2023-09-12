@@ -1,5 +1,4 @@
 import { Service, Inject } from "typedi";
-import IGenericRepository from "../repositories/IGenericRepository";
 import VeiculoRepository from "../repositories/mysql/VeiculoRepository";
 import Veiculo from "../entities/Apolice/Veiculo/Veiculo";
 import IVeiculoReposiroty from "../repositories/IVeiculoRepository";

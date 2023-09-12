@@ -2,8 +2,7 @@ import request from 'supertest';
 import { faker } from '@faker-js/faker';
 import app from "../../src/app";
 import Pessoa from "../../src/entities/Pessoa/Pessoa";
-import MockPessoa from "./Mock/MockPessoa.test";
-
+import MockPessoa from "./Mock/MockPessoa";
 const PESSOA_URL = "/pessoa/";
 
 describe("It should perform all operations related with Pessoa", () => {

@@ -2,7 +2,7 @@ import { RowDataPacket } from "mysql2";
 import Pessoa from "./Pessoa";
 import PessoaEndereco from "./PessoaEndereco";
 import PessoaTipo from "./PessoaTipo";
-import { formatDateToDDMMYYY } from "../../utils/helper";
+import { mysqlDateToJsDate } from "../../utils/helper";
 
 function generatePessoa(data: RowDataPacket): Pessoa {
     let pessoaTipo: PessoaTipo = {
@@ -20,7 +20,7 @@ function generatePessoa(data: RowDataPacket): Pessoa {
         id: data['ID'],
         pessoa_tipo: pessoaTipo,
         nome: data['NOME'],
-        data_nascimento: formatDateToDDMMYYY(data['DATA_NASCIMENTO']),
+        data_nascimento: mysqlDateToJsDate(data['DATA_NASCIMENTO']),
         sexo: data['SEXO'],
         nbi: data['NBI'],
         nif: data['NIF'],

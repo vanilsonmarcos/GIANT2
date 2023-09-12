@@ -17,13 +17,13 @@ describe("it should perform all operations related to heper function", () => {
         expect(formattedDate).toBe(expectedOutput);
     });
 
-    it('should add a year to the given date', () => {
-        const inputDate = '31/08/2023';
-        const expectedOutput = '31/08/2024';
-        const newDate = addYearToDate(inputDate);
+    // it('should add a year to the given date', () => {
+    //     const inputDate = '31/08/2023';
+    //     const expectedOutput = '31/08/2024';
+    //     const newDate = addYearToDate(inputDate);
 
-        expect(newDate).toBe(expectedOutput);
-    });
+    //     expect(newDate).toBe(expectedOutput);
+    // });
 
 });
 

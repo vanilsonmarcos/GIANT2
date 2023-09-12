@@ -1,11 +1,13 @@
+import { Service } from "typedi";
 import { RowDataPacket } from "mysql2/promise";
+import { query } from './mysql';
 import Veiculo from "../../entities/Apolice/Veiculo/Veiculo";
 import IVeiculoReposiroty from "../IVeiculoRepository";
-import { query } from './mysql';
 import generateVeiculo from "../../entities/Apolice/Veiculo/Helper";
 import IVeiculoCategoria from "../IVeiculoCategoria";
 import VeiculoCategoria from "../../entities/Apolice/Veiculo/VeiculoCategoria";
 
+@Service()
 class VeiculoRepository implements IVeiculoReposiroty<Veiculo>, IVeiculoCategoria<VeiculoCategoria>{
     private primeTable = 'veiculo';
     private secondTable = "veiculo_categoria";

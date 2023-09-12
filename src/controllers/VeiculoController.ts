@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import VeiculoRepository from "../repositories/mysql/VeiculoRepository";
 import Veiculo from "../entities/Apolice/Veiculo/Veiculo";
-import VeiculoService from "../services/Veiculoservice";
+import VeiculoService from "../services/VeiculoService";
 
 class VeiculoController {
     private veiculoService: VeiculoService;
