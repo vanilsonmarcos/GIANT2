@@ -1,4 +1,4 @@
-import { addYearToDate, formatDDMMYYYYToMySQLDate, formatDateToDDMMYYY, isNotEmptyArray } from "../../src/utils/helper";
+import { jsDateToMysqlDate, formatDDMMYYYYToMySQLDate, formatDateToDDMMYYY, isNotEmptyArray } from "../../src/utils/helper";
 
 describe("it should perform all operations related to heper function", () => {
 
@@ -24,6 +24,13 @@ describe("it should perform all operations related to heper function", () => {
 
     //     expect(newDate).toBe(expectedOutput);
     // });
+
+    it('should convert a js Date to mysql date type', () => {
+
+        const jsDate = new Date('2023-09-25');
+        const result = jsDateToMysqlDate(jsDate);
+        expect(result).toBe('2023-09-25');
+    });
 
 });
 

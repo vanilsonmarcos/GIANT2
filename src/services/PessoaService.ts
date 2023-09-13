@@ -34,12 +34,12 @@ class PessoaService {
         return this.repo.getPersonByNBI(nbi);
     }
 
-    async criar(cobertura: Pessoa): Promise<Pessoa> {
-        return await this.repo.create(cobertura);
+    async criar(pessoa: Pessoa): Promise<Pessoa> {
+        return await this.repo.create(pessoa);
     } 
 
-    async actualizar(id: String, cobertura: Pessoa) {
-        return await this.repo.update(id, cobertura);
+    async actualizar(id: String, pessoa: Pessoa) {
+        return await this.repo.update(id, pessoa);
     }
 
     async remover(id: String): Promise<Boolean> {

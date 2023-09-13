@@ -17,7 +17,7 @@ pessoaRoutes.get('/pessoa/email/:email', pessoaController.getByEmail.bind(pessoa
 pessoaRoutes.get('/pessoa/telefone/:telefone', pessoaController.getByPhoneNumber.bind(pessoaController));
 
 pessoaRoutes.post('/pessoa/', pessoaController.criar.bind(pessoaController));
-pessoaRoutes.put('/pessoa/:id', pessoaController.actualizar.bind(pessoaController));
+pessoaRoutes.put('/pessoa/', pessoaController.actualizar.bind(pessoaController));
 pessoaRoutes.delete('/pessoa/:id', pessoaController.remover.bind(pessoaController));
 
 export default pessoaRoutes;

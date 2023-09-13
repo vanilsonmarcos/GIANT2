@@ -53,7 +53,7 @@ class PessoaRepository implements IPessoaRepository<Pessoa> {
             conn.beginTransaction();
     
             const firstQuery= `INSERT INTO pessoa(PESSOA_TIPO_ID, NOME, DATA_NASCIMENTO, SEXO, NBI, NIF, ESTADO_CIVIL) 
-            VALUES('${item.pessoa_tipo.id}', '${item.nome}', '${jsDateToMysqlDate(item.data_nascimento)}', '${item.sexo}', '${item.nbi}', '${item.nif}', '${item.estado_civil}');`
+            VALUES(${item.pessoa_tipo.id}, '${item.nome}', ${jsDateToMysqlDate(item.data_nascimento)}, '${item.sexo}', '${item.nbi}', '${item.nif}', '${item.estado_civil}');`
     
             const firstResult: RowDataPacket = await queryWithConnection(conn, firstQuery) as RowDataPacket;
     
@@ -62,7 +62,11 @@ class PessoaRepository implements IPessoaRepository<Pessoa> {
             const secondQuery = `INSERT INTO pessoa_endereco(PESSOA_ID, TELEFONE, TELEFONE_ALTERNATIVO, EMAIL) 
             VALUES(${pessoaID}, '${item.endereco.telefone}', '${item.endereco.telefone_alt}', '${item.endereco.email}');`; 
     
-            const secondResult: RowDataPacket =  await queryWithConnection(conn, secondQuery) as RowDataPacket; 
+            const secondResult: RowDataPacket =  await queryWithConnection(conn, secondQuery) as RowDataPacket;
+            
+            if (firstResult.affectedRows === 0 || secondResult.affectedRows === 0) {
+                throw Error("Ocorreu um erro inserir os dados da pessoa");
+            }
 
             await conn.commit();
             item.id = pessoaID;

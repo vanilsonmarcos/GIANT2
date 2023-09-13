@@ -52,7 +52,6 @@ import PessoaService from "../services/PessoaService";
                 }
                 res.json(response);
             }
-
         }
 
         async getByNBI(req: Request, res: Response) {
@@ -162,7 +161,8 @@ import PessoaService from "../services/PessoaService";
                 const response = {
                     code: 401,
                     message: "Ocorreu um erro ao inserir os dados da Pessoa",
-                    data: {}
+                    data: {},
+                    error: error
                 }
                 return res.json(response);
             }
@@ -188,7 +188,8 @@ import PessoaService from "../services/PessoaService";
                 const response = {
                     code: 401,
                     message: "Ocorreu um erro ao actualizar os dados da Pessoa",
-                    data: {}
+                    data: {}, 
+                    error: error 
                 }
                 return res.json(response);
             }
