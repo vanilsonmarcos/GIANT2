@@ -13,18 +13,18 @@ const MockPessoaEndereco: PessoaEndereco = {
     pessoa_id: faker.number.int({max: 2}).toString(),
     telefone: faker.phone.number("+ 244 932 677 988"),
     telefone_alt: faker.phone.number("+ 244 999 677 988"),
-    email: faker.internet.email({provider: "giant"})
-
+    email: faker.internet.email({provider: "giant.com"})
 }
+
 const MockPessoa: Pessoa = {
-    nome: faker.person.fullName(),
+    nome: faker.person.fullName(), 
     pessoa_tipo: MockPessoaTipo,
-    data_nascimento: faker.date.past({years: 28}),
-    sexo: faker.person.sex(),
+    data_nascimento: new Date(1992, 1, 20),
+    sexo:  Math.random() < 0.5 ? 'M' : 'F',
     nbi: faker.string.alpha(),
     nif: faker.string.alpha(),
-    estado_civil: faker.string.alpha(1),
+    estado_civil: Math.random() < 0.5 ? 'S' : 'C',
     endereco: MockPessoaEndereco
 };
 
-export default MockPessoa;
+export default MockPessoa;  

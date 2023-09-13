@@ -1,10 +1,10 @@
-import Pessoa from "../../entities/Pessoa/Pessoa";
-import IPessoaRepository from "../IPessoaRepository";
-import { query } from "./mysql";
-import { RowDataPacket } from 'mysql2/promise';
-import generatePessoa from "../../entities/Pessoa/Helper";
-import { formatDDMMYYYYToMySQLDate, jsDateToMysqlDate } from "../../utils/helper";
+import { ResultSetHeader, RowDataPacket } from 'mysql2/promise';
 import { Service } from "typedi";
+import { query, getConnection, queryWithConnection } from "./mysql";
+import { jsDateToMysqlDate } from "../../utils/helper";
+import IPessoaRepository from "../IPessoaRepository";
+import Pessoa from "../../entities/Pessoa/Pessoa";
+import generatePessoa from "../../entities/Pessoa/Helper";
 
 @Service()
 class PessoaRepository implements IPessoaRepository<Pessoa> {
@@ -48,51 +48,88 @@ class PessoaRepository implements IPessoaRepository<Pessoa> {
     }
 
     async create(item: Pessoa): Promise<Pessoa> {
-        const result:RowDataPacket = await query(
-            `INSERT INTO ${this.primeTable} 
-            (PESSOA_TIPO_ID, NOME, DATA_NASCIMENTO, SEXO, NBI, NIF, ESTADO_CIVIL) 
-            VALUES 
-            ('${item.pessoa_tipo.id}', '${item.nome}', '${jsDateToMysqlDate(item.data_nascimento)}', '${item.sexo}', '${item.nbi}', '${item.nif}', '${item.estado_civil}')`
-        ) as RowDataPacket;
-      
-        const result_two = await query(
-            `INSERT INTO ${this.secondTable} 
-            (PESSOA_ID, TELEFONE, TELEFONE_ALTERNATIVO, EMAIL) 
-            VALUES 
-            (${result.insertId}, '${item.endereco.telefone}', '${item.endereco.telefone_alt}', '${item.endereco.email}')`
-        ) as RowDataPacket;  
+        const conn = await getConnection();
+        try {
+            conn.beginTransaction();
+    
+            const firstQuery= `INSERT INTO pessoa(PESSOA_TIPO_ID, NOME, DATA_NASCIMENTO, SEXO, NBI, NIF, ESTADO_CIVIL) 
+            VALUES('${item.pessoa_tipo.id}', '${item.nome}', '${jsDateToMysqlDate(item.data_nascimento)}', '${item.sexo}', '${item.nbi}', '${item.nif}', '${item.estado_civil}');`
+    
+            const firstResult: RowDataPacket = await queryWithConnection(conn, firstQuery) as RowDataPacket;
+    
+            const pessoaID = firstResult.insertId;
+    
+            const secondQuery = `INSERT INTO pessoa_endereco(PESSOA_ID, TELEFONE, TELEFONE_ALTERNATIVO, EMAIL) 
+            VALUES(${pessoaID}, '${item.endereco.telefone}', '${item.endereco.telefone_alt}', '${item.endereco.email}');`; 
+    
+            const secondResult: RowDataPacket =  await queryWithConnection(conn, secondQuery) as RowDataPacket; 
 
-        if (result.affectedRows && result_two.affectedRows) { 
-            item.id = result.insertId;
+            await conn.commit();
+            item.id = pessoaID;
             return item;
+        } catch (error) {
+            await conn.rollback();
+            throw Error("Ocorreu um erro ao inserir os dados da pessoa");
+        } finally {
+            await conn.end();
         }
-        throw Error("Ocorreu um erro ao criar os dados da pessoa");
     }
 
     async update(id: string, item: Pessoa): Promise<Pessoa> {
-        const result:RowDataPacket = await query(`UPDATE ${this.primeTable} 
+        const conn = await getConnection();
+        try {
+            conn.beginTransaction();
+    
+            const firstQuery= `UPDATE ${this.primeTable} 
             SET PESSOA_TIPO_ID=${item.pessoa_tipo.id}, NOME='${item.nome}', DATA_NASCIMENTO=${jsDateToMysqlDate(item.data_nascimento)}, 
             SEXO='${item.sexo}', NBI='${item.nbi}', NIF='${item.nif}', ESTADO_CIVIL='${item.estado_civil}'
-            WHERE ID=${id}`
-        ) as RowDataPacket;
-
-        const result_two: RowDataPacket = await query(`UPDATE ${this.secondTable} 
-        SET TELEFONE="${item.endereco.telefone}", TELEFONE_ALTERNATIVO='${item.endereco.telefone_alt}', EMAIL='${item.endereco.email}'
-        WHERE PESSOA_ID=${id}`
-        ) as RowDataPacket;
-
-        if (result.affectedRows && result_two.affectedRows) {
+            WHERE ID=${id};`;
+    
+            const firstResult: ResultSetHeader = await queryWithConnection(conn, firstQuery) as ResultSetHeader;
+    
+            const secondQuery = `UPDATE ${this.secondTable} 
+            SET TELEFONE="${item.endereco.telefone}", TELEFONE_ALTERNATIVO='${item.endereco.telefone_alt}', EMAIL='${item.endereco.email}'
+            WHERE PESSOA_ID=${id};`; 
+    
+            const secondResult: ResultSetHeader =  await queryWithConnection(conn, secondQuery) as ResultSetHeader;
+            if (firstResult.affectedRows === 0 || secondResult.affectedRows === 0) {
+                throw Error("Ocorreu um erro ao actualizar os dados da pessoa");
+            }
+            await conn.commit();
             return item;
+        } catch (error) {
+            await conn.rollback();
+            throw Error("Ocorreu um erro ao actualizar os dados da pessoa");
+        } finally {
+            await conn.end();
         }
-        throw Error("Ocorreu um erro ao actualizar od dados da pessoa")
     }
 
     async delete(id: String): Promise<Boolean> {
-        const result: RowDataPacket = await query(`DELETE FROM ${this.primeTable} WHERE id=${id}`) as RowDataPacket;
-        if (result.affectedRows) {
-            return true;
-        }
-        return false;
+        const conn = await getConnection();
+        try {
+            conn.beginTransaction();
+    
+            const firstQuery= `DELETE FROM ${this.primeTable} WHERE ID=${id};`;
+    
+            const firstResult: RowDataPacket = await queryWithConnection(conn, firstQuery) as RowDataPacket;
+    
+            const secondQuery = `DELETE FROM ${this.primeTable} WHERE PESSOA_ID=${id};`; 
+    
+            const secondResult: RowDataPacket =  await queryWithConnection(conn, secondQuery) as RowDataPacket; 
+
+            if (firstResult.affectedRows && secondResult.affectedRows) {
+                await conn.commit();
+                return true;
+            }
+            return false;
+
+        } catch (error) {
+            await conn.rollback();
+            throw Error("Ocorreu um erro ao remover os dados da pessoa");
+        } finally {
+            await conn.end();
+        }     
     }
 
     async getPersonByPhoneNumber(phone_number: String): Promise<Pessoa> {
