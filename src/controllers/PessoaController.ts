@@ -169,7 +169,7 @@ import PessoaService from "../services/PessoaService";
         }
 
         async actualizar(req: Request, res: Response) {
-            const pessoa: Pessoa = req.body
+            const pessoa: Pessoa = req.body;
 
             if (pessoa.id === undefined){
                 return handleParsingError(res, Error("O Id da cobertura não foi criado"));

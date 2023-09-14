@@ -27,7 +27,7 @@ describe("it should perform all operations related to heper function", () => {
 
     it('should convert a js Date to mysql date type', () => {
 
-        const jsDate = new Date('2023-09-25');
+        const jsDate = '2023-09-25';
         const result = jsDateToMysqlDate(jsDate);
         expect(result).toBe('2023-09-25');
     });

@@ -76,11 +76,11 @@ class VeiculoController {
     async criar(req: Request, res: Response) {
         const v: Veiculo = req.body; // parse body to person data
         try {
-            const result = await new VeiculoRepository().create(v);
+            const veiculo = await new VeiculoRepository().create(v);
             const response = {
                 code: 200,
                 message: "Dados da veículo inseridos com sucesso",
-                data: result
+                data: veiculo
             };
             res.json(response);
         } catch (error) {

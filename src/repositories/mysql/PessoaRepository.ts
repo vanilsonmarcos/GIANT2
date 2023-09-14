@@ -50,10 +50,10 @@ class PessoaRepository implements IPessoaRepository<Pessoa> {
     async create(item: Pessoa): Promise<Pessoa> {
         const conn = await getConnection();
         try {
-            conn.beginTransaction();
+            await conn.beginTransaction();
     
             const firstQuery= `INSERT INTO pessoa(PESSOA_TIPO_ID, NOME, DATA_NASCIMENTO, SEXO, NBI, NIF, ESTADO_CIVIL) 
-            VALUES(${item.pessoa_tipo.id}, '${item.nome}', ${jsDateToMysqlDate(item.data_nascimento)}, '${item.sexo}', '${item.nbi}', '${item.nif}', '${item.estado_civil}');`
+            VALUES(${item.pessoa_tipo.id}, '${item.nome}', '${jsDateToMysqlDate(item.data_nascimento)}', '${item.sexo}', '${item.nbi}', '${item.nif}', '${item.estado_civil}');`
     
             const firstResult: RowDataPacket = await queryWithConnection(conn, firstQuery) as RowDataPacket;
     
@@ -67,7 +67,6 @@ class PessoaRepository implements IPessoaRepository<Pessoa> {
             if (firstResult.affectedRows === 0 || secondResult.affectedRows === 0) {
                 throw Error("Ocorreu um erro inserir os dados da pessoa");
             }
-
             await conn.commit();
             item.id = pessoaID;
             return item;
@@ -85,11 +84,11 @@ class PessoaRepository implements IPessoaRepository<Pessoa> {
             conn.beginTransaction();
     
             const firstQuery= `UPDATE ${this.primeTable} 
-            SET PESSOA_TIPO_ID=${item.pessoa_tipo.id}, NOME='${item.nome}', DATA_NASCIMENTO=${jsDateToMysqlDate(item.data_nascimento)}, 
+            SET PESSOA_TIPO_ID=${item.pessoa_tipo.id}, NOME='${item.nome}', DATA_NASCIMENTO='${jsDateToMysqlDate(item.data_nascimento)}', 
             SEXO='${item.sexo}', NBI='${item.nbi}', NIF='${item.nif}', ESTADO_CIVIL='${item.estado_civil}'
             WHERE ID=${id};`;
     
-            const firstResult: ResultSetHeader = await queryWithConnection(conn, firstQuery) as ResultSetHeader;
+            const firstResult: ResultSetHeader =  await queryWithConnection(conn, firstQuery) as ResultSetHeader;
     
             const secondQuery = `UPDATE ${this.secondTable} 
             SET TELEFONE="${item.endereco.telefone}", TELEFONE_ALTERNATIVO='${item.endereco.telefone_alt}', EMAIL='${item.endereco.email}'
@@ -114,13 +113,13 @@ class PessoaRepository implements IPessoaRepository<Pessoa> {
         try {
             conn.beginTransaction();
     
-            const firstQuery= `DELETE FROM ${this.primeTable} WHERE ID=${id};`;
-    
+            const secondQuery = `DELETE FROM pessoa_endereco WHERE PESSOA_ID=${id};`; 
+            const secondResult: RowDataPacket = await queryWithConnection(conn, secondQuery) as RowDataPacket; 
+            
+            
+            const firstQuery= `DELETE FROM pessoa WHERE ID=${id};`;
             const firstResult: RowDataPacket = await queryWithConnection(conn, firstQuery) as RowDataPacket;
     
-            const secondQuery = `DELETE FROM ${this.primeTable} WHERE PESSOA_ID=${id};`; 
-    
-            const secondResult: RowDataPacket =  await queryWithConnection(conn, secondQuery) as RowDataPacket; 
 
             if (firstResult.affectedRows && secondResult.affectedRows) {
                 await conn.commit();

@@ -14,5 +14,9 @@ async function queryWithConnection(conn: mysql.Connection, query: string) {
     const [results,] = await conn.execute(query) 
     return results;
 }
+async function queryWithConnectionAndValues(conn: mysql.Connection, query: string, values:any) {
+    const [results,] = await conn.execute(query, values);
+    return results;
+}
 
-export { query, getConnection, queryWithConnection };
+export { query, getConnection, queryWithConnection, queryWithConnectionAndValues };

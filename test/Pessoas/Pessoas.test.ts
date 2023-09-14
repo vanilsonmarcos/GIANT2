@@ -17,7 +17,7 @@ describe("It should perform all operations related with Pessoa", () => {
             .post(`${PESSOA_URL}`)
             .send(pessoa);
 
-        expect(response.body.code).toBe(200);
+         expect(response.body.code).toBe(200);
         const p: Pessoa = response.body.data;
         expect(p).toBeDefined();
 

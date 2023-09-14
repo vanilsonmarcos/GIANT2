@@ -28,7 +28,7 @@ const MockPessoaEndereco: MockPessoaEndereco = {
 const MockPessoa: Pessoa = {
     nome: faker.person.fullName(), 
     pessoa_tipo: Math.random() < 0.5 ? pTipoA: pTipoB,
-    data_nascimento: new Date(1992, 10, 20),
+    data_nascimento: '1992-10-20',
     sexo:  Math.random() < 0.5 ? 'M' : 'F',
     nbi: faker.string.alpha(10),
     nif: faker.string.alpha(10),

@@ -20,7 +20,7 @@ function generatePessoa(data: RowDataPacket): Pessoa {
         id: data['ID'],
         pessoa_tipo: pessoaTipo,
         nome: data['NOME'],
-        data_nascimento: mysqlDateToJsDate(data['DATA_NASCIMENTO']),
+        data_nascimento: data['DATA_NASCIMENTO'],
         sexo: data['SEXO'],
         nbi: data['NBI'],
         nif: data['NIF'],
