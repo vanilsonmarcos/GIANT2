@@ -32,7 +32,12 @@ class VeiculoController {
     }
 
     async getByID(req: Request, res: Response) {
-        const { id } = req.params;
+        const { unsafeId } = req.params;
+        const parsedID = Identifier.safeParse(unsafeId); 
+        if(!parsedID.success) {
+            return handleParsingError(res, parsedID.error);
+        }
+        const id = parsedID.data.toString();
         try {
             const veiculo = await new VeiculoRepository().getByID(id);
             const response = {

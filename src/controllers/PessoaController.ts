@@ -4,6 +4,8 @@ import PessoaRepository from "../repositories/mysql/PessoaRepository";
 import PessoaService from "../services/PessoaService";
 import Identifier from "../schema/Identifier";
 import handleParsingError from "../utils/HandleParsingErrors";
+import NbiSchema from "../schema/NbiSchema";
+import EmailSchema from "../schema/EmailSchema";
 
 class PessoaController {
 
@@ -63,7 +65,12 @@ class PessoaController {
     }
 
     async getByNBI(req: Request, res: Response) {
-        const { nbi } = req.params;
+        const { unsafeNbi } = req.params;
+        const parsedNbi = NbiSchema.safeParse(unsafeNbi); 
+        if(!parsedNbi.success) {
+            return handleParsingError(res, parsedNbi.error);
+        }
+        const nbi = parsedNbi.data.toString();
         try {
             const pessoa = await this.pessoaService.getByNBI(nbi);
 
@@ -86,7 +93,12 @@ class PessoaController {
     }
 
     async getByNIF(req: Request, res: Response) {
-        const { nif } = req.params;
+        const { unsafeNif } = req.params;
+        const parsedNif = NbiSchema.safeParse(unsafeNif); 
+        if(!parsedNif.success) {
+            return handleParsingError(res, parsedNif.error);
+        }
+        const nif = parsedNif.data.toString();
         try {
             const pessoa = await this.pessoaService.getByNIF(nif);
 
@@ -109,7 +121,12 @@ class PessoaController {
     }
 
     async getByEmail(req: Request, res: Response) {
-        const { email } = req.params;
+        const { unsafeEmail } = req.params;
+        const parsedEmail = EmailSchema.safeParse(unsafeEmail); 
+        if(!parsedEmail.success) {
+            return handleParsingError(res, parsedEmail.error);
+        }
+        const email = parsedEmail.data.toString();
         try {
             const pessoa = await this.pessoaService.getByEmail(email);
 

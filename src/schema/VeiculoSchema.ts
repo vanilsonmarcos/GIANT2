@@ -1,5 +1,6 @@
 import {z} from "zod";
 import VeiculoCaategoriaSchema from "./VeiculoCategoriaSchema";
+
 const VeiculoSchema = z.object({
     id: z.number().optional(),
     veiculo_categoria: VeiculoCaategoriaSchema,
