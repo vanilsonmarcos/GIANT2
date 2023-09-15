@@ -19,9 +19,8 @@ describe("It should perform all operations related with Pessoa", () => {
 
          expect(response.body.code).toBe(200);
         const p: Pessoa = response.body.data;
-        expect(p).toBeDefined();
-
         pessoa = p;
+        expect(p).toBeDefined();
     });
 
     it("should get all pessoas", async () => {
@@ -32,8 +31,9 @@ describe("It should perform all operations related with Pessoa", () => {
     });
 
     it("should get pessoa by id ", async () => {
+        const pessoa_id = pessoa.id
         await request(app)
-            .get(`${PESSOA_URL}${pessoa.id}`)
+            .get(`${PESSOA_URL}${pessoa_id}`)
             .expect('Content-Type', /json/)
             .expect(200)
             .expect((res) => {
@@ -43,8 +43,10 @@ describe("It should perform all operations related with Pessoa", () => {
     });
 
     it("should get pessoa by email", async () => {
+        const email = pessoa.endereco.email;
+
         await request(app)
-        .get(`${PESSOA_URL}${pessoa.id}`)
+        .get(`${PESSOA_URL}email/${email}`)
         .expect('Content-Type', /json/)
         .expect(200)
         .expect((res) => {
@@ -54,8 +56,9 @@ describe("It should perform all operations related with Pessoa", () => {
     });
 
     it("should get pessoa by phone number ", async () => {
+        const telefone = pessoa.endereco.telefone;
         await request(app)
-        .get(`${PESSOA_URL}${pessoa.id}`)
+        .get(`${PESSOA_URL}telefone/${telefone}`)
         .expect('Content-Type', /json/)
         .expect(200)
         .expect((res) => {
@@ -65,8 +68,9 @@ describe("It should perform all operations related with Pessoa", () => {
     });
 
     it("should get pessoa by nif ", async () => {
+        const nif = pessoa.nif;
         await request(app)
-        .get(`${PESSOA_URL}${pessoa.nif}`)
+        .get(`${PESSOA_URL}nif/${nif}`)
         .expect('Content-Type', /json/)
         .expect(200)
         .expect((res) => {
@@ -77,8 +81,9 @@ describe("It should perform all operations related with Pessoa", () => {
     });
 
     it("should get pessoa by nbi ", async () => {
+        const nbi = pessoa.nbi;
         await request(app)
-        .get(`${PESSOA_URL}${pessoa.nbi}`)
+        .get(`${PESSOA_URL}nbi/${nbi}`)
         .expect('Content-Type', /json/)
         .expect(200)
         .expect((res) => {

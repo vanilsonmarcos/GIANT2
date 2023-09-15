@@ -2,6 +2,7 @@ import { faker } from '@faker-js/faker';
 import Pessoa from '../../../src/entities/Pessoa/Pessoa';
 import PessoaEndereco from '../../../src/entities/Pessoa/PessoaEndereco';
 import PessoaTipo from '../../../src/entities/Pessoa/PessoaTipo';
+import generateFakePhoneNumber from '../GenerateFakePhoneNumber';
 
 type MockPessoaEndereco = Omit<PessoaEndereco, "id" | "pessoa_id">;
 
@@ -11,17 +12,12 @@ const pTipoA:PessoaTipo = {
 } 
 const pTipoB:PessoaTipo = {
     id: 2,
-    nome:'Pessoa Ju´ridica'
+    nome:'Pessoa Jurídica'
 }
 
-const MockPessoaTipo: PessoaTipo = {
-    id: Math.random() < 0.5 ? 1 : 2,
-    nome: faker.lorem.word(5)
-};
-
 const MockPessoaEndereco: MockPessoaEndereco = {
-    telefone: faker.phone.number("+ 244 932 677 988"),
-    telefone_alt: faker.phone.number("+ 244 999 677 988"),
+    telefone: generateFakePhoneNumber(),
+    telefone_alt: generateFakePhoneNumber(),
     email: faker.internet.email({provider: "giant.com"})
 }
 
