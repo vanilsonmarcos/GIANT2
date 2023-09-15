@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import Cobertura from "../entities/Cobertura";
 import CoberturaService from "../services/CoberturaService";
 import CoberturaSchema from "../schema/CoberturaSchema";
+import handleParsingError from "../utils/HandleParsingErrors";
 class CoberturaController {
     private coberturaService: CoberturaService;
 
@@ -138,15 +139,7 @@ class CoberturaController {
     }
 }
 
-const handleParsingError = (res: Response, error: any) => {
-    const response = {
-        code: 401,
-        message: "Ocorreu um erro ao validar os dados da cobertura inseridos",
-        data: {},
-        error: error,
-    };
-    return res.json(response);
-}
+
 
 
 export default CoberturaController;

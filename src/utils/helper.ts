@@ -8,7 +8,6 @@ function emptyOrRow(rows: RowDataPacket) {
     return rows
 }
 
-
 function jsDateToMysqlDate(d: String) {
     const date = new Date(d.toString());
     const year = date.getFullYear();
@@ -40,10 +39,6 @@ function formatDDMMYYYYToMySQLDate(ddmmyyyyDate: string): string {
     const mysqlDate = `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
     return mysqlDate;
 }
-
-
-
-
 
 function isValidDateFormatDDMMYYYY(dateString: string): boolean {
     const datePattern = /^\d{2}\/\d{2}\/\d{4}$/;

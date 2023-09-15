@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import VeiculoRepository from "../repositories/mysql/VeiculoRepository";
 import Veiculo from "../entities/Apolice/Veiculo/Veiculo";
 import VeiculoService from "../services/VeiculoService";
+import Identifier from "../schema/Identifier";
+import handleParsingError from "../utils/HandleParsingErrors";
 
 class VeiculoController {
     private veiculoService: VeiculoService;
@@ -95,8 +97,12 @@ class VeiculoController {
     }
 
     async actualizar(req: Request, res: Response) {
-        const { id } = req.params;
-        const v: Veiculo = req.body
+        const v: Veiculo = req.body;
+        if (v.id === undefined){
+            return handleParsingError(res, Error("O Id do veiculo não foi definido"));
+        }
+        const id = v.id.toString();
+
         try {
             const veiculo = await new VeiculoRepository().update(id, v);
             const response = {
@@ -117,7 +123,12 @@ class VeiculoController {
     }
 
     async remover(req: Request, res: Response) {
-        const { id } = req.params;
+        const { unsafeId } = req.params;
+        const parsedID = Identifier.safeParse(unsafeId); 
+        if(!parsedID.success) {
+            return handleParsingError(res, parsedID.error);
+        }
+        const id = parsedID.data.toString();
         try {
             const result = await new VeiculoRepository().delete(id);
             if (result) {

@@ -13,7 +13,7 @@ veiculoRoutes.get('/veiculo/:id', veiculoController.getByID.bind(veiculoControll
 veiculoRoutes.get('/veiculo/matricula/:matricula', veiculoController.getByMatricula.bind(veiculoController));
 
 veiculoRoutes.post('/veiculo/', veiculoController.criar.bind(veiculoController));
-veiculoRoutes.put('/veiculo/:id', veiculoController.actualizar.bind(veiculoController));
+veiculoRoutes.put('/veiculo/', veiculoController.actualizar.bind(veiculoController));
 veiculoRoutes.delete('/veiculo/:id', veiculoController.remover.bind(veiculoController));
 
 export default veiculoRoutes;

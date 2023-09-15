@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import Pessoa from "../entities/Pessoa/Pessoa";
 import PessoaRepository from "../repositories/mysql/PessoaRepository";
 import PessoaService from "../services/PessoaService";
+import Identifier from "../schema/Identifier";
+import handleParsingError from "../utils/HandleParsingErrors";
 
 class PessoaController {
 
@@ -33,7 +35,13 @@ class PessoaController {
     }
 
     async getByID(req: Request, res: Response) {
-        const { id } = req.params;
+        const { unsafeId } = req.params;
+        const parsedID = Identifier.safeParse(unsafeId); 
+        if(!parsedID.success) {
+            return handleParsingError(res, parsedID.error);
+        }
+        const id = parsedID.data.toString();
+
         try {
             const pessoa = await this.pessoaService.getByID(id);
             const response = {
@@ -174,9 +182,10 @@ class PessoaController {
         if (pessoa.id === undefined){
             return handleParsingError(res, Error("O Id da cobertura não foi criado"));
         }
+        const id = pessoa.id.toString();
 
         try {
-            const novaPessoa = await this.pessoaService.actualizar(pessoa.id.toString(), pessoa);
+            const novaPessoa = await this.pessoaService.actualizar(id, pessoa);
 
             const response = {
                 code: 200,
@@ -196,7 +205,14 @@ class PessoaController {
     }
 
     async remover(req: Request, res: Response) {
-        const { id } = req.params;
+
+        const { unsafeId } = req.params;
+        const parsedID = Identifier.safeParse(unsafeId); 
+        if(!parsedID.success) {
+            return handleParsingError(res, parsedID.error);
+        }
+        const id = parsedID.data.toString();
+
         try {
             const result = await this.pessoaService.remover(id);
 
@@ -221,15 +237,7 @@ class PessoaController {
     }
 }
 
-const handleParsingError = (res: Response, error: any) => {
-    const response = {
-        code: 401,
-        message: "Ocorreu um erro ao validar os dados inseridos da pessoa",
-        data: {},
-        error: error,
-    };
-    return res.json(response);
-}
+
 
 
 export default PessoaController;

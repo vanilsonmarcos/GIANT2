@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import PrecoCilindrada from "../entities/PrecoCilindrada";
 import PrecoCilindradaRepository from "../repositories/mysql/PrecoCilindradaRepository";
+import Identifier from "../schema/Identifier";
+import handleParsingError from "../utils/HandleParsingErrors";
 
 class PrecoCilindradaController {
 
@@ -36,7 +38,13 @@ class PrecoCilindradaController {
     }
     
     async getByID(req: Request, res: Response) {
-        const { id } = req.params;
+        const { unsafeId } = req.params;
+        const parsedID = Identifier.safeParse(unsafeId); 
+        if(!parsedID.success) {
+            return handleParsingError(res, parsedID.error);
+        }
+        const id = parsedID.data.toString();
+
         try {
             const precoCilindrada = await new PrecoCilindradaRepository().getByID(id);
             let code = 200;
