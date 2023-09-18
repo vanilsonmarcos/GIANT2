@@ -11,15 +11,15 @@ class PessoaService {
     constructor () {}
 
     async getAll(): Promise<Pessoa[]> {
-        return await this.repo.getAll();         
+        return this.repo.getAll();         
     }
 
     async getByID(id: String): Promise<Pessoa>{
-        return await this.repo.getByID(id);
+        return this.repo.getByID(id);
     }
     
     async getByPhoneNumber(phoneNumber: String) :Promise<Pessoa> {
-        return await this.repo.getPersonByPhoneNumber(phoneNumber);
+        return this.repo.getPersonByPhoneNumber(phoneNumber);
     }
 
     async getByEmail(email: String): Promise<Pessoa>{
@@ -35,16 +35,16 @@ class PessoaService {
     }
 
     async criar(pessoa: Pessoa): Promise<Pessoa> {
-        return await this.repo.create(pessoa);
+        return this.repo.create(pessoa);
     } 
 
     async actualizar(id: String, pessoa: Pessoa) {
-        return await this.repo.update(id, pessoa);
+        return this.repo.update(id, pessoa);
     }
 
     async remover(id: String): Promise<Boolean> {
         // check if object exist
-        return await this.repo.delete(id);
+        return this.repo.delete(id);
     }
 }
 

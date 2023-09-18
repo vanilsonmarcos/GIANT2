@@ -72,7 +72,7 @@ class PessoaRepository implements IPessoaRepository<Pessoa> {
             return item;
         } catch (error) {
             await conn.rollback();
-            throw Error("Ocorreu um erro ao inserir os dados da pessoa");
+            throw Error("Ocorreu um erro inserir os dados da pessoa");
         } finally {
             await conn.end();
         }
@@ -102,7 +102,7 @@ class PessoaRepository implements IPessoaRepository<Pessoa> {
             return item;
         } catch (error) {
             await conn.rollback();
-            throw Error("Ocorreu um erro ao actualizar os dados da pessoa");
+            throw Error("Ocorreu um erro actualizar os dados da pessoa");
         } finally {
             await conn.end();
         }
@@ -129,7 +129,7 @@ class PessoaRepository implements IPessoaRepository<Pessoa> {
 
         } catch (error) {
             await conn.rollback();
-            throw Error("Ocorreu um erro ao remover os dados da pessoa");
+            throw Error("Ocorreu um erro remover os dados da pessoa");
         } finally {
             await conn.end();
         }     

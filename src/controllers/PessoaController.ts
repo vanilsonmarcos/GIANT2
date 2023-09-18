@@ -6,6 +6,7 @@ import Identifier from "../schema/Identifier";
 import handleParsingError from "../utils/HandleParsingErrors";
 import NbiSchema from "../schema/NbiSchema";
 import EmailSchema from "../schema/EmailSchema";
+import PhoneNumberSchema from "../schema/PhoneNumberSchema";
 
 class PessoaController {
 
@@ -37,15 +38,15 @@ class PessoaController {
     }
 
     async getByID(req: Request, res: Response) {
-        const { unsafeId } = req.params;
-        const parsedID = Identifier.safeParse(unsafeId); 
+        const { id } = req.params;
+        const parsedID = Identifier.safeParse(id); 
         if(!parsedID.success) {
             return handleParsingError(res, parsedID.error);
         }
-        const id = parsedID.data.toString();
+        const safeId = parsedID.data.toString();
 
         try {
-            const pessoa = await this.pessoaService.getByID(id);
+            const pessoa = await this.pessoaService.getByID(safeId);
             const response = {
                 code: 200,
                 message: "Dados da pessoa foram encontrados com sucesso",
@@ -65,14 +66,14 @@ class PessoaController {
     }
 
     async getByNBI(req: Request, res: Response) {
-        const { unsafeNbi } = req.params;
-        const parsedNbi = NbiSchema.safeParse(unsafeNbi); 
+        const { nbi } = req.params;
+        const parsedNbi = NbiSchema.safeParse(nbi); 
         if(!parsedNbi.success) {
             return handleParsingError(res, parsedNbi.error);
         }
-        const nbi = parsedNbi.data.toString();
+        const safeNbi = parsedNbi.data.toString();
         try {
-            const pessoa = await this.pessoaService.getByNBI(nbi);
+            const pessoa = await this.pessoaService.getByNBI(safeNbi);
 
             const response = {
                 code: 200,
@@ -93,14 +94,14 @@ class PessoaController {
     }
 
     async getByNIF(req: Request, res: Response) {
-        const { unsafeNif } = req.params;
-        const parsedNif = NbiSchema.safeParse(unsafeNif); 
+        const { nif } = req.params;
+        const parsedNif = NbiSchema.safeParse(nif); 
         if(!parsedNif.success) {
             return handleParsingError(res, parsedNif.error);
         }
-        const nif = parsedNif.data.toString();
+        const safeNif = parsedNif.data.toString();
         try {
-            const pessoa = await this.pessoaService.getByNIF(nif);
+            const pessoa = await this.pessoaService.getByNIF(safeNif);
 
             const response = {
                 code: 200,
@@ -121,14 +122,14 @@ class PessoaController {
     }
 
     async getByEmail(req: Request, res: Response) {
-        const { unsafeEmail } = req.params;
-        const parsedEmail = EmailSchema.safeParse(unsafeEmail); 
+        const { email } = req.params;
+        const parsedEmail = EmailSchema.safeParse(email); 
         if(!parsedEmail.success) {
             return handleParsingError(res, parsedEmail.error);
         }
-        const email = parsedEmail.data.toString();
+        const safeEmail = parsedEmail.data.toString();
         try {
-            const pessoa = await this.pessoaService.getByEmail(email);
+            const pessoa = await this.pessoaService.getByEmail(safeEmail);
 
             const response = {
                 code: 200,
@@ -150,9 +151,14 @@ class PessoaController {
     }
 
     async getByPhoneNumber(req: Request, res: Response) {
-        const { numero_telefone } = req.params
+        const { telefone } = req.params;
+        const parsedTelefone = PhoneNumberSchema.safeParse(telefone); 
+        if(!parsedTelefone.success) {
+            return handleParsingError(res, parsedTelefone.error);
+        }
+        const safeTelefone = parsedTelefone.data.toString();
         try {
-            const pessoa = await new PessoaRepository().getPersonByPhoneNumber(numero_telefone);
+            const pessoa = await new PessoaRepository().getPersonByPhoneNumber(safeTelefone);
             const response = {
                 code: 200,
                 message: "Dados da pessoa foram encontrados com sucesso",
