@@ -5,9 +5,15 @@ async function getConnection() {
     return mysql.createConnection(config.db);
 }
 
-async function query(sql: string) {
-    const connection = await getConnection();
-    return queryWithConnection(connection, sql);
+async function query(query: string) {
+    const conn = await getConnection();
+    return queryWithConnection(conn, query);
+}
+
+async function queryWithValues(query: string, values:any) {
+    const conn = await getConnection();
+    const [results,] = await conn.execute(query, values);
+    return results;
 }
 
 async function queryWithConnection(conn: mysql.Connection, query: string) {
@@ -19,4 +25,4 @@ async function queryWithConnectionAndValues(conn: mysql.Connection, query: strin
     return results;
 }
 
-export { query, getConnection, queryWithConnection, queryWithConnectionAndValues };
+export { getConnection, query, queryWithValues, queryWithConnection, queryWithConnectionAndValues };

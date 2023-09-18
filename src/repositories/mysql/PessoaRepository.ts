@@ -1,6 +1,6 @@
 import { ResultSetHeader, RowDataPacket } from 'mysql2/promise';
 import { Service } from "typedi";
-import { query, getConnection, queryWithConnection } from "./mysql";
+import { query, getConnection, queryWithConnection, queryWithValues, queryWithConnectionAndValues } from "./mysql";
 import { jsDateToMysqlDate } from "../../utils/helper";
 import IPessoaRepository from "../IPessoaRepository";
 import Pessoa from "../../entities/Pessoa/Pessoa";
@@ -16,7 +16,7 @@ class PessoaRepository implements IPessoaRepository<Pessoa> {
     }
 
     async getAll(): Promise<Pessoa[]> {
-        const sql: string = `SELECT * FROM pessoa 
+        const sql = `SELECT * FROM pessoa 
         INNER JOIN pessoa_endereco ON 
         pessoa.ID=pessoa_endereco.PESSOA_ID 
         INNER JOIN pessoa_tipo ON
@@ -33,14 +33,14 @@ class PessoaRepository implements IPessoaRepository<Pessoa> {
     }
 
     async getByID(id: String): Promise<Pessoa> {
-        const data:RowDataPacket= await query(
-            `SELECT * FROM ${this.primeTable} 
-            INNER JOIN ${this.secondTable} ON 
-            ${this.primeTable}.ID=${this.secondTable}.PESSOA_ID 
-            INNER JOIN ${this.thirdTable} ON
-            ${this.primeTable}.PESSOA_TIPO_ID = ${this.thirdTable}.ID
-            WHERE ${this.primeTable}.ID=${id} LIMIT 1`
-        ) as RowDataPacket;
+        const query = `SELECT * FROM ${this.primeTable} 
+        INNER JOIN ${this.secondTable} ON 
+        ${this.primeTable}.ID=${this.secondTable}.PESSOA_ID 
+        INNER JOIN ${this.thirdTable} ON
+        ${this.primeTable}.PESSOA_TIPO_ID = ${this.thirdTable}.ID
+        WHERE ${this.primeTable}.ID=? LIMIT 1`;
+
+        const data:RowDataPacket= await queryWithValues(query, [id]) as RowDataPacket;
         if (!data) {
             throw Error("Não foi possivel encontrar os dados da pessoa");
         }
@@ -52,23 +52,35 @@ class PessoaRepository implements IPessoaRepository<Pessoa> {
         try {
             await conn.beginTransaction();
     
-            const firstQuery= `INSERT INTO pessoa(PESSOA_TIPO_ID, NOME, DATA_NASCIMENTO, SEXO, NBI, NIF, ESTADO_CIVIL) 
-            VALUES(${item.pessoa_tipo.id}, '${item.nome}', '${jsDateToMysqlDate(item.data_nascimento)}', '${item.sexo}', '${item.nbi}', '${item.nif}', '${item.estado_civil}');`
+            const firstQuery= `INSERT INTO pessoa(PESSOA_TIPO_ID, NOME, DATA_NASCIMENTO, SEXO, NBI, NIF, ESTADO_CIVIL) VALUES(?, ?, ?, ?, ?, ?, ?);`;
+            const firstValues = [
+                item.pessoa_tipo.id,
+                item.nome,
+                jsDateToMysqlDate(item.data_nascimento),
+                item.sexo,
+                item.nbi,
+                item.nif,
+                item.estado_civil
+            ]
+            const firstResult: RowDataPacket = await queryWithConnectionAndValues(conn, firstQuery, firstValues) as RowDataPacket;
     
-            const firstResult: RowDataPacket = await queryWithConnection(conn, firstQuery) as RowDataPacket;
+            const pessoaId = firstResult.insertId;
     
-            const pessoaID = firstResult.insertId;
+            const secondQuery = `INSERT INTO pessoa_endereco(PESSOA_ID, TELEFONE, TELEFONE_ALTERNATIVO, EMAIL) VALUES(?, ?, ?, ?);`; 
+            const secondValues = [
+                pessoaId,
+                item.endereco.telefone,
+                item.endereco.telefone_alt,
+                item.endereco.email
+            ]
     
-            const secondQuery = `INSERT INTO pessoa_endereco(PESSOA_ID, TELEFONE, TELEFONE_ALTERNATIVO, EMAIL) 
-            VALUES(${pessoaID}, '${item.endereco.telefone}', '${item.endereco.telefone_alt}', '${item.endereco.email}');`; 
-    
-            const secondResult: RowDataPacket =  await queryWithConnection(conn, secondQuery) as RowDataPacket;
+            const secondResult: RowDataPacket =  await queryWithConnectionAndValues(conn, secondQuery, secondValues) as RowDataPacket;
             
             if (firstResult.affectedRows === 0 || secondResult.affectedRows === 0) {
                 throw Error("Ocorreu um erro inserir os dados da pessoa");
             }
             await conn.commit();
-            item.id = pessoaID;
+            item.id = pessoaId;
             return item;
         } catch (error) {
             await conn.rollback();
@@ -84,17 +96,30 @@ class PessoaRepository implements IPessoaRepository<Pessoa> {
             conn.beginTransaction();
     
             const firstQuery= `UPDATE ${this.primeTable} 
-            SET PESSOA_TIPO_ID=${item.pessoa_tipo.id}, NOME='${item.nome}', DATA_NASCIMENTO='${jsDateToMysqlDate(item.data_nascimento)}', 
-            SEXO='${item.sexo}', NBI='${item.nbi}', NIF='${item.nif}', ESTADO_CIVIL='${item.estado_civil}'
-            WHERE ID=${id};`;
+            SET PESSOA_TIPO_ID=?, NOME=? , DATA_NASCIMENTO=?, 
+            SEXO=?, NBI=? , NIF=?, ESTADO_CIVIL=?
+            WHERE ID=?;`;
+            const firstValues = [
+                item.pessoa_tipo.id,
+                item.nome,
+                jsDateToMysqlDate(item.data_nascimento),
+                item.sexo,
+                item.nbi,
+                item.nif,
+                item.estado_civil,
+                id
+            ];
+            const firstResult: ResultSetHeader =  await queryWithConnectionAndValues(conn, firstQuery, firstValues) as ResultSetHeader;
     
-            const firstResult: ResultSetHeader =  await queryWithConnection(conn, firstQuery) as ResultSetHeader;
+            const secondQuery = `UPDATE ${this.secondTable} SET TELEFONE=?, TELEFONE_ALTERNATIVO=?, EMAIL=? WHERE PESSOA_ID=?;`; 
+            const secondValues = [
+                item.endereco.telefone,
+                item.endereco.telefone_alt,
+                item.endereco.email,
+                id
+            ];
     
-            const secondQuery = `UPDATE ${this.secondTable} 
-            SET TELEFONE="${item.endereco.telefone}", TELEFONE_ALTERNATIVO='${item.endereco.telefone_alt}', EMAIL='${item.endereco.email}'
-            WHERE PESSOA_ID=${id};`; 
-    
-            const secondResult: ResultSetHeader =  await queryWithConnection(conn, secondQuery) as ResultSetHeader;
+            const secondResult: ResultSetHeader =  await queryWithConnectionAndValues(conn, secondQuery, secondValues) as ResultSetHeader;
             if (firstResult.affectedRows === 0 || secondResult.affectedRows === 0) {
                 throw Error("Ocorreu um erro ao actualizar os dados da pessoa");
             }
@@ -113,12 +138,14 @@ class PessoaRepository implements IPessoaRepository<Pessoa> {
         try {
             conn.beginTransaction();
     
-            const secondQuery = `DELETE FROM pessoa_endereco WHERE PESSOA_ID=${id};`; 
-            const secondResult: RowDataPacket = await queryWithConnection(conn, secondQuery) as RowDataPacket; 
+            const secondQuery = `DELETE FROM pessoa_endereco WHERE PESSOA_ID=?;`;
+            const secondValues = [id];
+            const secondResult: RowDataPacket = await queryWithConnectionAndValues(conn, secondQuery,secondValues) as RowDataPacket; 
             
             
-            const firstQuery= `DELETE FROM pessoa WHERE ID=${id};`;
-            const firstResult: RowDataPacket = await queryWithConnection(conn, firstQuery) as RowDataPacket;
+            const firstQuery = `DELETE FROM pessoa WHERE ID=${id};`;
+            const firstValues = [id]; 
+            const firstResult: RowDataPacket = await queryWithConnectionAndValues(conn, firstQuery, firstValues) as RowDataPacket;
     
 
             if (firstResult.affectedRows && secondResult.affectedRows) {
@@ -135,15 +162,14 @@ class PessoaRepository implements IPessoaRepository<Pessoa> {
         }     
     }
 
-    async getPersonByPhoneNumber(phone_number: String): Promise<Pessoa> {
-        const data: RowDataPacket = await query(
-            `SELECT * FROM ${this.primeTable} 
-            INNER JOIN ${this.secondTable} ON 
-            ${this.primeTable}.ID=${this.secondTable}.PESSOA_ID 
-            INNER JOIN ${this.thirdTable} ON
-            ${this.primeTable}.PESSOA_TIPO_ID = ${this.thirdTable}.ID
-            WHERE ${this.secondTable}.TELEFONE=${phone_number} LIMIT 1`
-        ) as RowDataPacket;
+    async getPersonByPhoneNumber(phoneNumber: String): Promise<Pessoa> {
+        const query = `SELECT * FROM ${this.primeTable} 
+        INNER JOIN ${this.secondTable} ON 
+        ${this.primeTable}.ID=${this.secondTable}.PESSOA_ID 
+        INNER JOIN ${this.thirdTable} ON
+        ${this.primeTable}.PESSOA_TIPO_ID = ${this.thirdTable}.ID
+        WHERE ${this.secondTable}.TELEFONE=? LIMIT 1`;
+        const data: RowDataPacket = await queryWithValues(query, [phoneNumber]) as RowDataPacket;
        
         if (!data) {
             throw Error("Não foram encontrados os dados da pessoa");
@@ -152,14 +178,14 @@ class PessoaRepository implements IPessoaRepository<Pessoa> {
     }
 
     async getPersonByEmail(email: String): Promise<Pessoa> {
-        const data: RowDataPacket = await query(
-            `SELECT * FROM ${this.primeTable} 
-            INNER JOIN ${this.secondTable} ON 
-            ${this.primeTable}.ID=${this.secondTable}.PESSOA_ID 
-            INNER JOIN ${this.thirdTable} ON
-            ${this.primeTable}.PESSOA_TIPO_ID = ${this.thirdTable}.ID
-            WHERE ${this.secondTable}.EMAIL='${email}' LIMIT 1`
-        ) as RowDataPacket;
+        const query = `SELECT * FROM ${this.primeTable} 
+        INNER JOIN ${this.secondTable} ON 
+        ${this.primeTable}.ID=${this.secondTable}.PESSOA_ID 
+        INNER JOIN ${this.thirdTable} ON
+        ${this.primeTable}.PESSOA_TIPO_ID = ${this.thirdTable}.ID
+        WHERE ${this.secondTable}.EMAIL=? LIMIT 1`;
+
+        const data: RowDataPacket = await queryWithValues(query, [email]) as RowDataPacket;
         if (!data) {
             throw Error("Não Foram encontrados os dados da pessoa");
         }
@@ -167,14 +193,14 @@ class PessoaRepository implements IPessoaRepository<Pessoa> {
     }
 
     async getPersonByNIF(nif: String): Promise<Pessoa> {
-        const data: RowDataPacket = await query(
-            `SELECT * FROM ${this.primeTable} 
-            INNER JOIN ${this.secondTable} ON 
-            ${this.primeTable}.ID=${this.secondTable}.PESSOA_ID 
-            INNER JOIN ${this.thirdTable} ON
-            ${this.primeTable}.PESSOA_TIPO_ID = ${this.thirdTable}.ID
-            WHERE ${this.primeTable}.NIF=${nif} LIMIT 1`
-        ) as RowDataPacket;
+        const query =  `SELECT * FROM ${this.primeTable} 
+        INNER JOIN ${this.secondTable} ON 
+        ${this.primeTable}.ID=${this.secondTable}.PESSOA_ID 
+        INNER JOIN ${this.thirdTable} ON
+        ${this.primeTable}.PESSOA_TIPO_ID = ${this.thirdTable}.ID
+        WHERE ${this.primeTable}.NIF=? LIMIT 1`;
+
+        const data: RowDataPacket = await queryWithValues(query, [nif]) as RowDataPacket;
         if (!data) {
             throw Error("Não foram encontrados os dados da pessoa");
         }
@@ -182,14 +208,14 @@ class PessoaRepository implements IPessoaRepository<Pessoa> {
     }
 
     async getPersonByNBI(nbi: String): Promise<Pessoa>{
-        const data: RowDataPacket = await query(
-            `SELECT * FROM ${this.primeTable} 
-            INNER JOIN ${this.secondTable} ON 
-            ${this.primeTable}.ID=${this.secondTable}.PESSOA_ID 
-            INNER JOIN ${this.thirdTable} ON
-            ${this.primeTable}.PESSOA_TIPO_ID = ${this.thirdTable}.ID
-            WHERE ${this.primeTable}.NBI=${nbi} LIMIT 1`
-        ) as RowDataPacket;
+        const query = `SELECT * FROM ${this.primeTable} 
+        INNER JOIN ${this.secondTable} ON 
+        ${this.primeTable}.ID=${this.secondTable}.PESSOA_ID 
+        INNER JOIN ${this.thirdTable} ON
+        ${this.primeTable}.PESSOA_TIPO_ID = ${this.thirdTable}.ID
+        WHERE ${this.primeTable}.NBI=? LIMIT 1`;
+
+        const data: RowDataPacket = await queryWithValues(query, [nbi]) as RowDataPacket;
         if (!data) {
             throw Error("Não foram encotrados os dados da pessoa");
         }

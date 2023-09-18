@@ -158,7 +158,7 @@ class PessoaController {
         }
         const safeTelefone = parsedTelefone.data.toString();
         try {
-            const pessoa = await new PessoaRepository().getPersonByPhoneNumber(safeTelefone);
+            const pessoa = await this.pessoaService.getByPhoneNumber(safeTelefone);
             const response = {
                 code: 200,
                 message: "Dados da pessoa foram encontrados com sucesso",
@@ -259,8 +259,5 @@ class PessoaController {
 
     }
 }
-
-
-
 
 export default PessoaController;
