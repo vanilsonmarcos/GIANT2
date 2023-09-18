@@ -21,7 +21,7 @@ class PessoaRepository implements IPessoaRepository<Pessoa> {
         pessoa.ID=pessoa_endereco.PESSOA_ID 
         INNER JOIN pessoa_tipo ON
         pessoa.PESSOA_TIPO_ID = pessoa_tipo.ID LIMIT 100` ;
-        const data: RowDataPacket[] = await query(sql) as  RowDataPacket[] ;
+        const data: RowDataPacket[] = await query(sql) as RowDataPacket[] ;
         let pessoas:Pessoa[] = [];
         if (data) {
             for (const item of data) {

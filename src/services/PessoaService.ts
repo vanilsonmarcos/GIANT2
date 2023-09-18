@@ -10,39 +10,39 @@ class PessoaService {
 
     constructor () {}
 
-    async getAll(): Promise<Pessoa[]> {
+    getAll(): Promise<Pessoa[]> {
         return this.repo.getAll();         
     }
 
-    async getByID(id: String): Promise<Pessoa>{
+    getByID(id: String): Promise<Pessoa>{
         return this.repo.getByID(id);
     }
     
-    async getByPhoneNumber(phoneNumber: String) :Promise<Pessoa> {
+    getByPhoneNumber(phoneNumber: String) :Promise<Pessoa> {
         return this.repo.getPersonByPhoneNumber(phoneNumber);
     }
 
-    async getByEmail(email: String): Promise<Pessoa>{
+    getByEmail(email: String): Promise<Pessoa>{
         return this.getByEmail(email);
     }
 
-    async getByNIF(nif: String): Promise<Pessoa> {
+    getByNIF(nif: String): Promise<Pessoa> {
         return this.repo.getPersonByNIF(nif);
     }
 
-    async getByNBI(nbi: String): Promise<Pessoa> {
+    getByNBI(nbi: String): Promise<Pessoa> {
         return this.repo.getPersonByNBI(nbi);
     }
 
-    async criar(pessoa: Pessoa): Promise<Pessoa> {
+    criar(pessoa: Pessoa): Promise<Pessoa> {
         return this.repo.create(pessoa);
     } 
 
-    async actualizar(id: String, pessoa: Pessoa) {
+    actualizar(id: String, pessoa: Pessoa) {
         return this.repo.update(id, pessoa);
     }
 
-    async remover(id: String): Promise<Boolean> {
+    remover(id: String): Promise<Boolean> {
         // check if object exist
         return this.repo.delete(id);
     }
