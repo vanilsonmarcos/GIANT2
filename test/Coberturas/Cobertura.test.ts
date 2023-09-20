@@ -1,13 +1,16 @@
 import request from 'supertest';
 import { faker } from '@faker-js/faker';
 import app from "../../src/app";
+import port from '../../src/port';
 import Cobertura from '../../src/entities/Cobertura';
 import MockCobertura from './mock/MockCobertura';
+import { Server } from 'http';
 
 const COBERTURA_URL = "/cobertura/";
 
 describe("It should perform all operations related with Coberturas", () => {
     let cobertura: Cobertura ;
+
     beforeAll(() => {
         cobertura = MockCobertura;
     });

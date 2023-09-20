@@ -22,7 +22,7 @@ const MockPessoaEndereco: MockPessoaEndereco = {
 }
 
 const MockPessoa: Pessoa = {
-    nome: faker.person.fullName(), 
+    nome: faker.person.firstName() + ' ' +faker.person.lastName(), 
     pessoa_tipo: Math.random() < 0.5 ? pTipoA: pTipoB,
     data_nascimento: '1992-10-20',
     sexo:  Math.random() < 0.5 ? 'M' : 'F',

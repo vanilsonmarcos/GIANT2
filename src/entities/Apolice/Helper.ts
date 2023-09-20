@@ -1,13 +1,11 @@
 import { RowDataPacket } from "mysql2/promise";
+import fs from "fs"
 import ApoliceTipo from "./ApoliceTipo";
 import ApoliceEstado from "./ApoliceEstado";
 import Apolice from "./Apolice";
-import ApoliceTomador from "./ApoliceTomador";
-import ApoliceSegurado from "./ApoliceSegurado";
 import ApoliceFracionamento from "./ApoliceFracionamento";
 import ApoliceItemSegurado from "./ApoliceItemSegurado";
 import ApolicePagamento from "./ApolicePagamento";
-import { formatDateToDDMMYYY } from "../../utils/helper";
 import ApoliceCobertura from "./ApoliceCobertura";
 import Cobertura from "../Cobertura";
 
@@ -75,7 +73,7 @@ function generateApolicePagamento(data: RowDataPacket): ApolicePagamento {
         apolice_id: data['APOLICE_ID'], 
         descontos: data['DESCONTOS'],
         valor_pago: data['VALOR_PAGO'],
-        data_insercao: formatDateToDDMMYYY(data['DATA_INSERCAO'])
+        data_insercao: data['DATA_INSERCAO']
     }
     return apolicePagamento
 }
@@ -120,13 +118,24 @@ function generateCobertura(data:RowDataPacket): Cobertura {
 }
 
 
-function validateApolice(apolice: Apolice): any {
-    
-} 
+function toBase64(filePath:string) {
+    try {
+        const img = fs.readFileSync(filePath);
+        return Buffer.from(img).toString('base64');
+
+    } catch(error) {
+        throw new Error("Ocorreuum erro ao ler o ficheiro");
+    }
+}
+function toBase64WithPreefix(filepath: string): string {
+    const prefix = 'data:image/png;base64,';
+    const result = prefix + toBase64(filepath);
+    return result; 
+}
 
 export {
     generateApoliceTipo, generateApoliceEstado, 
     generateApolice, generataApoliceFracionamento, 
     generateApoliceItemSegurado, generateApolicePagamento,
-    generateApoliceCobertura, generateCobertura
+    generateApoliceCobertura, generateCobertura, toBase64, toBase64WithPreefix
 }; 

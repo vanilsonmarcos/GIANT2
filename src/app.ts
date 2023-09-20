@@ -1,7 +1,6 @@
 import express, { Application } from "express";
 import helmet from "helmet";
 import cors from 'cors';
-import port from "./port";
 import routes from "./routes";
 import corsOptions from "./cors";
 
@@ -15,7 +14,6 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/", cors(corsOptions), routes);
 
-app.listen(port, () => {});
 
 export default app;
 

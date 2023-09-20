@@ -1,7 +1,6 @@
 import { ResultSetHeader, RowDataPacket } from 'mysql2/promise';
 import { Service } from "typedi";
-import { query, getConnection, queryWithConnection, queryWithValues, queryWithConnectionAndValues } from "./mysql";
-import { jsDateToMysqlDate } from "../../utils/helper";
+import { query, getConnection, queryWithValues, queryWithConnectionAndValues } from "./mysql";
 import IPessoaRepository from "../IPessoaRepository";
 import Pessoa from "../../entities/Pessoa/Pessoa";
 import generatePessoa from "../../entities/Pessoa/Helper";
@@ -40,7 +39,7 @@ class PessoaRepository implements IPessoaRepository<Pessoa> {
         ${this.primeTable}.PESSOA_TIPO_ID = ${this.thirdTable}.ID
         WHERE ${this.primeTable}.ID=? LIMIT 1`;
 
-        const data:RowDataPacket= await queryWithValues(query, [id]) as RowDataPacket;
+        const data:RowDataPacket = await queryWithValues(query, [id]) as RowDataPacket;
         if (!data) {
             throw Error("Não foi possivel encontrar os dados da pessoa");
         }
@@ -56,7 +55,7 @@ class PessoaRepository implements IPessoaRepository<Pessoa> {
             const firstValues = [
                 item.pessoa_tipo.id,
                 item.nome,
-                jsDateToMysqlDate(item.data_nascimento),
+                item.data_nascimento,
                 item.sexo,
                 item.nbi,
                 item.nif,
@@ -73,7 +72,6 @@ class PessoaRepository implements IPessoaRepository<Pessoa> {
                 item.endereco.telefone_alt,
                 item.endereco.email
             ]
-    
             const secondResult: RowDataPacket =  await queryWithConnectionAndValues(conn, secondQuery, secondValues) as RowDataPacket;
             
             if (firstResult.affectedRows === 0 || secondResult.affectedRows === 0) {
@@ -102,7 +100,7 @@ class PessoaRepository implements IPessoaRepository<Pessoa> {
             const firstValues = [
                 item.pessoa_tipo.id,
                 item.nome,
-                jsDateToMysqlDate(item.data_nascimento),
+                item.data_nascimento,
                 item.sexo,
                 item.nbi,
                 item.nif,

@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
 import Pessoa from "../entities/Pessoa/Pessoa";
-import PessoaRepository from "../repositories/mysql/PessoaRepository";
 import PessoaService from "../services/PessoaService";
 import Identifier from "../schema/Identifier";
 import handleParsingError from "../utils/HandleParsingErrors";
 import NbiSchema from "../schema/NbiSchema";
 import EmailSchema from "../schema/EmailSchema";
 import PhoneNumberSchema from "../schema/PhoneNumberSchema";
+import PessoaSchema from "../schema/PessoaSchema";
 
 class PessoaController {
 
@@ -16,7 +16,7 @@ class PessoaController {
         this.pessoaService = pService;
     }
 
-    async getAll(req: Request, res: Response) {
+    async   getAll(req: Request, res: Response) {
         try {
             const pessoas: Pessoa[] = await this.pessoaService.getAll();
             const response = {
@@ -28,7 +28,7 @@ class PessoaController {
         } catch (error) {
             const response = {
                 code: 404,
-                message: "Occoreu um erro ao colectar dos dados das pessoas",
+                message: "Ocorreu um erro ao colectar dos dados das pessoas",
                 data: {},
                 error: error
             }
@@ -170,7 +170,8 @@ class PessoaController {
             const response = {
                 code: 401,
                 message: "Os dados da pessoa não foram encontrados usando o numero de telefone",
-                data: {}
+                data: {},
+                error: error
             }
             return res.json(response);
         }
@@ -178,9 +179,16 @@ class PessoaController {
 
 
     async criar(req: Request, res: Response) {
-        const pessoa: Pessoa = req.body; // parse body to person data
+        const pessoa: Pessoa = req.body;
+        const parsedPessoa = PessoaSchema.safeParse(pessoa);
+
+        if(!parsedPessoa.success) {
+            return handleParsingError(res, parsedPessoa.error);
+        }
+        const safePessoa: Pessoa = parsedPessoa.data;
+
         try {
-            const novaPessoa = await this.pessoaService.criar(pessoa);
+            const novaPessoa = await this.pessoaService.criar(safePessoa);
             const response = {
                 code: 200,
                 message: "Dados da pessoa inseridos com sucesso",
@@ -197,18 +205,23 @@ class PessoaController {
             }
             return res.json(response);
         }
-    }
+    }  
 
     async actualizar(req: Request, res: Response) {
         const pessoa: Pessoa = req.body;
-
-        if (pessoa.id === undefined){
-            return handleParsingError(res, Error("O Id da cobertura não foi criado"));
+        const parsedPessoa = PessoaSchema.safeParse(pessoa);
+        if(!parsedPessoa.success) {
+            return handleParsingError(res, parsedPessoa.error);
         }
-        const id = pessoa.id.toString();
+        const safePessoa: Pessoa = parsedPessoa.data;
+
+        if(safePessoa.id === undefined) {
+            return handleParsingError(res, Error("O Id da pessoa não foi fornecido"));
+        }
+        const id = safePessoa.id.toString();
 
         try {
-            const novaPessoa = await this.pessoaService.actualizar(id, pessoa);
+            const novaPessoa = await this.pessoaService.actualizar(id, safePessoa);
 
             const response = {
                 code: 200,
@@ -225,19 +238,18 @@ class PessoaController {
             }
             return res.json(response);
         }
-    }
+    } 
 
     async remover(req: Request, res: Response) {
-
-        const { unsafeId } = req.params;
-        const parsedID = Identifier.safeParse(unsafeId); 
+        const { id } = req.params;
+        const parsedID = Identifier.safeParse(id); 
         if(!parsedID.success) {
             return handleParsingError(res, parsedID.error);
         }
-        const id = parsedID.data.toString();
+        const safeId = parsedID.data.toString();
 
         try {
-            const result = await this.pessoaService.remover(id);
+            const result = await this.pessoaService.remover(safeId);
 
             if (result) {
                 const response = {
@@ -252,7 +264,8 @@ class PessoaController {
             const response = {
                 code: 401,
                 message: "Ocorreu um erro ao remover os dados do sistema",
-                data: {}
+                data: {},
+                error: error
             }
             return res.json(response);
         }

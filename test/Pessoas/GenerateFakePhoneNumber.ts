@@ -5,11 +5,9 @@ function generateFakePhoneNumber(): string {
     const areaCode = faker.number.int({ min: 911, max: 999 });
     const firstGroup = faker.number.int({ min: 100, max: 999 });
     const secondGroup = faker.number.int({ min: 100, max: 999 });
-    const thirdGroup = faker.number.int({ min: 100, max: 999 });
   
-    return `${countryCode} ${areaCode} ${firstGroup} ${secondGroup} ${thirdGroup}`;
+    return `${countryCode}${areaCode}${firstGroup}${secondGroup}`;
 }
-
 
 export default generateFakePhoneNumber;
   

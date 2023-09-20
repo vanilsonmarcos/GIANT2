@@ -2,7 +2,6 @@ import { RowDataPacket } from "mysql2";
 import Pessoa from "./Pessoa";
 import PessoaEndereco from "./PessoaEndereco";
 import PessoaTipo from "./PessoaTipo";
-import { mysqlDateToJsDate } from "../../utils/helper";
 
 function generatePessoa(data: RowDataPacket): Pessoa {
     let pessoaTipo: PessoaTipo = {

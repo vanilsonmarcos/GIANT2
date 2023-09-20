@@ -13,11 +13,13 @@ async function query(query: string) {
 async function queryWithValues(query: string, values:any) {
     const conn = await getConnection();
     const [results,] = await conn.execute(query, values);
+    conn.end();
     return results;
 }
 
 async function queryWithConnection(conn: mysql.Connection, query: string) {
-    const [results,] = await conn.execute(query) 
+    const [results,] = await conn.execute(query);
+    conn.end();
     return results;
 }
 async function queryWithConnectionAndValues(conn: mysql.Connection, query: string, values:any) {
