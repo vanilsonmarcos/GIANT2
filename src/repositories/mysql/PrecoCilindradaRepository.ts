@@ -31,7 +31,7 @@ class PrecoCilindradaRepository implements IGenericRepository<PrecoCilindrada> {
         return precoCilindradas;
     }
 
-    async getByID(id: String): Promise<Boolean | PrecoCilindrada> {
+    async getByID(id: String): Promise<PrecoCilindrada> {
         const data:RowDataPacket= await query(
             `SELECT ${this.primeTable}.* , ${this.secondTable}.ID AS CATEGORIA_ID,
             ${this.secondTable}.NOME AS CATEGORIA_NOME
@@ -40,14 +40,14 @@ class PrecoCilindradaRepository implements IGenericRepository<PrecoCilindrada> {
             ${this.primeTable}.VEICULO_CATEGORIA_ID = ${this.secondTable}.ID 
             WHERE ${this.primeTable}.ID=${id} LIMIT 1`
         ) as RowDataPacket;
-        if (data) {
-            return generatePrecoCilindrada(data[0]);
+        if (!data) {
+            throw Error("Não foi possivel encontrar os dados do Preco Cilindrada");
         }
+        return generatePrecoCilindrada(data[0]);
 
-        return false;
     }
 
-    async create(item: PrecoCilindrada): Promise<PrecoCilindrada | Boolean> {
+    async create(item: PrecoCilindrada): Promise<PrecoCilindrada> {
         const result = await query(
             `INSERT INTO ${this.primeTable}
             (NOME,LOTACAO,VEICULO_CATEGORIA_ID, PREMIO_TRIMESTRAL, PREMIO_SEMESTRAL, 
@@ -56,14 +56,16 @@ class PrecoCilindradaRepository implements IGenericRepository<PrecoCilindrada> {
             ('${item.nome}', ${item.lotacao}, ${item.veiculo_categoria.id}, ${item.premio_trimestral}, ${item.premio_semestral},
              ${item.premio_anual}, ${item.peso_kg}, ${item.cilindrada_min}, ${item.cilindrada_max})`
         ) as RowDataPacket;  
-        if (result.affectedRows) {
-            item.id = result.insertId;
-            return item;
+        if (!result.affectedRows) {
+            throw Error("Não foi possivel inserir os dados do Preco Cilindrada");
+
         }
-        return false;
+        item.id = result.insertId;
+        return item;
+   
     }
 
-    async update(id: string, item: PrecoCilindrada): Promise<PrecoCilindrada | Boolean> {
+    async update(id: string, item: PrecoCilindrada): Promise<PrecoCilindrada> {
         const result: RowDataPacket = await query(`
         UPDATE ${this.primeTable} SET
         NOME = '${item.nome}',
@@ -78,10 +80,11 @@ class PrecoCilindradaRepository implements IGenericRepository<PrecoCilindrada> {
         WHERE ID=${id}`
         ) as RowDataPacket;
 
-        if (result.affectedRows) {
-            return item;
+        if (!result.affectedRows) {
+            throw Error("Não foi possivel actualizar os Dados do Preco Cilindrada");
         }
-        return false;
+        return item;
+
     }
 
     async delete(id: String): Promise<Boolean> {

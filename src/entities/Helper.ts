@@ -1,6 +1,6 @@
 import { RowDataPacket } from "mysql2";
 import PrecoCilindrada from "./PrecoCilindrada";
-import VeiculoCategoria from "./Apolice/Veiculo/VeiculoCategoria";
+import VeiculoCategoria from "./Veiculo/VeiculoCategoria";
 
 
 function generatePrecoCilindrada(data: RowDataPacket): PrecoCilindrada {

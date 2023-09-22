@@ -95,7 +95,7 @@ class FicheiroController {
                         data: f
                     }
                     return res.json(response);
-                }); 
+                });  
             }
 
             if (file.fieldname === 'file' && DocExtensions.includes(file.mimetype)) {

@@ -1,6 +1,6 @@
 import { Service, Inject } from "typedi";
 import VeiculoRepository from "../repositories/mysql/VeiculoRepository";
-import Veiculo from "../entities/Apolice/Veiculo/Veiculo";
+import Veiculo from "../entities/Veiculo/Veiculo";
 import IVeiculoReposiroty from "../repositories/IVeiculoRepository";
 
 @Service()
@@ -11,28 +11,28 @@ class VeiculoService {
     constructor () {}
 
     async getAll(): Promise<Veiculo[]> {
-        return await this.repo.getAll();         
+        return this.repo.getAll();         
     }
 
     async getByID(id: String): Promise<Veiculo>{
-        return await this.repo.getByID(id);
+        return this.repo.getByID(id);
     }
 
     async getByMatricola(matricola: String): Promise<Veiculo> {
-        return await this.repo.getVeiculoByMatricula(matricola);
+        return this.repo.getVeiculoByMatricula(matricola);
     }
 
     async criar(veiculo: Veiculo): Promise<Veiculo> {
-        return await this.repo.create(veiculo);
+        return this.repo.create(veiculo);
     } 
 
     async actualizar(id: String, veiculo: Veiculo) {
-        return await this.repo.update(id, veiculo);
+        return this.repo.update(id, veiculo);
     }
 
     async remover(id: String): Promise<Boolean> {
         // check if object exist
-        return await this.repo.delete(id);
+        return this.repo.delete(id);
     }
 } 
 

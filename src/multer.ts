@@ -18,7 +18,7 @@ const diskStorageOptions: DiskStorageOptions = {
 
 const documentStorage = multer.diskStorage(diskStorageOptions);
 
-const uploadDocument = multer({ storage: documentStorage });
+const uploadDocument = multer({ storage: documentStorage, limits: { fileSize: MAX_SIZE } });
 
 const imageStorage = multer.memoryStorage();
 

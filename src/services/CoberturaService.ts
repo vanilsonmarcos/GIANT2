@@ -13,24 +13,24 @@ class CoberturaService {
     constructor () {}
 
     async getAll(): Promise<Cobertura[]> {
-        return await this.repo.getAll();         
+        return this.repo.getAll();         
     }
 
     async getByID(id: String): Promise<Cobertura>{
-        return await this.repo.getByID(id);
+        return this.repo.getByID(id);
     }
 
     async criar(cobertura: Cobertura): Promise<Cobertura> {
-        return await this.repo.create(cobertura);
+        return this.repo.create(cobertura);
     } 
 
     async actualizar(id: String, cobertura: Cobertura) {
-        return await this.repo.update(id, cobertura);
+        return this.repo.update(id, cobertura);
     }
 
     async remover(id: String): Promise<Boolean> {
         // check if object exist
-        return await this.repo.delete(id);
+        return this.repo.delete(id);
     }
 }
 

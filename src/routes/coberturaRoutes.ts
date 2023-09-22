@@ -6,6 +6,7 @@ import { Container } from "typedi";
 
 const coberturaService: CoberturaService = Container.get(CoberturaService);
 const coberturaController = new CoberturaController(coberturaService);
+
 const coberturaRoutes =  Router();
 
 coberturaRoutes.get('/cobertura/', coberturaController.getAll.bind(coberturaController));

@@ -1,8 +1,8 @@
 import 'reflect-metadata';
+import Container from "typedi";
 import { Router } from "express";
 import PessoaController from "../controllers/PessoaController";
 import PessoaService from "../services/PessoaService";
-import Container from "typedi";
 
 const pessoaService: PessoaService = Container.get(PessoaService);
 const pessoaController: PessoaController = new PessoaController(pessoaService);

@@ -1,5 +1,5 @@
 interface ErrorResponse extends Response {
-   error: Error
+   error: any
 }
 
 export default ErrorResponse;

@@ -1,38 +1,38 @@
-import { Request, Response } from "express";
+import { Request, Response, response } from "express";
 import PrecoCilindrada from "../entities/PrecoCilindrada";
 import PrecoCilindradaRepository from "../repositories/mysql/PrecoCilindradaRepository";
 import Identifier from "../schema/Identifier";
 import handleParsingError from "../utils/HandleParsingErrors";
+import PrecoCilindradaService from "../services/PrecoCilindradaService";
 
 class PrecoCilindradaController {
 
-    constructor() {
-       
+    private precoCilindradaService: PrecoCilindradaService;
+
+    constructor(pcService: PrecoCilindradaService) {
+       this.precoCilindradaService = pcService;
     }
 
     // Read/Query a person 
     async getAll(req: Request, res: Response) {
         try {
-            const precoCilindradas: PrecoCilindrada[] = await new PrecoCilindradaRepository().getAll();
-            const code = 200;
-            const message = "Dados dos preços por cilindrada foram encontrados com sucesso";
-            const data = precoCilindradas;
-            res.json({
-                code,
-                message,
-                data
-            });
+            const precoCilindradas: PrecoCilindrada[] = await this.precoCilindradaService.getAll();
+            
+            const response = {
+                code: 200,
+                message: "Dados dos preços por cilindrada foram encontrados com sucesso",
+                data: precoCilindradas
+            }
+            res.json(response);
     
         } catch (error) {
-            const code = 404;
-            const message = `Ocorreu um erro ao colectar os dados  dos preços por cilindrada`;
-            const data = {}
-            res.json({
-                code,
-                message,
-                data,
-                error
-            })
+            const response = {
+                code: 404,
+                message: "Ocorreu um erro ao colectar os dados  dos preços por cilindrada",
+                data: {},
+                error: error
+            }
+            res.json(response);
         }
     
     }
@@ -46,116 +46,98 @@ class PrecoCilindradaController {
         const id = parsedID.data.toString();
 
         try {
-            const precoCilindrada = await new PrecoCilindradaRepository().getByID(id);
-            let code = 200;
-            let message = "Dados dos preços por cilindrada foram encontrados com sucesso";
-            let data = precoCilindrada;
-            res.json({
-                code,
-                message,
-                data
-            })
-    
+            const precoCilindrada = await this.precoCilindradaService.getByID(id);
+            const message = {
+                code: 200,
+                message: "Dados dos preços por cilindrada foram encontrados com sucesso",
+                data: precoCilindrada
+            }
+            res.json(message);
         } catch (error) {
-            let code = 401;
-            let message = `Ocorreu um erro ao colectar os dados dos preço por cilindrada usando o id de utilizador : ${id}`;
-            let data = {}
-            res.json({
-                code,
-                message,
-                data,
-                error
-            })
+            const response = {
+                code: 404,
+                message: "Ocorreu um erro ao colectar os dados  dos preços por cilindrada",
+                data: {},
+                error: error
+            }
+            res.json(response);
         }
-    
     }
     
-    // Create a new person 
-    async novoPrecoCilindrada(req: Request, res: Response) {
-        const rprecoCilindrada: PrecoCilindrada = req.body; // parse body to person data
+    async criar(req: Request, res: Response) {
+        const pc: PrecoCilindrada = req.body;
+        if (pc.id === undefined){
+            return handleParsingError(res, Error("O Id do preço cilindrada não foi definido"));
+        }
+        
         try {
-            const result = await new PrecoCilindradaRepository().create(rprecoCilindrada);
-            let code = 200;
-            let message = "Dados do preço por cilindrada inseridos com sucesso";
-            let data = rprecoCilindrada;
-            res.json({
-                code,
-                message,
-                data
-            })
-    
+            const precoCilindrada = await this.precoCilindradaService.criar(pc);
+            const message = {
+                code: 200,
+                message: "Dados do preço por cilindrada inseridos com sucesso",
+                data: precoCilindrada
+            }
+            res.json(message);
         } catch (error) {
-            let code = 401;
-            let message = "Ocorreu um erro ao inserir os dados preço por cilindrada";
-            let data = {}
-            res.json({
-                code,
-                message,
-                data,
-                error
-            })
+            const response = {
+                code: 404,
+                message: "Ocorreu um erro ao colectar os dados  dos preços por cilindrada",
+                data: {},
+                error: error
+            }
+            res.json(response);
         }
-    
     }
-    // Update an existent person
     
-    async actualizarPrecoCilindrada(req: Request, res: Response) {
-        const { id } = req.params;
-        const precoCilindrada: PrecoCilindrada = req.body
+    async actualizar(req: Request, res: Response) {
+        const pc: PrecoCilindrada = req.body;
+        if (pc.id === undefined){
+            return handleParsingError(res, Error("O Id do preço cilindrada não foi definido"));
+        }
+        const id = pc.id.toString();
         try {
-            const result = await new PrecoCilindradaRepository().update(id, precoCilindrada);
-            let code = 200;
-            let message = "Dados do preço cilindrada actualizados com sucesso";
-            let data = precoCilindrada;
-            res.json({
-                code,
-                message,
-                data
-            });
+            const precoCilindrada = await this.precoCilindradaService.actualizar(id, pc);
+            const response = {
+                code: 200,
+                message: "Dados do preço cilindrada actualizados com sucesso",
+                data: precoCilindrada
+            }
+            res.json(response);
         } catch (error) {
-            let code = 401;
-            let message = "Ocorreu um erro ao actualizar os dados do preço cilindrada";
-            let data = {}
-            res.json({
-                code,
-                message,
-                data,
-                error
-            })
+            const response = {
+                code: 401,
+                message: "Ocorreu um erro ao actualizar os dados do preço cilindrada",
+                data: {},
+                error: error
+            }
+            res.json(response);
         }
     }
-    
-    // Delete a person 
-    
-    async removerPrecoCilindrada(req: Request, res: Response) {
+        
+    async remover(req: Request, res: Response) {
         const { id } = req.params;
         try {
-            const result = await new PrecoCilindradaRepository().delete(id);
+            const result = await this.precoCilindradaService.remover(id);
     
             if (result) {
-                let code = 200; // this is ok code 
-                let message = "Dados do preço cilindrada removidos com sucesso";
-                let data = {};
-                res.json({
-                    code,
-                    message,
-                    data,
-                })
+                const response = {
+                    code: 200,
+                    message: "Dados do preço cilindrada removidos com sucesso",
+                    data: {}
+                }
+                res.json(response);
             }
     
         } catch (error) {
-            let data = {};
-            let message = "Ocorreu um erro ao remover os dados do preço cilindrada";
-            let code = 401; // this is ok code 
-            res.json({
-                code,
-                message,
-                data
-            })
+            const response = {
+                code: 401,
+                message: "Ocorreu um erro ao remover os dados do preço cilindrada",
+                data: {},
+                error: error
+            }
+            res.json(response);
         }
     }
-      
-
 }
 
 export default PrecoCilindradaController;

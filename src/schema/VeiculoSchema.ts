@@ -1,9 +1,9 @@
 import {z} from "zod";
-import VeiculoCaategoriaSchema from "./VeiculoCategoriaSchema";
+import VeiculoCategoriaSchema from "./VeiculoCategoriaSchema";
 
 const VeiculoSchema = z.object({
     id: z.number().optional(),
-    veiculo_categoria: VeiculoCaategoriaSchema,
+    veiculo_categoria: VeiculoCategoriaSchema,
     matricula: z.string(),
     marca: z.string(),
     modelo: z.string(),

@@ -1,9 +1,10 @@
 import { Request, Response } from "express";
 import VeiculoRepository from "../repositories/mysql/VeiculoRepository";
-import Veiculo from "../entities/Apolice/Veiculo/Veiculo";
+import Veiculo from "../entities/Veiculo/Veiculo";
 import VeiculoService from "../services/VeiculoService";
 import Identifier from "../schema/Identifier";
 import handleParsingError from "../utils/HandleParsingErrors";
+import VeiculoSchema from "../schema/VeiculoSchema";
 
 class VeiculoController {
     private veiculoService: VeiculoService;
@@ -39,7 +40,7 @@ class VeiculoController {
         }
         const id = parsedID.data.toString();
         try {
-            const veiculo = await new VeiculoRepository().getByID(id);
+            const veiculo = await this.veiculoService.getByID(id);
             const response = {
                 code: 200,
                 message: "Dados do veículo foram encontrados com sucesso",
@@ -61,7 +62,7 @@ class VeiculoController {
     async getByMatricula(req: Request, res: Response) {
         const { matricula } = req.params;
         try {
-            const veiculo = await new VeiculoRepository().getVeiculoByMatricula(matricula);
+            const veiculo = await this.veiculoService.getByMatricola(matricula);
             const response = {
                 code: 200,
                 message: "Dados do veículo foram encontrados com sucesso",
@@ -77,13 +78,17 @@ class VeiculoController {
             };
             res.json(response);
         }
-
     }
 
     async criar(req: Request, res: Response) {
-        const v: Veiculo = req.body; // parse body to person data
+        const veiculo: Veiculo = req.body; // parse body to person data
+        const parsedVeiculo = VeiculoSchema.safeParse(veiculo);
+        if(!parsedVeiculo.success) {
+            return handleParsingError(res, parsedVeiculo.error);
+        }
+        const safeVeiculo:Veiculo = parsedVeiculo.data;
         try {
-            const veiculo = await new VeiculoRepository().create(v);
+            const veiculo = await this.veiculoService.criar(safeVeiculo);
             const response = {
                 code: 200,
                 message: "Dados da veículo inseridos com sucesso",
@@ -102,14 +107,20 @@ class VeiculoController {
     }
 
     async actualizar(req: Request, res: Response) {
-        const v: Veiculo = req.body;
-        if (v.id === undefined){
+        const veiculo: Veiculo = req.body;
+        const parsedVeiculo = VeiculoSchema.safeParse(veiculo);
+        if(!parsedVeiculo.success) {
+            return handleParsingError(res, parsedVeiculo.error);
+        }
+        const safeVeiculo:Veiculo = parsedVeiculo.data;
+
+        if (safeVeiculo.id === undefined){
             return handleParsingError(res, Error("O Id do veiculo não foi definido"));
         }
-        const id = v.id.toString();
+        const id = safeVeiculo.id.toString();
 
         try {
-            const veiculo = await new VeiculoRepository().update(id, v);
+            const veiculo = await this.veiculoService.actualizar(id, safeVeiculo);
             const response = {
                 code: 200,
                 message: "Dados do veículo actualizados com sucesso",
@@ -135,7 +146,7 @@ class VeiculoController {
         }
         const id = parsedID.data.toString();
         try {
-            const result = await new VeiculoRepository().delete(id);
+            const result = await this.veiculoService.remover(id);
             if (result) {
                 const response = {
                     code: 200, 

@@ -1,11 +1,11 @@
 import { Service } from "typedi";
 import { RowDataPacket } from "mysql2/promise";
 import { query } from './mysql';
-import Veiculo from "../../entities/Apolice/Veiculo/Veiculo";
+import Veiculo from "../../entities/Veiculo/Veiculo";
 import IVeiculoReposiroty from "../IVeiculoRepository";
-import generateVeiculo from "../../entities/Apolice/Veiculo/Helper";
+import generateVeiculo from "../../entities/Veiculo/Helper";
 import IVeiculoCategoria from "../IVeiculoCategoria";
-import VeiculoCategoria from "../../entities/Apolice/Veiculo/VeiculoCategoria";
+import VeiculoCategoria from "../../entities/Veiculo/VeiculoCategoria";
 
 @Service()
 class VeiculoRepository implements IVeiculoReposiroty<Veiculo>, IVeiculoCategoria<VeiculoCategoria>{

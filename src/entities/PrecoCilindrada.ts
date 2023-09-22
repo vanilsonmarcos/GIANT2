@@ -1,4 +1,4 @@
-import VeiculoCategoria from "./Apolice/Veiculo/VeiculoCategoria";
+import VeiculoCategoria from "./Veiculo/VeiculoCategoria";
 
 interface PrecoCilindrada {
     id?: Number,
