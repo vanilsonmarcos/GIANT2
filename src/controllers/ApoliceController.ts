@@ -4,7 +4,7 @@ import ApoliceService from "../services/ApoliceService";
 import Identifier from "../schema/Identifier";
 import handleParsingError from "../utils/HandleParsingErrors";
 import Apolice from "../entities/Apolice/Apolice";
-import ApoliceTipoSchema from "../schema/ApoliceTipoSchema";
+import ApoliceSchema from "../schema/ApoliceSchema";
 
 class ApoliceController {
     private apoliceService: ApoliceService;
@@ -12,22 +12,88 @@ class ApoliceController {
         this.apoliceService = vService;
     }
 
-    async getAll(req: Request, res: Response) { }
+    async getAll(req: Request, res: Response) { 
+        try {
+            const apolice: Apolice[] = await this.apoliceService.getAll();
+            const response = {
+                code: 200,
+                message: "Dados das apolices encontrados com sucesso",
+                data: apolice
+            };
+            res.json(response)
+        } catch (error) {
+            const response = {
+                code: 401,
+                message: "Os dados das apolices não foram encontrados",
+                data:  {},
+                error: error
+            };
+            res.json(response)
+        }
+    }
     
-    async getByID(req: Request, res: Response) { }
+    async getByID(req: Request, res: Response) {
+        const { unsafeId } = req.params;
+        const parsedID = Identifier.safeParse(unsafeId); 
+        if(!parsedID.success) {
+            return handleParsingError(res, parsedID.error);
+        }
+        const id = parsedID.data.toString();
+        try {
+            const veiculo = await this.apoliceService.getByID(id);
+            const response = {
+                code: 200,
+                message: "Dados da apólice foram encontrados com sucesso",
+                data: veiculo
+            };
+            res.json(response);
+        } catch (error) {
+            const response = {
+                code: 401,
+                message: "Ocorreu um erro ao inserir os dados da apólice",
+                data: {},
+                error: error
+            };
+            res.json(response);
+        }
+    }
     
-    async criar(req: Request, res: Response) { }
+    async criar(req: Request, res: Response) {
+        const apolice: Apolice = req.body; // parse body to person data
+        const parsedApolice = ApoliceSchema.safeParse(apolice);
+        if(!parsedApolice.success) {
+            return handleParsingError(res, parsedApolice.error);
+        }
+        const safeApolice:Apolice = parsedApolice.data;
+        try {
+            const veiculo = await this.apoliceService.criar(safeApolice);
+            const response = {
+                code: 200,
+                message: "Dados da apólice inseridos com sucesso",
+                data: veiculo
+            };
+            res.json(response);
+        } catch (error) {
+            const response = {
+                code: 401,
+                message: "Ocorreu um erro ao inserir os dados da apólice",
+                data: {},
+                error: error
+            }
+            res.json(response);
+        }
+    }
     
     async actualizar(req: Request, res: Response) { 
         const apolice: Apolice = req.body;
-        const parsedApolice = ApoliceTipoSchema.safeParse(apolice);
+        const parsedApolice = ApoliceSchema.safeParse(apolice);
         if(!parsedApolice.success) {
             return handleParsingError(res, parsedApolice.error);
         }
         const safeApolice:Apolice = parsedApolice.data;
 
         if (safeApolice.id === undefined){
-            return handleParsingError(res, Error("O Id do veiculo não foi definido"));
+            return handleParsingError(res, Error("O Id da apólice não foi definido"));
         }
         const id = safeApolice.id.toString();
 

@@ -1,17 +1,19 @@
+import 'reflect-metadata';
+import Container from "typedi";
 import { Router } from "express";
+import ApoliceService from '../services/ApoliceService';
+import ApoliceController from '../controllers/ApoliceController';
 
-import ApoliceController from "../controllers/ApoliceController";
 
+const apoliceService: ApoliceService = Container.get(ApoliceService);
+const apoliceController:ApoliceController = new ApoliceController(apoliceService);
 const apoliceRoutes = Router();
 
-const apoliceController:ApoliceController = new ApoliceController();
-
-apoliceRoutes.get('/apolice/', apoliceController.getAllApolice);
-apoliceRoutes.get('/apolice/:id', apoliceController.getApoliceByID);
-apoliceRoutes.post('/apolice/', apoliceController.criarApolice);
-apoliceRoutes.put('/apolice/', apoliceController.actualizarApolice);
-apoliceRoutes.delete('/apolice/:id', apoliceController.removerApolice);
-apoliceRoutes.delete('/apolice/:id', apoliceController.removerApolice);
+apoliceRoutes.get('/apolice/', apoliceController.getAll.bind(apoliceController));
+apoliceRoutes.get('/apolice/:id', apoliceController.getByID.bind(apoliceController));
+apoliceRoutes.post('/apolice/', apoliceController.criar.bind(apoliceController));
+apoliceRoutes.put('/apolice/', apoliceController.actualizar.bind(apoliceController));
+apoliceRoutes.delete('/apolice/:id', apoliceController.remover.bind(apoliceController));
 
 
 

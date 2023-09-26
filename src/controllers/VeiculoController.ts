@@ -49,7 +49,7 @@ class VeiculoController {
         } catch (error) {
             const response = {
                 code: 401,
-                message: "",
+                message: "Ocorreu um erro ao inserir os dados do veículo",
                 data: {},
                 error: error
             };
@@ -90,14 +90,14 @@ class VeiculoController {
             const veiculo = await this.veiculoService.criar(safeVeiculo);
             const response = {
                 code: 200,
-                message: "Dados da veículo inseridos com sucesso",
+                message: "Dados do veículo inseridos com sucesso",
                 data: veiculo
             };
             res.json(response);
         } catch (error) {
             const response = {
                 code: 401,
-                message: "Ocorreu um erro ao inserir os dados da veiculo",
+                message: "Ocorreu um erro ao inserir os dados do veiculo",
                 data: {},
                 error: error
             }
