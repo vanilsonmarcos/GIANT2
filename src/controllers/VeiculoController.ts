@@ -129,7 +129,7 @@ class VeiculoController {
         } catch (error) {
             const response = {
                 code: 401,
-                message: "Ocorreu um erro ao actualizar os dados da veículo",
+                message: "Ocorreu um erro ao actualizar os dados do veículo",
                 data: {},
                 error: error
             }
