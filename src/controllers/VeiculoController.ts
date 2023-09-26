@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import VeiculoRepository from "../repositories/mysql/VeiculoRepository";
 import Veiculo from "../entities/Veiculo/Veiculo";
 import VeiculoService from "../services/VeiculoService";
 import Identifier from "../schema/Identifier";
