@@ -139,14 +139,14 @@ class VeiculoController {
     }
 
     async remover(req: Request, res: Response) {
-        const { unsafeId } = req.params;
-        const parsedID = Identifier.safeParse(unsafeId); 
+        const { id } = req.params;
+        const parsedID = Identifier.safeParse(id); 
         if(!parsedID.success) {
             return handleParsingError(res, parsedID.error);
         }
-        const id = parsedID.data.toString();
+        const safeId = parsedID.data.toString();
         try {
-            const result = await this.veiculoService.remover(id);
+            const result = await this.veiculoService.remover(safeId);
             if (result) {
                 const response = {
                     code: 200, 

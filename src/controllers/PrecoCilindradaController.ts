@@ -1,9 +1,9 @@
-import { Request, Response, response } from "express";
+import { Request, Response } from "express";
 import PrecoCilindrada from "../entities/PrecoCilindrada";
-import PrecoCilindradaRepository from "../repositories/mysql/PrecoCilindradaRepository";
 import Identifier from "../schema/Identifier";
 import handleParsingError from "../utils/HandleParsingErrors";
 import PrecoCilindradaService from "../services/PrecoCilindradaService";
+import PrecoCilindradaSchema from "../schema/PrecoCilindradaSchema";
 
 class PrecoCilindradaController {
 
@@ -66,12 +66,13 @@ class PrecoCilindradaController {
     
     async criar(req: Request, res: Response) {
         const pc: PrecoCilindrada = req.body;
-        if (pc.id === undefined){
-            return handleParsingError(res, Error("O Id do preço cilindrada não foi definido"));
+        const parsedPc = PrecoCilindradaSchema.safeParse(pc);
+        if(!parsedPc.success) {
+            return handleParsingError(res, parsedPc.error);
         }
-        
+        const safePc:PrecoCilindrada = parsedPc.data;
         try {
-            const precoCilindrada = await this.precoCilindradaService.criar(pc);
+            const precoCilindrada = await this.precoCilindradaService.criar(safePc);
             const message = {
                 code: 200,
                 message: "Dados do preço por cilindrada inseridos com sucesso",
@@ -91,12 +92,18 @@ class PrecoCilindradaController {
     
     async actualizar(req: Request, res: Response) {
         const pc: PrecoCilindrada = req.body;
-        if (pc.id === undefined){
+        const parsedPc = PrecoCilindradaSchema.safeParse(pc);
+        if(!parsedPc.success) {
+            return handleParsingError(res, parsedPc.error);
+        }
+        const safePc:PrecoCilindrada = parsedPc.data;
+
+        if (safePc.id === undefined){
             return handleParsingError(res, Error("O Id do preço cilindrada não foi definido"));
         }
-        const id = pc.id.toString();
+        const id = safePc.id.toString();
         try {
-            const precoCilindrada = await this.precoCilindradaService.actualizar(id, pc);
+            const precoCilindrada = await this.precoCilindradaService.actualizar(id, safePc);
             const response = {
                 code: 200,
                 message: "Dados do preço cilindrada actualizados com sucesso",
@@ -116,9 +123,13 @@ class PrecoCilindradaController {
         
     async remover(req: Request, res: Response) {
         const { id } = req.params;
+        const parsedID = Identifier.safeParse(id); 
+        if(!parsedID.success) {
+            return handleParsingError(res, parsedID.error);
+        }
+        const safeId = parsedID.data.toString();
         try {
-            const result = await this.precoCilindradaService.remover(id);
-    
+            const result = await this.precoCilindradaService.remover(safeId);
             if (result) {
                 const response = {
                     code: 200,
@@ -127,7 +138,6 @@ class PrecoCilindradaController {
                 }
                 res.json(response);
             }
-    
         } catch (error) {
             const response = {
                 code: 401,
