@@ -17,7 +17,6 @@ class FicheiroService {
         return this.repo.getByID(id);
     }
     criar(item: Ficheiro): Promise<Ficheiro> {
-
         return this.repo.create(item);
     }
     actualizar(id: String, item: Ficheiro): Promise<Ficheiro> {

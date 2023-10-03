@@ -1,9 +1,11 @@
+import { Service } from "typedi";
 import PrecoCilindrada  from '../../entities/PrecoCilindrada';
 import { RowDataPacket } from "mysql2/promise";
 import IGenericRepository from "../IGenericRepository";
 import { query } from "./mysql";
 import generatePrecoCilindrada from './../../entities/Helper';
 
+@Service()
 class PrecoCilindradaRepository implements IGenericRepository<PrecoCilindrada> {
 
     private primeTable = 'preco_cilindrada';

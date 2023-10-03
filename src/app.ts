@@ -2,7 +2,7 @@ import express, { Application } from "express";
 import helmet from "helmet";
 import cors from 'cors';
 import routes from "./routes";
-import corsOptions from "./cors";
+import corsOptions from "../cors";
 
 const app: Application = express();
 

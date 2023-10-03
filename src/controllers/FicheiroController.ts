@@ -14,25 +14,8 @@ class FicheiroController {
         this.fService = ficheiroService;
     }
 
-    async getAll(req: Request, res: Response) {
-        try {
-            const ficheiros: Ficheiro[] = await this.fService.getAll();
-            const response = {
-                code: 200,
-                message: "Os Ficheiros foram encontrados com sucesso",
-                data: ficheiros
-            }
-            return res.json(response);
-        } catch (error) {
-            const response = {
-                code: 404,
-                message: "Ocorreu um erro ao colectar os ficheiros",
-                data: {},
-                error: error
-            }
-            return res.json(response);
-        }
-
+    getAll(req: Request, res: Response) {
+        throw new Error("Method not implemented.");
     }
 
     async getByID(req: Request, res: Response) {

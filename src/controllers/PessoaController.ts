@@ -16,7 +16,7 @@ class PessoaController {
         this.pessoaService = pService;
     }
 
-    async   getAll(req: Request, res: Response) {
+    async getAll(req: Request, res: Response) {
         try {
             const pessoas: Pessoa[] = await this.pessoaService.getAll();
             const response = {

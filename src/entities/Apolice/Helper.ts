@@ -10,15 +10,6 @@ import ApoliceCobertura from "./ApoliceCobertura";
 import Cobertura from "../Cobertura";
 
 
-function generateApoliceTipo(data: RowDataPacket): ApoliceTipo {
-    let apoliceTipo: ApoliceTipo = {
-        id: data['ID'],
-        sigla: data['SIGLA'],
-        nome: data['NOME'],
-        descricao: data['DESCRICAO']
-    }
-    return apoliceTipo;
-}
 
 
 function generateApoliceEstado(data: RowDataPacket): ApoliceEstado {
@@ -31,20 +22,7 @@ function generateApoliceEstado(data: RowDataPacket): ApoliceEstado {
 }
 
 
-function generateApolice(data: RowDataPacket): Apolice {
-    let apolice: Apolice = {
-        id: data['ID'],
-        apolice_tipo_id: data['APOLICE_TIPO_ID'],
-        numero: data['ID'],
-        segurado_id: data['APOLICE_SEGURADO_ID'],
-        data_inicio: data['DATA_INICIO'],
-        data_fim: data['DATA_FIM'],
-        apolice_fracionamento_id: data['APOLICE_FRACIONAMENTO_ID'],
-        apolice_estado_id: data['APOLICE_ESTADO_ID'],
-        valor_premio: data['VALOR_PREMIO'],
-    }
-    return apolice;
-}
+
 
 function generataApoliceFracionamento(data: RowDataPacket): ApoliceFracionamento {
     let apoliceFracionamento: ApoliceFracionamento = {
@@ -134,8 +112,7 @@ function toBase64WithPreefix(filepath: string): string {
 }
 
 export {
-    generateApoliceTipo, generateApoliceEstado, 
-    generateApolice, generataApoliceFracionamento, 
+     generateApoliceEstado, generataApoliceFracionamento, 
     generateApoliceItemSegurado, generateApolicePagamento,
     generateApoliceCobertura, generateCobertura, toBase64, toBase64WithPreefix
 }; 
