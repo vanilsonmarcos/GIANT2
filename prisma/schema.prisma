@@ -1,11 +1,274 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
+}
+
+model apolice {
+  ID                       Int                     @id @default(autoincrement())
+  APOLICE_TIPO_ID          Int
+  NUMERO                   String?                 @db.VarChar(64)
+  SEGURADO_ID              Int
+  DATA_INICIO              DateTime?               @db.Date
+  DATA_FIM                 DateTime?               @db.Date
+  APOLICE_FRACIONAMENTO_ID Int
+  APOLICE_ESTADO_ID        Int
+  VALOR_PREMIO             Decimal?                @db.Decimal(13, 2)
+  INSERIDO_POR             Int?
+  ACTUALIZADO_POR          Int?
+  REMOVIDO_POR             Int?
+  DATA_INSERCAO            DateTime?               @db.Timestamp(0)
+  DATA_ACTUALIZACAO        DateTime?               @db.Timestamp(0)
+  DATA_REMOCAO             DateTime?               @db.Timestamp(0)
+  apolice_estado           apolice_estado          @relation(fields: [APOLICE_ESTADO_ID], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "FKAPOLICE218101")
+  pessoa                   pessoa                  @relation(fields: [SEGURADO_ID], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "FKAPOLICE395825")
+  apolice_tipo             apolice_tipo            @relation(fields: [APOLICE_TIPO_ID], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "FKAPOLICE49224")
+  apolice_fracionamento    apolice_fracionamento   @relation(fields: [APOLICE_FRACIONAMENTO_ID], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "FKAPOLICE599017")
+  apolice_cobertura        apolice_cobertura[]
+  apolice_historico        apolice_historico[]
+  apolice_item_segurado    apolice_item_segurado[]
+  apolice_pagamento        apolice_pagamento[]
+  apolice_tomador          apolice_tomador[]
+
+  @@index([APOLICE_ESTADO_ID], map: "FKAPOLICE218101")
+  @@index([SEGURADO_ID], map: "FKAPOLICE395825")
+  @@index([APOLICE_TIPO_ID], map: "FKAPOLICE49224")
+  @@index([APOLICE_FRACIONAMENTO_ID], map: "FKAPOLICE599017")
+}
+
+model apolice_cobertura {
+  ID            Int        @id
+  APOLICE_ID    Int?
+  COBERTURA_ID  Int?
+  VALOR_PAGO    Decimal?   @db.Decimal(13, 2)
+  DESCONTO_EFEC Decimal?   @db.Decimal(13, 2)
+  apolice       apolice?   @relation(fields: [APOLICE_ID], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "FKAPOLICECOBERT")
+  cobertura     cobertura? @relation(fields: [COBERTURA_ID], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "FKCOBERTCOBERT")
+
+  @@index([APOLICE_ID], map: "FKAPOLICECOBERT_idx")
+  @@index([COBERTURA_ID], map: "FKCOBERTCOBERT_idx")
+}
+
+model apolice_estado {
+  ID                Int                 @id @default(autoincrement())
+  NOME              String?             @db.VarChar(255)
+  DESCRICAO         String?             @db.VarChar(255)
+  DATA_CRIACAO      DateTime?           @default(now()) @db.Timestamp(0)
+  DATA_ACTUALIZACAO DateTime?           @default(now()) @db.DateTime(0)
+  apolice           apolice[]
+  apolice_historico apolice_historico[]
+}
+
+model apolice_fracionamento {
+  ID                Int       @id @default(autoincrement())
+  FRACIONADO_EM     String?   @db.VarChar(10)
+  NO_FRACOES        Int?
+  DATA_CRIACAO      DateTime? @default(now()) @db.Timestamp(0)
+  DATA_ACTUALIZACAO DateTime? @default(now()) @db.DateTime(0)
+  apolice           apolice[]
+}
+
+model apolice_historico {
+  ID                Int            @id @default(autoincrement())
+  APOLICE_ID        Int
+  APOLICE_TIPO_ID   Int
+  APOLICE_ESTADO_ID Int
+  ACCAO             String?        @db.VarChar(255)
+  DATA              Int?
+  AUTOR_ACCAO       Int?
+  apolice_estado    apolice_estado @relation(fields: [APOLICE_ESTADO_ID], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "FKAPOLICE_HI457370")
+  apolice_tipo      apolice_tipo   @relation(fields: [APOLICE_TIPO_ID], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "FKAPOLICE_HI724695")
+  apolice           apolice        @relation(fields: [APOLICE_ID], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "FKAPOLICE_HI851163")
+
+  @@index([APOLICE_ESTADO_ID], map: "FKAPOLICE_HI457370")
+  @@index([APOLICE_TIPO_ID], map: "FKAPOLICE_HI724695")
+  @@index([APOLICE_ID], map: "FKAPOLICE_HI851163")
+}
+
+model apolice_item_segurado {
+  ID              Int          @id @default(autoincrement())
+  APOLICE_TIPO_ID Int
+  ITEM_ID         Int
+  APOLICE_ID      Int
+  apolice_tipo    apolice_tipo @relation(fields: [APOLICE_TIPO_ID], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "FKAPOLICE_IT272194")
+  veiculo         veiculo      @relation(fields: [ITEM_ID], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "FKAPOLICE_IT332390")
+  apolice         apolice      @relation(fields: [APOLICE_ID], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "FKAPOLICE_IT332490")
+
+  @@index([APOLICE_TIPO_ID], map: "FKAPOLICE_IT272194")
+  @@index([ITEM_ID], map: "FKAPOLICE_IT332390")
+  @@index([APOLICE_ID], map: "FKAPOLICE_IT332490_idx")
+}
+
+model apolice_pagamento {
+  ID                Int       @id @default(autoincrement())
+  APOLICE_ID        Int
+  DESCONTOS         Decimal?  @db.Decimal(13, 2)
+  VALOR_PAGO        Decimal?  @db.Decimal(13, 2)
+  DATA_INSERCAO     DateTime? @default(now()) @db.Timestamp(0)
+  DATA_ACTUALIZACAO DateTime? @db.Timestamp(0)
+  DATA_REMOCAO      DateTime? @db.Timestamp(0)
+  apolice           apolice   @relation(fields: [APOLICE_ID], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "FKAPOLICE_PA210466")
+
+  @@index([APOLICE_ID], map: "FKAPOLICE_PA210466")
+}
+
+model apolice_tipo {
+  ID                    Int                     @id @default(autoincrement())
+  SIGLA                 String?                 @unique(map: "SIGLA") @db.VarChar(30)
+  NOME                  String?                 @db.VarChar(255)
+  DESCRICAO             String?                 @db.MediumText
+  INSERIDO_POR          Int?
+  ACTUALIZADO_POR       Int?
+  REMOVIDO_POR          Int?
+  DATA_CRIACAO          DateTime?               @default(now()) @db.Timestamp(0)
+  DATA_ACTUALIZACAO     DateTime?               @default(now()) @db.DateTime(0)
+  apolice               apolice[]
+  apolice_historico     apolice_historico[]
+  apolice_item_segurado apolice_item_segurado[]
+  cobertura             cobertura[]
+}
+
+model apolice_tomador {
+  ID                Int       @id @default(autoincrement())
+  TOMADOR_ID        Int
+  APOLICE_ID        Int
+  DATA_INSERCAO     DateTime? @db.Timestamp(0)
+  DATA_ACTUALIZACAO DateTime? @db.Timestamp(0)
+  DATA_REMOCAO      DateTime? @db.Timestamp(0)
+  apolice           apolice   @relation(fields: [APOLICE_ID], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "FKAPOLICE_TO613390")
+  pessoa            pessoa    @relation(fields: [TOMADOR_ID], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "FKAPOLICE_TO64820")
+
+  @@index([APOLICE_ID], map: "FKAPOLICE_TO613390")
+  @@index([TOMADOR_ID], map: "FKAPOLICE_TO64820")
+}
+
+model cobertura {
+  ID                Int                 @id @default(autoincrement())
+  APOLICE_TIPO_ID   Int
+  COBERTURA_BASE    Boolean?            @default(dbgenerated("b'0'")) @db.Bit(1)
+  SIGLA             String?             @unique(map: "SIGLA") @db.VarChar(30)
+  NOME              String?             @db.VarChar(255)
+  DESCRICAO         String?             @db.LongText
+  INSERIDO_POR      Int?
+  ACTUALIZADO_POR   Int?
+  REMOVIDO_POR      Int?
+  VALOR_PAGAR       Decimal?            @default(0.00) @db.Decimal(13, 2)
+  DESCONTO          Decimal?            @default(0.00) @db.Decimal(13, 2)
+  DATA_CRIACAO      DateTime?           @default(now()) @db.Timestamp(0)
+  DATA_ACTUALIZACAO DateTime?           @default(now()) @db.DateTime(0)
+  apolice_cobertura apolice_cobertura[]
+  apolice_tipo      apolice_tipo        @relation(fields: [APOLICE_TIPO_ID], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "FKAPOLICE_CO255895")
+
+  @@index([APOLICE_TIPO_ID], map: "FKAPOLICE_CO255895")
+}
+
+model new_table {
+  id   Int             @id @default(autoincrement())
+  type new_table_type?
+}
+
+model pessoa {
+  ID                Int               @id @default(autoincrement())
+  PESSOA_TIPO_ID    Int
+  NOME              String?           @db.VarChar(255)
+  DATA_NASCIMENTO   DateTime?         @db.Date
+  SEXO              String?           @db.VarChar(1)
+  NBI               String?           @unique(map: "NBI") @db.VarChar(64)
+  NIF               String?           @unique(map: "NIF") @db.VarChar(64)
+  ESTADO_CIVIL      String?           @db.VarChar(1)
+  DATA_CRIACAO      DateTime?         @default(now()) @db.Timestamp(0)
+  DATA_ACTUALIZACAO DateTime?         @default(now()) @db.DateTime(0)
+  apolice           apolice[]
+  apolice_tomador   apolice_tomador[]
+  pessoa_tipo       pessoa_tipo       @relation(fields: [PESSOA_TIPO_ID], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "FKPESSOA892258")
+  pessoa_endereco   pessoa_endereco[]
+
+  @@index([PESSOA_TIPO_ID], map: "FKPESSOA892258")
+}
+
+model pessoa_endereco {
+  ID                   Int       @id @default(autoincrement())
+  PESSOA_ID            Int
+  TELEFONE             String?   @unique(map: "TELEFONE") @db.VarChar(80)
+  TELEFONE_ALTERNATIVO String?   @db.VarChar(80)
+  EMAIL                String?   @unique(map: "EMAIL") @db.VarChar(100)
+  DATA_CRIACAO         DateTime? @default(now()) @db.Timestamp(0)
+  DATA_ACTUALIZACAO    DateTime? @default(now()) @db.DateTime(0)
+  pessoa               pessoa    @relation(fields: [PESSOA_ID], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "FKPESSOA_END360638")
+
+  @@index([PESSOA_ID], map: "FKPESSOA_END360638")
+}
+
+model pessoa_tipo {
+  ID                Int       @id @default(autoincrement())
+  NOME_TIPO         String?   @db.VarChar(255)
+  DATA_CRIACAO      DateTime? @default(now()) @db.Timestamp(0)
+  DATA_ACTUALIZACAO DateTime? @default(now()) @db.DateTime(0)
+  pessoa            pessoa[]
+}
+
+model preco_cilindrada {
+  ID                   Int               @id @default(autoincrement())
+  NOME                 String?           @db.VarChar(255)
+  LOTACAO              Int?
+  VEICULO_CATEGORIA_ID Int
+  PREMIO_TRIMESTRAL    Decimal?          @db.Decimal(13, 2)
+  PREMIO_SEMESTRAL     Decimal?          @db.Decimal(13, 2)
+  PREMIO_ANUAL         Decimal?          @db.Decimal(13, 2)
+  PESO_KG              Int?
+  CILINDRADA_MIN       Int?
+  CILINDRADA_MAX       Int?
+  INSERIDO_POR         Int?
+  ACTUALIZADO_POR      Int?
+  DATA_CRIACAO         DateTime?         @default(now()) @db.Timestamp(0)
+  DATA_ACTUALIZACAO    DateTime?         @default(now()) @db.DateTime(0)
+  veiculo_categoria    veiculo_categoria @relation(fields: [VEICULO_CATEGORIA_ID], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "FKPRECO_CILI487359")
+
+  @@index([VEICULO_CATEGORIA_ID], map: "FKPRECO_CILI487359")
+}
+
+model veiculo {
+  ID                    Int                     @id @default(autoincrement())
+  VEICULO_CATEGORIA_ID  Int
+  MATRICULA             String?                 @unique(map: "MATRICULA") @db.VarChar(24)
+  MARCA                 String?                 @db.VarChar(255)
+  MODELO                String?                 @db.VarChar(255)
+  ANO_AQUISICAO         Int?
+  CAPITAL_AQUISICAO     Decimal?                @db.Decimal(13, 2)
+  PESO_BRUTO            Int?
+  N_LOTACAO             Int?
+  ANO_FABRICO           Int?
+  CILINDRADA            Int?
+  REF_CHASSI            String?                 @db.VarChar(64)
+  DESCRICAO             String?                 @db.VarChar(4000)
+  INSERIDO_POR          Int?
+  ACTUALIZADO_POR       Int?
+  REMOVIDO_POR          Int?
+  DATA_INSERCAO         DateTime?               @db.Timestamp(0)
+  DATA_ACTUALIZACAO     DateTime?               @db.Timestamp(0)
+  DATA_REMOCAO          DateTime?               @db.Timestamp(0)
+  apolice_item_segurado apolice_item_segurado[]
+  veiculo_categoria     veiculo_categoria       @relation(fields: [VEICULO_CATEGORIA_ID], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "FKVEICULO357677")
+
+  @@index([VEICULO_CATEGORIA_ID], map: "FKVEICULO357677")
+}
+
+model veiculo_categoria {
+  ID                Int                @id @default(autoincrement())
+  NOME              String?            @db.VarChar(255)
+  REMOVIDO_POR      Int?
+  DATA_INSERCAO     DateTime?          @db.Timestamp(0)
+  DATA_ACTUALIZACAO DateTime?          @db.Timestamp(0)
+  DATA_REMOCAO      DateTime?          @db.Timestamp(0)
+  preco_cilindrada  preco_cilindrada[]
+  veiculo           veiculo[]
+}
+
+enum new_table_type {
+  Alto
+  Medio
+  Baixo
 }
