@@ -5,6 +5,7 @@ import Identifier from "../schema/Identifier";
 import handleParsingError from "../utils/HandleParsingErrors";
 import { uploadImage, uploadDocument } from "../multer";
 import { DocExtensions, ImageExtensions } from "../entities/Ficheiro/Extensions";
+import FileUploadFactory from "../FileUploadFactory";
 
 class FicheiroController {
 

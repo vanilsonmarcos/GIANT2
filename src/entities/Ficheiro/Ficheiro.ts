@@ -1,11 +1,11 @@
 
 interface Ficheiro {
-    id?: Number;
-    nome: String,
-    path?: String,
-    ext: String,
-    size: Number,
-    content?: String,
+    id?: number;
+    nome: string,
+    path?: string,
+    ext: string,
+    size: number,
+    content?: string,
 }
 
 export default Ficheiro

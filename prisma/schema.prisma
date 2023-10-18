@@ -233,17 +233,17 @@ model preco_cilindrada {
 model veiculo {
   ID                    Int                     @id @default(autoincrement())
   VEICULO_CATEGORIA_ID  Int
-  MATRICULA             String?                 @unique(map: "MATRICULA") @db.VarChar(24)
-  MARCA                 String?                 @db.VarChar(255)
-  MODELO                String?                 @db.VarChar(255)
-  ANO_AQUISICAO         Int?
-  CAPITAL_AQUISICAO     Decimal?                @db.Decimal(13, 2)
-  PESO_BRUTO            Int?
-  N_LOTACAO             Int?
-  ANO_FABRICO           Int?
-  CILINDRADA            Int?
-  REF_CHASSI            String?                 @db.VarChar(64)
-  DESCRICAO             String?                 @db.VarChar(4000)
+  MATRICULA             String                @unique(map: "MATRICULA") @db.VarChar(24)
+  MARCA                 String                 @db.VarChar(255)
+  MODELO                String                 @db.VarChar(255)
+  ANO_AQUISICAO         Int
+  CAPITAL_AQUISICAO     Decimal               @db.Decimal(13, 2)
+  PESO_BRUTO            Int
+  N_LOTACAO             Int
+  ANO_FABRICO           Int
+  CILINDRADA            Int
+  REF_CHASSI            String                 @db.VarChar(64)
+  DESCRICAO             String                 @db.VarChar(4000)
   INSERIDO_POR          Int?
   ACTUALIZADO_POR       Int?
   REMOVIDO_POR          Int?
@@ -271,4 +271,13 @@ enum new_table_type {
   Alto
   Medio
   Baixo
+}
+
+model ficheiro {
+  ID          Int               @id @default(autoincrement())
+  NOME        String            @db.VarChar(255)
+  SIZE        Int               @db.Int
+  PATH        String?           @db.VarChar(500)
+  EXT         String            @db.VarChar(5)
+  CONTENT     String?           @db.LongText
 }

@@ -1,7 +1,6 @@
-import { RowDataPacket } from "mysql2";
 import Ficheiro from "./Ficheiro";
 
-function generateFicheiro(data: RowDataPacket): Ficheiro {
+function generateFicheiro(data: ): Ficheiro {
     let ficheiro: Ficheiro = {
         id: data['ID'],
         nome: data['NOME'],

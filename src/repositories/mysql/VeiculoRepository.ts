@@ -6,6 +6,8 @@ import IVeiculoReposiroty from "../IVeiculoRepository";
 import generateVeiculo from "../../entities/Veiculo/Helper";
 import IVeiculoCategoria from "../IVeiculoCategoria";
 import VeiculoCategoria from "../../entities/Veiculo/VeiculoCategoria";
+import { veiculo } from "@prisma/client";
+import prisma from "../PrismaClient";
 
 @Service()
 class VeiculoRepository implements IVeiculoReposiroty<Veiculo>, IVeiculoCategoria<VeiculoCategoria>{
@@ -16,19 +18,20 @@ class VeiculoRepository implements IVeiculoReposiroty<Veiculo>, IVeiculoCategori
         
     }
 
-    async getVeiculoByMatricula(matricula: String): Promise<Veiculo> {
-        const sql: string = `SELECT veiculo.* , veiculo_categoria.ID AS CATEGORIA_ID,
-        veiculo_categoria.NOME AS CATEGORIA_NOME
-        FROM veiculo
-        INNER JOIN veiculo_categoria ON
-        veiculo.VEICULO_CATEGORIA_ID = veiculo_categoria.ID 
-        WHERE veiculo.MATRICULA = '${matricula}'
-        LIMIT 1` ;
-        const data: RowDataPacket[] = await query(sql) as  RowDataPacket[] ;
-        if (!data) {
+    async getVeiculoByMatricula(matricula: string): Promise<Veiculo> {
+        const v: veiculo | null = prisma.veiculo.findUnique({
+            where: {
+                MATRICULA: matricula
+            },
+            include: {
+              veiculo_categoria: true  
+            }
+        });
+
+        if (v === null) {
             throw Error("Não Foi encontrado um veiculo com a matricula referenciada");
         }
-        return generateVeiculo(data[0]);     
+        return generateVeiculo(v);     
     }
     
     async getAll(): Promise<Veiculo[]> {

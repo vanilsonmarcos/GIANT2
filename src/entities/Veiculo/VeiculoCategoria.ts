@@ -2,8 +2,8 @@ import { DefaultSerializer } from "v8"
 
 interface VeiculoCategoria {
     id: number,
-    nome: String, 
-    descrição?: String
+    nome: string, 
+    descrição?: string
 }
 
 export default VeiculoCategoria;

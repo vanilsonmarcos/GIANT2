@@ -1,21 +1,19 @@
 import VeiculoCategoria from "./VeiculoCategoria";
 
 interface Veiculo {
-    id?: Number,
+    id?: number,
     veiculo_categoria: VeiculoCategoria ,
-    matricula: String,
-    marca: String,
-    modelo: String,
-    ano_aquisicao: Number,
-    capital_aquisicao: Number,
-    peso_bruto: Number,
-    n_lotacao: Number,
-    ano_fabrico: Number,
+    matricula: string,
+    marca: string,
+    modelo: string,
+    ano_aquisicao: number,
+    capital_aquisicao: number,
+    peso_bruto: number,
+    n_lotacao: number,
+    ano_fabrico: number,
     cilindrada: number,
-    ref_chassi: String,
-    descricao: String,
-    inserido_por?: Number,
-    actualizado_por?: Number 
+    ref_chassi: string,
+    descricao: string
 }
 
 export default Veiculo;

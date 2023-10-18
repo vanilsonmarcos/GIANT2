@@ -16,4 +16,3 @@ app.use("/", cors(corsOptions), routes);
 
 
 export default app;
-
