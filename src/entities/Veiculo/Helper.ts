@@ -1,21 +1,15 @@
 import { veiculo } from "@prisma/client";
 import Veiculo from "./Veiculo";
-import VeiculoCategoria from "./VeiculoCategoria";
 
 function generateVeiculo(data: veiculo): Veiculo {
-    let VeiculoCategoria: VeiculoCategoria = {
-        id: data.veiculo_categoria[0].ID,
-        nome: data.veiculo_categoria[0].NOME
-    }
-
     let veiculo: Veiculo = {
         id: data.ID,
-        veiculo_categoria: VeiculoCategoria,
+        veiculo_categoria_id: data.VEICULO_CATEGORIA_ID,
         matricula: data.MATRICULA,
         marca: data.MARCA,
         modelo: data.MODELO,
         ano_aquisicao: data.ANO_AQUISICAO,
-        capital_aquisicao: data.CAPITAL_AQUISICAO,
+        capital_aquisicao: data.CAPITAL_AQUISICAO.toNumber(),
         peso_bruto: data.PESO_BRUTO,
         n_lotacao: data.N_LOTACAO,
         ano_fabrico: data.ANO_FABRICO,

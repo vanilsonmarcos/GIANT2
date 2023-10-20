@@ -1,29 +1,25 @@
+import { pessoa, pessoa_endereco } from './../../../node_modules/.prisma/client/index.d';
 import { ResultSetHeader, RowDataPacket } from 'mysql2/promise';
 import { Service } from "typedi";
 import { query, getConnection, queryWithValues, queryWithConnectionAndValues } from "./mysql";
 import IPessoaRepository from "../IPessoaRepository";
 import Pessoa from "../../entities/Pessoa/Pessoa";
 import generatePessoa from "../../entities/Pessoa/Helper";
+import prisma from '../PrismaClient';
 
 @Service()
 class PessoaRepository implements IPessoaRepository<Pessoa> {
-    private primeTable = 'pessoa';
-    private secondTable = "pessoa_endereco";
-    private thirdTable = "pessoa_tipo";
-
-    constructor() {
-    }
-
     async getAll(): Promise<Pessoa[]> {
-        const sql = `SELECT * FROM pessoa 
-        INNER JOIN pessoa_endereco ON 
-        pessoa.ID=pessoa_endereco.PESSOA_ID 
-        INNER JOIN pessoa_tipo ON
-        pessoa.PESSOA_TIPO_ID = pessoa_tipo.ID LIMIT 100` ;
-        const data: RowDataPacket[] = await query(sql) as RowDataPacket[] ;
+        const ps = await prisma.pessoa.findMany({
+            take: 100,
+            include: {
+                pessoa_tipo: true,
+                pessoa_endereco: true
+            }
+        });
         let pessoas:Pessoa[] = [];
-        if (data) {
-            for (const item of data) {
+        if (pessoas !== null) {
+            for (const item of ps) {
                 const pessoa:Pessoa = generatePessoa(item);
                 pessoas.push(pessoa);
             }
@@ -31,193 +27,173 @@ class PessoaRepository implements IPessoaRepository<Pessoa> {
         return pessoas;
     }
 
-    async getByID(id: String): Promise<Pessoa> {
-        const query = `SELECT * FROM ${this.primeTable} 
-        INNER JOIN ${this.secondTable} ON 
-        ${this.primeTable}.ID=${this.secondTable}.PESSOA_ID 
-        INNER JOIN ${this.thirdTable} ON
-        ${this.primeTable}.PESSOA_TIPO_ID = ${this.thirdTable}.ID
-        WHERE ${this.primeTable}.ID=? LIMIT 1`;
-
-        const data:RowDataPacket = await queryWithValues(query, [id]) as RowDataPacket;
-        if (!data) {
+    async getByID(id: string): Promise<Pessoa> {
+        const ps = await prisma.pessoa.findUnique({
+            where: {
+                ID: parseInt(id)
+            },
+            include: {
+                pessoa_tipo: true,
+                pessoa_endereco: true
+            }
+        });
+        if (ps === null) {
             throw Error("Não foi possivel encontrar os dados da pessoa");
         }
-        return generatePessoa(data[0]);
+        return generatePessoa(ps);
     }
 
     async create(item: Pessoa): Promise<Pessoa> {
-        const conn = await getConnection();
-        try {
-            await conn.beginTransaction();
-    
-            const firstQuery= `INSERT INTO pessoa(PESSOA_TIPO_ID, NOME, DATA_NASCIMENTO, SEXO, NBI, NIF, ESTADO_CIVIL) VALUES(?, ?, ?, ?, ?, ?, ?);`;
-            const firstValues = [
-                item.pessoa_tipo.id,
-                item.nome,
-                item.data_nascimento,
-                item.sexo,
-                item.nbi,
-                item.nif,
-                item.estado_civil
-            ]
-            const firstResult: RowDataPacket = await queryWithConnectionAndValues(conn, firstQuery, firstValues) as RowDataPacket;
-    
-            const pessoaId = firstResult.insertId;
-    
-            const secondQuery = `INSERT INTO pessoa_endereco(PESSOA_ID, TELEFONE, TELEFONE_ALTERNATIVO, EMAIL) VALUES(?, ?, ?, ?);`; 
-            const secondValues = [
-                pessoaId,
-                item.endereco.telefone,
-                item.endereco.telefone_alt,
-                item.endereco.email
-            ]
-            const secondResult: RowDataPacket =  await queryWithConnectionAndValues(conn, secondQuery, secondValues) as RowDataPacket;
-            
-            if (firstResult.affectedRows === 0 || secondResult.affectedRows === 0) {
-                throw Error("Ocorreu um erro inserir os dados da pessoa");
+        const ps = await prisma.pessoa.create({
+            data: {
+                PESSOA_TIPO_ID: (item.pessoa_tipo.id),
+                NOME: item.nome,
+                DATA_NASCIMENTO: item.data_nascimento,
+                SEXO: item.sexo,
+                NBI: item.nbi,
+                NIF: item.nif,
+                ESTADO_CIVIL: item.estado_civil,
+                pessoa_endereco: {
+                    create: {
+                        TELEFONE: item.endereco.telefone,
+                        TELEFONE_ALTERNATIVO:item.endereco.telefone_alt,
+                        EMAIL: item.endereco.email,
+                    }
+                }    
             }
-            await conn.commit();
-            item.id = pessoaId;
-            return item;
-        } catch (error) {
-            await conn.rollback();
+        });
+        if(ps === null) {
             throw Error("Ocorreu um erro inserir os dados da pessoa");
-        } finally {
-            await conn.end();
         }
+        item.id = ps.ID;
+        return item;
     }
 
     async update(id: string, item: Pessoa): Promise<Pessoa> {
-        const conn = await getConnection();
-        try {
-            conn.beginTransaction();
-    
-            const firstQuery= `UPDATE ${this.primeTable} 
-            SET PESSOA_TIPO_ID=?, NOME=? , DATA_NASCIMENTO=?, 
-            SEXO=?, NBI=? , NIF=?, ESTADO_CIVIL=?
-            WHERE ID=?;`;
-            const firstValues = [
-                item.pessoa_tipo.id,
-                item.nome,
-                item.data_nascimento,
-                item.sexo,
-                item.nbi,
-                item.nif,
-                item.estado_civil,
-                id
-            ];
-            const firstResult: ResultSetHeader =  await queryWithConnectionAndValues(conn, firstQuery, firstValues) as ResultSetHeader;
-    
-            const secondQuery = `UPDATE ${this.secondTable} SET TELEFONE=?, TELEFONE_ALTERNATIVO=?, EMAIL=? WHERE PESSOA_ID=?;`; 
-            const secondValues = [
-                item.endereco.telefone,
-                item.endereco.telefone_alt,
-                item.endereco.email,
-                id
-            ];
-    
-            const secondResult: ResultSetHeader =  await queryWithConnectionAndValues(conn, secondQuery, secondValues) as ResultSetHeader;
-            if (firstResult.affectedRows === 0 || secondResult.affectedRows === 0) {
-                throw Error("Ocorreu um erro ao actualizar os dados da pessoa");
+        const ps = await prisma.pessoa.update({
+            where: {
+                ID: parseInt(id)
+            },
+            data: {
+                PESSOA_TIPO_ID: item.pessoa_tipo.id,
+                NOME: item.nome, 
+                DATA_NASCIMENTO: item.data_nascimento, 
+                SEXO: item.sexo, 
+                NBI: item.nbi, 
+                NIF: item.nif, 
+                ESTADO_CIVIL: item.estado_civil,
+                pessoa_endereco: {
+                    update: {
+                        where: {
+                            ID: parseInt(id)
+                        },
+                        data: {
+                            TELEFONE: item.endereco.telefone,
+                            TELEFONE_ALTERNATIVO:item.endereco.telefone_alt,
+                            EMAIL: item.endereco.email,
+                        }
+                    }
+                }
             }
-            await conn.commit();
-            return item;
-        } catch (error) {
-            await conn.rollback();
-            throw Error("Ocorreu um erro actualizar os dados da pessoa");
-        } finally {
-            await conn.end();
+        });
+
+        if (ps === null) {
+            throw Error("Ocorreu um erro ao actualizar os dados da pessoa");
         }
+        item.id =  ps.ID;
+        return item;
     }
 
-    async delete(id: String): Promise<Boolean> {
-        const conn = await getConnection();
-        try {
-            conn.beginTransaction();
-    
-            const secondQuery = `DELETE FROM pessoa_endereco WHERE PESSOA_ID=?;`;
-            const secondValues = [id];
-            const secondResult: RowDataPacket = await queryWithConnectionAndValues(conn, secondQuery,secondValues) as RowDataPacket; 
-            
-            
-            const firstQuery = `DELETE FROM pessoa WHERE ID=${id};`;
-            const firstValues = [id]; 
-            const firstResult: RowDataPacket = await queryWithConnectionAndValues(conn, firstQuery, firstValues) as RowDataPacket;
-    
-
-            if (firstResult.affectedRows && secondResult.affectedRows) {
-                await conn.commit();
-                return true;
+    async delete(id: string): Promise<Boolean> {
+        const ps = await prisma.pessoa.delete({
+            where: {
+                ID: parseInt(id)
+            },
+            include: {
+                pessoa_endereco: true,
+                pessoa_tipo: true
             }
-            return false;
-
-        } catch (error) {
-            await conn.rollback();
-            throw Error("Ocorreu um erro remover os dados da pessoa");
-        } finally {
-            await conn.end();
-        }     
+        });
+        if(ps !== null){
+            return true;
+        }
+        return false;
     }
 
-    async getPersonByPhoneNumber(phoneNumber: String): Promise<Pessoa> {
-        const query = `SELECT * FROM ${this.primeTable} 
-        INNER JOIN ${this.secondTable} ON 
-        ${this.primeTable}.ID=${this.secondTable}.PESSOA_ID 
-        INNER JOIN ${this.thirdTable} ON
-        ${this.primeTable}.PESSOA_TIPO_ID = ${this.thirdTable}.ID
-        WHERE ${this.secondTable}.TELEFONE=? LIMIT 1`;
-        const data: RowDataPacket = await queryWithValues(query, [phoneNumber]) as RowDataPacket;
+    async getPersonByPhoneNumber(phoneNumber: string): Promise<Pessoa> {
+        const ps = await prisma.pessoa.findFirst({
+            where: {
+                pessoa_endereco: {
+                    some: {
+                        TELEFONE: phoneNumber
+                    }
+                }
+            },
+            include: {
+                pessoa_endereco: true,
+                pessoa_tipo: true
+            }
+        });
        
-        if (!data) {
+        if (ps === null) {
             throw Error("Não foram encontrados os dados da pessoa");
         }
-        return generatePessoa(data[0]);
+        return generatePessoa(ps);
     }
 
-    async getPersonByEmail(email: String): Promise<Pessoa> {
-        const query = `SELECT * FROM ${this.primeTable} 
-        INNER JOIN ${this.secondTable} ON 
-        ${this.primeTable}.ID=${this.secondTable}.PESSOA_ID 
-        INNER JOIN ${this.thirdTable} ON
-        ${this.primeTable}.PESSOA_TIPO_ID = ${this.thirdTable}.ID
-        WHERE ${this.secondTable}.EMAIL=? LIMIT 1`;
-
-        const data: RowDataPacket = await queryWithValues(query, [email]) as RowDataPacket;
-        if (!data) {
-            throw Error("Não Foram encontrados os dados da pessoa");
-        }
-        return generatePessoa(data[0]);
-    }
-
-    async getPersonByNIF(nif: String): Promise<Pessoa> {
-        const query =  `SELECT * FROM ${this.primeTable} 
-        INNER JOIN ${this.secondTable} ON 
-        ${this.primeTable}.ID=${this.secondTable}.PESSOA_ID 
-        INNER JOIN ${this.thirdTable} ON
-        ${this.primeTable}.PESSOA_TIPO_ID = ${this.thirdTable}.ID
-        WHERE ${this.primeTable}.NIF=? LIMIT 1`;
-
-        const data: RowDataPacket = await queryWithValues(query, [nif]) as RowDataPacket;
-        if (!data) {
+    async getPersonByEmail(email: string): Promise<Pessoa> {
+        const ps = await prisma.pessoa.findFirst({
+            where: {
+                pessoa_endereco: {
+                    some: {
+                        EMAIL:email
+                    } 
+                }
+            },
+            include: {
+                pessoa_endereco: true,
+                pessoa_tipo: true
+            }
+        });
+       
+        if (ps === null) {
             throw Error("Não foram encontrados os dados da pessoa");
         }
-        return generatePessoa(data[0]);
+        return generatePessoa(ps);
     }
 
-    async getPersonByNBI(nbi: String): Promise<Pessoa>{
-        const query = `SELECT * FROM ${this.primeTable} 
-        INNER JOIN ${this.secondTable} ON 
-        ${this.primeTable}.ID=${this.secondTable}.PESSOA_ID 
-        INNER JOIN ${this.thirdTable} ON
-        ${this.primeTable}.PESSOA_TIPO_ID = ${this.thirdTable}.ID
-        WHERE ${this.primeTable}.NBI=? LIMIT 1`;
-
-        const data: RowDataPacket = await queryWithValues(query, [nbi]) as RowDataPacket;
-        if (!data) {
-            throw Error("Não foram encotrados os dados da pessoa");
+    async getPersonByNIF(nif: string): Promise<Pessoa> {
+        const ps = await prisma.pessoa.findFirst({
+            where: {
+                NIF:nif 
+            },
+            include: {
+                pessoa_endereco: true,
+                pessoa_tipo: true
+            }
+        });
+       
+        if (ps === null) {
+            throw Error("Não foram encontrados os dados da pessoa");
         }
-        return generatePessoa(data[0]);
+        return generatePessoa(ps);
+    }
+
+    async getPersonByNBI(nbi: string): Promise<Pessoa>{
+        const ps = await prisma.pessoa.findFirst({
+            where: {
+                NBI: nbi 
+            },
+            include: {
+                pessoa_endereco: true,
+                pessoa_tipo: true
+            }
+        });
+       
+        if (ps === null) {
+            throw Error("Não foram encontrados os dados da pessoa");
+        }
+        return generatePessoa(ps);
     }
 }
 

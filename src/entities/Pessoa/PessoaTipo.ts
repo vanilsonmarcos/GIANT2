@@ -1,6 +1,6 @@
 interface PessoaTipo {
-    id: Number,
-    nome: String
+    id: number,
+    nome: string
 }
 
 export default PessoaTipo

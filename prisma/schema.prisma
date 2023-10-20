@@ -148,15 +148,15 @@ model apolice_tomador {
 model cobertura {
   ID                Int                 @id @default(autoincrement())
   APOLICE_TIPO_ID   Int
-  COBERTURA_BASE    Boolean?            @default(dbgenerated("b'0'")) @db.Bit(1)
-  SIGLA             String?             @unique(map: "SIGLA") @db.VarChar(30)
-  NOME              String?             @db.VarChar(255)
-  DESCRICAO         String?             @db.LongText
+  COBERTURA_BASE    Boolean             @default(dbgenerated("b'0'")) @db.Bit(1)
+  SIGLA             String              @unique(map: "SIGLA") @db.VarChar(30)
+  NOME              String              @db.VarChar(255)
+  DESCRICAO         String              @db.LongText
   INSERIDO_POR      Int?
   ACTUALIZADO_POR   Int?
   REMOVIDO_POR      Int?
-  VALOR_PAGAR       Decimal?            @default(0.00) @db.Decimal(13, 2)
-  DESCONTO          Decimal?            @default(0.00) @db.Decimal(13, 2)
+  VALOR_PAGAR       Decimal             @default(0.00) @db.Decimal(13, 2)
+  DESCONTO          Decimal             @default(0.00) @db.Decimal(13, 2)
   DATA_CRIACAO      DateTime?           @default(now()) @db.Timestamp(0)
   DATA_ACTUALIZACAO DateTime?           @default(now()) @db.DateTime(0)
   apolice_cobertura apolice_cobertura[]
@@ -165,33 +165,28 @@ model cobertura {
   @@index([APOLICE_TIPO_ID], map: "FKAPOLICE_CO255895")
 }
 
-model new_table {
-  id   Int             @id @default(autoincrement())
-  type new_table_type?
-}
-
 model pessoa {
   ID                Int               @id @default(autoincrement())
   PESSOA_TIPO_ID    Int
-  NOME              String?           @db.VarChar(255)
-  DATA_NASCIMENTO   DateTime?         @db.Date
-  SEXO              String?           @db.VarChar(1)
+  NOME              String            @db.VarChar(255)
+  DATA_NASCIMENTO   DateTime          @db.Date
+  SEXO              String            @db.VarChar(1)
   NBI               String?           @unique(map: "NBI") @db.VarChar(64)
-  NIF               String?           @unique(map: "NIF") @db.VarChar(64)
-  ESTADO_CIVIL      String?           @db.VarChar(1)
+  NIF               String            @unique(map: "NIF") @db.VarChar(64)
+  ESTADO_CIVIL      String            @db.VarChar(1)
   DATA_CRIACAO      DateTime?         @default(now()) @db.Timestamp(0)
   DATA_ACTUALIZACAO DateTime?         @default(now()) @db.DateTime(0)
   apolice           apolice[]
   apolice_tomador   apolice_tomador[]
   pessoa_tipo       pessoa_tipo       @relation(fields: [PESSOA_TIPO_ID], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "FKPESSOA892258")
-  pessoa_endereco   pessoa_endereco[]
+  pessoa_endereco   pessoa_endereco?
 
   @@index([PESSOA_TIPO_ID], map: "FKPESSOA892258")
 }
 
 model pessoa_endereco {
   ID                   Int       @id @default(autoincrement())
-  PESSOA_ID            Int
+  PESSOA_ID            Int       @unique(map: "PESSOA_ID_UNIQUE")
   TELEFONE             String?   @unique(map: "TELEFONE") @db.VarChar(80)
   TELEFONE_ALTERNATIVO String?   @db.VarChar(80)
   EMAIL                String?   @unique(map: "EMAIL") @db.VarChar(100)
@@ -212,15 +207,15 @@ model pessoa_tipo {
 
 model preco_cilindrada {
   ID                   Int               @id @default(autoincrement())
-  NOME                 String?           @db.VarChar(255)
-  LOTACAO              Int?
+  NOME                 String            @db.VarChar(255)
+  LOTACAO              Int
   VEICULO_CATEGORIA_ID Int
-  PREMIO_TRIMESTRAL    Decimal?          @db.Decimal(13, 2)
-  PREMIO_SEMESTRAL     Decimal?          @db.Decimal(13, 2)
-  PREMIO_ANUAL         Decimal?          @db.Decimal(13, 2)
-  PESO_KG              Int?
-  CILINDRADA_MIN       Int?
-  CILINDRADA_MAX       Int?
+  PREMIO_TRIMESTRAL    Decimal           @db.Decimal(13, 2)
+  PREMIO_SEMESTRAL     Decimal           @db.Decimal(13, 2)
+  PREMIO_ANUAL         Decimal           @db.Decimal(13, 2)
+  PESO_KG              Int
+  CILINDRADA_MIN       Int
+  CILINDRADA_MAX       Int
   INSERIDO_POR         Int?
   ACTUALIZADO_POR      Int?
   DATA_CRIACAO         DateTime?         @default(now()) @db.Timestamp(0)
@@ -233,17 +228,17 @@ model preco_cilindrada {
 model veiculo {
   ID                    Int                     @id @default(autoincrement())
   VEICULO_CATEGORIA_ID  Int
-  MATRICULA             String                @unique(map: "MATRICULA") @db.VarChar(24)
-  MARCA                 String                 @db.VarChar(255)
-  MODELO                String                 @db.VarChar(255)
+  MATRICULA             String                  @unique(map: "MATRICULA") @db.VarChar(24)
+  MARCA                 String                  @db.VarChar(255)
+  MODELO                String                  @db.VarChar(255)
   ANO_AQUISICAO         Int
-  CAPITAL_AQUISICAO     Decimal               @db.Decimal(13, 2)
+  CAPITAL_AQUISICAO     Decimal                 @db.Decimal(13, 2)
   PESO_BRUTO            Int
   N_LOTACAO             Int
   ANO_FABRICO           Int
   CILINDRADA            Int
-  REF_CHASSI            String                 @db.VarChar(64)
-  DESCRICAO             String                 @db.VarChar(4000)
+  REF_CHASSI            String                  @db.VarChar(64)
+  DESCRICAO             String                  @db.VarChar(4000)
   INSERIDO_POR          Int?
   ACTUALIZADO_POR       Int?
   REMOVIDO_POR          Int?
@@ -258,7 +253,7 @@ model veiculo {
 
 model veiculo_categoria {
   ID                Int                @id @default(autoincrement())
-  NOME              String?            @db.VarChar(255)
+  NOME              String             @db.VarChar(255)
   REMOVIDO_POR      Int?
   DATA_INSERCAO     DateTime?          @db.Timestamp(0)
   DATA_ACTUALIZACAO DateTime?          @db.Timestamp(0)
@@ -267,17 +262,11 @@ model veiculo_categoria {
   veiculo           veiculo[]
 }
 
-enum new_table_type {
-  Alto
-  Medio
-  Baixo
-}
-
 model ficheiro {
-  ID          Int               @id @default(autoincrement())
-  NOME        String            @db.VarChar(255)
-  SIZE        Int               @db.Int
-  PATH        String?           @db.VarChar(500)
-  EXT         String            @db.VarChar(5)
-  CONTENT     String?           @db.LongText
+  ID      Int     @id @default(autoincrement())
+  NOME    String  @db.VarChar(255)
+  SIZE    Int
+  PATH    String? @db.VarChar(500)
+  EXT     String  @db.VarChar(5)
+  CONTENT String? @db.LongText
 }

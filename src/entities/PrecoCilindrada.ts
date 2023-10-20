@@ -1,16 +1,16 @@
 import VeiculoCategoria from "./Veiculo/VeiculoCategoria";
 
 interface PrecoCilindrada {
-    id?: Number,
-    nome: String,
-    lotacao: Number,
-    veiculo_categoria: VeiculoCategoria,
-    premio_trimestral: Number,
-    premio_semestral:Number,
-    premio_anual: Number,
-    peso_kg: Number,
-    cilindrada_min: Number,
-    cilindrada_max: Number,
+    id?: number,
+    nome: string,
+    lotacao: number,
+    veiculo_categoria_id: number,
+    premio_trimestral: number,
+    premio_semestral:number,
+    premio_anual: number,
+    peso_kg: number,
+    cilindrada_min: number,
+    cilindrada_max: number,
 }
 
 export default PrecoCilindrada;

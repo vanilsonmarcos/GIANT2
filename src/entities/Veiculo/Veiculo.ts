@@ -2,7 +2,7 @@ import VeiculoCategoria from "./VeiculoCategoria";
 
 interface Veiculo {
     id?: number,
-    veiculo_categoria: VeiculoCategoria ,
+    veiculo_categoria_id: number,
     matricula: string,
     marca: string,
     modelo: string,

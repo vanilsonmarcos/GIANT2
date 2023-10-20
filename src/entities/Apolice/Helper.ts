@@ -8,6 +8,7 @@ import ApoliceItemSegurado from "./ApoliceItemSegurado";
 import ApolicePagamento from "./ApolicePagamento";
 import ApoliceCobertura from "./ApoliceCobertura";
 import Cobertura from "../Cobertura";
+import { cobertura } from "@prisma/client";
 
 
 
@@ -73,23 +74,23 @@ function generateApoliceCobertura(data:RowDataPacket): ApoliceCobertura {
     return apoliceCobertura
 }
 
-function generateCobertura(data:RowDataPacket): Cobertura { 
+function generateCobertura(data:cobertura): Cobertura { 
     let cobertura: Cobertura = {
-        id: data['ID'],
-        sigla: data['SIGLA'],
-        nome: data['NOME'],
-        descricao: data['DESCRICAO'],
+        id: data.ID,
+        sigla: data.SIGLA,
+        nome: data.NOME,
+        descricao: data.DESCRICAO,
         apolice_tipo: {
-            id: data['APOLICE_TIPO_ID'],
-            sigla: data['APOLICE_TIPO_SIGLA'],
-            nome: data['APOLICE_TIPO_NOME'],
-            descricao:data['APOLICE_TIPO_DESCRICAO']
+            id: data.APOLICE_TIPO_ID.ID,
+            sigla: data.apolice_tipo.APOLICE_TIPO_SIGLA,
+            nome: data.apolice_tipo.APOLICE_TIPO_NOME,
+            descricao:data.apolice_tipo.APOLICE_TIPO_DESCRICAO
         },
-        data_criacao: data['DATA_CRIACAO'],
-        data_actualizacao: data['DATA_ACTUALIZACAO'],
-        valor_pagar: data['VALOR_PAGAR'],
-        desconto: data['DESCONTO'],
-        cobertura_base: data['COBERTURA_BASE']=== 1 //
+        data_criacao: data.DATA_CRIACAO,
+        data_actualizacao: data.DATA_ACTUALIZACAO,
+        valor_pagar: data.VALOR_PAGAR,
+        desconto: data.DESCONTO,
+        cobertura_base: data.COBERTURA_BASE
     };
     
     return cobertura;

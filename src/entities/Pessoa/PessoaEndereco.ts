@@ -1,9 +1,9 @@
 interface PessoaEndereco {
-    id?: Number
-    pessoa_id?: String,
-    telefone: String,
-    telefone_alt: String,
-    email: String
+    id?: number
+    pessoa_id?: string,
+    telefone: string,
+    telefone_alt: string,
+    email: string
 }
 
 export default PessoaEndereco;

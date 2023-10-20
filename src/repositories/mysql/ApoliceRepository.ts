@@ -1,7 +1,5 @@
 import { Service } from "typedi";
 
-import { RowDataPacket } from "mysql2/promise";
-import { query } from "./mysql";
 import IGenericRepository from "../IGenericRepository";
 import Apolice from "../../entities/Apolice/Apolice";
 @Service()

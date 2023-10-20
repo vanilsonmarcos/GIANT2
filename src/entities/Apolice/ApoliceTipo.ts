@@ -1,8 +1,8 @@
 interface ApoliceTipo {
-    id: Number,
-    sigla: String,
-    nome: String,
-    descricao?:String;
+    id: number,
+    sigla: string,
+    nome: string,
+    descricao?:string;
 }
 
 export default ApoliceTipo;

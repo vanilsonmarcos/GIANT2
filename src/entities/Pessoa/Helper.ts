@@ -1,32 +1,17 @@
-import { RowDataPacket } from "mysql2";
 import Pessoa from "./Pessoa";
-import PessoaEndereco from "./PessoaEndereco";
-import PessoaTipo from "./PessoaTipo";
+import { pessoa } from "@prisma/client";
 
-function generatePessoa(data: RowDataPacket): Pessoa {
-    let pessoaTipo: PessoaTipo = {
-        id: data['PESSOA_TIPO_ID'],
-        nome: data['NOME_TIPO'],
-    }
-
-    let pessoaEndereco: PessoaEndereco = {
-        telefone: data['TELEFONE'],
-        telefone_alt: data['TELEFONE_ALTERNATIVO'],
-        email: data['EMAIL']
-    };
-
+function generatePessoa(data: pessoa): Pessoa {
     let pessoa: Pessoa = {
-        id: data['ID'],
-        pessoa_tipo: pessoaTipo,
-        nome: data['NOME'],
-        data_nascimento: data['DATA_NASCIMENTO'],
-        sexo: data['SEXO'],
-        nbi: data['NBI'],
-        nif: data['NIF'],
-        estado_civil: data['ESTADO_CIVIL'],
-        endereco: pessoaEndereco,
+        id: data.ID,
+        pessoa_tipo_id: data.PESSOA_TIPO_ID,
+        nome: data.NOME,
+        data_nascimento: data.DATA_NASCIMENTO.toString(),
+        sexo: data.SEXO,
+        nbi: data.NBI ?? '',
+        nif: data.NIF,
+        estado_civil: data.ESTADO_CIVIL
     }
-
     return pessoa;
 }
 
