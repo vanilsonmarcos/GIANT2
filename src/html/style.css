@@ -1,0 +1,46 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Inter, sans-serif;
+    width: 21cm;
+    height: 29.7cm;
+    position: relative;
+}
+
+header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+}
+
+.title {
+    width: 100%;
+    /* background-color: black; */
+    text-align: center;
+    margin-top: 18px;
+    padding: 8px 0;
+}
+
+.title h2 {
+    color:  black;
+    font-size: 16px;
+    font-weight: 400;
+    text-transform: uppercase;
+}
+
+
+
+footer {
+    width: 100%;
+    position: absolute;
+    bottom: 0px;
+    left: 0;
+}
+
+footer div {
+    
+}
