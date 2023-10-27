@@ -41,6 +41,35 @@ footer {
     left: 0;
 }
 
-footer div {
+footer div .endereço {
+}
+
+/* div styles */
+
+div .box {
+    border: 1px solid black;
+}
+
+div .qr_code {
     
+}
+
+/* horizontal divisors */
+
+hr .line-2x {
+    border-top: 1px solid #eee;
+}
+
+/* Text Alignment in the p tags */
+
+p .text-align-right {
+    text-align: right;
+}
+
+p .text-align-left {
+    text-align: left;
+}
+
+p .text-align-center {
+    text-align: center;
 }
