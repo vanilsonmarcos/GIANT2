@@ -6,6 +6,7 @@
 
 body {
     font-family: Inter, sans-serif;
+    font-size: 12px;
     width: 21cm;
     height: 29.7cm;
     position: relative;
@@ -33,25 +34,135 @@ header {
 }
 
 
-
-footer {
-    width: 100%;
-    position: absolute;
-    bottom: 0px;
-    left: 0;
-}
-
-footer div .endereço {
+/* definir os valores gerais de uma imagem */
+img {
+    height: 100px;
+    width: 100px;
 }
 
 /* div styles */
 
-div .box {
-    border: 1px solid black;
+.cert-head {
+    display: flex;
+    flex-direction: column; /* This sets the direction to vertical */
+    align-items: center; /* Align items horizontally in the center */
+    margin-bottom: 10px;
+}
+.cert-head p {
+    text-transform: uppercase;
+    font-weight: bold;
 }
 
-div .qr_code {
+.cert-footer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+
+}
+
+.cert-body {
+    margin-top: 10px;
+}
+
+.cert-assi {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.cert-assi > * {
+    margin: 5px;
+}
+
+
+.box {
+    border: 1px solid black;
+    margin: 10px;
+    padding: 10px;
+}
+
+.hiden-box {
+    margin: 10px;
+    padding: 10px;
+}
+
+.no-mp-left {
+    margin-left: 0;
+    padding-left: 0;
+}
+
+.no-mp-right {
+    margin-right: 0;
+    padding-right: 0;
+}
+.m-10 {
+    margin: 10px;
+}
+
+.m-b-5 {
+    margin-bottom: 5px;
+}
+
+.all-width {
+    max-height: 100%;
+}
+
+.row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); 
+    gap: 2px; 
+}
+
+.row-one {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Create two equal-width columns */
+}
+
+.row-two {
+    display: grid;
+    grid-template-columns: 2fr 1fr; /* Create two equal-width columns */
+}
+
+.row-three {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+}
+
+.row-four {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     
+}
+.subscritor {
+    display: flex;
+    flex-direction: column;
+}
+
+.subscritor-name {
+    position: absolute;
+    bottom: 0;
+}
+
+.margin-2x {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    
+}
+
+.footer {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+/* text bold */
+.text-bold {
+    font-weight: bold;
+}
+
+/* Text small */
+
+.text-small {
+    font-size: 11px;
 }
 
 /* horizontal divisors */
@@ -60,16 +171,27 @@ hr .line-2x {
     border-top: 1px solid #eee;
 }
 
+
 /* Text Alignment in the p tags */
 
-p .text-align-right {
+.text-align-right {
     text-align: right;
 }
 
-p .text-align-left {
+.text-align-left {
     text-align: left;
 }
 
-p .text-align-center {
+.text-align-center {
     text-align: center;
 }
+
+.text-align {
+    text-align: justify;
+}
+
+.zoomed-div {
+    transform: scale(0.7); 
+    transform-origin: center center;
+}
+  
