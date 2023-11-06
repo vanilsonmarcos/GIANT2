@@ -1,7 +1,5 @@
 import { pessoa, pessoa_endereco } from './../../../node_modules/.prisma/client/index.d';
-import { ResultSetHeader, RowDataPacket } from 'mysql2/promise';
 import { Service } from "typedi";
-import { query, getConnection, queryWithValues, queryWithConnectionAndValues } from "./mysql";
 import IPessoaRepository from "../IPessoaRepository";
 import Pessoa from "../../entities/Pessoa/Pessoa";
 import generatePessoa from "../../entities/Pessoa/Helper";
@@ -46,20 +44,13 @@ class PessoaRepository implements IPessoaRepository<Pessoa> {
     async create(item: Pessoa): Promise<Pessoa> {
         const ps = await prisma.pessoa.create({
             data: {
-                PESSOA_TIPO_ID: (item.pessoa_tipo.id),
+                PESSOA_TIPO_ID: item.pessoa_tipo_id,
                 NOME: item.nome,
                 DATA_NASCIMENTO: item.data_nascimento,
                 SEXO: item.sexo,
                 NBI: item.nbi,
                 NIF: item.nif,
-                ESTADO_CIVIL: item.estado_civil,
-                pessoa_endereco: {
-                    create: {
-                        TELEFONE: item.endereco.telefone,
-                        TELEFONE_ALTERNATIVO:item.endereco.telefone_alt,
-                        EMAIL: item.endereco.email,
-                    }
-                }    
+                ESTADO_CIVIL: item.estado_civil,   
             }
         });
         if(ps === null) {
@@ -75,25 +66,13 @@ class PessoaRepository implements IPessoaRepository<Pessoa> {
                 ID: parseInt(id)
             },
             data: {
-                PESSOA_TIPO_ID: item.pessoa_tipo.id,
+                PESSOA_TIPO_ID: item.pessoa_tipo_id,
                 NOME: item.nome, 
                 DATA_NASCIMENTO: item.data_nascimento, 
                 SEXO: item.sexo, 
                 NBI: item.nbi, 
                 NIF: item.nif, 
                 ESTADO_CIVIL: item.estado_civil,
-                pessoa_endereco: {
-                    update: {
-                        where: {
-                            ID: parseInt(id)
-                        },
-                        data: {
-                            TELEFONE: item.endereco.telefone,
-                            TELEFONE_ALTERNATIVO:item.endereco.telefone_alt,
-                            EMAIL: item.endereco.email,
-                        }
-                    }
-                }
             }
         });
 
@@ -121,45 +100,34 @@ class PessoaRepository implements IPessoaRepository<Pessoa> {
     }
 
     async getPersonByPhoneNumber(phoneNumber: string): Promise<Pessoa> {
-        const ps = await prisma.pessoa.findFirst({
-            where: {
-                pessoa_endereco: {
-                    some: {
-                        TELEFONE: phoneNumber
-                    }
-                }
-            },
+        const ps = await prisma.pessoa_endereco.findFirst({
             include: {
-                pessoa_endereco: true,
-                pessoa_tipo: true
+                pessoa: true,
+            }, where: {
+                TELEFONE: phoneNumber        
             }
         });
        
         if (ps === null) {
             throw Error("Não foram encontrados os dados da pessoa");
         }
-        return generatePessoa(ps);
+        return generatePessoa(ps.pessoa);
     }
 
     async getPersonByEmail(email: string): Promise<Pessoa> {
-        const ps = await prisma.pessoa.findFirst({
-            where: {
-                pessoa_endereco: {
-                    some: {
-                        EMAIL:email
-                    } 
-                }
-            },
+        const ps = await prisma.pessoa_endereco.findFirst({
             include: {
-                pessoa_endereco: true,
-                pessoa_tipo: true
+                pessoa: true,
+            },
+            where: {
+                EMAIL: email
             }
         });
        
         if (ps === null) {
             throw Error("Não foram encontrados os dados da pessoa");
         }
-        return generatePessoa(ps);
+        return generatePessoa(ps.pessoa);
     }
 
     async getPersonByNIF(nif: string): Promise<Pessoa> {

@@ -1,9 +1,10 @@
 import {z} from "zod";
 import VeiculoCategoriaSchema from "./VeiculoCategoriaSchema";
+import Identifier from "./Identifier";
 
 const VeiculoSchema = z.object({
-    id: z.number().optional(),
-    veiculo_categoria: VeiculoCategoriaSchema,
+    id: Identifier.optional(),
+    veiculo_categoria_id: Identifier,
     matricula: z.string(),
     marca: z.string(),
     modelo: z.string(),
@@ -15,8 +16,6 @@ const VeiculoSchema = z.object({
     cilindrada: z.number(),
     ref_chassi: z.string(),
     descricao: z.string(),
-    inserido_por: z.number().optional(),
-    actualizado_por: z.number().optional()
 })
 
 export default VeiculoSchema;

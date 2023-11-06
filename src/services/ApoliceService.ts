@@ -14,7 +14,7 @@ class ApoliceService {
         return this.repo.getAll();         
     }
 
-    async getByID(id: String): Promise<Apolice>{
+    async getByID(id: string): Promise<Apolice>{
         return this.repo.getByID(id);
     }
 
@@ -22,11 +22,11 @@ class ApoliceService {
         return this.repo.create(apolice);
     } 
 
-    async actualizar(id: String, apolice: Apolice) {
+    async actualizar(id: string, apolice: Apolice) {
         return this.repo.update(id, apolice);
     }
 
-    async remover(id: String): Promise<Boolean> {
+    async remover(id: string): Promise<Boolean> {
         // check if object exist
         return this.repo.delete(id);
     }

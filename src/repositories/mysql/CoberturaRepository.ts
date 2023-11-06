@@ -1,11 +1,9 @@
-import { RowDataPacket } from "mysql2";
+import { Service } from "typedi";
 import Cobertura from "../../entities/Cobertura";
 import ICobertura from "../ICobertura";
 import IGenericRepository from "../IGenericRepository";
-import { query } from "./mysql";
-import { generateCobertura } from "../../entities/Apolice/Helper";
-import { Service } from "typedi";
 import prisma from "../PrismaClient";
+import { generateCobertura } from "../../entities/Apolice/Helper";
 
 @Service()
 class CoberturaRepository implements IGenericRepository<Cobertura>, ICobertura{
@@ -60,12 +58,12 @@ class CoberturaRepository implements IGenericRepository<Cobertura>, ICobertura{
     async create(item: Cobertura): Promise<Cobertura> {
         const cobertura = await prisma.cobertura.create({
             data: {
-                APOLICE_TIPO_ID: item.apolice_tipo.id,
+                APOLICE_TIPO_ID: item.apolice_tipo_id,
                 COBERTURA_BASE: item.cobertura_base,
                 SIGLA:item.sigla,
                 NOME:item.nome,
                 DESCRICAO:item.descricao,
-                VALOR_PAGAR:item.valor_pagar,
+                VALOR_A_PAGAR:item.valor_a_pagar,
                 DESCONTO: item.desconto
             }
         });
@@ -88,7 +86,7 @@ class CoberturaRepository implements IGenericRepository<Cobertura>, ICobertura{
                 SIGLA:  item.sigla,
                 NOME:  item.nome,
                 DESCRICAO:  item.descricao,
-                VALOR_PAGAR:  item.valor_pagar,
+                VALOR_A_PAGAR:  item.valor_a_pagar,
                 DESCONTO:  item.desconto
             }
         });

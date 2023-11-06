@@ -4,11 +4,9 @@ interface Cobertura {
     id?: number,
     sigla: string,
     nome: string,
-    descricao: string,
     apolice_tipo_id: number,
-    data_criacao?: string,
-    data_actualizacao?: string,
-    valor_pagar: number,
+    descricao: string,
+    valor_a_pagar: number,
     desconto: number,
     cobertura_base: boolean
 }

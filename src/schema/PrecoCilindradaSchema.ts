@@ -6,7 +6,7 @@ const PrecoCilindradaSchema = z.object({
     id: Identifier.optional(),
     nome: z.string(),
     lotacao: z.number(),
-    veiculo_categoria: VeiculoCategoriaSchema,
+    veiculo_categoria_id: Identifier,
     premio_trimestral: z.number(),
     premio_semestral: z.number(),
     premio_anual: z.number(),

@@ -14,7 +14,7 @@ class PrecoCilindradaService {
         return this.repo.getAll();         
     }
 
-    async getByID(id: String): Promise<PrecoCilindrada>{
+    async getByID(id: string): Promise<PrecoCilindrada>{
         return this.repo.getByID(id);
     }
 
@@ -22,11 +22,11 @@ class PrecoCilindradaService {
         return this.repo.create(veiculo);
     } 
 
-    async actualizar(id: String, precoCilindrada: PrecoCilindrada) {
+    async actualizar(id: string, precoCilindrada: PrecoCilindrada) {
         return this.repo.update(id, precoCilindrada);
     }
 
-    async remover(id: String): Promise<Boolean> {
+    async remover(id: string): Promise<Boolean> {
         // check if object exist
         return this.repo.delete(id);
     }

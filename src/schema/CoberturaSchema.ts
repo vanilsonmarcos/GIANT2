@@ -1,14 +1,15 @@
 import { z } from "zod";
 import ApoliceTipoSchema from "./ApoliceTipoSchema";
 import SiglaSchema from "./SiglaSchema";
+import Identifier from "./Identifier";
 
 const CoberturaSchema = z.object({
-    id: z.number().optional(),
+    id: Identifier.optional(),
     sigla: SiglaSchema,
     nome: z.string(),
+    apolice_tipo_id: Identifier,
     descricao: z.string(),
-    apolice_tipo: ApoliceTipoSchema,
-    valor_pagar: z.number(),
+    valor_a_pagar: z.number(),
     desconto: z.number(),
     cobertura_base: z.boolean({
         required_error: "Cobertura base é um campo obrigatório",

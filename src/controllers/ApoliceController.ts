@@ -1,10 +1,8 @@
 import { Request, Response } from "express";
-
 import ApoliceService from "../services/ApoliceService";
 import Identifier from "../schema/Identifier";
 import handleParsingError from "../utils/HandleParsingErrors";
 import Apolice from "../entities/Apolice/Apolice";
-import ApoliceSchema from "../schema/ApoliceSchema";
 
 class ApoliceController {
     private apoliceService: ApoliceService;

@@ -4,8 +4,8 @@
   "description": "",
   "main": "src/server.js",
   "scripts": {
-    "dev": "nodemon src/server.ts",
-    "prod": "nodemon src/server.ts",
+    "dev": "nodemon",
+    "prod": "",
     "start": "nodemon src/server.ts",
     "test": "jest --runInBand --detectOpenHandles"
   },

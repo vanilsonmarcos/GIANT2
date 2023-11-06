@@ -1,28 +1,10 @@
 import { RowDataPacket } from "mysql2/promise";
 import fs from "fs"
-import ApoliceTipo from "./ApoliceTipo";
-import ApoliceEstado from "./ApoliceEstado";
-import Apolice from "./Apolice";
 import ApoliceFracionamento from "./ApoliceFracionamento";
 import ApoliceItemSegurado from "./ApoliceItemSegurado";
-import ApolicePagamento from "./ApolicePagamento";
 import ApoliceCobertura from "./ApoliceCobertura";
 import Cobertura from "../Cobertura";
 import { cobertura } from "@prisma/client";
-
-
-
-
-function generateApoliceEstado(data: RowDataPacket): ApoliceEstado {
-    let apoliceEstado: ApoliceEstado = {
-        id: data['ID'],
-        nome: data['NOME'],
-        descricao: data['DESCRICAO']
-    }
-    return apoliceEstado;
-}
-
-
 
 
 function generataApoliceFracionamento(data: RowDataPacket): ApoliceFracionamento {
@@ -46,16 +28,7 @@ function generateApoliceItemSegurado(data: RowDataPacket): ApoliceItemSegurado {
     return apoliceItemSegurado
 }
 
-function generateApolicePagamento(data: RowDataPacket): ApolicePagamento {
-    let apolicePagamento: ApolicePagamento = {
-        id: data['ID'],
-        apolice_id: data['APOLICE_ID'], 
-        descontos: data['DESCONTOS'],
-        valor_pago: data['VALOR_PAGO'],
-        data_insercao: data['DATA_INSERCAO']
-    }
-    return apolicePagamento
-}
+
 
 function generateApoliceCobertura(data:RowDataPacket): ApoliceCobertura {
     let apoliceCobertura: ApoliceCobertura = {
@@ -65,9 +38,6 @@ function generateApoliceCobertura(data:RowDataPacket): ApoliceCobertura {
         sigla: data['SIGLA'],
         nome: data['NOME'],
         descricao: data['DESCRICAO'],
-        inserido_por: data['INSERIDO_POR'],
-        actualizado_por: data['ACTUALIZADO_POR'],
-        removido_por: data['REMOVIDO_POR'],
         valor_a_pagar: data['VALOR_PAGAR'],
         desconto: data['DESCONTO']
     }
@@ -80,16 +50,9 @@ function generateCobertura(data:cobertura): Cobertura {
         sigla: data.SIGLA,
         nome: data.NOME,
         descricao: data.DESCRICAO,
-        apolice_tipo: {
-            id: data.APOLICE_TIPO_ID.ID,
-            sigla: data.apolice_tipo.APOLICE_TIPO_SIGLA,
-            nome: data.apolice_tipo.APOLICE_TIPO_NOME,
-            descricao:data.apolice_tipo.APOLICE_TIPO_DESCRICAO
-        },
-        data_criacao: data.DATA_CRIACAO,
-        data_actualizacao: data.DATA_ACTUALIZACAO,
-        valor_pagar: data.VALOR_PAGAR,
-        desconto: data.DESCONTO,
+        apolice_tipo_id: data.APOLICE_TIPO_ID,
+        valor_a_pagar: data.VALOR_A_PAGAR.toNumber(),
+        desconto: data.DESCONTO.toNumber(),
         cobertura_base: data.COBERTURA_BASE
     };
     
@@ -113,7 +76,6 @@ function toBase64WithPreefix(filepath: string): string {
 }
 
 export {
-     generateApoliceEstado, generataApoliceFracionamento, 
-    generateApoliceItemSegurado, generateApolicePagamento,
-    generateApoliceCobertura, generateCobertura, toBase64, toBase64WithPreefix
+    generataApoliceFracionamento, generateApoliceItemSegurado, generateApoliceCobertura,
+     generateCobertura, toBase64, toBase64WithPreefix
 }; 

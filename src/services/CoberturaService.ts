@@ -16,7 +16,7 @@ class CoberturaService {
         return this.repo.getAll();         
     }
 
-    async getByID(id: String): Promise<Cobertura>{
+    async getByID(id: string): Promise<Cobertura>{
         return this.repo.getByID(id);
     }
 
@@ -24,11 +24,11 @@ class CoberturaService {
         return this.repo.create(cobertura);
     } 
 
-    async actualizar(id: String, cobertura: Cobertura) {
+    async actualizar(id: string, cobertura: Cobertura) {
         return this.repo.update(id, cobertura);
     }
 
-    async remover(id: String): Promise<Boolean> {
+    async remover(id: string): Promise<Boolean> {
         // check if object exist
         return this.repo.delete(id);
     }

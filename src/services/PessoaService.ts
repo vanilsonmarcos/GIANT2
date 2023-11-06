@@ -14,23 +14,23 @@ class PessoaService {
         return this.repo.getAll();         
     }
 
-    getByID(id: String): Promise<Pessoa>{
+    getByID(id: string): Promise<Pessoa>{
         return this.repo.getByID(id);
     }
     
-    getByPhoneNumber(phoneNumber: String) :Promise<Pessoa> {
+    getByPhoneNumber(phoneNumber: string) :Promise<Pessoa> {
         return this.repo.getPersonByPhoneNumber(phoneNumber);
     }
 
-    getByEmail(email: String): Promise<Pessoa>{
+    getByEmail(email: string): Promise<Pessoa>{
         return this.getByEmail(email);
     }
 
-    getByNIF(nif: String): Promise<Pessoa> {
+    getByNIF(nif: string): Promise<Pessoa> {
         return this.repo.getPersonByNIF(nif);
     }
 
-    getByNBI(nbi: String): Promise<Pessoa> {
+    getByNBI(nbi: string): Promise<Pessoa> {
         return this.repo.getPersonByNBI(nbi);
     }
 
@@ -38,11 +38,11 @@ class PessoaService {
         return this.repo.create(pessoa);
     } 
 
-    actualizar(id: String, pessoa: Pessoa) {
+    actualizar(id: string, pessoa: Pessoa) {
         return this.repo.update(id, pessoa);
     }
 
-    remover(id: String): Promise<Boolean> {
+    remover(id: string): Promise<Boolean> {
         // check if object exist
         return this.repo.delete(id);
     }

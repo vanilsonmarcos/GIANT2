@@ -14,11 +14,11 @@ class VeiculoService {
         return this.repo.getAll();         
     }
 
-    async getByID(id: String): Promise<Veiculo>{
+    async getByID(id: string): Promise<Veiculo>{
         return this.repo.getByID(id);
     }
 
-    async getByMatricola(matricola: String): Promise<Veiculo> {
+    async getByMatricola(matricola: string): Promise<Veiculo> {
         return this.repo.getVeiculoByMatricula(matricola);
     }
 
@@ -26,11 +26,11 @@ class VeiculoService {
         return this.repo.create(veiculo);
     } 
 
-    async actualizar(id: String, veiculo: Veiculo) {
+    async actualizar(id: string, veiculo: Veiculo) {
         return this.repo.update(id, veiculo);
     }
 
-    async remover(id: String): Promise<Boolean> {
+    async remover(id: string): Promise<Boolean> {
         // check if object exist
         return this.repo.delete(id);
     }

@@ -7,13 +7,13 @@ class ApoliceGeneratePDFController {
         this.apoliceGeneratePDF = agPDF;
     }
 
-    async get(req: Request, res: Response) {
+     get(req: Request, res: Response) {
         try {
-            await this.apoliceGeneratePDF.generatePDF();
+            this.apoliceGeneratePDF.generatePDF();
         } catch (error) {
             const response = {
                 code: 401,
-                message: "Failed to generate apolice",
+                message: "Failed to generate apolice document",
                 data:  {},
                 error: error
             };
