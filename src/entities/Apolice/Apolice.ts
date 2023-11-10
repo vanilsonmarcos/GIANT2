@@ -1,13 +1,11 @@
-import Pessoa from "../Pessoa/Pessoa";
-import ApoliceEstado from "./ApoliceEstado";
-import ApoliceFracionamento from "./ApoliceFracionamento";
-import ApoliceTipo from "./ApoliceTipo";
+
 interface Apolice {
-    id?: Number,
-    apolice_tipo: ApoliceTipo,
-    tomador: Pessoa,
-    apolice_fracionamento: ApoliceFracionamento,
-    apolice_estado: ApoliceEstado
+    id?: number,
+    apolice_tipo_id: number,
+    tomador_id: number,
+    apolice_fracionamento_id: number,
+    apolice_estado_id: number,
+    numero: string
 }
 
 export default Apolice;

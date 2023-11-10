@@ -14,9 +14,9 @@ model apolice {
   APOLICE_FRACIONAMENTO_ID Int
   NUMERO                   String                  @db.VarChar(64)
   TOMADOR_ID               Int
-  DATA_INICIO              DateTime                @db.DateTime(0)
-  DATA_FIM                 DateTime                @db.DateTime(0)
-  VALOR_PREMIO             Decimal                 @db.Decimal(13, 2)
+  DATA_INICIO              DateTime?               @db.DateTime(0)
+  DATA_FIM                 DateTime?               @db.DateTime(0)
+  VALOR_PREMIO             Decimal?                @db.Decimal(13, 2)
   INSERIDO_POR             Int?
   ACTUALIZADO_POR          Int?
   DATA_INSERCAO            DateTime?               @default(now()) @db.DateTime(0)
@@ -126,17 +126,18 @@ model cobertura {
 }
 
 model pessoa {
-  ID                Int              @id @default(autoincrement())
+  ID                Int               @id @default(autoincrement())
   PESSOA_TIPO_ID    Int
-  NOME              String           @db.VarChar(255)
-  DATA_NASCIMENTO   DateTime         @db.Date
-  SEXO              String           @db.VarChar(1)
-  NBI               String?          @unique(map: "NBI") @db.VarChar(64)
-  NIF               String           @unique(map: "NIF") @db.VarChar(64)
-  ESTADO_CIVIL      String           @db.VarChar(1)
-  DATA_CRIACAO      DateTime?        @default(now()) @db.Timestamp(0)
-  DATA_ACTUALIZACAO DateTime?        @default(now()) @db.DateTime(0)
-  pessoa_tipo       pessoa_tipo      @relation(fields: [PESSOA_TIPO_ID], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "FKPESSOA892258")
+  NOME              String            @db.VarChar(255)
+  DATA_NASCIMENTO   DateTime          @db.Date
+  SEXO              String            @db.VarChar(1)
+  NBI               String?           @unique(map: "NBI") @db.VarChar(64)
+  NIF               String            @unique(map: "NIF") @db.VarChar(64)
+  ESTADO_CIVIL      String            @db.VarChar(1)
+  DATA_CRIACAO      DateTime?         @default(now()) @db.Timestamp(0)
+  DATA_ACTUALIZACAO DateTime?         @default(now()) @db.DateTime(0)
+  adenda_segurado   adenda_segurado[]
+  pessoa_tipo       pessoa_tipo       @relation(fields: [PESSOA_TIPO_ID], references: [ID], onDelete: Cascade, map: "FKPESSOA892258")
   pessoa_endereco   pessoa_endereco?
 
   @@index([PESSOA_TIPO_ID], map: "FKPESSOA892258")
@@ -150,7 +151,7 @@ model pessoa_endereco {
   EMAIL                String?   @unique(map: "EMAIL") @db.VarChar(100)
   DATA_CRIACAO         DateTime? @default(now()) @db.Timestamp(0)
   DATA_ACTUALIZACAO    DateTime? @default(now()) @db.DateTime(0)
-  pessoa               pessoa    @relation(fields: [PESSOA_ID], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "FKPESSOA_END360638")
+  pessoa               pessoa    @relation(fields: [PESSOA_ID], references: [ID], onDelete: Cascade, map: "FKPESSOA_END360638")
 
   @@index([PESSOA_ID], map: "FKPESSOA_END360638")
 }
@@ -178,7 +179,7 @@ model preco_cilindrada {
   ACTUALIZADO_POR      Int?
   DATA_CRIACAO         DateTime?         @default(now()) @db.Timestamp(0)
   DATA_ACTUALIZACAO    DateTime?         @default(now()) @db.DateTime(0)
-  veiculo_categoria    veiculo_categoria @relation(fields: [VEICULO_CATEGORIA_ID], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "FKPRECO_CILI487359")
+  veiculo_categoria    veiculo_categoria @relation(fields: [VEICULO_CATEGORIA_ID], references: [ID], onDelete: Cascade, map: "FKPRECO_CILI487359")
 
   @@index([VEICULO_CATEGORIA_ID], map: "FKPRECO_CILI487359")
 }
@@ -204,7 +205,7 @@ model veiculo {
   DATA_ACTUALIZACAO     DateTime?               @db.Timestamp(0)
   DATA_REMOCAO          DateTime?               @db.Timestamp(0)
   apolice_item_segurado apolice_item_segurado[]
-  veiculo_categoria     veiculo_categoria       @relation(fields: [VEICULO_CATEGORIA_ID], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "FKVEICULO357677")
+  veiculo_categoria     veiculo_categoria       @relation(fields: [VEICULO_CATEGORIA_ID], references: [ID], onDelete: Cascade, map: "FKVEICULO357677")
 
   @@index([VEICULO_CATEGORIA_ID], map: "FKVEICULO357677")
 }
@@ -230,15 +231,16 @@ model ficheiro {
 }
 
 model adenda {
-  ID                Int       @id
-  APOLICE_ID        String    @db.VarChar(45)
-  PREMIO            String    @db.VarChar(45)
-  DATA_INICIO       DateTime  @db.DateTime(0)
-  DATA_FIM          DateTime  @db.DateTime(0)
-  DATA_INSERCAO     DateTime? @default(now()) @db.DateTime(0)
-  DATA_ACTUALIZACAO DateTime? @default(now()) @db.DateTime(0)
+  ID                Int               @id
+  APOLICE_ID        String            @db.VarChar(45)
+  PREMIO            String            @db.VarChar(45)
+  DATA_INICIO       DateTime          @db.DateTime(0)
+  DATA_FIM          DateTime          @db.DateTime(0)
+  DATA_INSERCAO     DateTime?         @default(now()) @db.DateTime(0)
+  DATA_ACTUALIZACAO DateTime?         @default(now()) @db.DateTime(0)
   INSERIDO_POR      Int?
   ACTUALIZADO_POR   Int?
+  adenda_segurado   adenda_segurado[]
 }
 
 model adenda_item_segurado {
@@ -272,6 +274,11 @@ model adenda_segurado {
   DATA_ACTUALIZACAO DateTime? @db.DateTime(0)
   INSERIDO_POR      Int?
   ACTUALIZADO_POR   Int?
+  adenda            adenda    @relation(fields: [ADENDA_ID], references: [ID], onDelete: Cascade, map: "FRKADENADEN")
+  pessoa            pessoa    @relation(fields: [SEGURADO_ID], references: [ID], onDelete: Cascade, map: "FRKADENPESS")
+
+  @@index([ADENDA_ID], map: "FRKADENADEN_idx")
+  @@index([SEGURADO_ID], map: "FRKADENPESS_idx")
 }
 
 model seguradora {

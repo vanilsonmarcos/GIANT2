@@ -58,7 +58,7 @@ class VeiculoRepository implements IVeiculoReposiroty<Veiculo>, IVeiculoCategori
         
         return generateVeiculo(v);
     }
-    async create(item: Veiculo): Promise<Veiculo> {      
+    async create(item: Veiculo): Promise<Veiculo> {       
         const v = await prisma.veiculo.create({
             data: {
                 VEICULO_CATEGORIA_ID: item.veiculo_categoria_id,
@@ -109,10 +109,10 @@ class VeiculoRepository implements IVeiculoReposiroty<Veiculo>, IVeiculoCategori
         if (v !== null) {
             return item;
         }
-        throw Error("Ocorreu um erro ao actualizar od dados do veiculo")
+        throw Error("Ocorreu um erro ao actualizar od dados do veiculo");
     }
 
-    async delete(id: string): Promise<Boolean> {
+    async delete(id: string): Promise<boolean> {
         const v = await prisma.veiculo.delete({
             where: {
                ID: parseInt(id) 

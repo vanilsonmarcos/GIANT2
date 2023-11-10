@@ -9,7 +9,316 @@
         <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&family=Poppins:wght@300;400;700&display=swap"
         rel="stylesheet">
-        <link rel="stylesheet" type="text/css" href="style.css">
+        <script>
+
+        </script>
+        <style>
+            * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Inter, sans-serif;
+    font-size: 12px;
+    width: 21cm;
+    height: 28.7cm;
+    position: relative;
+}
+
+header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+}
+
+.title {
+    width: 100%;
+    text-align: center;
+    margin-top: 18px;
+    padding: 8px 0;
+}
+
+.title h2 {
+    color:  black;
+    font-size: 16px;
+    font-weight: 400;
+    text-transform: uppercase;
+}
+
+
+/* definir os valores gerais de uma imagem */
+img {
+    height: 100px;
+    width: auto;
+}
+
+
+/* div styles */
+
+.cert-head {
+    display: flex;
+    flex-direction: column; /* This sets the direction to vertical */
+    align-items: center; /* Align items horizontally in the center */
+    margin-bottom: 10px;
+}
+.cert-head p {
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.cert-footer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+
+}
+
+.cert-body {
+    margin-top: 10px;
+}
+
+.cert-assi {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.cert-assi > * {
+    margin: 5px;
+}
+
+
+.cert-h-center {
+    display: grid;
+    place-items: center; 
+}
+
+.box {
+    border: 1px solid black;
+    padding: 10px;
+}
+
+.hiden-box {
+    margin: 10px;
+    padding: 10px;
+}
+
+.no-mp-left {
+    margin-left: 0;
+    padding-left: 0;
+}
+
+.no-mp-right {
+    margin-right: 0;
+    padding-right: 0;
+}
+
+.m-2 {
+    margin: 2px;
+}
+
+.m-3 {
+    margin: 3px;
+}
+
+.mt-5 {
+    margin-top: 5px;
+}
+
+.mb-5 {
+    margin-bottom: 5px;
+}
+
+.mtb-5 {
+    margin:5px 0;
+}
+
+.mtb-10 {
+    margin:10px 0;
+}
+
+.ml-5 {
+    margin-left: 5px;
+}
+
+.mr-5 {
+    margin-right: 5px;
+}
+
+.mlr-3 {
+    margin: 0 3px;
+}
+
+.mlr-5 {
+    margin: 0 5px;
+}
+
+.mlr-10 {
+    margin: 0 10px;
+}
+
+.mlr-15 {
+    margin: 0 15px;
+}
+
+.m-5 {
+    margin: 5px;
+}
+
+.m-10 {
+    margin: 10px;
+}
+
+.m-b-3 {
+    margin-bottom: 3px;
+}
+
+.m-b-5 {
+    margin-bottom: 5px;
+}
+
+.plr-5 {
+ padding: 0 5px;
+}
+
+.pl-5 {
+    padding-left: 10px;
+}
+
+.pr-10 {
+    padding-right: 10px;
+}
+
+
+.all-width {
+    max-height: 100%;
+}
+
+.row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); 
+    gap: 2px; 
+}
+
+.row-one {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Create two equal-width columns */
+}
+
+.row-two {
+    display: grid;
+    grid-template-columns: 2fr 1fr; /* Create two equal-width columns */
+}
+
+.row-two-inverted {
+    display: grid;
+    grid-template-columns: 1.5fr 2fr;
+}
+
+.row-three {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+}
+
+.row-four {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    
+}
+.pr-assi {
+    width: 50%;
+}
+.subscritor-container {
+    position: relative;
+    height: auto;
+}
+
+.subscritor-name {
+    position: absolute;
+    bottom: 0;
+}
+
+.margin-2x {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    
+}
+
+.footer {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+/* text bold */
+.text-bold {
+    font-weight: bold;
+}
+
+/* Text small */
+
+.text-small {
+    font-size: 11px;
+}
+
+/* horizontal divisors */
+
+hr .line-2x {
+    border-top: 1px solid #eee;
+}
+
+
+/* Text Alignment in the p tags */
+
+.text-align-right {
+    text-align: right;
+}
+
+.text-align-left {
+    text-align: left;
+}
+
+.t-a-c {
+    text-align: center;
+}
+
+.text-align {
+    text-align: justify;
+}
+
+.text-upper {
+    text-transform: uppercase;
+}
+
+.z-75 {
+    transform: scale(0.75); 
+    transform-origin: center center;
+}
+
+.z-80 {
+    transform: scale(0.80);
+    transform-origin: center center;
+}
+
+.w-500 {
+    width: 500px;
+    max-width: 500px;
+}
+
+.h-400 {
+    max-height: 400px;
+}
+
+.img-h-80 {
+    height: 80px;
+    width: auto;
+}
+
+.bk-grey {
+    background-color: rgba(179, 178, 178, 0.418);
+}
+        </style>
     </head>
     <body>
         <div class="container">
@@ -23,11 +332,10 @@
                 </h2>
                 </div>
             </header>
-            <div class="apolice-body">
+            <div class="apolice-body mlr-10">
                 <div class="row-one">
-                        <div class="box">
-                            <p class="text-bold">TOMADOR DO SEGURO</p>
-                            <br>
+                        <div class="box m-3">
+                            <p class="text-bold m-b-5">TOMADOR DO SEGURO</p>
                             <div class="row-two-inverted">
                                 <div>
                                     <p class="m-b-5"><span class="text-bold">Nome:</span></p>
@@ -53,7 +361,7 @@
                             
                         </div>
                     <div class="column">
-                        <div class="box row-two-inverted">
+                        <div class="box row-two-inverted m-3">
                             <div>
                                 <p class="m-b-5"><span class="text-bold">Apólice de Seguro nº:</span></p>
                                 <p class="m-b-5"><span class="text-bold">Actaº:</span></p>
@@ -67,10 +375,10 @@
                                 <p class="m-b-5">RESPONSABILIDADE CÍVIL</p>
                             </div>
                         </div>
-                        <div class="box">
+                        <div class="box mtb-5 mlr-3">
                             <p class="t-a-c text-bold">CONDIÇÕES PARTICULARES:</p>
                         </div>
-                        <div class="box row-two-inverted">
+                        <div class="box row-two-inverted m-3">
                             <div>
                                 <p class="m-b-5"><span class="text-bold">Data início:</span></p>
                                 <p class="m-b-5"><span class="text-bold">Duração:</span></p>                                
@@ -87,7 +395,7 @@
                     </div>
                 </div>
                 <div class="row-two">
-                    <div class="box">
+                    <div class="box m-3">
                         <p class="text-bold">Objectos Segurados:</p>
                         <div class="row-five">
                             <div class="row">
@@ -132,7 +440,7 @@
                         </p>
     
                     </div>
-                    <div class="box">
+                    <div class="box m-3">
                         <p class="text-bold">Franquia:</p>
                         <br>
                         <p>0.00%</p>
@@ -142,43 +450,43 @@
                     </div>
                 </div>
                 <div class="row-three">
-                    <div class="box t-a-c">
+                    <div class="box m-3 t-a-c">
                         <p class="text-bold m-b-5">
                             Capital Seguro RC
                         </p>
                         <span>13. 376 000,00</span>
                     </div>
-                    <div class="box t-a-c">
+                    <div class="box m-3 t-a-c">
                         <p class="text-bold m-b-5 ">
                             Prémio Comercial
                         </p>
                         <span>19 270,36</span>
                     </div>
-                    <div class="box t-a-c">
+                    <div class="box m-3 t-a-c">
                         <p class="text-bold m-b-5">
                             FGA
                         </p>
                         <span>963,52</span>
                     </div>
-                    <div class="box t-a-c">
+                    <div class="box m-3 t-a-c">
                         <p class="text-bold m-b-5">
                             Encargos Adicionais
                         </p>
                         <span>3 538,04</span>
                     </div>
-                    <div class="box t-a-c">
+                    <div class="box m-3 t-a-c">
                         <p class="text-bold m-b-5 ">
                             Encargo Fraccion.
                         </p>
                         <span>0,00</span>
                     </div>
-                    <div class="box t-a-c"> 
+                    <div class="box m-3 t-a-c"> 
                         <p class="text-bold m-b-5">
                             IVA(14%)
                         </p>
                         <span>3 193,18</span>
                     </div>
-                    <div class="box t-a-c">
+                    <div class="box m-3 t-a-c">
                         <p class="text-bold">
                             Prémio Anual
                         </p>
@@ -186,25 +494,22 @@
                     </div>
                 </div>
                 <div class="row-four">
-                    <div class="box">
+                    <div class="box m-3">
                         <p>
                             <span class="text-bold">Período: </span>01-10-2022 <span class="text-bold"> a </span> 30- 09-2023
                         </p>
                         <span></span>
                     </div>
-                <div class="box"><p><span class="text-bold">Local de Risco: </span>Angola</p></div>
-                </div>
-                <br>
-                <br>
-                 
-                <div class="footer row-two m-10">
+                <div class="box m-3"><p><span class="text-bold">Local de Risco: </span>Angola</p></div>
+                </div> 
+            <br>
+            <br>
+                <div class="footer row-two ">
                     <div class="apolice-assi">
                         <div class="pr-assi">
-                            <p>Presidente da Comissão Executiva</p>
-                            <br>
+                            <p class="mb-5">Presidente da Comissão Executiva</p>
                             <img src="assinatura.png" alt="Assinatura do Presidente da Comissão Executiva">
-                            <br>
-                            <hr>
+                            <hr class="mtb-5">
                         </div>
                       
                     </div>
@@ -214,33 +519,29 @@
                             <p>Kelson Nicolau Lourenço</p>
                         </div>
                     </div>
-                  
                     <div class="">
-                        <br>
-                        <br>
-                        <p class="text-small">
+                        <p class="text-small mtb-5">
                             Este contracto de seguro é constituido pelas Condições Gerias, 
                             Especiais e Particulares anexas e ainda pela proposta que lhe serviu de base.
                             Está apólice deverá ser conferida pelo tomador do seguro; na falta de reclamação,
                             no prazo de 30 dias, será tida como inteiramente conforme.
                         </p>
-                       
-                        <p class="text-small">
+                        <p class="text-small mb-5">
                             Consulte as condições gerais do produto em www.giantseguros.co.ao
                         </p>
-                        <br>
-                        <p class="text-small">
+                        <p class="text-small mb-5">
                             Em caso de reclamação:
                         </p>
-                   
                         <p class="text-small">Tel: 929 280 602/ Email: reclamacoes@giantseguros.co.ao</p>
                     </div>
                 </div>
             </div>
             <br>
-            <p class=" text-small text-align-right">Processado por programa nº. 209/AGT/2019</p>
+           
+           
+            <p class="text-small text-align-right pr-10">Processado por programa nº. 209/AGT/2019</p>
             <hr class="line-2x"></hr>
-            <br>
+           
             <footer>
                 <div class="endereco m-10">
                     <p><b>NIF:</b> 5417588962</p>

@@ -4,7 +4,15 @@ import ApoliceFracionamento from "./ApoliceFracionamento";
 import ApoliceItemSegurado from "./ApoliceItemSegurado";
 import ApoliceCobertura from "./ApoliceCobertura";
 import Cobertura from "../Cobertura";
-import { cobertura } from "@prisma/client";
+import { apolice, cobertura } from "@prisma/client";
+import Apolice from "./Apolice";
+
+
+function generateApolice(data: apolice): Apolice {
+ throw new Error("Method not yet implemented");
+}
+
+
 
 
 function generataApoliceFracionamento(data: RowDataPacket): ApoliceFracionamento {
@@ -75,7 +83,7 @@ function toBase64WithPreefix(filepath: string): string {
     return result; 
 }
 
-export {
+export {generateApolice,
     generataApoliceFracionamento, generateApoliceItemSegurado, generateApoliceCobertura,
      generateCobertura, toBase64, toBase64WithPreefix
 }; 

@@ -1,16 +1,15 @@
 import 'reflect-metadata';
-import Container from "typedi";
 import { Router } from "express";
 import ApoliceGeneratePDFService from '../services/ApoliceGeneratePDFService';
 import ApoliceGeneratePDFController from '../controllers/ApoliceGeneratePDFController';
 
-
-const apoliceGeneratePDFService: ApoliceGeneratePDFService = Container.get(ApoliceGeneratePDFService);
-const apoliceGeneratePDFController:ApoliceGeneratePDFController  = new ApoliceGeneratePDFController(apoliceGeneratePDFService);
+const apoliceGeneratePDFService: ApoliceGeneratePDFService = new ApoliceGeneratePDFService();
+const apoliceGeneratePDFController:ApoliceGeneratePDFController = new ApoliceGeneratePDFController(apoliceGeneratePDFService);
 
 const apoliceGeneratePDFRoutes = Router();
 
-apoliceGeneratePDFRoutes.get('/generate_apolice/', apoliceGeneratePDFController.get.bind(ApoliceGeneratePDFController));
+apoliceGeneratePDFRoutes.get('/generate_apolice/', apoliceGeneratePDFController.getApolice.bind(apoliceGeneratePDFController));
+apoliceGeneratePDFRoutes.get('/generate_certificado/', apoliceGeneratePDFController.getCertificado.bind(apoliceGeneratePDFController));
 
 
 export default apoliceGeneratePDFRoutes;

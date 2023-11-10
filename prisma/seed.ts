@@ -141,6 +141,17 @@ async function seed() {
         })
     }
 
+    if ((await prisma.veiculo_categoria.count() === 0)) {
+        await prisma.veiculo_categoria.createMany({
+            data: [
+                { NOME: 'Ligeriro ' },
+                { NOME: 'Camionetas' },
+                { NOME: 'Autocaravanas' },
+                { NOME: 'Pesados' },
+            ]
+        });
+    }
+
     if ((await prisma.preco_cilindrada.count() === 0)) {
         await prisma.preco_cilindrada.createMany({
             data: [
@@ -221,20 +232,6 @@ async function seed() {
                     CILINDRADA_MAX: 1500,
                     CILINDRADA_MIN: 0
                 }
-            ]
-        });
-    }
-
-
-
-
-    if ((await prisma.veiculo_categoria.count() === 0)) {
-        await prisma.veiculo_categoria.createMany({
-            data: [
-                { NOME: 'Ligeriro ' },
-                { NOME: 'Camionetas' },
-                { NOME: 'Autocaravanas' },
-                { NOME: 'Pesados' },
             ]
         });
     }
