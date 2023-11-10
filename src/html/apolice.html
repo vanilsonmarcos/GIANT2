@@ -1,557 +1,582 @@
 <!DOCTYPE html>
 <html lang="pt">
-    <head>
-        <meta charset="UTF-8">
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Certificado</title>
-        <link
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificado</title>
+    <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&family=Poppins:wght@300;400;700&display=swap"
         rel="stylesheet">
-        <script>
-
-        </script>
-        <style>
-            * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: Inter, sans-serif;
-    font-size: 12px;
-    width: 21cm;
-    height: 28.7cm;
-    position: relative;
-}
-
-header {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-}
-
-.title {
-    width: 100%;
-    text-align: center;
-    margin-top: 18px;
-    padding: 8px 0;
-}
-
-.title h2 {
-    color:  black;
-    font-size: 16px;
-    font-weight: 400;
-    text-transform: uppercase;
-}
-
-
-/* definir os valores gerais de uma imagem */
-img {
-    height: 100px;
-    width: auto;
-}
-
-
-/* div styles */
-
-.cert-head {
-    display: flex;
-    flex-direction: column; /* This sets the direction to vertical */
-    align-items: center; /* Align items horizontally in the center */
-    margin-bottom: 10px;
-}
-.cert-head p {
-    text-transform: uppercase;
-    font-weight: bold;
-}
-
-.cert-footer {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 10px;
-
-}
-
-.cert-body {
-    margin-top: 10px;
-}
-
-.cert-assi {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.cert-assi > * {
-    margin: 5px;
-}
-
-
-.cert-h-center {
-    display: grid;
-    place-items: center; 
-}
-
-.box {
-    border: 1px solid black;
-    padding: 10px;
-}
-
-.hiden-box {
-    margin: 10px;
-    padding: 10px;
-}
-
-.no-mp-left {
-    margin-left: 0;
-    padding-left: 0;
-}
-
-.no-mp-right {
-    margin-right: 0;
-    padding-right: 0;
-}
-
-.m-2 {
-    margin: 2px;
-}
-
-.m-3 {
-    margin: 3px;
-}
-
-.mt-5 {
-    margin-top: 5px;
-}
-
-.mb-5 {
-    margin-bottom: 5px;
-}
-
-.mtb-5 {
-    margin:5px 0;
-}
-
-.mtb-10 {
-    margin:10px 0;
-}
-
-.ml-5 {
-    margin-left: 5px;
-}
-
-.mr-5 {
-    margin-right: 5px;
-}
-
-.mlr-3 {
-    margin: 0 3px;
-}
-
-.mlr-5 {
-    margin: 0 5px;
-}
-
-.mlr-10 {
-    margin: 0 10px;
-}
-
-.mlr-15 {
-    margin: 0 15px;
-}
-
-.m-5 {
-    margin: 5px;
-}
-
-.m-10 {
-    margin: 10px;
-}
-
-.m-b-3 {
-    margin-bottom: 3px;
-}
-
-.m-b-5 {
-    margin-bottom: 5px;
-}
-
-.plr-5 {
- padding: 0 5px;
-}
-
-.pl-5 {
-    padding-left: 10px;
-}
-
-.pr-10 {
-    padding-right: 10px;
-}
-
-
-.all-width {
-    max-height: 100%;
-}
-
-.row {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr); 
-    gap: 2px; 
-}
-
-.row-one {
-    display: grid;
-    grid-template-columns: 1fr 1fr; /* Create two equal-width columns */
-}
-
-.row-two {
-    display: grid;
-    grid-template-columns: 2fr 1fr; /* Create two equal-width columns */
-}
-
-.row-two-inverted {
-    display: grid;
-    grid-template-columns: 1.5fr 2fr;
-}
-
-.row-three {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-}
-
-.row-four {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    
-}
-.pr-assi {
-    width: 50%;
-}
-.subscritor-container {
-    position: relative;
-    height: auto;
-}
-
-.subscritor-name {
-    position: absolute;
-    bottom: 0;
-}
-
-.margin-2x {
-    margin-top: 10px;
-    margin-bottom: 10px;
-    
-}
-
-.footer {
-    margin-top: 10px;
-    margin-bottom: 10px;
-}
-
-/* text bold */
-.text-bold {
-    font-weight: bold;
-}
-
-/* Text small */
-
-.text-small {
-    font-size: 11px;
-}
-
-/* horizontal divisors */
-
-hr .line-2x {
-    border-top: 1px solid #eee;
-}
-
-
-/* Text Alignment in the p tags */
-
-.text-align-right {
-    text-align: right;
-}
-
-.text-align-left {
-    text-align: left;
-}
-
-.t-a-c {
-    text-align: center;
-}
-
-.text-align {
-    text-align: justify;
-}
-
-.text-upper {
-    text-transform: uppercase;
-}
-
-.z-75 {
-    transform: scale(0.75); 
-    transform-origin: center center;
-}
-
-.z-80 {
-    transform: scale(0.80);
-    transform-origin: center center;
-}
-
-.w-500 {
-    width: 500px;
-    max-width: 500px;
-}
-
-.h-400 {
-    max-height: 400px;
-}
-
-.img-h-80 {
-    height: 80px;
-    width: auto;
-}
-
-.bk-grey {
-    background-color: rgba(179, 178, 178, 0.418);
-}
-        </style>
-    </head>
-    <body>
-        <div class="container">
-            <header>
-                <div class="">
-                   <img src="logo.png" alt="Giant"/>
-                </div>
-                <div class="title">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Inter, sans-serif;
+            font-size: 12px;
+            width: 21cm;
+            height: 28.7cm;
+            position: relative;
+        }
+
+        header {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+        }
+
+        .title {
+            width: 100%;
+            text-align: center;
+            margin-top: 18px;
+            padding: 8px 0;
+        }
+
+        .title h2 {
+            color: black;
+            font-size: 16px;
+            font-weight: 400;
+            text-transform: uppercase;
+        }
+
+
+        /* definir os valores gerais de uma imagem */
+        img {
+            height: 100px;
+            width: auto;
+        }
+
+
+        /* div styles */
+
+        .cert-head {
+            display: flex;
+            flex-direction: column;
+            /* This sets the direction to vertical */
+            align-items: center;
+            /* Align items horizontally in the center */
+            margin-bottom: 10px;
+        }
+
+        .cert-head p {
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+        .cert-footer {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+
+        }
+
+        .cert-body {
+            margin-top: 10px;
+        }
+
+        .cert-assi {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .cert-assi>* {
+            margin: 5px;
+        }
+
+
+        .cert-h-center {
+            display: grid;
+            place-items: center;
+        }
+
+        .box {
+            border: 1px solid black;
+            padding: 10px;
+        }
+
+        .hiden-box {
+            margin: 10px;
+            padding: 10px;
+        }
+
+        .no-mp-left {
+            margin-left: 0;
+            padding-left: 0;
+        }
+
+        .no-mp-right {
+            margin-right: 0;
+            padding-right: 0;
+        }
+
+        .m-2 {
+            margin: 2px;
+        }
+
+        .m-3 {
+            margin: 3px;
+        }
+
+        .mt-5 {
+            margin-top: 5px;
+        }
+
+        .mb-5 {
+            margin-bottom: 5px;
+        }
+
+        .mtb-5 {
+            margin: 5px 0;
+        }
+
+        .mtb-10 {
+            margin: 10px 0;
+        }
+
+        .ml-5 {
+            margin-left: 5px;
+        }
+
+        .mr-5 {
+            margin-right: 5px;
+        }
+
+        .mlr-3 {
+            margin: 0 3px;
+        }
+
+        .mlr-5 {
+            margin: 0 5px;
+        }
+
+        .mlr-10 {
+            margin: 0 10px;
+        }
+
+        .mlr-15 {
+            margin: 0 15px;
+        }
+
+        .m-5 {
+            margin: 5px;
+        }
+
+        .m-10 {
+            margin: 10px;
+        }
+
+        .m-b-3 {
+            margin-bottom: 3px;
+        }
+
+        .m-b-5 {
+            margin-bottom: 5px;
+        }
+
+        .plr-5 {
+            padding: 0 5px;
+        }
+
+        .pl-5 {
+            padding-left: 10px;
+        }
+
+        .pr-10 {
+            padding-right: 10px;
+        }
+
+
+        .all-width {
+            max-height: 100%;
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 2px;
+        }
+
+        .row-one {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            /* Create two equal-width columns */
+        }
+
+        .row-two {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            /* Create two equal-width columns */
+        }
+
+        .row-two-inverted {
+            display: grid;
+            grid-template-columns: 1.5fr 2fr;
+        }
+
+        .row-three {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+        }
+
+        .row-four {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+
+        }
+
+        .pr-assi {
+            width: 50%;
+        }
+
+        .subscritor-container {
+            position: relative;
+            height: auto;
+        }
+
+        .subscritor-name {
+            position: absolute;
+            bottom: 0;
+        }
+
+        .margin-2x {
+            margin-top: 10px;
+            margin-bottom: 10px;
+
+        }
+
+        .footer {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        /* text bold */
+        .text-bold {
+            font-weight: bold;
+        }
+
+        /* Text small */
+
+        .text-small {
+            font-size: 11px;
+        }
+
+        /* horizontal divisors */
+
+        hr .line-2x {
+            border-top: 1px solid #eee;
+        }
+
+
+        /* Text Alignment in the p tags */
+
+        .text-align-right {
+            text-align: right;
+        }
+
+        .text-align-left {
+            text-align: left;
+        }
+
+        .t-a-c {
+            text-align: center;
+        }
+
+        .text-align {
+            text-align: justify;
+        }
+
+        .text-upper {
+            text-transform: uppercase;
+        }
+
+        .z-75 {
+            transform: scale(0.75);
+            transform-origin: center center;
+        }
+
+        .z-80 {
+            transform: scale(0.80);
+            transform-origin: center center;
+        }
+
+        .w-500 {
+            width: 500px;
+            max-width: 500px;
+        }
+
+        .h-400 {
+            max-height: 400px;
+        }
+
+        .img-h-80 {
+            height: 80px;
+            width: auto;
+        }
+
+        .bk-grey {
+            background-color: rgba(179, 178, 178, 0.418);
+        }
+    </style>
+
+    <script>
+        async function getData() {
+            const xhr = new XMLHttpRequest();
+            const url = 'http://localhost:3000/apolice/';
+            xhr.open("GET", url, true);
+            xhr.onreadystatechange = function () {
+                if (this.readyState === 4) {
+                    const obj = JSON.parse(xhr.responseText)
+                }
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="">
+                <img src="logo.png" alt="Giant" />
+            </div>
+            <div class="title">
                 <h2>
                     <span class="text-bold">Seguro automóvel</span>
                 </h2>
+            </div>
+        </header>
+        <div class="apolice-body mlr-10">
+            <div class="row-one">
+                <div class="box m-3">
+                    <p class="text-bold m-b-5">TOMADOR DO SEGURO</p>
+                    <div class="row-two-inverted">
+                        <div>
+                            <p class="m-b-5"><span class="text-bold">Nome:</span></p>
+                            <p class="m-b-5"><span class="text-bold">Cliente nº:</span></p>
+                            <p class="m-b-5"><span class="text-bold">Identificação:</span></p>
+                            <p class="m-b-5"><span class="text-bold">Referência:</span></p>
+                            <p class="m-b-5"><span class="text-bold">Província:</span></p>
+                            <p class="m-b-5"><span class="text-bold">Município:</span></p>
+                            <p class="m-b-5"><span class="text-bold">Bairro:</span></p>
+                            <p class="m-b-5"><span class="text-bold">Contacto:</span></p>
+                        </div>
+                        <div>
+                            <p class="m-b-5" id="nome">CIRILO BARTOLOMEU DA COSTA</p>
+                            <p class="m-b-5" id="n_cliente">2210847GTS</p>
+                            <p class="m-b-5" id="Identificação">BILHETE</p>
+                            <p class="m-b-5" id="referencia">002986314HA037</p>
+                            <p class="m-b-5" id="provincia">Luanda</p>
+                            <p class="m-b-5" id="municipio">Luanda</p>
+                            <p class="m-b-5" id="bairro">Comandante Valódia</p>
+                            <p class="m-b-5" id="contacto">922824508</p>
+                        </div>
+                    </div>
+
                 </div>
-            </header>
-            <div class="apolice-body mlr-10">
-                <div class="row-one">
-                        <div class="box m-3">
-                            <p class="text-bold m-b-5">TOMADOR DO SEGURO</p>
-                            <div class="row-two-inverted">
-                                <div>
-                                    <p class="m-b-5"><span class="text-bold">Nome:</span></p>
-                                    <p class="m-b-5"><span class="text-bold">Cliente nº:</span></p>
-                                    <p class="m-b-5"><span class="text-bold">Identificação:</span></p>
-                                    <p class="m-b-5"><span class="text-bold">Referência:</span></p>
-                                    <p class="m-b-5"><span class="text-bold">Província:</span></p>
-                                    <p class="m-b-5"><span class="text-bold">Município:</span></p>
-                                    <p class="m-b-5"><span class="text-bold">Bairro:</span></p>
-                                    <p class="m-b-5"><span class="text-bold">Contacto:</span></p>
-                                </div>
-                                <div>
-                                    <p class="m-b-5">CIRILO BARTOLOMEU DA COSTA</p>
-                                    <p class="m-b-5">2210847GTS</p>
-                                    <p class="m-b-5">BILHETE</p>
-                                    <p class="m-b-5">002986314HA037</p>
-                                    <p class="m-b-5">Luanda</p>
-                                    <p class="m-b-5">Luanda</p>
-                                    <p class="m-b-5">Comandante Valódia</p>
-                                    <p class="m-b-5">922824508</p>
-                                </div>
-                            </div>
-                            
+                <div class="column">
+                    <div class="box row-two-inverted m-3">
+                        <div>
+                            <p class="m-b-5"><span class="text-bold">Apólice de Seguro nº:</span></p>
+                            <p class="m-b-5"><span class="text-bold">Actaº:</span></p>
+                            <p class="m-b-5"><span class="text-bold"> Data de Emissão:</span></p>
+                            <p class="m-b-5"><span class="text-bold"> Ramo:</span></p>
                         </div>
-                    <div class="column">
-                        <div class="box row-two-inverted m-3">
-                            <div>
-                                <p class="m-b-5"><span class="text-bold">Apólice de Seguro nº:</span></p>
-                                <p class="m-b-5"><span class="text-bold">Actaº:</span></p>
-                                <p class="m-b-5"><span class="text-bold">  Data de Emissão:</span></p>
-                                <p class="m-b-5"><span class="text-bold"> Ramo:</span></p>
-                            </div>
-                            <div>
-                                <p class="m-b-5">190.2022/4608</p>
-                                <p class="m-b-5">0-2023</p>
-                                <p class="m-b-5">01/10/2022 10:28:35</p>
-                                <p class="m-b-5">RESPONSABILIDADE CÍVIL</p>
-                            </div>
-                        </div>
-                        <div class="box mtb-5 mlr-3">
-                            <p class="t-a-c text-bold">CONDIÇÕES PARTICULARES:</p>
-                        </div>
-                        <div class="box row-two-inverted m-3">
-                            <div>
-                                <p class="m-b-5"><span class="text-bold">Data início:</span></p>
-                                <p class="m-b-5"><span class="text-bold">Duração:</span></p>                                
-                                <p class="m-b-5"><span class="text-bold">Forma de Pagamento:</span></p>
-                                <p class="m-b-5"><span class="text-bold">Mediador:</span></p>            
-                            </div>
-                            <div>
-                             <p class="m-b-5">01-10-2022</p>
-                            <p class="m-b-5">ANO E SEGUINTES</p>                                
-                            <p class="m-b-5">ANUAL</p>
-                            <p class="m-b-5"></p>    
-                            </div>
+                        <div>
+                            <p class="m-b-5" id="n_apolice">190.2022/4608</p>
+                            <p class="m-b-5" id="n_acta">0-2023</p>
+                            <p class="m-b-5" id="data_emissao">01/10/2022 10:28:35</p>
+                            <p class="m-b-5" id="ramo">RESPONSABILIDADE CÍVIL</p>
                         </div>
                     </div>
-                </div>
-                <div class="row-two">
-                    <div class="box m-3">
-                        <p class="text-bold">Objectos Segurados:</p>
-                        <div class="row-five">
-                            <div class="row">
-                                <div class="hiden-box no-mp-left">
-                                    <p class="text-bold m-b-5">
-                                        Marca
-                                    </p>
-                                    <span>Hyundai</span>
-                                </div>
-                                <div class="hiden-box">
-                                    <p class="text-bold m-b-5">
-                                        Modelo
-                                    </p>
-                                    <span>Elantra</span>
-                                </div>
-                                <div class="hiden-box" >
-                                    <p class="text-bold m-b-5">
-                                        Matrícula
-                                    </p>
-                                    <span>LD-54-52-FN</span>
-                                </div>
-                                <div class="hiden-box">
-                                    <p class="text-bold m-b-5">
-                                        Cilindrada
-                                    </p>
-                                    <span>1598</span>
-                                </div>
-                                <div class="hiden-box no-mp-right">
-                                    <p class="text-bold m-b-5">
-                                        Nº Lugares
-                                    </p>
-                                    <span>5</span>
-                                </div>
-                            </div>
+                    <div class="box mtb-5 mlr-3">
+                        <p class="t-a-c text-bold">CONDIÇÕES PARTICULARES:</p>
+                    </div>
+                    <div class="box row-two-inverted m-3">
+                        <div>
+                            <p class="m-b-5"><span class="text-bold">Data início:</span></p>
+                            <p class="m-b-5"><span class="text-bold">Duração:</span></p>
+                            <p class="m-b-5"><span class="text-bold">Forma de Pagamento:</span></p>
+                            <p class="m-b-5"><span class="text-bold">Mediador:</span></p>
                         </div>
-                        <p class="text-bold m-b-5">LP2-Ligeiros Particulares de 1:</p>
-                        <p>Responsabilidade Civil Obrigatória</p>
-                        <br>
-                        <p class="text-bold">Exclusões</p>
-                        <p>
-                            Nos termos das Condições gerais e Especiais do seguro Automóvel
-                        </p>
-    
-                    </div>
-                    <div class="box m-3">
-                        <p class="text-bold">Franquia:</p>
-                        <br>
-                        <p>0.00%</p>
-                        
-                        <br><br><br><br>
-                        <p class="text-bold">Observação:</p>
-                    </div>
-                </div>
-                <div class="row-three">
-                    <div class="box m-3 t-a-c">
-                        <p class="text-bold m-b-5">
-                            Capital Seguro RC
-                        </p>
-                        <span>13. 376 000,00</span>
-                    </div>
-                    <div class="box m-3 t-a-c">
-                        <p class="text-bold m-b-5 ">
-                            Prémio Comercial
-                        </p>
-                        <span>19 270,36</span>
-                    </div>
-                    <div class="box m-3 t-a-c">
-                        <p class="text-bold m-b-5">
-                            FGA
-                        </p>
-                        <span>963,52</span>
-                    </div>
-                    <div class="box m-3 t-a-c">
-                        <p class="text-bold m-b-5">
-                            Encargos Adicionais
-                        </p>
-                        <span>3 538,04</span>
-                    </div>
-                    <div class="box m-3 t-a-c">
-                        <p class="text-bold m-b-5 ">
-                            Encargo Fraccion.
-                        </p>
-                        <span>0,00</span>
-                    </div>
-                    <div class="box m-3 t-a-c"> 
-                        <p class="text-bold m-b-5">
-                            IVA(14%)
-                        </p>
-                        <span>3 193,18</span>
-                    </div>
-                    <div class="box m-3 t-a-c">
-                        <p class="text-bold">
-                            Prémio Anual
-                        </p>
-                        <span>26 965,00</span>
-                    </div>
-                </div>
-                <div class="row-four">
-                    <div class="box m-3">
-                        <p>
-                            <span class="text-bold">Período: </span>01-10-2022 <span class="text-bold"> a </span> 30- 09-2023
-                        </p>
-                        <span></span>
-                    </div>
-                <div class="box m-3"><p><span class="text-bold">Local de Risco: </span>Angola</p></div>
-                </div> 
-            <br>
-            <br>
-                <div class="footer row-two ">
-                    <div class="apolice-assi">
-                        <div class="pr-assi">
-                            <p class="mb-5">Presidente da Comissão Executiva</p>
-                            <img src="assinatura.png" alt="Assinatura do Presidente da Comissão Executiva">
-                            <hr class="mtb-5">
+                        <div>
+                            <p class="m-b-5" id="data_inicio">01-10-2022</p>
+                            <p class="m-b-5" id="duracao">ANO E SEGUINTES</p>
+                            <p class="m-b-5" id="forma_pagamento">ANUAL</p>
+                            <p class="m-b-5" id="mediador"></p>
                         </div>
-                      
-                    </div>
-                    <div class="subscritor-container">
-                        <div class="subscritor-name">
-                            <p>Subscritor</p>
-                            <p>Kelson Nicolau Lourenço</p>
-                        </div>
-                    </div>
-                    <div class="">
-                        <p class="text-small mtb-5">
-                            Este contracto de seguro é constituido pelas Condições Gerias, 
-                            Especiais e Particulares anexas e ainda pela proposta que lhe serviu de base.
-                            Está apólice deverá ser conferida pelo tomador do seguro; na falta de reclamação,
-                            no prazo de 30 dias, será tida como inteiramente conforme.
-                        </p>
-                        <p class="text-small mb-5">
-                            Consulte as condições gerais do produto em www.giantseguros.co.ao
-                        </p>
-                        <p class="text-small mb-5">
-                            Em caso de reclamação:
-                        </p>
-                        <p class="text-small">Tel: 929 280 602/ Email: reclamacoes@giantseguros.co.ao</p>
                     </div>
                 </div>
             </div>
-            <br>
-           
-           
-            <p class="text-small text-align-right pr-10">Processado por programa nº. 209/AGT/2019</p>
-            <hr class="line-2x"></hr>
-           
-            <footer>
-                <div class="endereco m-10">
-                    <p><b>NIF:</b> 5417588962</p>
-                    <p><b>Sede:</b> Ingombotas - Rua da missão nº 79 | Luanda</p>
-                    <p><b>Email:</b> geral@giantseguros.co.ao</p>
-                    <p><b>Telefone:</b> 929 280 828 | 929 280 602</p>
-                    <p><b>Site:</b> www.giantseguros.ao</p>
+            <div class="row-two">
+                <div class="box m-3">
+                    <p class="text-bold">Objectos Segurados:</p>
+                    <div class="row-five">
+                        <div class="row">
+                            <div class="hiden-box no-mp-left">
+                                <p class="text-bold m-b-5">
+                                    Marca
+                                </p>
+                                <span id="marca">Hyundai</span>
+                            </div>
+                            <div class="hiden-box">
+                                <p class="text-bold m-b-5">
+                                    Modelo
+                                </p>
+                                <span id="modelo">Elantra</span>
+                            </div>
+                            <div class="hiden-box">
+                                <p class="text-bold m-b-5">
+                                    Matrícula
+                                </p>
+                                <span id="matricula">LD-54-52-FN</span>
+                            </div>
+                            <div class="hiden-box">
+                                <p class="text-bold m-b-5">
+                                    Cilindrada
+                                </p>
+                                <span id="cilindrda">1598</span>
+                            </div>
+                            <div class="hiden-box no-mp-right">
+                                <p class="text-bold m-b-5">
+                                    Nº Lugares
+                                </p>
+                                <span id="lugares">5</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-bold m-b-5">LP2-Ligeiros Particulares de 1:</p>
+                    <p>Responsabilidade Civil Obrigatória</p>
+                    <br>
+                    <p class="text-bold">Exclusões</p>
+                    <p>
+                        Nos termos das Condições gerais e Especiais do seguro Automóvel
+                    </p>
+
                 </div>
-                <div class="qr_code"></div>
-            </footer>
+                <div class="box m-3">
+                    <p class="text-bold">Franquia:</p>
+                    <br>
+                    <p id="franquia">0.00%</p>
+                    <br><br><br><br>
+                    <p class="text-bold">Observação:</p>
+                </div>
+            </div>
+            <div class="row-three">
+                <div class="box m-3 t-a-c">
+                    <p class="text-bold m-b-5">
+                        Capital Seguro RC
+                    </p>
+                    <span id="capital_seguro">13. 376 000,00</span>
+                </div>
+                <div class="box m-3 t-a-c">
+                    <p class="text-bold m-b-5 ">
+                        Prémio Comercial
+                    </p>
+                    <span id="premio_comercial">19 270,36</span>
+                </div>
+                <div class="box m-3 t-a-c">
+                    <p class="text-bold m-b-5">
+                        FGA
+                    </p>
+                    <span id="fga">963,52</span>
+                </div>
+                <div class="box m-3 t-a-c">
+                    <p class="text-bold m-b-5">
+                        Encargos Adicionais
+                    </p>
+                    <span id="encargo_adicionais">3 538,04</span>
+                </div>
+                <div class="box m-3 t-a-c">
+                    <p class="text-bold m-b-5 ">
+                        Encargo Fraccion.
+                    </p>
+                    <span id="encargo_fracion">0,00</span>
+                </div>
+                <div class="box m-3 t-a-c">
+                    <p class="text-bold m-b-5">
+                        IVA(14%)
+                    </p>
+                    <span id="iva">3 193,18</span>
+                </div>
+                <div class="box m-3 t-a-c">
+                    <p class="text-bold">
+                        Prémio Anual
+                    </p>
+                    <span id="premio_anual">26 965,00</span>
+                </div>
+            </div>
+            <div class="row-four">
+                <div class="box m-3">
+                    <p>
+                        <span class="text-bold">Período: </span><span id="data_inicio">01-10-2022</span><span
+                            class="text-bold"> a </span><span id="data_fim"> 30-
+                            09-2023</span>
+                    </p>
+                    <span></span>
+                </div>
+                <div class="box m-3">
+                    <p><span class="text-bold">Local de Risco: </span><span id="local_risco">Angola</span></p>
+                </div>
+            </div>
+            <br>
+            <br>
+            <div class="footer row-two ">
+                <div class="apolice-assi">
+                    <div class="pr-assi">
+                        <p class="mb-5">Presidente da Comissão Executiva</p>
+                        <img src="assinatura.png" alt="Assinatura do Presidente da Comissão Executiva">
+                        <hr class="mtb-5">
+                    </div>
+
+                </div>
+                <div class="subscritor-container">
+                    <div class="subscritor-name">
+                        <p>Subscritor</p>
+                        <p id="subscritor">Kelson Nicolau Lourenço</p>
+                    </div>
+                </div>
+                <div class="">
+                    <p class="text-small mtb-5">
+                        Este contracto de seguro é constituido pelas Condições Gerias,
+                        Especiais e Particulares anexas e ainda pela proposta que lhe serviu de base.
+                        Está apólice deverá ser conferida pelo tomador do seguro; na falta de reclamação,
+                        no prazo de 30 dias, será tida como inteiramente conforme.
+                    </p>
+                    <p class="text-small mb-5">
+                        Consulte as condições gerais do produto em www.giantseguros.co.ao
+                    </p>
+                    <p class="text-small mb-5">
+                        Em caso de reclamação:
+                    </p>
+                    <p class="text-small">Tel: 929 280 602/ Email: reclamacoes@giantseguros.co.ao</p>
+                </div>
+            </div>
         </div>
-    </body>
+        <br>
+
+
+        <p class="text-small text-align-right pr-10">Processado por programa nº. 209/AGT/2019</p>
+        <hr class="line-2x">
+        </hr>
+
+        <footer>
+            <div class="endereco m-10">
+                <p><b>NIF:</b> 5417588962</p>
+                <p><b>Sede:</b> Ingombotas - Rua da missão nº 79 | Luanda</p>
+                <p><b>Email:</b> geral@giantseguros.co.ao</p>
+                <p><b>Telefone:</b> 929 280 828 | 929 280 602</p>
+                <p><b>Site:</b> www.giantseguros.ao</p>
+            </div>
+            <div class="qr_code"></div>
+        </footer>
+    </div>
+</body>
+
 </html>
