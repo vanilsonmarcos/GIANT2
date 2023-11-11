@@ -4,7 +4,6 @@ import prisma from '../PrismaClient';
 import { adenda, apolice, pessoa } from "@prisma/client";
 import IApoliceAdenda from "../IApoliceAdenda";
 import IApoliceSegurado from "../IApoliceSegurado";
-import Pessoa from "../../entities/Pessoa/Pessoa";
 @Service()
 class ApoliceRepository implements 
 IGenericRepository<apolice>, IApoliceAdenda<adenda>, IApoliceSegurado<pessoa> {
@@ -13,8 +12,18 @@ IGenericRepository<apolice>, IApoliceAdenda<adenda>, IApoliceSegurado<pessoa> {
         throw new Error("Method not implemented.");
     }
 
-    getAllSeguradoByAdendaID(adendaID: string): Promise<pessoa[]> {
-        throw new Error("Method not implemented.");
+    async getAllSeguradoByAdendaID(adendaID: string): Promise<pessoa[]> {
+        const segurados = await prisma.pessoa.findMany({
+            include: {
+                adenda_segurado:  {
+                    where: {
+                        ADENDA_ID: parseInt(adendaID)
+                    }
+                },
+            },
+        });
+
+        return segurados;
     }
 
     removeSeguradoByApoliceID(apoliceID: string, seguradoID: string): Promise<pessoa> {
