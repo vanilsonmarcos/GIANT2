@@ -1,13 +1,38 @@
 import { Service } from "typedi";
 import IGenericRepository from "../IGenericRepository";
 import prisma from '../PrismaClient';
-import { adenda, apolice, pessoa } from "@prisma/client";
+import { adenda, apolice, apolice_estado, pessoa } from "@prisma/client";
 import IApoliceAdenda from "../IApoliceAdenda";
 import IApoliceSegurado from "../IApoliceSegurado";
+import IApoliceEstado from "../IApoliceEstado";
 @Service()
-class ApoliceRepository implements 
-IGenericRepository<apolice>, IApoliceAdenda<adenda>, IApoliceSegurado<pessoa> {
-    
+class ApoliceRepository implements
+    IGenericRepository<apolice>, IApoliceAdenda<adenda>, IApoliceSegurado<pessoa>, IApoliceEstado<apolice_estado> {
+        
+    async getApoliceEstado(apoliceID: string): Promise<apolice_estado> {
+        const apolice_estado = await prisma.apolice.findUnique({
+            where: {
+                ID: parseInt(apoliceID)
+            }
+        }).apolice_estado();
+        if(apolice_estado === null) {
+            throw new Error("Ocorreu um erro ao gerar carregar o estado da apólice");
+        }
+        return apolice_estado;
+    }
+
+    async setApoliceEstado(apoliceID: string, apoliceEstado: apolice_estado): Promise<apolice_estado> {
+        const apolice_estado = await prisma.apolice.update({
+            where: {
+                ID: parseInt(apoliceID)
+            },
+            data: {
+               APOLICE_ESTADO_ID: apoliceEstado.ID
+            }
+        }).apolice_estado();
+        return apolice_estado;
+    }
+
     getAllSeguradoByApoliceID(apoliceID: string): Promise<pessoa[]> {
         throw new Error("Method not implemented.");
     }
@@ -15,7 +40,7 @@ IGenericRepository<apolice>, IApoliceAdenda<adenda>, IApoliceSegurado<pessoa> {
     async getAllSeguradoByAdendaID(adendaID: string): Promise<pessoa[]> {
         const segurados = await prisma.pessoa.findMany({
             include: {
-                adenda_segurado:  {
+                adenda_segurado: {
                     where: {
                         ADENDA_ID: parseInt(adendaID)
                     }
@@ -37,9 +62,9 @@ IGenericRepository<apolice>, IApoliceAdenda<adenda>, IApoliceSegurado<pessoa> {
                     SEGURADO_ID: parseInt(seguradoID),
                     ADENDA_ID: parseInt(adendaID)
                 }
-              },
+            },
         }).pessoa();
-        if(segurado === null) {
+        if (segurado === null) {
             throw new Error("Ocorreu um error ao remover o segurado da adenda");
         }
         return segurado;
@@ -47,7 +72,7 @@ IGenericRepository<apolice>, IApoliceAdenda<adenda>, IApoliceSegurado<pessoa> {
 
     async addSeguradosByAdendaID(adendaID: string, segurados: pessoa[]): Promise<pessoa[]> {
         const savedSegurados = await Promise.all(
-            segurados.map((segurado)=> {
+            segurados.map((segurado) => {
                 return prisma.adenda_segurado.create({
                     data: {
                         ADENDA_ID: parseInt(adendaID),
@@ -56,11 +81,11 @@ IGenericRepository<apolice>, IApoliceAdenda<adenda>, IApoliceSegurado<pessoa> {
                 }).pessoa();
             })
         );
-        
-        if(savedSegurados === null) {
+
+        if (savedSegurados === null) {
             throw new Error("Não Possivel associar os segurados a adenda");
         }
-        return segurados ;
+        return segurados;
     }
 
     addSeguradosByApoliceID(apoliceID: string, segurados: pessoa[]): Promise<pessoa[]> {
@@ -80,7 +105,7 @@ IGenericRepository<apolice>, IApoliceAdenda<adenda>, IApoliceSegurado<pessoa> {
                 });
             })
         );
-        if(deletedSegurados === null) {
+        if (deletedSegurados === null) {
             throw new Error("Ocorreu um error ao remover o segurado da adenda");
         }
         return segurados;
@@ -98,7 +123,7 @@ IGenericRepository<apolice>, IApoliceAdenda<adenda>, IApoliceSegurado<pessoa> {
             take: 100,
         });
 
-        if(adendas === null) {
+        if (adendas === null) {
             throw Error("Esta apolice não possui adendas");
         }
         return adendas;
@@ -114,7 +139,7 @@ IGenericRepository<apolice>, IApoliceAdenda<adenda>, IApoliceSegurado<pessoa> {
             }
         });
 
-        if(adenda === null) {
+        if (adenda === null) {
             throw Error("Esta apolice não possui adendas");
         }
         return adenda;
@@ -130,7 +155,7 @@ IGenericRepository<apolice>, IApoliceAdenda<adenda>, IApoliceSegurado<pessoa> {
             }
         });
 
-        if(adenda === null) {
+        if (adenda === null) {
             throw Error("Esta apolice não possui adendas");
         }
         return adenda;
@@ -164,11 +189,11 @@ IGenericRepository<apolice>, IApoliceAdenda<adenda>, IApoliceSegurado<pessoa> {
                 APOLICE_FRACIONAMENTO_ID: item.APOLICE_FRACIONAMENTO_ID,
                 NUMERO: item.NUMERO,
                 TOMADOR_ID: item.TOMADOR_ID
-            }, 
+            },
             include: {
                 apolice_tipo: true,
                 apolice_estado: true,
-                adenda: true,                
+                adenda: true,
             }
         });
 
