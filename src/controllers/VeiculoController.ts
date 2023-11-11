@@ -1,9 +1,8 @@
 import { Request, Response } from "express";
-import Veiculo from "../entities/Veiculo/Veiculo";
 import VeiculoService from "../services/VeiculoService";
 import Identifier from "../schema/Identifier";
 import handleParsingError from "../utils/HandleParsingErrors";
-import VeiculoSchema from "../schema/VeiculoSchema";
+import { veiculo } from "@prisma/client";
 
 class VeiculoController {
     private veiculoService: VeiculoService;
@@ -13,11 +12,11 @@ class VeiculoController {
 
     async getAll(req: Request, res: Response) {
         try {
-            const veiculo: Veiculo[] = await this.veiculoService.getAll();
+            const veiculos: veiculo[] = await this.veiculoService.getAll();
             const response = {
                 code: 200,
                 message: "Dados dos veículos encontrados com sucesso",
-                data: veiculo
+                data: veiculos
             };
             res.json(response)
         } catch (error) {
@@ -80,18 +79,18 @@ class VeiculoController {
     }
 
     async criar(req: Request, res: Response) {
-        const veiculo: Veiculo = req.body; // parse body to person data
-        const parsedVeiculo = VeiculoSchema.safeParse(veiculo);
-        if(!parsedVeiculo.success) {
-            return handleParsingError(res, parsedVeiculo.error);
-        }
-        const safeVeiculo:Veiculo = parsedVeiculo.data;
+        const veiculo: veiculo = req.body; // parse body to person data
+        // const parsedVeiculo = VeiculoSchema.safeParse(veiculo);
+        // if(!parsedVeiculo.success) {
+        //     return handleParsingError(res, parsedVeiculo.error);
+        // }
+        // const safeVeiculo:Veiculo = parsedVeiculo.data;
         try {
-            const veiculo = await this.veiculoService.criar(safeVeiculo);
+            const createdVeiculo = await this.veiculoService.criar(veiculo);
             const response = {
                 code: 200,
                 message: "Dados do veículo inseridos com sucesso",
-                data: veiculo
+                data: createdVeiculo
             };
             res.json(response);
         } catch (error) {
@@ -106,24 +105,24 @@ class VeiculoController {
     }
 
     async actualizar(req: Request, res: Response) {
-        const veiculo: Veiculo = req.body;
-        const parsedVeiculo = VeiculoSchema.safeParse(veiculo);
-        if(!parsedVeiculo.success) {
-            return handleParsingError(res, parsedVeiculo.error);
-        }
-        const safeVeiculo:Veiculo = parsedVeiculo.data;
+        const veiculo: veiculo = req.body;
+        // const parsedVeiculo = VeiculoSchema.safeParse(veiculo);
+        // if(!parsedVeiculo.success) {
+        //     return handleParsingError(res, parsedVeiculo.error);
+        // }
+        // const safeVeiculo:Veiculo = parsedVeiculo.data;
 
-        if (safeVeiculo.id === undefined){
+        if (veiculo.ID === undefined){
             return handleParsingError(res, Error("O Id do veiculo não foi definido"));
         }
-        const id = safeVeiculo.id.toString();
+        const id = veiculo.ID.toString();
 
         try {
-            const veiculo = await this.veiculoService.actualizar(id, safeVeiculo);
+            const updatedVeiculo = await this.veiculoService.actualizar(id, veiculo);
             const response = {
                 code: 200,
                 message: "Dados do veículo actualizados com sucesso",
-                data: veiculo
+                data: updatedVeiculo
             };
             res.json(response);
         } catch (error) {
@@ -145,12 +144,12 @@ class VeiculoController {
         }
         const safeId = parsedID.data.toString();
         try {
-            const result = await this.veiculoService.remover(safeId);
-            if (result) {
+            const veiculo = await this.veiculoService.remover(safeId);
+            if (veiculo) {
                 const response = {
                     code: 200, 
                     message: "Dados do veiculo removidos com sucesso",
-                    data: {}
+                    data: veiculo
                 };
                 res.json(response);
             }

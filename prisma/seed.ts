@@ -235,6 +235,25 @@ async function seed() {
             ]
         });
     }
+
+    if((await prisma.apolice_fracionamento.count() === 0)) {
+        await prisma.apolice_fracionamento.createMany({
+            data: [
+                {
+                    FRACIONADO_EM: 'Anual',
+                    NO_FRACOES: 1
+                },
+                {
+                    FRACIONADO_EM: 'Semestral',
+                    NO_FRACOES: 2
+                },
+                {
+                    FRACIONADO_EM: 'Trimestral',
+                    NO_FRACOES: 4
+                }
+            ]
+        });
+    }
 }
 
 seed();

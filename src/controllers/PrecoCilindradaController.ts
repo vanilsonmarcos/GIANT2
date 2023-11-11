@@ -4,6 +4,7 @@ import Identifier from "../schema/Identifier";
 import handleParsingError from "../utils/HandleParsingErrors";
 import PrecoCilindradaService from "../services/PrecoCilindradaService";
 import PrecoCilindradaSchema from "../schema/PrecoCilindradaSchema";
+import { preco_cilindrada } from "@prisma/client";
 
 class PrecoCilindradaController {
 
@@ -16,7 +17,7 @@ class PrecoCilindradaController {
     // Read/Query a person 
     async getAll(req: Request, res: Response) {
         try {
-            const precoCilindradas: PrecoCilindrada[] = await this.precoCilindradaService.getAll();
+            const precoCilindradas: preco_cilindrada[] = await this.precoCilindradaService.getAll();
             
             const response = {
                 code: 200,
@@ -65,24 +66,24 @@ class PrecoCilindradaController {
     }
     
     async criar(req: Request, res: Response) {
-        const pc: PrecoCilindrada = req.body;
-        const parsedPc = PrecoCilindradaSchema.safeParse(pc);
-        if(!parsedPc.success) {
-            return handleParsingError(res, parsedPc.error);
-        }
-        const safePc:PrecoCilindrada = parsedPc.data;
+        const preco_cilindrada: preco_cilindrada = req.body;
+        // const parsedPc = PrecoCilindradaSchema.safeParse(pc);
+        // if(!parsedPc.success) {
+        //     return handleParsingError(res, parsedPc.error);
+        // }
+        // const safePc:PrecoCilindrada = parsedPc.data;
         try {
-            const precoCilindrada = await this.precoCilindradaService.criar(safePc);
+            const newPrecoCilindrada = await this.precoCilindradaService.criar(preco_cilindrada);
             const message = {
                 code: 200,
                 message: "Dados do preço por cilindrada inseridos com sucesso",
-                data: precoCilindrada
+                data: newPrecoCilindrada
             }
             res.json(message);
         } catch (error) {
             const response = {
                 code: 404,
-                message: "Ocorreu um erro ao colectar os dados  dos preços por cilindrada",
+                message: "Ocorreu um erro ao colectar os dados dos preços por cilindrada",
                 data: {},
                 error: error
             }
@@ -91,23 +92,23 @@ class PrecoCilindradaController {
     }
     
     async actualizar(req: Request, res: Response) {
-        const pc: PrecoCilindrada = req.body;
-        const parsedPc = PrecoCilindradaSchema.safeParse(pc);
-        if(!parsedPc.success) {
-            return handleParsingError(res, parsedPc.error);
-        }
-        const safePc:PrecoCilindrada = parsedPc.data;
+        const preco_cilindrada: preco_cilindrada = req.body;
+        // const parsedPc = PrecoCilindradaSchema.safeParse(preco_cilindrada);
+        // if(!parsedPc.success) {
+        //     return handleParsingError(res, parsedPc.error);
+        // }
+        // const safePc:PrecoCilindrada = parsedPc.data;
 
-        if (safePc.id === undefined){
+        if (preco_cilindrada.ID === undefined){
             return handleParsingError(res, Error("O Id do preço cilindrada não foi definido"));
         }
-        const id = safePc.id.toString();
+        const id = preco_cilindrada.ID.toString();
         try {
-            const precoCilindrada = await this.precoCilindradaService.actualizar(id, safePc);
+            const updatedPrecoCilindrada = await this.precoCilindradaService.actualizar(id, preco_cilindrada);
             const response = {
                 code: 200,
                 message: "Dados do preço cilindrada actualizados com sucesso",
-                data: precoCilindrada
+                data: updatedPrecoCilindrada
             }
             res.json(response);
         } catch (error) {
@@ -129,8 +130,8 @@ class PrecoCilindradaController {
         }
         const safeId = parsedID.data.toString();
         try {
-            const result = await this.precoCilindradaService.remover(safeId);
-            if (result) {
+            const preco_cilindrada = await this.precoCilindradaService.remover(safeId);
+            if (preco_cilindrada) {
                 const response = {
                     code: 200,
                     message: "Dados do preço cilindrada removidos com sucesso",

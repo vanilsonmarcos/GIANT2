@@ -1,8 +1,48 @@
-import { adenda } from "@prisma/client";
+import { adenda, veiculo } from "@prisma/client";
 import IGenericRepository from "../IGenericRepository";
 import prisma from "../PrismaClient";
+import IAdendaItemSegurado from "../IAdendaItemSegurado";
 
-class AdendaRepository implements IGenericRepository<adenda> {
+class AdendaRepository implements IGenericRepository<adenda>, IAdendaItemSegurado<veiculo> {
+    
+    async getAllItemSeguradoByAdendaID(adendaID: string): Promise<veiculo[]> {
+        const veiculos = await prisma.veiculo.findMany({
+            include: {
+                adenda_item_segurado: {
+                    where: {
+                        ADENDA_ID: parseInt(adendaID)
+                    }
+                },
+            },
+        });
+        
+        if (veiculos === null) {
+            throw new Error("Não foi encontrado nenhum item segurado nesta adenda");
+        }
+
+        return veiculos;
+    }
+
+    async getallItemsSeguradoByApoliceID(apoliceID: string): Promise<veiculo[]> {
+        const veiculos = await prisma.veiculo.findMany({
+            include: {
+                adenda_item_segurado: {
+                    include: {
+                        adenda: {
+                            where: {
+                                APOLICE_ID: parseInt(apoliceID)
+                            }
+                        }
+                    }
+                },     
+            }
+        });
+        if (veiculos === null) {
+            throw new Error("Não foi encontrado nenhum item segurado nesta apólice");
+        }
+        return veiculos;
+    }
+
     async getAll(): Promise<adenda[]> {
         const adendas = await prisma.adenda.findMany({
             take: 100,
@@ -18,7 +58,7 @@ class AdendaRepository implements IGenericRepository<adenda> {
         });
 
         if (adenda === null) {
-            throw Error("Não Foi encontrado apólice com o ID referenciado");
+            throw new Error("Não Foi encontrado apólice com o ID referenciado");
         }
         return adenda;
     }
@@ -34,7 +74,7 @@ class AdendaRepository implements IGenericRepository<adenda> {
         });
 
         if (adenda === null) {
-            throw Error("Ocorreu um erro ao criar apólice");
+            throw new Error("Ocorreu um erro ao criar apólice");
         }
         return adenda;    
     }
@@ -53,7 +93,7 @@ class AdendaRepository implements IGenericRepository<adenda> {
         });
 
         if (adenda === null) {
-            throw Error("Ocorreu um erro ao criar apólice");
+            throw new Error("Ocorreu um erro ao criar apólice");
         }
         return adenda;    
     }

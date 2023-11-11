@@ -1,48 +1,48 @@
 import { Inject, Service } from "typedi";
-import Pessoa from "../entities/Pessoa/Pessoa";
 import PessoaRepository from "../repositories/mysql/PessoaRepository";
 import IPessoaRepository from "../repositories/IPessoaRepository";
+import { pessoa } from "@prisma/client";
 
 @Service()
 class PessoaService {
     @Inject(() => PessoaRepository)
-    private repo:IPessoaRepository<Pessoa>;
+    private repo:IPessoaRepository<pessoa>;
 
     constructor () {}
 
-    getAll(): Promise<Pessoa[]> {
+    getAll(): Promise<pessoa[]> {
         return this.repo.getAll();         
     }
 
-    getByID(id: string): Promise<Pessoa>{
+    getByID(id: string): Promise<pessoa>{
         return this.repo.getByID(id);
     }
     
-    getByPhoneNumber(phoneNumber: string) :Promise<Pessoa> {
+    getByPhoneNumber(phoneNumber: string) :Promise<pessoa> {
         return this.repo.getPersonByPhoneNumber(phoneNumber);
     }
 
-    getByEmail(email: string): Promise<Pessoa>{
+    getByEmail(email: string): Promise<pessoa>{
         return this.getByEmail(email);
     }
 
-    getByNIF(nif: string): Promise<Pessoa> {
+    getByNIF(nif: string): Promise<pessoa> {
         return this.repo.getPersonByNIF(nif);
     }
 
-    getByNBI(nbi: string): Promise<Pessoa> {
+    getByNBI(nbi: string): Promise<pessoa> {
         return this.repo.getPersonByNBI(nbi);
     }
 
-    criar(pessoa: Pessoa): Promise<Pessoa> {
+    criar(pessoa: pessoa): Promise<pessoa> {
         return this.repo.create(pessoa);
     } 
 
-    actualizar(id: string, pessoa: Pessoa) {
+    actualizar(id: string, pessoa: pessoa) {
         return this.repo.update(id, pessoa);
     }
 
-    remover(id: string): Promise<Boolean> {
+    remover(id: string): Promise<boolean> {
         // check if object exist
         return this.repo.delete(id);
     }

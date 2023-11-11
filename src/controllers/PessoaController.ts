@@ -7,6 +7,7 @@ import NbiSchema from "../schema/NbiSchema";
 import EmailSchema from "../schema/EmailSchema";
 import PhoneNumberSchema from "../schema/PhoneNumberSchema";
 import PessoaSchema from "../schema/PessoaSchema";
+import { pessoa } from "@prisma/client";
 
 class PessoaController {
 
@@ -18,7 +19,7 @@ class PessoaController {
 
     async getAll(req: Request, res: Response) {
         try {
-            const pessoas: Pessoa[] = await this.pessoaService.getAll();
+            const pessoas = await this.pessoaService.getAll();
             const response = {
                 code: 200,
                 message: "Dados das pessoas foram encontrados com sucesso",
@@ -102,7 +103,6 @@ class PessoaController {
         const safeNif = parsedNif.data.toString();
         try {
             const pessoa = await this.pessoaService.getByNIF(safeNif);
-
             const response = {
                 code: 200,
                 message: "Dados da pessoa foram encontrados com sucesso",
@@ -179,16 +179,16 @@ class PessoaController {
 
 
     async criar(req: Request, res: Response) {
-        const pessoa: Pessoa = req.body;
-        const parsedPessoa = PessoaSchema.safeParse(pessoa);
+        const pessoa: pessoa = req.body;
+        // const parsedPessoa = PessoaSchema.safeParse(pessoa);
 
-        if(!parsedPessoa.success) {
-            return handleParsingError(res, parsedPessoa.error);
-        }
-        const safePessoa: Pessoa = parsedPessoa.data;
+        // if(!parsedPessoa.success) {
+        //     return handleParsingError(res, parsedPessoa.error);
+        // }
+        // const safePessoa: Pessoa = parsedPessoa.data;
 
         try {
-            const novaPessoa = await this.pessoaService.criar(safePessoa);
+            const novaPessoa = await this.pessoaService.criar(pessoa);
             const response = {
                 code: 200,
                 message: "Dados da pessoa inseridos com sucesso",
@@ -208,20 +208,20 @@ class PessoaController {
     }  
 
     async actualizar(req: Request, res: Response) {
-        const pessoa: Pessoa = req.body;
-        const parsedPessoa = PessoaSchema.safeParse(pessoa);
-        if(!parsedPessoa.success) {
-            return handleParsingError(res, parsedPessoa.error);
-        }
-        const safePessoa: Pessoa = parsedPessoa.data;
+        const pessoa: pessoa = req.body;
+        // const parsedPessoa = PessoaSchema.safeParse(pessoa);
+        // if(!parsedPessoa.success) {
+        //     return handleParsingError(res, parsedPessoa.error);
+        // }
+        // const safePessoa: Pessoa = parsedPessoa.data;
 
-        if(safePessoa.id === undefined) {
+        if(pessoa.ID === undefined) {
             return handleParsingError(res, Error("O Id da pessoa não foi fornecido"));
         }
-        const id = safePessoa.id.toString();
+        const id = pessoa.ID.toString();
 
         try {
-            const novaPessoa = await this.pessoaService.actualizar(id, safePessoa);
+            const novaPessoa = await this.pessoaService.actualizar(id, pessoa);
 
             const response = {
                 code: 200,
@@ -249,9 +249,9 @@ class PessoaController {
         const safeId = parsedID.data.toString();
 
         try {
-            const result = await this.pessoaService.remover(safeId);
+            const pessoa = await this.pessoaService.remover(safeId);
 
-            if (result) {
+            if (pessoa) {
                 const response = {
                     code: 200,
                     message: "Dados da Pessoa removidos com sucesso",

@@ -8,24 +8,23 @@ datasource db {
 }
 
 model apolice {
-  ID                       Int                     @id @default(autoincrement())
+  ID                       Int                   @id @default(autoincrement())
   APOLICE_TIPO_ID          Int
   APOLICE_ESTADO_ID        Int
   APOLICE_FRACIONAMENTO_ID Int
-  NUMERO                   String                  @db.VarChar(64)
+  NUMERO                   String                @db.VarChar(64)
   TOMADOR_ID               Int
-  DATA_INICIO              DateTime?               @db.DateTime(0)
-  DATA_FIM                 DateTime?               @db.DateTime(0)
-  VALOR_PREMIO             Decimal?                @db.Decimal(13, 2)
+  DATA_INICIO              DateTime?             @db.DateTime(0)
+  DATA_FIM                 DateTime?             @db.DateTime(0)
+  VALOR_PREMIO             Decimal?              @db.Decimal(13, 2)
   INSERIDO_POR             Int?
   ACTUALIZADO_POR          Int?
-  DATA_INSERCAO            DateTime?               @default(now()) @db.DateTime(0)
-  DATA_ACTUALIZACAO        DateTime?               @db.DateTime(0)
+  DATA_INSERCAO            DateTime?             @default(now()) @db.DateTime(0)
+  DATA_ACTUALIZACAO        DateTime?             @db.DateTime(0)
   adenda                   adenda[]
-  apolice_estado           apolice_estado          @relation(fields: [APOLICE_ESTADO_ID], references: [ID], onDelete: NoAction, map: "FKAPOLICE218101")
-  apolice_tipo             apolice_tipo            @relation(fields: [APOLICE_TIPO_ID], references: [ID], onDelete: NoAction, map: "FKAPOLICE49224")
-  apolice_fracionamento    apolice_fracionamento   @relation(fields: [APOLICE_FRACIONAMENTO_ID], references: [ID], onDelete: NoAction, map: "FKAPOLICE599017")
-  apolice_item_segurado    apolice_item_segurado[]
+  apolice_estado           apolice_estado        @relation(fields: [APOLICE_ESTADO_ID], references: [ID], onDelete: NoAction, map: "FKAPOLICE218101")
+  apolice_tipo             apolice_tipo          @relation(fields: [APOLICE_TIPO_ID], references: [ID], onDelete: NoAction, map: "FKAPOLICE49224")
+  apolice_fracionamento    apolice_fracionamento @relation(fields: [APOLICE_FRACIONAMENTO_ID], references: [ID], onDelete: NoAction, map: "FKAPOLICE599017")
   apolice_pagamento        apolice_pagamento[]
 
   @@index([APOLICE_ESTADO_ID], map: "FKAPOLICE218101")
@@ -55,20 +54,6 @@ model apolice_fracionamento {
   apolice           apolice[]
 }
 
-model apolice_item_segurado {
-  ID              Int          @id @default(autoincrement())
-  APOLICE_TIPO_ID Int
-  ITEM_ID         Int
-  APOLICE_ID      Int
-  apolice_tipo    apolice_tipo @relation(fields: [APOLICE_TIPO_ID], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "FKAPOLICE_IT272194")
-  veiculo         veiculo      @relation(fields: [ITEM_ID], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "FKAPOLICE_IT332390")
-  apolice         apolice      @relation(fields: [APOLICE_ID], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "FKAPOLICE_IT332490")
-
-  @@index([APOLICE_TIPO_ID], map: "FKAPOLICE_IT272194")
-  @@index([ITEM_ID], map: "FKAPOLICE_IT332390")
-  @@index([APOLICE_ID], map: "FKAPOLICE_IT332490_idx")
-}
-
 model apolice_pagamento {
   ID                Int       @id @default(autoincrement())
   APOLICE_ID        Int
@@ -83,19 +68,18 @@ model apolice_pagamento {
 }
 
 model apolice_tipo {
-  ID                    Int                     @id @default(autoincrement())
-  SIGLA                 String                  @unique(map: "SIGLA") @db.VarChar(10)
-  NOME                  String                  @db.VarChar(100)
-  DESCRICAO             String                  @db.MediumText
-  INSERIDO_POR          Int?
-  ACTUALIZADO_POR       Int?
-  REMOVIDO_POR          Int?
-  DATA_CRIACAO          DateTime?               @default(now()) @db.DateTime(0)
-  DATA_ACTUALIZACAO     DateTime?               @default(now()) @db.DateTime(0)
-  adenda_item_segurado  adenda_item_segurado[]
-  apolice               apolice[]
-  apolice_item_segurado apolice_item_segurado[]
-  cobertura             cobertura[]
+  ID                   Int                    @id @default(autoincrement())
+  SIGLA                String                 @unique(map: "SIGLA") @db.VarChar(10)
+  NOME                 String                 @db.VarChar(100)
+  DESCRICAO            String                 @db.MediumText
+  INSERIDO_POR         Int?
+  ACTUALIZADO_POR      Int?
+  REMOVIDO_POR         Int?
+  DATA_CRIACAO         DateTime?              @default(now()) @db.DateTime(0)
+  DATA_ACTUALIZACAO    DateTime?              @default(now()) @db.DateTime(0)
+  adenda_item_segurado adenda_item_segurado[]
+  apolice              apolice[]
+  cobertura            cobertura[]
 }
 
 model cobertura {
@@ -179,28 +163,27 @@ model preco_cilindrada {
 }
 
 model veiculo {
-  ID                    Int                     @id @default(autoincrement())
-  VEICULO_CATEGORIA_ID  Int
-  MATRICULA             String                  @unique(map: "MATRICULA") @db.VarChar(24)
-  MARCA                 String                  @db.VarChar(255)
-  MODELO                String                  @db.VarChar(255)
-  ANO_AQUISICAO         Int
-  CAPITAL_AQUISICAO     Decimal                 @db.Decimal(13, 2)
-  PESO_BRUTO            Int
-  N_LOTACAO             Int
-  ANO_FABRICO           Int
-  CILINDRADA            Int
-  REF_CHASSI            String                  @db.VarChar(64)
-  DESCRICAO             String                  @db.VarChar(4000)
-  INSERIDO_POR          Int?
-  ACTUALIZADO_POR       Int?
-  REMOVIDO_POR          Int?
-  DATA_INSERCAO         DateTime?               @db.Timestamp(0)
-  DATA_ACTUALIZACAO     DateTime?               @db.Timestamp(0)
-  DATA_REMOCAO          DateTime?               @db.Timestamp(0)
-  adenda_item_segurado  adenda_item_segurado[]
-  apolice_item_segurado apolice_item_segurado[]
-  veiculo_categoria     veiculo_categoria       @relation(fields: [VEICULO_CATEGORIA_ID], references: [ID], onDelete: Cascade, map: "FKVEICULO357677")
+  ID                   Int                    @id @default(autoincrement())
+  VEICULO_CATEGORIA_ID Int
+  MATRICULA            String                 @unique(map: "MATRICULA") @db.VarChar(24)
+  MARCA                String                 @db.VarChar(255)
+  MODELO               String                 @db.VarChar(255)
+  ANO_AQUISICAO        Int
+  CAPITAL_AQUISICAO    Decimal                @db.Decimal(13, 2)
+  PESO_BRUTO           Int
+  N_LOTACAO            Int
+  ANO_FABRICO          Int
+  CILINDRADA           Int
+  REF_CHASSI           String                 @db.VarChar(64)
+  DESCRICAO            String                 @db.VarChar(4000)
+  INSERIDO_POR         Int?
+  ACTUALIZADO_POR      Int?
+  REMOVIDO_POR         Int?
+  DATA_INSERCAO        DateTime?              @db.Timestamp(0)
+  DATA_ACTUALIZACAO    DateTime?              @db.Timestamp(0)
+  DATA_REMOCAO         DateTime?              @db.Timestamp(0)
+  adenda_item_segurado adenda_item_segurado[]
+  veiculo_categoria    veiculo_categoria      @relation(fields: [VEICULO_CATEGORIA_ID], references: [ID], onDelete: Cascade, map: "FKVEICULO357677")
 
   @@index([VEICULO_CATEGORIA_ID], map: "FKVEICULO357677")
 }
@@ -218,7 +201,8 @@ model veiculo_categoria {
 
 model adenda {
   ID                   Int                    @id @default(autoincrement())
-  APOLICE_ID           Int
+  APOLICE_ID           Int?
+  NUMERO               String?                @db.VarChar(45)
   PREMIO               Decimal                @db.Decimal(10, 2)
   DATA_INICIO          DateTime               @db.DateTime(0)
   DATA_FIM             DateTime               @db.DateTime(0)
@@ -226,7 +210,7 @@ model adenda {
   DATA_ACTUALIZACAO    DateTime?              @default(now()) @db.DateTime(0)
   INSERIDO_POR         Int?
   ACTUALIZADO_POR      Int?
-  apolice              apolice                @relation(fields: [APOLICE_ID], references: [ID], map: "FKADENDAPOLICE")
+  apolice              apolice?               @relation(fields: [APOLICE_ID], references: [ID], map: "FKADENDAPOLICE")
   adenda_item_segurado adenda_item_segurado[]
   adenda_pagamento     adenda_pagamento[]
   adenda_segurado      adenda_segurado[]

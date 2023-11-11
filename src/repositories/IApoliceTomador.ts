@@ -1,9 +1,7 @@
-import ApoliceTomador from "../entities/Apolice/ApoliceTomador";
-
-interface IApoliceTomador <T extends ApoliceTomador> {
-    getAllTomadorByApoliceID(id: String): Promise<T[] | Boolean>;
-    removeTomadorByApoliceID(id:String, tomador_id:String): Promise<Boolean>;
-    AddTomadorByApoliceID(id: String, tomador:ApoliceTomador):Promise<Boolean>;
+interface IApoliceTomador <T> {
+    getTomadorByApoliceID(apoliceID: string): Promise<T>;
+    removeTomadorByApoliceID(apoliceID: string, tomador_id:string): Promise<T>;
+    AddTomadorByApoliceID(id: string, tomador:T):Promise<T>;
 }
 
 export default IApoliceTomador;

@@ -1,27 +1,27 @@
 import { Request, Response } from "express";
-import ApoliceService from "../services/ApoliceService";
+import { adenda, apolice } from "@prisma/client";
+import AdendaService from "../services/AdendaService";
 import handleParsingError from "../utils/HandleParsingErrors";
-import { apolice } from "@prisma/client";
 
-class ApoliceController {
-    private apoliceService: ApoliceService;
-    constructor(vService: ApoliceService) {
-        this.apoliceService = vService;
+class AdendaController {
+    private adendaService: AdendaService;
+    constructor(aService: AdendaService) {
+        this.adendaService = aService;
     }
 
     async getAll(req: Request, res: Response) { 
         try {
-            const apolices = await this.apoliceService.getAll();
+            const adendas = await this.adendaService.getAll();
             const response = {
                 code: 200,
-                message: "Dados das apolices encontrados com sucesso",
-                data: apolices
+                message: "Dados das adendas encontrados com sucesso",
+                data: adendas
             };
             res.json(response)
         } catch (error) {
             const response = {
                 code: 401,
-                message: "Os dados das apolices não foram encontrados",
+                message: "Os dados das adendas não foram encontrados",
                 data:  {},
                 error: error
             };
@@ -32,11 +32,11 @@ class ApoliceController {
     async getByID(req: Request, res: Response) {
         const { id } = req.params;
         try {
-            const apolice = await this.apoliceService.getByID(id);
+            const adenda = await this.adendaService.getByID(id);
             const response = {
                 code: 200,
-                message: "Dados da apólice foram encontrados com sucesso",
-                data: apolice
+                message: "Dados da adenda foram encontrados com sucesso",
+                data: adenda
             };
             res.json(response);
         } catch (error) {
@@ -51,19 +51,19 @@ class ApoliceController {
     }
     
     async criar(req: Request, res: Response) {
-        const apolice: apolice = req.body; // parse body to person data
+        const adenda: adenda = req.body; // parse body to person data
         try {
-            const createdApolice = await this.apoliceService.criar(apolice);
+            const createdAdenda = await this.adendaService.criar(adenda);
             const response = {
                 code: 200,
-                message: "Dados da apólice inseridos com sucesso",
-                data: createdApolice
+                message: "Dados da adenda inseridos com sucesso",
+                data: createdAdenda
             };
             res.json(response);
         } catch (error) {
             const response = {
                 code: 401,
-                message: "Ocorreu um erro ao inserir os dados da apólice",
+                message: "Ocorreu um erro ao inserir os dados da adenda",
                 data: {},
                 error: error
             }
@@ -72,25 +72,25 @@ class ApoliceController {
     }
     
     async actualizar(req: Request, res: Response) { 
-        const apolice: apolice = req.body;
+        const adenda: adenda = req.body;
 
-        if (apolice.ID === undefined){
-            return handleParsingError(res, Error("O Id da apólice não foi definido"));
+        if (adenda.ID === undefined){
+            return handleParsingError(res, Error("O Id da adenda não foi definido"));
         }
-        const id = apolice.ID.toString();
+        const id = adenda.ID.toString();
 
         try {
-            const updatedApolice = await this.apoliceService.actualizar(id, apolice);
+            const updatedAdenda = await this.adendaService.actualizar(id, adenda);
             const response = {
                 code: 200,
-                message: "Dados da apólice actualizados com sucesso",
-                data: updatedApolice
+                message: "Dados da adenda actualizados com sucesso",
+                data: updatedAdenda
             };
             res.json(response);
         } catch (error) {
             const response = {
                 code: 401,
-                message: "Ocorreu um erro ao actualizar os dados da apólice",
+                message: "Ocorreu um erro ao actualizar os dados da adenda",
                 data: {},
                 error: error
             }
@@ -101,12 +101,12 @@ class ApoliceController {
     async remover(req: Request, res: Response) {
         const { id } = req.params;
         try {
-            const apolice = await this.apoliceService.remover(id);
-            if (apolice) {
+            const adenda = await this.adendaService.remover(id);
+            if (adenda) {
                 const response = {
                     code: 200,
                     message: "Dados da apólice foram removidos com sucesso",
-                    data: apolice
+                    data: adenda
                 };
                 res.json(response);
             }
@@ -122,4 +122,4 @@ class ApoliceController {
     }
 }
 
-export default ApoliceController
+export default AdendaController;

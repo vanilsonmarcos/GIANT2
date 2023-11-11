@@ -1,32 +1,32 @@
 import { Service, Inject } from "typedi";
 import PrecoCilindradaRepository from "../repositories/mysql/PrecoCilindradaRepository";
 import IGenericRepository from "../repositories/IGenericRepository";
-import PrecoCilindrada from "../entities/PrecoCilindrada";
+import { preco_cilindrada } from "@prisma/client";
 
 @Service()
 class PrecoCilindradaService {
     @Inject(() => PrecoCilindradaRepository)
-    private repo: IGenericRepository<PrecoCilindrada>;
+    private repo: IGenericRepository<preco_cilindrada>;
 
     constructor(){}
     
-    async getAll(): Promise<PrecoCilindrada[]> {
+    async getAll(): Promise<preco_cilindrada[]> {
         return this.repo.getAll();         
     }
 
-    async getByID(id: string): Promise<PrecoCilindrada>{
+    async getByID(id: string): Promise<preco_cilindrada>{
         return this.repo.getByID(id);
     }
 
-    async criar(veiculo: PrecoCilindrada): Promise<PrecoCilindrada> {
-        return this.repo.create(veiculo);
+    async criar(preco_cilindrada: preco_cilindrada): Promise<preco_cilindrada> {
+        return this.repo.create(preco_cilindrada);
     } 
 
-    async actualizar(id: string, precoCilindrada: PrecoCilindrada) {
+    async actualizar(id: string, precoCilindrada: preco_cilindrada) {
         return this.repo.update(id, precoCilindrada);
     }
 
-    async remover(id: string): Promise<Boolean> {
+    async remover(id: string): Promise<boolean> {
         // check if object exist
         return this.repo.delete(id);
     }
