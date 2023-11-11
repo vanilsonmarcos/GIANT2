@@ -1,16 +1,14 @@
 import { Service } from "typedi";
-import Veiculo from "../../entities/Veiculo/Veiculo";
-import IVeiculoReposiroty from "../IVeiculoRepository";
-import generateVeiculo from "../../entities/Veiculo/Helper";
+import IVeiculoRepository from "../IVeiculoRepository";
 import IVeiculoCategoria from "../IVeiculoCategoria";
-import VeiculoCategoria from "../../entities/Veiculo/VeiculoCategoria";
-import { veiculo } from "@prisma/client";
+import { veiculo, veiculo_categoria } from "@prisma/client";
 import prisma from "../PrismaClient";
 
 @Service()
-class VeiculoRepository implements IVeiculoReposiroty<Veiculo>, IVeiculoCategoria<VeiculoCategoria>{
-    async getVeiculoByMatricula(matricula: string): Promise<Veiculo> {
-        const v: veiculo | null = await prisma.veiculo.findUnique({
+class VeiculoRepository implements IVeiculoRepository<veiculo>, IVeiculoCategoria<veiculo_categoria>{
+    
+    async getVeiculoByMatricula(matricula: string): Promise<veiculo> {
+        const veiculo = await prisma.veiculo.findUnique({
             where: {
                 MATRICULA: matricula
             },
@@ -19,32 +17,25 @@ class VeiculoRepository implements IVeiculoReposiroty<Veiculo>, IVeiculoCategori
             }
         });    
 
-        if (v === null) {
+        if (veiculo === null) {
             throw Error("Não Foi encontrado um veiculo com a matricula referenciada");
         }
-        return generateVeiculo(v);     
+        return veiculo;
+    
     }
     
-    async getAll(): Promise<Veiculo[]> {
-        const v = await prisma.veiculo.findMany({
+    async getAll(): Promise<veiculo[]> {
+        const veiculos = await prisma.veiculo.findMany({
             include:{
                 veiculo_categoria: true
             },
             take: 100
         });
-
-        let veiculos:Veiculo[] = [];
-        if (v !== null) {
-            for (const item of v) {
-                const veiculo:Veiculo = generateVeiculo(item);
-                veiculos.push(veiculo);
-            }
-        }
         return veiculos;
     }
 
-    async getByID(id: string): Promise<Veiculo> {
-        const v = await prisma.veiculo.findUnique({
+    async getByID(id: string): Promise<veiculo> {
+        const veiculo = await prisma.veiculo.findUnique({
             where: {
                 ID: parseInt(id)
             },
@@ -52,112 +43,95 @@ class VeiculoRepository implements IVeiculoReposiroty<Veiculo>, IVeiculoCategori
                 veiculo_categoria: true
             }
         });
-        if (v === null) {
+        if (veiculo === null) {
             throw Error("Não Foi encontrado um veiculo com a matricula referenciada");
         }
         
-        return generateVeiculo(v);
+        return veiculo;
     }
-    async create(item: Veiculo): Promise<Veiculo> {       
-        const v = await prisma.veiculo.create({
+
+    async create(item: veiculo): Promise<veiculo> {       
+        const veiculo = await prisma.veiculo.create({
             data: {
-                VEICULO_CATEGORIA_ID: item.veiculo_categoria_id,
-                MATRICULA: item.matricula,
-                MARCA: item.marca,
-                MODELO: item.modelo,
-                ANO_AQUISICAO: item.ano_aquisicao,
-                CAPITAL_AQUISICAO: item.capital_aquisicao,
-                PESO_BRUTO: item.peso_bruto,
-                N_LOTACAO: item.n_lotacao,
-                ANO_FABRICO: item.ano_fabrico,
-                CILINDRADA: item.cilindrada,
-                REF_CHASSI: item.ref_chassi,
-                DESCRICAO: item.descricao
+                VEICULO_CATEGORIA_ID: item.VEICULO_CATEGORIA_ID,
+                MATRICULA: item.MATRICULA,
+                MARCA: item.MARCA,
+                MODELO: item.MODELO,
+                ANO_AQUISICAO: item.ANO_AQUISICAO,
+                CAPITAL_AQUISICAO: item.CAPITAL_AQUISICAO,
+                PESO_BRUTO: item.PESO_BRUTO,
+                N_LOTACAO: item.N_LOTACAO,
+                ANO_FABRICO: item.ANO_FABRICO,
+                CILINDRADA: item.CILINDRADA,
+                REF_CHASSI: item.REF_CHASSI,
+                DESCRICAO: item.DESCRICAO
             },
         }); 
-        if (v !== null) {
-            // Set the id to the object after insert in database
-            item.id = v.ID;
-            return item;
+        if (veiculo === null) {
+            throw Error("Ocorreu um erro ao criar o veiculo"); // Set the id to the object after insert in database
         }
-        throw Error("Ocorreu um erro ao criar o veiculo");
+        return veiculo;
+
     }
 
 
-    async update(id: string, item: Veiculo): Promise<Veiculo> {
-
-        const v = await prisma.veiculo.update({   
+    async update(id: string, item: veiculo): Promise<veiculo> {
+        const veiculo = await prisma.veiculo.update({   
              where: {
                 ID: parseInt(id)
             },
             data: {
-                VEICULO_CATEGORIA_ID : item.veiculo_categoria_id,
-                MATRICULA : item.matricula,
-                MARCA : item.marca,
-                MODELO : item.modelo,
-                ANO_AQUISICAO : item.ano_aquisicao,
-                CAPITAL_AQUISICAO : item.capital_aquisicao,
-                PESO_BRUTO : item.peso_bruto,
-                N_LOTACAO : item.n_lotacao,
-                ANO_FABRICO : item.ano_fabrico,
-                CILINDRADA : item.cilindrada,
-                REF_CHASSI : item.ref_chassi,
-                DESCRICAO : item.descricao
+                VEICULO_CATEGORIA_ID : item.VEICULO_CATEGORIA_ID,
+                MATRICULA : item.MATRICULA,
+                MARCA : item.MARCA,
+                MODELO : item.MODELO,
+                ANO_AQUISICAO : item.ANO_AQUISICAO,
+                CAPITAL_AQUISICAO : item.CAPITAL_AQUISICAO,
+                PESO_BRUTO : item.PESO_BRUTO,
+                N_LOTACAO : item.N_LOTACAO,
+                ANO_FABRICO : item.ANO_FABRICO,
+                CILINDRADA : item.CILINDRADA,
+                REF_CHASSI : item.REF_CHASSI,
+                DESCRICAO : item.DESCRICAO
             },
          
         });
-        if (v !== null) {
-            return item;
+        if (veiculo === null) {
+            throw Error("Ocorreu um erro ao actualizar os dados do veiculo");
         }
-        throw Error("Ocorreu um erro ao actualizar od dados do veiculo");
+        return veiculo;
     }
 
     async delete(id: string): Promise<boolean> {
-        const v = await prisma.veiculo.delete({
+        const veiculo = await prisma.veiculo.delete({
             where: {
                ID: parseInt(id) 
             }    
         });
-        if (v !== null) {
+        if (veiculo !== null) {
             return true;
         }
         return false;
     }
 
 
-    async getAllVeiculoCategoria(): Promise<VeiculoCategoria[]> {
-        const v_cat = await prisma.veiculo_categoria.findMany({
-            take: 100
+    async getAllVeiculoCategoria(): Promise<veiculo_categoria[]> {
+        const veiculo_categorias = await prisma.veiculo_categoria.findMany({
+            take: 10
         });
-
-        let veiculo_categorias:VeiculoCategoria[] = [];
-        if (v_cat !== null) {
-            for (const item of v_cat) {
-                const veiculo_categoria:VeiculoCategoria = {
-                    id: item.ID,
-                    nome: item.NOME,
-                }
-                veiculo_categorias.push(veiculo_categoria);
-            }
-        }
         return veiculo_categorias;
     }
 
-
-    async getVeiculoCategoriaByID(id: string): Promise<VeiculoCategoria> {
-        const v_cat = await prisma.veiculo_categoria.findUnique({
+    async getVeiculoCategoriaByID(id: string): Promise<veiculo_categoria> {
+        const veiculo_categoria = await prisma.veiculo_categoria.findUnique({
             where: {
                 ID: parseInt(id)
             }
         });
-        if (v_cat !== null) {
-                const veiculo_categoria:VeiculoCategoria = {
-                    id: v_cat.ID,
-                    nome: v_cat.NOME,
-                }
-                return veiculo_categoria;
+        if(veiculo_categoria === null) {
+            throw Error("Ocorreu um erro ao carregar a categoria do veiculo")
         }
-        throw Error("Ocorreu um erro ao carregar a categoria do veiculo")
+        return veiculo_categoria;
     }
 }
 export default VeiculoRepository;

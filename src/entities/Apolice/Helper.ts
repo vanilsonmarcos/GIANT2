@@ -9,11 +9,17 @@ import Apolice from "./Apolice";
 
 
 function generateApolice(data: apolice): Apolice {
- throw new Error("Method not yet implemented");
+
+    let apolice: Apolice = {
+        id: data.ID,
+        apolice_tipo_id: data.APOLICE_TIPO_ID,
+        apolice_estado_id: data.APOLICE_ESTADO_ID,
+        apolice_fracionamento_id: data.APOLICE_FRACIONAMENTO_ID,
+        tomador_id: data.TOMADOR_ID,
+        numero: data.NUMERO
+    }
+    return apolice;
 }
-
-
-
 
 function generataApoliceFracionamento(data: RowDataPacket): ApoliceFracionamento {
     let apoliceFracionamento: ApoliceFracionamento = {
@@ -22,7 +28,7 @@ function generataApoliceFracionamento(data: RowDataPacket): ApoliceFracionamento
         no_fracoes: data['APOLICE_FRACIONAMENTO_ID']
     }
     return apoliceFracionamento
-    
+
 }
 
 
@@ -38,7 +44,7 @@ function generateApoliceItemSegurado(data: RowDataPacket): ApoliceItemSegurado {
 
 
 
-function generateApoliceCobertura(data:RowDataPacket): ApoliceCobertura {
+function generateApoliceCobertura(data: RowDataPacket): ApoliceCobertura {
     let apoliceCobertura: ApoliceCobertura = {
         id: data['ID'],
         apolice_tipo_id: data['APOLICE_TIPO_ID'],
@@ -52,7 +58,7 @@ function generateApoliceCobertura(data:RowDataPacket): ApoliceCobertura {
     return apoliceCobertura
 }
 
-function generateCobertura(data:cobertura): Cobertura { 
+function generateCobertura(data: cobertura): Cobertura {
     let cobertura: Cobertura = {
         id: data.ID,
         sigla: data.SIGLA,
@@ -63,27 +69,28 @@ function generateCobertura(data:cobertura): Cobertura {
         desconto: data.DESCONTO.toNumber(),
         cobertura_base: data.COBERTURA_BASE
     };
-    
+
     return cobertura;
 }
 
 
-function toBase64(filePath:string) {
+function toBase64(filePath: string) {
     try {
         const img = fs.readFileSync(filePath);
         return Buffer.from(img).toString('base64');
 
-    } catch(error) {
+    } catch (error) {
         throw new Error("Ocorreuum erro ao ler o ficheiro");
     }
 }
 function toBase64WithPreefix(filepath: string): string {
     const prefix = 'data:image/png;base64,';
     const result = prefix + toBase64(filepath);
-    return result; 
+    return result;
 }
 
-export {generateApolice,
+export {
+    generateApolice,
     generataApoliceFracionamento, generateApoliceItemSegurado, generateApoliceCobertura,
-     generateCobertura, toBase64, toBase64WithPreefix
+    generateCobertura, toBase64, toBase64WithPreefix
 }; 

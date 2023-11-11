@@ -1,12 +1,12 @@
 import { Service, Inject } from "typedi";
 import VeiculoRepository from "../repositories/mysql/VeiculoRepository";
 import Veiculo from "../entities/Veiculo/Veiculo";
-import IVeiculoReposiroty from "../repositories/IVeiculoRepository";
+import IVeiculoRepository from "../repositories/IVeiculoRepository";
 
 @Service()
 class VeiculoService {
     @Inject(()=> VeiculoRepository)
-    private repo: IVeiculoReposiroty<Veiculo>;
+    private repo: IVeiculoRepository<Veiculo>;
 
     constructor () {}
 

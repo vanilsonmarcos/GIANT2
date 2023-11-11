@@ -1,8 +1,7 @@
-import VeiculoCategoria from "../entities/Veiculo/VeiculoCategoria";
 
-interface IVeiculoCategoria<T extends VeiculoCategoria> {
-    getAllVeiculoCategoria():Promise<T[]> ;
-    getVeiculoCategoriaByID(id: String): Promise<T| Boolean>;
+interface IVeiculoCategoria<T> {
+    getAllVeiculoCategoria(): Promise<T[]> ;
+    getVeiculoCategoriaByID(id: string): Promise<T>;
 }
 
 export default IVeiculoCategoria;

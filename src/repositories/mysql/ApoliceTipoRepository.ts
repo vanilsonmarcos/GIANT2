@@ -1,27 +1,88 @@
 import { Service } from "typedi";
 import IApoliceTipo from "../IApoliceTipo";
-import ApoliceTipo from "../../entities/Apolice/ApoliceTipo";
-
+import {  apolice_tipo } from "@prisma/client";
+import prisma from "../PrismaClient";
 
 @Service()
-class ApoliceTipoRepository implements IApoliceTipo<ApoliceTipo> {
-    getAll(): Promise<ApoliceTipo[]> {
-        throw new Error("Method not implemented.");
+class ApoliceTipoRepository implements IApoliceTipo<apolice_tipo> {
+
+    async getApoliceTipoByApoliceID(id: string): Promise<apolice_tipo> {
+        const apolice_tipo = await prisma.apolice.findUnique({
+            where: {
+                ID: parseInt(id)
+            },
+        }).apolice_tipo();
+        if (apolice_tipo === null) {
+            throw Error("Ocorreu um erro ao actualizar od dados do tipo de apólice");
+        }
+        return apolice_tipo;
     }
-    getByID(id: string): Promise<ApoliceTipo> {
-        throw new Error("Method not implemented.");
+
+    async getAll(): Promise<apolice_tipo[]> {
+        const apolice_tipo = await prisma.apolice_tipo.findMany({
+            take: 100
+        });
+        if (apolice_tipo === null) {
+            throw Error("Ocorreu um erro ao actualizar od dados do tipo de apólice");
+        }
+        return apolice_tipo;
     }
-    create(item: ApoliceTipo): Promise<ApoliceTipo> {
-        throw new Error("Method not implemented.");
+
+    async getByID(id: string): Promise<apolice_tipo> {
+        const apolice_tipo = await prisma.apolice_tipo.findUnique({
+            where: {
+                ID: parseInt(id)
+            }
+        });
+        if (apolice_tipo === null) {
+            throw Error("Ocorreu um erro ao actualizar od dados do tipo de apólice");
+        }
+        return apolice_tipo;
     }
-    update(id: string, item: ApoliceTipo): Promise<ApoliceTipo> {
-        throw new Error("Method not implemented.");
+
+    async create(item: apolice_tipo): Promise<apolice_tipo> {
+        const apolice_tipo = await prisma.apolice_tipo.create({
+            data: {
+                NOME: item.NOME,
+                SIGLA: item.SIGLA,
+                DESCRICAO: item.DESCRICAO,
+
+            }
+        });
+        if (apolice_tipo === null) {
+            throw Error("Ocorreu um erro ao actualizar od dados do tipo de apólice");
+        }
+        return apolice_tipo;
     }
-    delete(id: string): Promise<Boolean> {
-        throw new Error("Method not implemented.");
+
+    async update(id: string, item: apolice_tipo): Promise<apolice_tipo> {
+        const apolice_tipo = await prisma.apolice_tipo.update({
+            where: {
+                ID: parseInt(id)
+            },
+            data: {
+                NOME: item.NOME,
+                SIGLA: item.SIGLA,
+                DESCRICAO: item.DESCRICAO
+            }
+        });
+        if (apolice_tipo === null) {
+            throw Error("Ocorreu um erro ao actualizar od dados do tipo de apólice");
+        }
+        return apolice_tipo;
+
     }
-    getApoliceTipoByApoliceID(id: String): Promise<ApoliceTipo> {
-        throw new Error("Method not implemented.");
+
+    async delete(id: string): Promise<boolean> {
+        const apolice_tipo = await prisma.apolice_tipo.delete({
+            where: {
+                ID: parseInt(id)
+            }
+        });
+        if (apolice_tipo !== null) {
+            return true;
+        }
+        return false;
     }
 }
 
