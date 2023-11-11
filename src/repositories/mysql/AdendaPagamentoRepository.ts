@@ -1,7 +1,10 @@
 import { adenda_pagamento } from "@prisma/client";
 import IGenericRepository from "../IGenericRepository";
 import prisma from "../PrismaClient";
+import { Service } from "typedi";
 
+
+@Service()
 class AdendaPagamentoRepository implements IGenericRepository<adenda_pagamento> {
     async getAll(): Promise<adenda_pagamento[]> {
         const adenda_pagamento = await prisma.adenda_pagamento.findMany({

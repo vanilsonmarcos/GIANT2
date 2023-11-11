@@ -1,7 +1,9 @@
 import { apolice_fracionamento } from "@prisma/client";
 import IGenericRepository from "../IGenericRepository";
 import prisma from "../PrismaClient";
+import { Service } from "typedi";
 
+@Service()
 class ApoliceFracionamentoRepository  implements IGenericRepository<apolice_fracionamento>{
     async getAll(): Promise<apolice_fracionamento[]> {
         const apolice_fracionamento = await prisma.apolice_fracionamento.findMany({

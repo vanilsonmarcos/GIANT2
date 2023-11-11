@@ -1,7 +1,6 @@
 import { pessoa } from '@prisma/client';
 import { Service } from "typedi";
 import IPessoaRepository from "../IPessoaRepository";
-import generatePessoa from "../../entities/Pessoa/Helper";
 import prisma from '../PrismaClient';
 
 @Service()
@@ -139,7 +138,7 @@ class PessoaRepository implements IPessoaRepository<pessoa> {
     }
 
     async getPersonByNBI(nbi: string): Promise<pessoa>{
-        const ps = await prisma.pessoa.findFirst({
+        const pessoa = await prisma.pessoa.findFirst({
             where: {
                 NBI: nbi 
             },
@@ -149,10 +148,10 @@ class PessoaRepository implements IPessoaRepository<pessoa> {
             }
         });
        
-        if (ps === null) {
+        if (pessoa === null) {
             throw Error("Não foram encontrados os dados da pessoa");
         }
-        return generatePessoa(ps);
+        return pessoa;
     }
 }
 

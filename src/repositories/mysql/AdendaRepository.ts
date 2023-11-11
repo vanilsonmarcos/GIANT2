@@ -2,7 +2,9 @@ import { adenda, veiculo } from "@prisma/client";
 import IGenericRepository from "../IGenericRepository";
 import prisma from "../PrismaClient";
 import IAdendaItemSegurado from "../IAdendaItemSegurado";
+import { Service } from "typedi";
 
+@Service()
 class AdendaRepository implements IGenericRepository<adenda>, IAdendaItemSegurado<veiculo> {
     
     async getAllItemSeguradoByAdendaID(adendaID: string): Promise<veiculo[]> {

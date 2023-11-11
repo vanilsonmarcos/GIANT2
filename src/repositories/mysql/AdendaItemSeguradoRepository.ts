@@ -1,7 +1,9 @@
 import { adenda_item_segurado } from "@prisma/client";
 import IGenericRepository from "../IGenericRepository";
 import prisma from "../PrismaClient";
+import { Service } from "typedi";
 
+@Service()
 class AdendaItemSeguradoRepository implements IGenericRepository<adenda_item_segurado>{
     async getAll(): Promise<adenda_item_segurado[]> {
         const adenda_item_segurados = await prisma.adenda_item_segurado.findMany({

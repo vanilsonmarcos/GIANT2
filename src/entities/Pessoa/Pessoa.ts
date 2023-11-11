@@ -8,7 +8,7 @@ interface Pessoa {
     sexo: string,
     nbi?: string,
     nif: string,
-    estado_civil: string
+    estado_civil: string,
     endereco?: PessoaEndereco
 }
 
