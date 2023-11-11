@@ -1,10 +1,86 @@
 import { Service } from "typedi";
 import IGenericRepository from "../IGenericRepository";
 import prisma from '../PrismaClient';
-import { adenda, apolice } from "@prisma/client";
+import { adenda, apolice, pessoa } from "@prisma/client";
 import IApoliceAdenda from "../IApoliceAdenda";
+import IApoliceSegurado from "../IApoliceSegurado";
+import Pessoa from "../../entities/Pessoa/Pessoa";
 @Service()
-class ApoliceRepository implements IGenericRepository<apolice>, IApoliceAdenda<adenda>{
+class ApoliceRepository implements 
+IGenericRepository<apolice>, IApoliceAdenda<adenda>, IApoliceSegurado<pessoa> {
+    
+    getAllSeguradoByApoliceID(apoliceID: string): Promise<pessoa[]> {
+        throw new Error("Method not implemented.");
+    }
+
+    getAllSeguradoByAdendaID(adendaID: string): Promise<pessoa[]> {
+        throw new Error("Method not implemented.");
+    }
+
+    removeSeguradoByApoliceID(apoliceID: string, seguradoID: string): Promise<pessoa> {
+        throw new Error("Method not implemented.");
+    }
+
+    async removeSeguradoByAdendaID(adendaID: string, seguradoID: string): Promise<pessoa> {
+        const segurado = await prisma.adenda_segurado.delete({
+            where: {
+                SEGURADO_ID_ADENDA_ID: {
+                    SEGURADO_ID: parseInt(seguradoID),
+                    ADENDA_ID: parseInt(adendaID)
+                }
+              },
+        }).pessoa();
+        if(segurado === null) {
+            throw new Error("Ocorreu um error ao remover o segurado da adenda");
+        }
+        return segurado;
+    }
+
+    async addSeguradosByAdendaID(adendaID: string, segurados: pessoa[]): Promise<pessoa[]> {
+        const savedSegurados = await Promise.all(
+            segurados.map((segurado)=> {
+                return prisma.adenda_segurado.create({
+                    data: {
+                        ADENDA_ID: parseInt(adendaID),
+                        SEGURADO_ID: segurado.ID
+                    }
+                }).pessoa();
+            })
+        );
+        
+        if(savedSegurados === null) {
+            throw new Error("Não Possivel associar os segurados a adenda");
+        }
+        return segurados ;
+    }
+
+    addSeguradosByApoliceID(apoliceID: string, segurados: pessoa[]): Promise<pessoa[]> {
+        throw new Error("Method not implemented.");
+    }
+
+    async removeSeguradosByAdendaID(adendaID: string, segurados: pessoa[]): Promise<pessoa[]> {
+        const deletedSegurados = await Promise.all(
+            segurados.map((segurado) => {
+                return prisma.adenda_segurado.delete({
+                    where: {
+                        SEGURADO_ID_ADENDA_ID: {
+                            SEGURADO_ID: segurado.ID,
+                            ADENDA_ID: parseInt(adendaID)
+                        }
+                    }
+                });
+            })
+        );
+        if(deletedSegurados === null) {
+            throw new Error("Ocorreu um error ao remover o segurado da adenda");
+        }
+        return segurados;
+    }
+
+    removeSeguradosByApoliceID(apoliceID: string, segurados: pessoa[]): Promise<pessoa[]> {
+        throw new Error("Method not implemented.");
+    }
+
     async getAllApoliceAdenda(apoliceID: string): Promise<adenda[]> {
         const adendas = await prisma.adenda.findMany({
             where: {

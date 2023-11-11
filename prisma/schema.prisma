@@ -262,6 +262,7 @@ model adenda_segurado {
   adenda            adenda?   @relation(fields: [ADENDA_ID], references: [ID], map: "FRKADENADEN")
   pessoa            pessoa?   @relation(fields: [SEGURADO_ID], references: [ID], map: "FRKADENPESS")
 
+  @@unique([SEGURADO_ID, ADENDA_ID], map: "ADENDASEGURADO")
   @@index([SEGURADO_ID], map: "FRKADENPESS_idx")
   @@index([ADENDA_ID], map: "FRKADENDAADENDA_idx")
 }
