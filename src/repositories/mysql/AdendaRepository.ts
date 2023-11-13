@@ -3,8 +3,7 @@ import IGenericRepository from "../IGenericRepository";
 import prisma from "../PrismaClient";
 import IAdendaItemSegurado from "../IAdendaItemSegurado";
 import { Service } from "typedi";
-import { Decimal } from "@prisma/client/runtime/library";
-import Veiculo from "../../entities/Veiculo/Veiculo";
+import { calculatePremio } from "../../utils/helper";
 
 @Service()
 class AdendaRepository implements IGenericRepository<adenda>, IAdendaItemSegurado<veiculo> {
@@ -29,13 +28,13 @@ class AdendaRepository implements IGenericRepository<adenda>, IAdendaItemSegurad
 
     async addAllItemSeguradoByAdendaID(adendaID: string, items: veiculo[]): Promise<veiculo[]> {
         const veiculos = await Promise.all(
-            items.map((item) => {
+            items.map(async (item) => {
                 return prisma.adenda_item_segurado.create({
                     data: {
                         ADENDA_ID: parseInt(adendaID),
                         ITEM_ID: item.ID,
+                        PREMIO: await calculatePremio(adendaID, item)
                     }
-
                 }).veiculo();
             })
         );
@@ -68,11 +67,12 @@ class AdendaRepository implements IGenericRepository<adenda>, IAdendaItemSegurad
         return addedItems;
     }
 
-    async addItemSeguradoByAdendaID(adendaID: string, items: veiculo): Promise<veiculo> {
+    async addItemSeguradoByAdendaID(adendaID: string, item: veiculo): Promise<veiculo> {
         const veiculo = await prisma.adenda_item_segurado.create({
             data: {
                 ADENDA_ID: parseInt(adendaID),
-                ITEM_ID: items.ID
+                ITEM_ID: item.ID,
+                PREMIO: await calculatePremio(adendaID, item)
             }
         }).veiculo();
         if (veiculo === null) {
@@ -140,18 +140,18 @@ class AdendaRepository implements IGenericRepository<adenda>, IAdendaItemSegurad
         return adenda;
     }
 
-    async create(item: adenda): Promise<adenda> {
+    async create(item: adenda): Promise<adenda>{
         const adenda = await prisma.adenda.create({
             data: {
                 APOLICE_ID: item.APOLICE_ID,
                 PREMIO: item.PREMIO,
-                DATA_INICIO: item.DATA_INICIO,
-                DATA_FIM: item.DATA_FIM,
+                DATA_INICIO: new Date(item.DATA_INICIO),
+                DATA_FIM: new Date(item.DATA_FIM),
             }
         });
 
         if (adenda === null) {
-            throw new Error("Ocorreu um erro ao criar apólice");
+            throw new Error("Ocorreu um erro ao criar a adenda");
         }
         return adenda;
     }
@@ -164,8 +164,8 @@ class AdendaRepository implements IGenericRepository<adenda>, IAdendaItemSegurad
             data: {
                 APOLICE_ID: item.APOLICE_ID,
                 PREMIO: item.PREMIO,
-                DATA_INICIO: item.DATA_INICIO,
-                DATA_FIM: item.DATA_FIM,
+                DATA_INICIO: new Date(item.DATA_INICIO),
+                DATA_FIM: new Date(item.DATA_FIM),
             }
         });
 
@@ -189,3 +189,4 @@ class AdendaRepository implements IGenericRepository<adenda>, IAdendaItemSegurad
 }
 
 export default AdendaRepository;
+

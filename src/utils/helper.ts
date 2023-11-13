@@ -1,32 +1,72 @@
-import { RowDataPacket } from "mysql2"
+import moment from "moment";
+import CustomError from "./CustomError";
+import { veiculo } from "@prisma/client";
+import prisma from "../repositories/PrismaClient";
+
+function isDateWithinIntervals(startDate: moment.Moment, endDate: moment.Moment, intervals: number[],) {
+  // Calculate the difference in months between the start and end dates
+  const monthsDiff = endDate.diff(startDate, 'months');
+
+  // Check if the difference is one of the allowed intervals specified by developer such as (3, 6, or 12 months)
+  return intervals.includes(monthsDiff);
+}
 
 
-function emptyOrRow(rows: RowDataPacket) {
-    if (!rows) {
-        return []
+function validateAdendaDates(data_inicio: Date, data_fim: Date) {
+  const m_data_inicio = moment(data_inicio);
+  const m_data_fim = moment(data_fim);
+
+  if (m_data_inicio.isAfter(m_data_fim)) {
+    throw new CustomError("A data de inicio deve ser inferior à data do fim da adenda");
+  }
+
+  if (!isDateWithinIntervals(m_data_inicio, m_data_fim, [3, 6, 12])) {
+    throw new CustomError("O intervalo das datas deve ser de 3, 6 ou 12 meses");
+  }
+}
+
+async function calculatePremio(adendaID: string, item: veiculo): Promise<number> {
+  const fc = await prisma.apolice_fracionamento.findFirst({
+    include: {
+      apolice: {
+        include: {
+          adenda: {
+            where: {
+              ID: parseInt(adendaID)
+            }
+          }
+        }
+      }
     }
-    return rows
+  });
+  const pc = await prisma.preco_cilindrada.findFirst({
+    include: {
+      veiculo_categoria: {
+        include: {
+          veiculo: {
+            where: {
+              ID: item.ID
+            }
+          }
+        }
+      }
+    }
+  });
+
+  switch (fc?.NO_FRACOES) {
+    case 1:
+      return 1 * pc?.PREMIO_ANUAL.toNumber()!;
+    case 2:
+      return 1 * pc?.PREMIO_SEMESTRAL.toNumber()!;
+    default:
+      return 1 * pc?.PREMIO_TRIMESTRAL.toNumber()!;
+  }
+
 }
 
-function isNotEmptyArray<T>(arr: T[]): Boolean {
-    return arr.length > 0;
-}
-
-function formatDateToYYYYMMDD(date: Date) {
-    var month = '' + (date.getMonth() + 1),
-        day = '' + date.getDate(),
-        year = date.getFullYear();
-
-    if (month.length < 2) 
-        month = '0' + month;
-    if (day.length < 2) 
-        day = '0' + day;
-
-    return [year, month, day].join('-');
-}
 
 export {
-    emptyOrRow,
-    isNotEmptyArray,
-    formatDateToYYYYMMDD as formatDate
+  isDateWithinIntervals,
+  validateAdendaDates,
+  calculatePremio
 }

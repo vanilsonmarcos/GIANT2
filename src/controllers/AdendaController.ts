@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import { adenda, apolice } from "@prisma/client";
 import AdendaService from "../services/AdendaService";
 import handleParsingError from "../utils/HandleParsingErrors";
+import CustomError from "../utils/CustomError";
+import prisma from "../repositories/PrismaClient";
 
 class AdendaController {
     private adendaService: AdendaService;
@@ -42,7 +44,7 @@ class AdendaController {
         } catch (error) {
             const response = {
                 code: 401,
-                message: "Ocorreu um erro ao carregar os dados da apólice",
+                message: "Ocorreu um erro ao carregar os dados da adenda",
                 data: {},
                 error: error
             };
@@ -67,6 +69,9 @@ class AdendaController {
                 data: {},
                 error: error
             }
+            if (error instanceof CustomError) { 
+              response.message = error.message
+            }
             res.json(response);
         }
     }
@@ -77,10 +82,9 @@ class AdendaController {
         if (adenda.ID === undefined){
             return handleParsingError(res, Error("O Id da adenda não foi definido"));
         }
-        const id = adenda.ID.toString();
 
         try {
-            const updatedAdenda = await this.adendaService.actualizar(id, adenda);
+            const updatedAdenda = await this.adendaService.actualizar(adenda.ID.toString(), adenda);
             const response = {
                 code: 200,
                 message: "Dados da adenda actualizados com sucesso",
@@ -90,7 +94,7 @@ class AdendaController {
         } catch (error) {
             const response = {
                 code: 401,
-                message: "Ocorreu um erro ao actualizar os dados da adenda",
+                message: "Ocorreu um erro ao actualizar a adenda",
                 data: {},
                 error: error
             }
@@ -105,7 +109,7 @@ class AdendaController {
             if (adenda) {
                 const response = {
                     code: 200,
-                    message: "Dados da apólice foram removidos com sucesso",
+                    message: "Adenda removida com sucesso",
                     data: adenda
                 };
                 res.json(response);
@@ -113,10 +117,34 @@ class AdendaController {
         } catch (error) {
             const response = {
                 code: 401,
-                message: "Ocorreu um erro ao remover os dados da apólice",
+                message: "Ocorreu um erro ao remover a adenda",
                 data: {},
                 error: error
             };
+            res.json(response);
+        }
+    }
+
+    async calculatePremio(req: Request, res: Response) {
+        const adenda: adenda = req.body;
+        await this.adendaService.calculatePremio(adenda.ID.toString());
+        try {
+            const response = {
+                code: 200,
+                message: "O premio da adenda foi calculado com sucesso",
+                data: {}
+            };
+            res.json(response);
+        } catch (error) {
+            const response = {
+                code: 401,
+                message: "Ocorreu um ao efectuar os calculos do premio da adenda",
+                data: {},
+                error: error
+            }
+            if (error instanceof CustomError) { 
+              response.message = error.message
+            }
             res.json(response);
         }
     }
