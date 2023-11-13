@@ -7,12 +7,16 @@ UMA APOLICE TEM VARIOS ELEMENTOS QUE SÂO:
 - Pagamantos(São os pagamentos feitos dentro de uma apólice, que dependem do fracionamento).
 - Fracionamento(É a a divisão dos pagamentos de uma apólice que podem ser (3,6 e 12 meses)).
 - Coberturas(Coberturas são os termos que a apólice contempla) OBS: O preço da apólice pode variar de acordo as coberturas adicionadas.
-- Tomador(es)(Pessoa) é/são as pessoas que se beneficiam da apólice que são pessoas.
-- Segurado(Pessoa) é a pessoa que adjudica a apólice que pode ser pessoa físisca ou jurídica.
+- Segurado(s)(Pessoa) é/são as pessoas que se beneficiam da apólice que são pessoas.
+- Tomador(Pessoa) é a pessoa que adjudica a apólice que pode ser pessoa físisca ou jurídica.
 
 #### A apólice
 
 É um contracto estabelecido entre uma entidade seguradora e uma entidade pessoal.
+
+### Adenda
+
+São os anexos ou ratificações que uma apólice tem.
 
 #### TIPO
 
@@ -20,7 +24,7 @@ o tipo representa os variações de uma apolice.
 
 #### Estado
 
-O estádo são as etapas em que uma apólice se encontra que podem ser(Activa/ Inactiva, Candelada, Em Processamento)
+O estado são as etapas em que uma apólice se encontra que podem ser(Activa/ Inactiva, Candelada, Em Processamento)
 
 #### Pagamento
 
@@ -37,11 +41,11 @@ são os items que a apolice de seguro cobrem,
 
 #### Tomador
 
-O tomador é o beneficiario da apolice de seguro.
+O tomador é a entidade(pessoa fisica ou juridica) que adjudica ou requisita os serviços da seguradora
 
 #### Segurado
 
-O segurado é a entidade(pessoa fisica ou juridica) que adjudica ou requisita os serviços da seguradora
+O segurado é o beneficiario da apolice de seguro.
 
 ## INSTALATION
 
@@ -179,22 +183,26 @@ em caso de sucesso retorna o objecto inserido com o id definido.
     code: 200,
     message: "Dados da veiculo inseridos com sucesso",
     data: {
-            id?: Number, 
-            veiculo_categoria: VeiculoCategoria ,
-            matricula: String,
-            marca: String,
-            modelo: String,
-            ano_aquisicao: Number,
-            capital_aquisicao: Number,
-            peso_bruto: Number,
-            n_lotacao: Number,
-            ano_fabrico: Number,
-            cilindrada: number,
-            ref_chassi: String,
-            descricao: String,
-            inserido_por?: Number,
-            actualizado_por?: Number
-        }
+        ID: number
+        VEICULO_CATEGORIA_ID: number
+        MATRICULA: string
+        MARCA: string
+        MODELO: string
+        ANO_AQUISICAO: number
+        CAPITAL_AQUISICAO: Prisma.Decimal
+        PESO_BRUTO: number
+        N_LOTACAO: number
+        ANO_FABRICO: number
+        CILINDRADA: number
+        REF_CHASSI: string
+        DESCRICAO: string
+        INSERIDO_POR: number | null
+        ACTUALIZADO_POR: number | null
+        REMOVIDO_POR: number | null
+        DATA_INSERCAO: Date | null
+        DATA_ACTUALIZACAO: Date | null
+        DATA_REMOCAO: Date | null
+    }
 }
 ```
 
@@ -216,21 +224,25 @@ Body:
 
 ```json
 {
-    id?: Number,
-    veiculo_categoria: VeiculoCategoria ,
-    matricula: String,
-    marca: String,
-    modelo: String,
-    ano_aquisicao: Number,
-    capital_aquisicao: Number,
-    peso_bruto: Number,
-    n_lotacao: Number,
-    ano_fabrico: Number,
-    cilindrada: number,
-    ref_chassi: String,
-    descricao: String,
-    inserido_por?: Number,
-    actualizado_por?: Number 
+    ID: number
+    VEICULO_CATEGORIA_ID: number
+    MATRICULA: string
+    MARCA: string
+    MODELO: string
+    ANO_AQUISICAO: number
+    CAPITAL_AQUISICAO: Prisma.Decimal
+    PESO_BRUTO: number
+    N_LOTACAO: number
+    ANO_FABRICO: number
+    CILINDRADA: number
+    REF_CHASSI: string
+    DESCRICAO: string
+    INSERIDO_POR: number | null
+    ACTUALIZADO_POR: number | null
+    REMOVIDO_POR: number | null
+    DATA_INSERCAO: Date | null
+    DATA_ACTUALIZACAO: Date | null
+    DATA_REMOCAO: Date | null
 }
 ```
 
@@ -244,22 +256,26 @@ em caso de sucesso retorna o objecto actualizado
     code: 200,
     message: "Dados da veiculo inseridos com sucesso",
     data: {
-            id?: Number, 
-            veiculo_categoria: VeiculoCategoria ,
-            matricula: String,
-            marca: String,
-            modelo: String,
-            ano_aquisicao: Number,
-            capital_aquisicao: Number,
-            peso_bruto: Number,
-            n_lotacao: Number,
-            ano_fabrico: Number,
-            cilindrada: number,
-            ref_chassi: String,
-            descricao: String,
-            inserido_por?: Number,
-            actualizado_por?: Number
-        }
+        ID: number
+        VEICULO_CATEGORIA_ID: number
+        MATRICULA: string
+        MARCA: string
+        MODELO: string
+        ANO_AQUISICAO: number
+        CAPITAL_AQUISICAO: Prisma.Decimal
+        PESO_BRUTO: number
+        N_LOTACAO: number
+        ANO_FABRICO: number
+        CILINDRADA: number
+        REF_CHASSI: string
+        DESCRICAO: string
+        INSERIDO_POR: number | null
+        ACTUALIZADO_POR: number | null
+        REMOVIDO_POR: number | null
+        DATA_INSERCAO: Date | null
+        DATA_ACTUALIZACAO: Date | null
+        DATA_REMOCAO: Date | null
+    }
 }
 
 Remover o veiculo
@@ -273,22 +289,26 @@ em caso de sucesso retorna:
     code: 200,
     message: "Dados da veiculo inseridos com sucesso",
     data: {
-            id?: Number, 
-            veiculo_categoria: VeiculoCategoria ,
-            matricula: String,
-            marca: String,
-            modelo: String,
-            ano_aquisicao: Number,
-            capital_aquisicao: Number,
-            peso_bruto: Number,
-            n_lotacao: Number,
-            ano_fabrico: Number,
-            cilindrada: number,
-            ref_chassi: String,
-            descricao: String,
-            inserido_por?: Number,
-            actualizado_por?: Number
-        }
+        ID: number
+        VEICULO_CATEGORIA_ID: number
+        MATRICULA: string
+        MARCA: string
+        MODELO: string
+        ANO_AQUISICAO: number
+        CAPITAL_AQUISICAO: Prisma.Decimal
+        PESO_BRUTO: number
+        N_LOTACAO: number
+        ANO_FABRICO: number
+        CILINDRADA: number
+        REF_CHASSI: string
+        DESCRICAO: string
+        INSERIDO_POR: number | null
+        ACTUALIZADO_POR: number | null
+        REMOVIDO_POR: number | null
+        DATA_INSERCAO: Date | null
+        DATA_ACTUALIZACAO: Date | null
+        DATA_REMOCAO: Date | null
+    }
 }
 ```
 
@@ -305,20 +325,37 @@ em caso de error retorna:
 
 ## Veiculo Categoraia
 
+Metodo: GET
+URL: /veiculo/categoria/
+Resposta:
+em caso de sucesso retorna:
+
+```json
+{
+      ID: number
+      NOME: string
+      REMOVIDO_POR: number | null
+      DATA_INSERCAO: Date | null
+      DATA_ACTUALIZACAO: Date | null
+      DATA_REMOCAO: Date | null
+}
+```
+
 ## Apolice
 
-## Apolice Pagamento
 
-Visualizar "Pagamento de uma apólice" apolice pagamento pelo id da apólice
+## Adenda Pagamento
+
+Visualizar "Pagamento de uma adenda" adenda pagamento pelo id da adenda
 Metodo: GET
-URL: /apolice_pagamento/:id
+URL: /adenda_pagamento/:id
 Resposta:
 em caso de sucesso retorna:
 
 ```json
 {
     code: 200,
-    message: "Os pagamentos associados a apólice foram carregados com sucesso",
+    message: "Os pagamentos associados a adenda foram carregados com sucesso",
     data: { ApolicePagamento 1 }, 
     
 }
@@ -328,24 +365,24 @@ em caso de erro
  ```json
  {
     code: 401,
-    message:"Ocorreu um erro na pesquisa do(s) pagamento(s) associados a apólice",
+    message:"Ocorreu um erro na pesquisa do(s) pagamento(s) associados a adenda",
     data: {},
     error: {error}
  }
  ```
 
-Visualizar "Pagamentos de uma apólice" apolice pagamento pelo id da apólice
+Visualizar "Pagamentos de uma adenda" adenda pagamento pelo id da adenda
 Metodo: GET
-URL: /apolice_pagamento/apolice/:id
+URL: /adenda_pagamento/adenda/:id
 Resposta:
 em caso de sucesso retorna:
 
 ```json
 {
     code: 200,
-    message: "Os pagamentos associados a apólice foram carregados com sucesso",
+    message: "Os pagamentos associados a adenda foram carregados com sucesso",
     data: [
-        { ApolicePagamento 1 }, { ApolicePagamento 2}
+        { AdendaPagamento 1 }, { AdendaPagamento 2}
     ] 
     
 }
@@ -355,24 +392,27 @@ em caso de erro
  ```json
  {
     code: 401,
-    message:"Ocorreu um erro na pesquisa do(s) pagamento(s) associados a apólice",
+    message:"Ocorreu um erro na pesquisa do(s) pagamento(s) associados a adenda",
     data: {},
     error: {error}
  }
  ```
 
-Adicionar  "Pagamentos de uma apólice" apolice pagamento pelo id da apólice
+Adicionar  "Pagamentos de uma adenda" apolice pagamento pelo id da adenda
 Metodo: POST
-URL: /apolice_pagamento/
+URL: /adenda_pagamento/
 Body: 
 ```json
 {
-    id: Number,
-    apolice_id: Number,
-    descontos: Number,
-    valor_pago: Number,
-    inserido_por?: number,
-    data_insercao: String,
+    ID: number
+    ADENDA_ID: number | null
+    DESCONTOS: Prisma.Decimal
+    VALOR_PAGO: Prisma.Decimal
+    DATA_INSERCAO: Date | null
+    DATA_ACTUALIZACAO: Date | null
+    DATA_REMOCACAO: Date | null
+    INSERIDO_POR: number | null
+    ACTUALIZADO_POR: number | null
 }
 ```
 
@@ -381,12 +421,15 @@ em caso de sucesso retorna:
 
 ```json
 {
-    id: Number,
-    apolice_id: Number,
-    descontos: Number,
-    valor_pago: Number,
-    inserido_por?: number,
-    data_insercao: String,
+    ID: number
+    ADENDA_ID: number | null
+    DESCONTOS: Prisma.Decimal
+    VALOR_PAGO: Prisma.Decimal
+    DATA_INSERCAO: Date | null
+    DATA_ACTUALIZACAO: Date | null
+    DATA_REMOCACAO: Date | null
+    INSERIDO_POR: number | null
+    ACTUALIZADO_POR: number | null
 }
 ```
 
@@ -463,16 +506,20 @@ Body:
 
 ```json
 {
-    id?: Number,
-    nome: String,
-    lotacao: Number,
-    veiculo_categoria: VeiculoCategoria,
-    premio_trimestral: Number,
-    premio_semestral:Number,
-    premio_anual: Number,
-    peso_kg: Number,
-    cilindrada_min: Number,
-    cilindrada_max: Number,
+    ID: number
+    NOME: string
+    LOTACAO: number
+    VEICULO_CATEGORIA_ID: number
+    PREMIO_TRIMESTRAL: Prisma.Decimal
+    PREMIO_SEMESTRAL: Prisma.Decimal
+    PREMIO_ANUAL: Prisma.Decimal
+    PESO_KG: number
+    CILINDRADA_MIN: number
+    CILINDRADA_MAX: number
+    INSERIDO_POR: number | null
+    ACTUALIZADO_POR: number | null
+    DATA_CRIACAO: Date | null
+    DATA_ACTUALIZACAO: Date | null
 }
 ```
 
@@ -484,16 +531,20 @@ em caso de sucesso retorna o objecto inserido com o id definido.
     code: 200,
     message: "Dados do preço por cilindrada inseridos com sucesso",
     data: {
-        id?: Number,
-        nome: String,
-        lotacao: Number,
-        veiculo_categoria: VeiculoCategoria,
-        premio_trimestral: Number,
-        premio_semestral:Number,
-        premio_anual: Number,
-        peso_kg: Number,
-        cilindrada_min: Number,
-        cilindrada_max: Number,
+        ID: number
+        NOME: string
+        LOTACAO: number
+        VEICULO_CATEGORIA_ID: number
+        PREMIO_TRIMESTRAL: Prisma.Decimal
+        PREMIO_SEMESTRAL: Prisma.Decimal
+        PREMIO_ANUAL: Prisma.Decimal
+        PESO_KG: number
+        CILINDRADA_MIN: number
+        CILINDRADA_MAX: number
+        INSERIDO_POR: number | null
+        ACTUALIZADO_POR: number | null
+        DATA_CRIACAO: Date | null
+        DATA_ACTUALIZACAO: Date | null
     }
 }
 ```
@@ -516,16 +567,20 @@ Body:
 
 ```json
 {
-    id?: Number,
-    nome: String,
-    lotacao: Number,
-    veiculo_categoria: VeiculoCategoria,
-    premio_trimestral: Number,
-    premio_semestral:Number,
-    premio_anual: Number,
-    peso_kg: Number,
-    cilindrada_min: Number,
-    cilindrada_max: Number,
+    ID: number
+      NOME: string
+      LOTACAO: number
+      VEICULO_CATEGORIA_ID: number
+      PREMIO_TRIMESTRAL: Prisma.Decimal
+      PREMIO_SEMESTRAL: Prisma.Decimal
+      PREMIO_ANUAL: Prisma.Decimal
+      PESO_KG: number
+      CILINDRADA_MIN: number
+      CILINDRADA_MAX: number
+      INSERIDO_POR: number | null
+      ACTUALIZADO_POR: number | null
+      DATA_CRIACAO: Date | null
+      DATA_ACTUALIZACAO: Date | null
 }
 ```
 
@@ -537,16 +592,20 @@ em caso de sucesso retorna o objecto inserido com o id definido.
     code: 200,
     message: "Dados do preço por cilindrada actualizados com sucesso",
     data: {
-        id?: Number,
-        nome: String,
-        lotacao: Number,
-        veiculo_categoria: VeiculoCategoria,
-        premio_trimestral: Number,
-        premio_semestral:Number,
-        premio_anual: Number,
-        peso_kg: Number,
-        cilindrada_min: Number,
-        cilindrada_max: Number,
+        ID: number
+        NOME: string
+        LOTACAO: number
+        VEICULO_CATEGORIA_ID: number
+        PREMIO_TRIMESTRAL: Prisma.Decimal
+        PREMIO_SEMESTRAL: Prisma.Decimal
+        PREMIO_ANUAL: Prisma.Decimal
+        PESO_KG: number
+        CILINDRADA_MIN: number
+        CILINDRADA_MAX: number
+        INSERIDO_POR: number | null
+        ACTUALIZADO_POR: number | null
+        DATA_CRIACAO: Date | null
+        DATA_ACTUALIZACAO: Date | null
     }
 }
 ```
@@ -573,17 +632,21 @@ em caso de sucesso retorna:
     code: 200,
     message: "Dados do preço cilindrada removidos com sucesso",
     data: {
-            id?: Number,
-            nome: String,
-            lotacao: Number,
-            veiculo_categoria: VeiculoCategoria,
-            premio_trimestral: Number,
-            premio_semestral:Number,
-            premio_anual: Number,
-            peso_kg: Number,
-            cilindrada_min: Number,
-            cilindrada_max: Number,
-        }
+        ID: number
+        NOME: string
+        LOTACAO: number
+        VEICULO_CATEGORIA_ID: number
+        PREMIO_TRIMESTRAL: Prisma.Decimal
+        PREMIO_SEMESTRAL: Prisma.Decimal
+        PREMIO_ANUAL: Prisma.Decimal
+        PESO_KG: number
+        CILINDRADA_MIN: number
+        CILINDRADA_MAX: number
+        INSERIDO_POR: number | null
+        ACTUALIZADO_POR: number | null
+        DATA_CRIACAO: Date | null
+        DATA_ACTUALIZACAO: Date | null
+    }
 }
 ```
 
@@ -638,15 +701,17 @@ em caso de sucesso retorna:
     code: 200,
     message: "Dados da pessoa foram encontrados com sucesso",
     data: {    
-        id?: Number
-        nome: String,
-        pessoa_tipo: PessoaTipo,
-        data_nascimento: String,
-        sexo: String,
-        nbi: String,
-        nif: String,
-        estado_civil: String
-        endereco: PessoaEndereco 
+        ID: number
+        PESSOA_TIPO_ID: number
+        ENDERECO_ID: number | null
+        NOME: string
+        DATA_NASCIMENTO: Date
+        SEXO: string
+        NBI: string | null
+        NIF: string
+        ESTADO_CIVIL: string
+        DATA_CRIACAO: Date | null
+        DATA_ACTUALIZACAO: Date | null
     }
 }
 ```
@@ -673,16 +738,18 @@ em caso de sucesso:
     code: 200,
     message: "Dados da pessoa foram encontrados com sucesso",
     data: {
-            id?: Number
-            nome: String,
-            pessoa_tipo: PessoaTipo,
-            data_nascimento: String,
-            sexo: String,
-            nbi: String,
-            nif: String,
-            estado_civil: String
-            endereco: PessoaEndereco
-     }
+        ID: number
+        PESSOA_TIPO_ID: number
+        ENDERECO_ID: number | null
+        NOME: string
+        DATA_NASCIMENTO: Date
+        SEXO: string
+        NBI: string | null
+        NIF: string
+        ESTADO_CIVIL: string
+        DATA_CRIACAO: Date | null
+        DATA_ACTUALIZACAO: Date | null
+    }
 }
 ```
 
@@ -754,15 +821,17 @@ Body:
 
 ```json
 {
-    id?: Number
-    nome: String,
-    pessoa_tipo: PessoaTipo,
-    data_nascimento: String,
-    sexo: String,
-    nbi: String,
-    nif: String,
-    estado_civil: String
-    endereco: PessoaEndereco
+    ID: number
+    PESSOA_TIPO_ID: number
+    ENDERECO_ID: number | null
+    NOME: string
+    DATA_NASCIMENTO: Date
+    SEXO: string
+    NBI: string | null
+    NIF: string
+    ESTADO_CIVIL: string
+    DATA_CRIACAO: Date | null
+    DATA_ACTUALIZACAO: Date | null
 }
 ```
 
@@ -774,16 +843,18 @@ em caso de sucesso retorna o objecto inserido com o id definido.
     code: 200,
     message: "Dados da pessoa inseridos com sucesso",
     data: {
-            id?: Number
-            nome: String,
-            pessoa_tipo: PessoaTipo,
-            data_nascimento: String,
-            sexo: String,
-            nbi: String,
-            nif: String,
-            estado_civil: String
-            endereco: PessoaEndereco
-        }
+        ID: number
+        PESSOA_TIPO_ID: number
+        ENDERECO_ID: number | null
+        NOME: string
+        DATA_NASCIMENTO: Date
+        SEXO: string
+        NBI: string | null
+        NIF: string
+        ESTADO_CIVIL: string
+        DATA_CRIACAO: Date | null
+        DATA_ACTUALIZACAO: Date | null
+    }
 }
 ```
 
@@ -805,15 +876,17 @@ Body:
 
 ```json
 {
-    id?: Number
-    nome: String,
-    pessoa_tipo: PessoaTipo,
-    data_nascimento: String,
-    sexo: String,
-    nbi: String,
-    nif: String,
-    estado_civil: String
-    endereco: PessoaEndereco
+    ID: number
+    PESSOA_TIPO_ID: number
+    ENDERECO_ID: number | null
+    NOME: string
+    DATA_NASCIMENTO: Date
+    SEXO: string
+    NBI: string | null
+    NIF: string
+    ESTADO_CIVIL: string
+    DATA_CRIACAO: Date | null
+    DATA_ACTUALIZACAO: Date | null
 }
 ```
 
@@ -827,15 +900,17 @@ em caso de sucesso retorna o objecto actualizado
     code: 200,
     message: "Dados da veiculo inseridos com sucesso",
     data: {
-        id?: Number
-        nome: String,
-        pessoa_tipo: PessoaTipo,
-        data_nascimento: String,
-        sexo: String,
-        nbi: String,
-        nif: String,
-        estado_civil: String
-        endereco: PessoaEndereco
+        ID: number
+        PESSOA_TIPO_ID: number
+        ENDERECO_ID: number | null
+        NOME: string
+        DATA_NASCIMENTO: Date
+        SEXO: string
+        NBI: string | null
+        NIF: string
+        ESTADO_CIVIL: string
+        DATA_CRIACAO: Date | null
+        DATA_ACTUALIZACAO: Date | null
     }
 }
 
@@ -850,22 +925,18 @@ em caso de sucesso retorna:
     code: 200,
     message: "Dados da veiculo inseridos com sucesso",
     data: {
-            id?: Number, 
-            veiculo_categoria: VeiculoCategoria ,
-            matricula: String,
-            marca: String,
-            modelo: String,
-            ano_aquisicao: Number,
-            capital_aquisicao: Number,
-            peso_bruto: Number,
-            n_lotacao: Number,
-            ano_fabrico: Number,
-            cilindrada: number,
-            ref_chassi: String,
-            descricao: String,
-            inserido_por?: Number,
-            actualizado_por?: Number
-        }
+        ID: number
+        PESSOA_TIPO_ID: number
+        ENDERECO_ID: number | null
+        NOME: string
+        DATA_NASCIMENTO: Date
+        SEXO: string
+        NBI: string | null
+        NIF: string
+        ESTADO_CIVIL: string
+        DATA_CRIACAO: Date | null
+        DATA_ACTUALIZACAO: Date | null
+    }
 }
 ```
 
@@ -879,4 +950,3 @@ em caso de error retorna:
     error: {error}
 }
 ```
-

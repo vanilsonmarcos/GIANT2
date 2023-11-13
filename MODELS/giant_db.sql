@@ -18,6 +18,202 @@ USE `giant_db`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `_prisma_migrations`
+--
+
+DROP TABLE IF EXISTS `_prisma_migrations`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `_prisma_migrations` (
+  `id` varchar(36) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `checksum` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `finished_at` datetime(3) DEFAULT NULL,
+  `migration_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `logs` text COLLATE utf8mb4_unicode_ci,
+  `rolled_back_at` datetime(3) DEFAULT NULL,
+  `started_at` datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+  `applied_steps_count` int unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `_prisma_migrations`
+--
+
+LOCK TABLES `_prisma_migrations` WRITE;
+/*!40000 ALTER TABLE `_prisma_migrations` DISABLE KEYS */;
+INSERT INTO `_prisma_migrations` VALUES ('6a50a9c0-860b-4071-b502-c41b433be3b2','8fb14a64835bb2681790c5e2f72360031ace35a5bc5a2e1385e8c7ff51debfea','2023-10-05 16:52:47.138','20231004115652_giant_db_20231004',NULL,NULL,'2023-10-05 16:52:46.116',1),('cb93fb33-797a-48ab-b6a9-16e4872d31a3','f5d76667ed1e78eab7a2d19e329c694c6b14129e64afff5fdc87c17dec95c378','2023-10-05 16:52:52.661','20231005165252_',NULL,NULL,'2023-10-05 16:52:52.620',1),('ed2c1a68-ce1a-47e9-9542-1a52e17febaf','7538e21d3e55f478d31605ec232b49325956174b67159942cfe949e4462c28f2','2023-10-05 16:52:47.172','20231004211307_',NULL,NULL,'2023-10-05 16:52:47.140',1);
+/*!40000 ALTER TABLE `_prisma_migrations` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `adenda`
+--
+
+DROP TABLE IF EXISTS `adenda`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `adenda` (
+  `ID` int NOT NULL AUTO_INCREMENT,
+  `APOLICE_ID` int DEFAULT NULL,
+  `NUMERO` varchar(45) DEFAULT NULL,
+  `PREMIO` decimal(10,2) NOT NULL,
+  `DATA_INICIO` datetime NOT NULL,
+  `DATA_FIM` datetime NOT NULL,
+  `DATA_INSERCAO` datetime DEFAULT CURRENT_TIMESTAMP,
+  `DATA_ACTUALIZACAO` datetime DEFAULT CURRENT_TIMESTAMP,
+  `INSERIDO_POR` int DEFAULT NULL,
+  `ACTUALIZADO_POR` int DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `FKADENDAPOLICE_idx` (`APOLICE_ID`),
+  CONSTRAINT `FKADENDAPOLICE` FOREIGN KEY (`APOLICE_ID`) REFERENCES `apolice` (`ID`) ON DELETE SET NULL ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `adenda`
+--
+
+LOCK TABLES `adenda` WRITE;
+/*!40000 ALTER TABLE `adenda` DISABLE KEYS */;
+INSERT INTO `adenda` VALUES (7,2,'0001/2023',36756.00,'2023-01-11 00:00:00','2023-05-10 00:00:00','2023-11-13 13:38:57','2023-11-13 13:38:57',NULL,NULL);
+/*!40000 ALTER TABLE `adenda` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `ADENDA_NUMERO` BEFORE INSERT ON `adenda` FOR EACH ROW BEGIN
+	DECLARE next_number INT;
+    DECLARE NUMERO VARCHAR(4) DEFAULT 0000;
+
+    -- Calculate the next number
+    SELECT IFNULL(MAX(CAST(SUBSTRING_INDEX(NUMERO, '/', 1) AS UNSIGNED)), 0) + 1 INTO next_number
+    FROM adenda;
+
+    -- Calculate the formatted year
+    SET NUMERO = YEAR(NOW());
+
+    -- Combine the next_number and formatted_year
+    SET NEW.NUMERO = CONCAT(LPAD(next_number, 4, '0'), '/' , NUMERO);
+
+
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+
+--
+-- Table structure for table `adenda_item_segurado`
+--
+
+DROP TABLE IF EXISTS `adenda_item_segurado`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `adenda_item_segurado` (
+  `ID` int NOT NULL AUTO_INCREMENT,
+  `ADENDA_ID` int DEFAULT NULL,
+  `APOLICE_TIPO_ID` int DEFAULT NULL,
+  `ITEM_ID` int DEFAULT NULL,
+  `DATA_INSERCAO` datetime DEFAULT CURRENT_TIMESTAMP,
+  `DATA_ACTUALIZACAO` datetime DEFAULT NULL,
+  `INSERIDO_POR` int DEFAULT NULL,
+  `ACTUALIZADO_POR` int DEFAULT NULL,
+  `PREMIO` decimal(10,2) DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `ADENDAITEM` (`ADENDA_ID`,`ITEM_ID`),
+  KEY `FKADENDAAPOLICETIPO_idx` (`APOLICE_TIPO_ID`),
+  KEY `FKADENDAITEMID_idx` (`ITEM_ID`) /*!80000 INVISIBLE */,
+  KEY `FKADENDA_idx` (`ADENDA_ID`) /*!80000 INVISIBLE */,
+  CONSTRAINT `FKADENDA` FOREIGN KEY (`ADENDA_ID`) REFERENCES `adenda` (`ID`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `FKADENDAAPOLICETIPO` FOREIGN KEY (`APOLICE_TIPO_ID`) REFERENCES `apolice_tipo` (`ID`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `FKADENDAITEMID` FOREIGN KEY (`ITEM_ID`) REFERENCES `veiculo` (`ID`) ON DELETE SET NULL ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `adenda_item_segurado`
+--
+
+LOCK TABLES `adenda_item_segurado` WRITE;
+/*!40000 ALTER TABLE `adenda_item_segurado` DISABLE KEYS */;
+/*!40000 ALTER TABLE `adenda_item_segurado` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `adenda_pagamento`
+--
+
+DROP TABLE IF EXISTS `adenda_pagamento`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `adenda_pagamento` (
+  `ID` int NOT NULL AUTO_INCREMENT,
+  `ADENDA_ID` int DEFAULT NULL,
+  `DESCONTOS` decimal(10,2) NOT NULL,
+  `VALOR_PAGO` decimal(10,2) NOT NULL,
+  `DATA_INSERCAO` datetime DEFAULT CURRENT_TIMESTAMP,
+  `DATA_ACTUALIZACAO` datetime DEFAULT NULL,
+  `DATA_REMOCACAO` datetime DEFAULT NULL,
+  `INSERIDO_POR` int DEFAULT NULL,
+  `ACTUALIZADO_POR` int DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `FKADENDAPAGA_idx` (`ADENDA_ID`),
+  CONSTRAINT `FKADENDAPAGA` FOREIGN KEY (`ADENDA_ID`) REFERENCES `adenda` (`ID`) ON DELETE SET NULL ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `adenda_pagamento`
+--
+
+LOCK TABLES `adenda_pagamento` WRITE;
+/*!40000 ALTER TABLE `adenda_pagamento` DISABLE KEYS */;
+/*!40000 ALTER TABLE `adenda_pagamento` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `adenda_segurado`
+--
+
+DROP TABLE IF EXISTS `adenda_segurado`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `adenda_segurado` (
+  `ID` int NOT NULL AUTO_INCREMENT,
+  `SEGURADO_ID` int DEFAULT NULL,
+  `ADENDA_ID` int DEFAULT NULL,
+  `DATA_INSERCAO` datetime DEFAULT CURRENT_TIMESTAMP,
+  `DATA_ACTUALIZACAO` datetime DEFAULT NULL,
+  `INSERIDO_POR` int DEFAULT NULL,
+  `ACTUALIZADO_POR` int DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `ADENDASEGURADO` (`SEGURADO_ID`,`ADENDA_ID`),
+  KEY `FRKADENPESS_idx` (`SEGURADO_ID`),
+  KEY `FRKADENDAADENDA_idx` (`ADENDA_ID`),
+  CONSTRAINT `FRKADENDAADENDA` FOREIGN KEY (`ADENDA_ID`) REFERENCES `adenda` (`ID`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `FRKADENPESS` FOREIGN KEY (`SEGURADO_ID`) REFERENCES `pessoa` (`ID`) ON DELETE SET NULL ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `adenda_segurado`
+--
+
+LOCK TABLES `adenda_segurado` WRITE;
+/*!40000 ALTER TABLE `adenda_segurado` DISABLE KEYS */;
+/*!40000 ALTER TABLE `adenda_segurado` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `apolice`
 --
 
@@ -27,29 +223,23 @@ DROP TABLE IF EXISTS `apolice`;
 CREATE TABLE `apolice` (
   `ID` int NOT NULL AUTO_INCREMENT,
   `APOLICE_TIPO_ID` int NOT NULL,
-  `NUMERO` varchar(64) DEFAULT NULL,
-  `SEGURADO_ID` int NOT NULL,
-  `DATA_INICIO` date DEFAULT NULL,
-  `DATA_FIM` date DEFAULT NULL,
-  `APOLICE_FRACIONAMENTO_ID` int NOT NULL,
   `APOLICE_ESTADO_ID` int NOT NULL,
-  `VALOR_PREMIO` decimal(13,2) DEFAULT NULL,
+  `APOLICE_FRACIONAMENTO_ID` int NOT NULL,
+  `NUMERO` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `TOMADOR_ID` int NOT NULL,
   `INSERIDO_POR` int DEFAULT NULL,
   `ACTUALIZADO_POR` int DEFAULT NULL,
-  `REMOVIDO_POR` int DEFAULT NULL,
-  `DATA_INSERCAO` timestamp NULL DEFAULT NULL,
-  `DATA_ACTUALIZACAO` timestamp NULL DEFAULT NULL,
-  `DATA_REMOCAO` timestamp NULL DEFAULT NULL,
+  `DATA_INSERCAO` datetime DEFAULT CURRENT_TIMESTAMP,
+  `DATA_ACTUALIZACAO` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`ID`),
-  KEY `FKAPOLICE49224` (`APOLICE_TIPO_ID`),
-  KEY `FKAPOLICE395825` (`SEGURADO_ID`),
   KEY `FKAPOLICE218101` (`APOLICE_ESTADO_ID`),
+  KEY `FKAPOLICE395825` (`TOMADOR_ID`),
+  KEY `FKAPOLICE49224` (`APOLICE_TIPO_ID`),
   KEY `FKAPOLICE599017` (`APOLICE_FRACIONAMENTO_ID`),
-  CONSTRAINT `FKAPOLICE218101` FOREIGN KEY (`APOLICE_ESTADO_ID`) REFERENCES `apolice_estado` (`ID`),
-  CONSTRAINT `FKAPOLICE395825` FOREIGN KEY (`SEGURADO_ID`) REFERENCES `pessoa` (`ID`),
-  CONSTRAINT `FKAPOLICE49224` FOREIGN KEY (`APOLICE_TIPO_ID`) REFERENCES `apolice_tipo` (`ID`),
-  CONSTRAINT `FKAPOLICE599017` FOREIGN KEY (`APOLICE_FRACIONAMENTO_ID`) REFERENCES `apolice_fracionamento` (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `FKAPOLICE218101` FOREIGN KEY (`APOLICE_ESTADO_ID`) REFERENCES `apolice_estado` (`ID`) ON UPDATE CASCADE,
+  CONSTRAINT `FKAPOLICE49224` FOREIGN KEY (`APOLICE_TIPO_ID`) REFERENCES `apolice_tipo` (`ID`) ON UPDATE CASCADE,
+  CONSTRAINT `FKAPOLICE599017` FOREIGN KEY (`APOLICE_FRACIONAMENTO_ID`) REFERENCES `apolice_fracionamento` (`ID`) ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -58,38 +248,33 @@ CREATE TABLE `apolice` (
 
 LOCK TABLES `apolice` WRITE;
 /*!40000 ALTER TABLE `apolice` DISABLE KEYS */;
+INSERT INTO `apolice` VALUES (2,1,1,1,'34343',1,NULL,NULL,'2023-11-11 12:58:03',NULL),(3,1,1,1,'1 12.112023/0',1,NULL,NULL,'2023-11-12 00:12:23',NULL),(4,1,1,1,'1 12 11.2023/0001',1,NULL,NULL,'2023-11-12 00:18:56',NULL);
 /*!40000 ALTER TABLE `apolice` ENABLE KEYS */;
 UNLOCK TABLES;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `apolice_BEFORE_INSERT` BEFORE INSERT ON `apolice` FOR EACH ROW BEGIN
+	DECLARE next_number INT;
+    DECLARE NUMERO VARCHAR(4) DEFAULT 0000;
 
---
--- Table structure for table `apolice_cobertura`
---
-
-DROP TABLE IF EXISTS `apolice_cobertura`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `apolice_cobertura` (
-  `ID` int NOT NULL,
-  `APOLICE_ID` int DEFAULT NULL,
-  `COBERTURA_ID` int DEFAULT NULL,
-  `VALOR_PAGO` decimal(13,2) DEFAULT NULL,
-  `DESCONTO_EFEC` decimal(13,2) DEFAULT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `FKAPOLICECOBERT_idx` (`APOLICE_ID`),
-  KEY `FKCOBERTCOBERT_idx` (`COBERTURA_ID`),
-  CONSTRAINT `FKAPOLICECOBERT` FOREIGN KEY (`APOLICE_ID`) REFERENCES `apolice` (`ID`),
-  CONSTRAINT `FKCOBERTCOBERT` FOREIGN KEY (`COBERTURA_ID`) REFERENCES `cobertura` (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `apolice_cobertura`
---
-
-LOCK TABLES `apolice_cobertura` WRITE;
-/*!40000 ALTER TABLE `apolice_cobertura` DISABLE KEYS */;
-/*!40000 ALTER TABLE `apolice_cobertura` ENABLE KEYS */;
-UNLOCK TABLES;
+    -- Calculate the next number
+    SELECT IFNULL(MAX(CAST(SUBSTRING_INDEX(NUMERO, '/', 1) AS UNSIGNED)), 0) + 1 INTO next_number
+    FROM apolice;
+    
+  SET NEW.NUMERO = CONCAT(DATE_FORMAT(NOW(), '%d %m.%Y'), '/', LPAD(next_number, 4, '0'));
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
 -- Table structure for table `apolice_estado`
@@ -100,12 +285,15 @@ DROP TABLE IF EXISTS `apolice_estado`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `apolice_estado` (
   `ID` int NOT NULL AUTO_INCREMENT,
-  `NOME` varchar(255) DEFAULT NULL,
-  `DESCRICAO` varchar(255) DEFAULT NULL,
-  `DATA_CRIACAO` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `DATA_ACTUALIZACAO` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `NOME` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `DESCRICAO` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `INSERIDO_POR` int DEFAULT NULL,
+  `ACTUALIZADO_POR` int DEFAULT NULL,
+  `REMOVIDO_POR` int DEFAULT NULL,
+  `DATA_INSERCAO` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `DATA_ACTUALIZACAO` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -114,7 +302,7 @@ CREATE TABLE `apolice_estado` (
 
 LOCK TABLES `apolice_estado` WRITE;
 /*!40000 ALTER TABLE `apolice_estado` DISABLE KEYS */;
-INSERT INTO `apolice_estado` VALUES (1,'Em Processamento','A Apolice está em processamento; é um estado temporaio em que a se encontra','2023-08-14 10:16:11','2023-08-14 11:16:11'),(2,'Suspensa','A apolice está suspensa','2023-08-14 10:16:11','2023-08-15 12:11:29'),(3,'Cancelada','A apólice está cancelada','2023-08-14 10:16:11','2023-08-14 11:16:11'),(4,'Expirada','A apólice passou a data de renovação','2023-08-14 10:16:11','2023-08-14 11:16:11'),(5,'Activa','A apólice está valida durante o tempo em que é visualizada','2023-08-14 10:16:11','2023-08-14 11:17:10'),(6,'Em Simulação','A apolice ainda está em estado de simulação','2023-08-15 15:24:14','2023-08-15 16:24:14'),(7,'Inactiva','A apólice foi paga ','2023-08-15 15:24:14','2023-08-15 16:45:53');
+INSERT INTO `apolice_estado` VALUES (1,'Em Processamento','A Apolice está em processamento; é um estado temporário em que a se encontra',NULL,NULL,NULL,'2023-11-10 08:29:37','2023-11-10 09:29:37'),(2,'Suspensa','A apolice está suspensa',NULL,NULL,NULL,'2023-11-10 08:29:37','2023-11-10 09:29:37'),(3,'Cancelada','A apólice está cancelada',NULL,NULL,NULL,'2023-11-10 08:29:37','2023-11-10 09:29:37'),(4,'Expirada','A apólice passou a data de renovação',NULL,NULL,NULL,'2023-11-10 08:29:37','2023-11-10 09:29:37'),(5,'Activa','A apólice está valida durante o tempo em que é visualizada',NULL,NULL,NULL,'2023-11-10 08:29:37','2023-11-10 09:29:37'),(6,'Em Simulação','A apolice ainda está em estado de simulação',NULL,NULL,NULL,'2023-11-10 08:29:37','2023-11-10 09:29:37'),(7,'Inactiva','A apólice foi paga',NULL,NULL,NULL,'2023-11-10 08:29:37','2023-11-10 09:29:37');
 /*!40000 ALTER TABLE `apolice_estado` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -127,12 +315,12 @@ DROP TABLE IF EXISTS `apolice_fracionamento`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `apolice_fracionamento` (
   `ID` int NOT NULL AUTO_INCREMENT,
-  `FRACIONADO_EM` varchar(10) DEFAULT NULL,
-  `NO_FRACOES` int DEFAULT NULL,
-  `DATA_CRIACAO` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `DATA_ACTUALIZACAO` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `FRACIONADO_EM` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `NO_FRACOES` int NOT NULL,
+  `DATA_INSERCAO` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `DATA_ACTUALIZACAO` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -141,103 +329,8 @@ CREATE TABLE `apolice_fracionamento` (
 
 LOCK TABLES `apolice_fracionamento` WRITE;
 /*!40000 ALTER TABLE `apolice_fracionamento` DISABLE KEYS */;
-INSERT INTO `apolice_fracionamento` VALUES (1,'Trimestre',3,'2023-08-14 10:27:32','2023-08-14 11:27:32'),(2,'Semestre',2,'2023-08-14 10:27:32','2023-08-14 11:27:32'),(3,'Anual',1,'2023-08-14 10:27:32','2023-08-14 11:27:32');
+INSERT INTO `apolice_fracionamento` VALUES (1,'Anual',1,'2023-11-11 10:57:39','2023-11-11 11:57:39'),(2,'Semestral',2,'2023-11-11 10:57:39','2023-11-11 11:57:39'),(3,'Trimestral',4,'2023-11-11 10:57:39','2023-11-11 11:57:39');
 /*!40000 ALTER TABLE `apolice_fracionamento` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `apolice_historico`
---
-
-DROP TABLE IF EXISTS `apolice_historico`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `apolice_historico` (
-  `ID` int NOT NULL AUTO_INCREMENT,
-  `APOLICE_ID` int NOT NULL,
-  `APOLICE_TIPO_ID` int NOT NULL,
-  `APOLICE_ESTADO_ID` int NOT NULL,
-  `ACCAO` varchar(255) DEFAULT NULL,
-  `DATA` int DEFAULT NULL,
-  `AUTOR_ACCAO` int DEFAULT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `FKAPOLICE_HI851163` (`APOLICE_ID`),
-  KEY `FKAPOLICE_HI724695` (`APOLICE_TIPO_ID`),
-  KEY `FKAPOLICE_HI457370` (`APOLICE_ESTADO_ID`),
-  CONSTRAINT `FKAPOLICE_HI457370` FOREIGN KEY (`APOLICE_ESTADO_ID`) REFERENCES `apolice_estado` (`ID`),
-  CONSTRAINT `FKAPOLICE_HI724695` FOREIGN KEY (`APOLICE_TIPO_ID`) REFERENCES `apolice_tipo` (`ID`),
-  CONSTRAINT `FKAPOLICE_HI851163` FOREIGN KEY (`APOLICE_ID`) REFERENCES `apolice` (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `apolice_historico`
---
-
-LOCK TABLES `apolice_historico` WRITE;
-/*!40000 ALTER TABLE `apolice_historico` DISABLE KEYS */;
-/*!40000 ALTER TABLE `apolice_historico` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `apolice_item_segurado`
---
-
-DROP TABLE IF EXISTS `apolice_item_segurado`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `apolice_item_segurado` (
-  `ID` int NOT NULL AUTO_INCREMENT,
-  `APOLICE_TIPO_ID` int NOT NULL,
-  `ITEM_ID` int NOT NULL,
-  `APOLICE_ID` int NOT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `FKAPOLICE_IT272194` (`APOLICE_TIPO_ID`),
-  KEY `FKAPOLICE_IT332390` (`ITEM_ID`),
-  KEY `FKAPOLICE_IT332490_idx` (`APOLICE_ID`),
-  CONSTRAINT `FKAPOLICE_IT272194` FOREIGN KEY (`APOLICE_TIPO_ID`) REFERENCES `apolice_tipo` (`ID`),
-  CONSTRAINT `FKAPOLICE_IT332390` FOREIGN KEY (`ITEM_ID`) REFERENCES `veiculo` (`ID`),
-  CONSTRAINT `FKAPOLICE_IT332490` FOREIGN KEY (`APOLICE_ID`) REFERENCES `apolice` (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `apolice_item_segurado`
---
-
-LOCK TABLES `apolice_item_segurado` WRITE;
-/*!40000 ALTER TABLE `apolice_item_segurado` DISABLE KEYS */;
-/*!40000 ALTER TABLE `apolice_item_segurado` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `apolice_pagamento`
---
-
-DROP TABLE IF EXISTS `apolice_pagamento`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `apolice_pagamento` (
-  `ID` int NOT NULL AUTO_INCREMENT,
-  `APOLICE_ID` int NOT NULL,
-  `DESCONTOS` decimal(13,2) DEFAULT NULL,
-  `VALOR_PAGO` decimal(13,2) DEFAULT NULL,
-  `DATA_INSERCAO` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `DATA_ACTUALIZACAO` timestamp NULL DEFAULT NULL,
-  `DATA_REMOCAO` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `FKAPOLICE_PA210466` (`APOLICE_ID`),
-  CONSTRAINT `FKAPOLICE_PA210466` FOREIGN KEY (`APOLICE_ID`) REFERENCES `apolice` (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `apolice_pagamento`
---
-
-LOCK TABLES `apolice_pagamento` WRITE;
-/*!40000 ALTER TABLE `apolice_pagamento` DISABLE KEYS */;
-/*!40000 ALTER TABLE `apolice_pagamento` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -249,17 +342,17 @@ DROP TABLE IF EXISTS `apolice_tipo`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `apolice_tipo` (
   `ID` int NOT NULL AUTO_INCREMENT,
-  `SIGLA` varchar(30) DEFAULT NULL,
-  `NOME` varchar(255) DEFAULT NULL,
-  `DESCRICAO` mediumtext,
+  `SIGLA` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `NOME` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `DESCRICAO` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `INSERIDO_POR` int DEFAULT NULL,
   `ACTUALIZADO_POR` int DEFAULT NULL,
   `REMOVIDO_POR` int DEFAULT NULL,
-  `DATA_CRIACAO` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `DATA_ACTUALIZACAO` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `DATA_CRIACAO` datetime DEFAULT CURRENT_TIMESTAMP,
+  `DATA_ACTUALIZACAO` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `SIGLA` (`SIGLA`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -268,39 +361,8 @@ CREATE TABLE `apolice_tipo` (
 
 LOCK TABLES `apolice_tipo` WRITE;
 /*!40000 ALTER TABLE `apolice_tipo` DISABLE KEYS */;
-INSERT INTO `apolice_tipo` VALUES (1,'AUTO','Apólice de Seguro Automóvel','Considerado um seguro obrigatório em Angola, o Seguro Automóvel deve segurar a responsabilidade civil perante terceiros, transportados ou não, decorrente de lesões causadas por veículos terrestres a motor, seus reboques e semi-reboques, velocípedes e bicicletas. Adicionalmente pode ser contratado um seguro para danos próprios, que, de acordo com as condições gerais e específicas da apólice pode cobrir os riscos não previstos no âmbito do seguro obrigatório de responsabilidade civil automóvel, podendo abranger as seguintes coberturas: Responsabilidade Civil Facultativa; Choque, Colisão e Capotamento; Furto ou Roubo; Incêndio, Raio ou Explosão; Quebra Isolada de Vidros; Fenómenos da Natureza; Greves, Tumultos e Alterações da Ordem Pública; Privação de Uso; Ocupantes da Viatura; e outras garantias que venham a ser contratadas.',NULL,NULL,NULL,'2023-08-14 09:05:41','2023-08-14 10:08:42'),(2,'MULT','Apólice de Seguro Multirrisco','Tal seguro pode garantir, dentro dos limites e termos das condições gerais e específicas da apólice, a cobertura para perdas ou danos causados aos bens seguros indicados nas condições particulares da apólice, ou ainda, a responsabilidade civil extracontratual do segurado. Dentre os seguros multirriscos, destacam-se o Seguro Multirrisco Empresarial, o Seguro Multirrisco Habitação e Seguro Multirrisco Industrial.',NULL,NULL,NULL,'2023-08-14 09:08:42','2023-08-14 10:08:42'),(3,'SAUD','Apólice de Seguro Saúde','Um dos seguros mais admirados pelos colaboradores, o Seguro Saúde pode garantir à pessoa segura, em caso de sinistro ocorrido durante a sua vigência e coberto pela apólice, um conjunto de coberturas no domínio dos cuidados de saúde, conforme as condições gerais e específicas da apólice.',NULL,NULL,NULL,'2023-08-14 09:08:42','2023-08-14 10:08:42'),(4,'APES','Apólice de Seguro Acidentes Pessoais','O Seguro de Acidentes Pessoais pode garantir, dentro dos limites e condições da apólice, uma indemnização a seus colaboradores ou respectivos familiares em caso de acidente ocorrido de forma súbita, violenta, involuntária, exclusiva e de causa externa, que provoque lesões físicas, que, por si só e independente de toda e qualquer outra causa, tenha como consequência direta a morte, ou a invalidez do segurado, ou, ainda, que torne necessário tratamento médico.',NULL,NULL,NULL,'2023-08-14 09:10:42','2023-08-14 10:10:42'),(5,'TMER','Apólice de Seguro Transporte de Mercadorias','O seguro para Transporte de Mercadorias, ou Frete, pode garantir a indemnização, de acordo com as condições gerais e específicas da apólice, por perda ou danos à toda ou parte do bem seguro durante o transporte efectuado por algum meio de transporte ou por outro meio secundário ao mesmo e causados por qualquer acidente ou desastre não excluído de outra forma nas condições da apólice.',NULL,NULL,NULL,'2023-08-14 09:10:42','2023-08-14 10:10:42');
+INSERT INTO `apolice_tipo` VALUES (1,'APSAT','Apólice de seguro automóvel','O seguro automotivo, também conhecido apenas como seguro auto, é outra possibilidade popular no mercado brasileiro. Como o nome sugere, ele é voltado para proteger veículos automotores. Além de carros, essa alternativa pode servir para proteger motos e caminhões,',NULL,NULL,NULL,'2023-11-10 09:29:38','2023-11-10 09:29:38'),(2,'APSRE','Apólice de seguro residencial','O seguro residencial tem como principal objetivo proteger um imóvel nas condições previstas em contrato. Ele é aplicável tanto a casas quanto a apartamentos e atende às necessidades variadas de proprietários e locatários.',NULL,NULL,NULL,'2023-11-10 09:29:38','2023-11-10 09:29:38'),(3,'APSVI','Apólice de seguro de viajem','O seguro viagem é uma modalidade voltada aos viajantes nacionais e internacionais que desejem ter assistência diante de eventualidades. ',NULL,NULL,NULL,'2023-11-10 09:29:38','2023-11-10 09:29:38');
 /*!40000 ALTER TABLE `apolice_tipo` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `apolice_tomador`
---
-
-DROP TABLE IF EXISTS `apolice_tomador`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `apolice_tomador` (
-  `ID` int NOT NULL AUTO_INCREMENT,
-  `TOMADOR_ID` int NOT NULL,
-  `APOLICE_ID` int NOT NULL,
-  `DATA_INSERCAO` timestamp NULL DEFAULT NULL,
-  `DATA_ACTUALIZACAO` timestamp NULL DEFAULT NULL,
-  `DATA_REMOCAO` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `FKAPOLICE_TO64820` (`TOMADOR_ID`),
-  KEY `FKAPOLICE_TO613390` (`APOLICE_ID`),
-  CONSTRAINT `FKAPOLICE_TO613390` FOREIGN KEY (`APOLICE_ID`) REFERENCES `apolice` (`ID`),
-  CONSTRAINT `FKAPOLICE_TO64820` FOREIGN KEY (`TOMADOR_ID`) REFERENCES `pessoa` (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `apolice_tomador`
---
-
-LOCK TABLES `apolice_tomador` WRITE;
-/*!40000 ALTER TABLE `apolice_tomador` DISABLE KEYS */;
-/*!40000 ALTER TABLE `apolice_tomador` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -312,23 +374,23 @@ DROP TABLE IF EXISTS `cobertura`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `cobertura` (
   `ID` int NOT NULL AUTO_INCREMENT,
-  `APOLICE_TIPO_ID` int NOT NULL,
-  `COBERTURA_BASE` bit(1) DEFAULT b'0',
-  `SIGLA` varchar(30) DEFAULT NULL,
-  `NOME` varchar(255) DEFAULT NULL,
-  `DESCRICAO` longtext,
+  `APOLICE_TIPO_ID` int DEFAULT NULL,
+  `COBERTURA_BASE` bit(1) NOT NULL DEFAULT b'0',
+  `SIGLA` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `NOME` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `DESCRICAO` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `INSERIDO_POR` int DEFAULT NULL,
   `ACTUALIZADO_POR` int DEFAULT NULL,
   `REMOVIDO_POR` int DEFAULT NULL,
-  `VALOR_PAGAR` decimal(13,2) DEFAULT NULL,
-  `DESCONTO` decimal(13,2) DEFAULT NULL,
+  `VALOR_A_PAGAR` decimal(13,2) NOT NULL DEFAULT '0.00',
+  `DESCONTO` decimal(13,2) NOT NULL DEFAULT '0.00',
   `DATA_CRIACAO` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `DATA_ACTUALIZACAO` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `DATA_ACTUALIZACAO` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `SIGLA` (`SIGLA`),
   KEY `FKAPOLICE_CO255895` (`APOLICE_TIPO_ID`),
-  CONSTRAINT `FKAPOLICE_CO255895` FOREIGN KEY (`APOLICE_TIPO_ID`) REFERENCES `apolice_tipo` (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `FKAPOLICE_CO255895` FOREIGN KEY (`APOLICE_TIPO_ID`) REFERENCES `apolice_tipo` (`ID`) ON DELETE SET NULL ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -337,7 +399,7 @@ CREATE TABLE `cobertura` (
 
 LOCK TABLES `cobertura` WRITE;
 /*!40000 ALTER TABLE `cobertura` DISABLE KEYS */;
-INSERT INTO `cobertura` VALUES (1,1,_binary '','RTER','Responsabilidade Civil Perante Terceiros','A pessoa responderá por ato causado por terceiro, sendo para tanto necessário que exista um vínculo jurídico entre o responsável e o causador do dano. Em regra, tal responsabilidade gera responsabilidade solidária, com algumas exceções, como o caso do incapaz que responde subsidiariamente. ',NULL,NULL,NULL,NULL,NULL,'2023-08-14 09:49:24','2023-08-14 10:55:59'),(2,1,_binary '\0','RFAC','Responsabilidade Civil Facultativa','A cobertura de responsabilidade civil facultativa veicular (RCF-V) pode ser entendida, de forma simples, como aquela que cobre danos causados a terceiros. Inclui acidentes de trânsito, atropelamentos, batidas, entre outros. Você está dirigindo e as crianças pedem pra colocar música, por exemplo.',NULL,NULL,NULL,NULL,NULL,'2023-08-14 09:49:24','2023-08-14 10:49:24'),(3,1,_binary '\0','CHOQ','Choque','O choque é um tipo de acidente em que o veículo em movimento choca-se contra um obstáculo fixo, que pode ser um muro, uma cerca, um poste, um ou mais veículos parados, meio fio, canteiro, ilha de segurança ou qualquer outro, inclusive casas',NULL,NULL,NULL,NULL,NULL,'2023-08-14 09:49:24','2023-08-14 10:49:24'),(4,1,_binary '\0','CCAP','Colisão e Capotamento','Esta cobertura garante, até ao valor do capital seguro indicado nas Condições Particulares, o ressarcimento dos danos causados ao Veículo Seguro em virtude de choque (embate do veículo contra qualquer corpo fixo, ou sofrido por aquele quando imobilizado), colisão (embate do veículo com qualquer outro corpo em movimento), ou capotamento (acidente em que o veículo perca a sua posição normal e não resulte de Choque ou Colisão.)',NULL,NULL,NULL,NULL,NULL,'2023-08-14 09:49:24','2023-08-14 10:49:24'),(5,1,_binary '\0','FROB','Furto ou Roubo','Danos derivados pelo desaparecimento, destruição ou deterioração do veículo por motivo de Furto e Roubo.Para que esta cobertura funcione terá sempre que participar às autoridades policiais o sucedido e solicitar o auto de ocorrência. Em caso de desaparecimento da viatura, o Segurador só o indemnizará se passados 60 dias da data de participação do Furto e Roubo, o veículo não tiver sido encontrado.  ',NULL,NULL,NULL,NULL,NULL,'2023-08-14 09:49:24','2023-08-14 10:49:24'),(6,1,_binary '\0','INCE','Incêndio','Esta cobertura garante ao Segurado o ressarcimento dos danos que resultem para o veículo seguro em consequência de Incêndio, Raio e Explosão, quer aquele se encontre em marcha ou parado, recolhido em garagem ou em qualquer outro local. ',NULL,NULL,NULL,NULL,NULL,'2023-08-14 09:49:24','2023-08-14 10:49:24'),(7,1,_binary '\0','RINC','Raio ou Explosão','Esta cobertura garante ao Segurado o ressarcimento dos danos que resultem para o veículo seguro em consequência de Incêndio, Raio e Explosão, quer aquele se encontre em marcha ou parado, recolhido em garagem ou em qualquer outro local. ',NULL,NULL,NULL,NULL,NULL,'2023-08-14 09:49:24','2023-08-14 10:49:24'),(8,1,_binary '\0','QISV','Quebra Isolada de Vidros','Incluem-se danos, em virtude de quebra isolada dos vidros, para-brisas, óculo traseiro e vidros laterais, causados por causa não compreendida, em qualquer outra cobertura. ',NULL,NULL,NULL,NULL,NULL,'2023-08-14 09:49:24','2023-08-14 10:49:24'),(9,1,_binary '\0','FNAT','Fenómenos da Natureza','- Ação de greves, tumultos, motins e alterações da ordem pública;- Atos de vandalismo, terrorismo e sabotagem;- Ação direta de trombas de água, chuvas torrenciais, enxurradas e aluimento de terras;',NULL,NULL,NULL,NULL,NULL,'2023-08-14 09:49:24','2023-08-14 10:49:24'),(10,1,_binary '\0','GREV','Greves',NULL,NULL,NULL,NULL,NULL,NULL,'2023-08-14 09:49:24','2023-08-14 10:49:24'),(11,1,_binary '\0','TUOP','Tumultos e Alterações da Ordem Pública',NULL,NULL,NULL,NULL,NULL,NULL,'2023-08-14 09:49:24','2023-08-14 10:49:24'),(12,1,_binary '\0','PUSO','Privação de Uso',NULL,NULL,NULL,NULL,NULL,NULL,'2023-08-14 09:49:24','2023-08-14 10:49:24'),(13,1,_binary '\0','OCPV','Ocupantes da Viatura',NULL,NULL,NULL,NULL,NULL,NULL,'2023-08-14 09:49:24','2023-08-14 10:49:24');
+INSERT INTO `cobertura` VALUES (1,1,_binary '','RTER','Responsabilidade civil perante terceiros','A pessoa responderá por ato causado por terceiro, sendo para tanto necessário que exista um vínculo jurídico entre o responsável e o causador do dano. Em regra, tal responsabilidade gera responsabilidade solidária, com algumas exceções, como o caso do incapaz que responde subsidiariamente.',NULL,NULL,NULL,0.00,0.00,'2023-11-10 08:29:38','2023-11-10 09:29:38'),(2,1,_binary '\0','RFAC','Responsabilidade Civil Facultativa','A cobertura de responsabilidade civil facultativa veicular (RCF-V) pode ser entendida, de forma simples, como aquela que cobre danos causados a terceiros. Inclui acidentes de trânsito, atropelamentos, batidas, entre outros. Você está dirigindo e as crianças pedem pra colocar música, por exemplo.',NULL,NULL,NULL,0.00,0.00,'2023-11-10 08:29:38','2023-11-10 09:29:38'),(3,1,_binary '\0','CHOQ','Choque','O choque é um tipo de acidente em que o veículo em movimento choca-se contra um obstáculo fixo, que pode ser um muro, uma cerca, um poste, um ou mais veículos parados, meio fio, canteiro, ilha de segurança ou qualquer outro, inclusive casas',NULL,NULL,NULL,0.00,0.00,'2023-11-10 08:29:38','2023-11-10 09:29:38'),(4,1,_binary '\0','CCAP','Colisão e Capotamento','Esta cobertura garante, até ao valor do capital seguro indicado nas Condições Particulares, o ressarcimento dos danos causados ao Veículo Seguro em virtude de choque (embate do veículo contra qualquer corpo fixo, ou sofrido por aquele quando imobilizado), colisão (embate do veículo com qualquer outro corpo em movimento), ou capotamento (acidente em que o veículo perca a sua posição normal e não resulte de Choque ou Colisão.)',NULL,NULL,NULL,0.00,0.00,'2023-11-10 08:29:38','2023-11-10 09:29:38'),(5,1,_binary '\0','FROB','Furto ou Roubo','Danos derivados pelo desaparecimento, destruição ou deterioração do veículo por motivo de Furto e Roubo.Para que esta cobertura funcione terá sempre que participar às autoridades policiais o sucedido e solicitar o auto de ocorrência. Em caso de desaparecimento da viatura, o Segurador só o indemnizará se passados 60 dias da data de participação do Furto e Roubo, o veículo não tiver sido encontrado.',NULL,NULL,NULL,0.00,0.00,'2023-11-10 08:29:38','2023-11-10 09:29:38'),(6,1,_binary '\0','INCE','Incêndio','Esta cobertura garante ao Segurado o ressarcimento dos danos que resultem para o veículo seguro em consequência de Incêndio, Raio e Explosão, quer aquele se encontre em marcha ou parado, recolhido em garagem ou em qualquer outro local. ',NULL,NULL,NULL,0.00,0.00,'2023-11-10 08:29:38','2023-11-10 09:29:38'),(7,1,_binary '\0','RINC','Raio ou Explosão','Esta cobertura garante ao Segurado o ressarcimento dos danos que resultem para o veículo seguro em consequência de Incêndio, Raio e Explosão, quer aquele se encontre em marcha ou parado, recolhido em garagem ou em qualquer outro local. ',NULL,NULL,NULL,0.00,0.00,'2023-11-10 08:29:38','2023-11-10 09:29:38'),(8,1,_binary '\0','QISV','Quebra Isolada de Vidros','Incluem-se danos, em virtude de quebra isolada dos vidros, para-brisas, óculo traseiro e vidros laterais, causados por causa não compreendida, em qualquer outra cobertura. ',NULL,NULL,NULL,0.00,0.00,'2023-11-10 08:29:38','2023-11-10 09:29:38'),(9,1,_binary '\0','FNAT','Fenómenos da Natureza','- Ação de greves, tumultos, motins e alterações da ordem pública;- Atos de vandalismo, terrorismo e sabotagem;- Ação direta de trombas de água, chuvas torrenciais, enxurradas e aluimento de terras;',NULL,NULL,NULL,0.00,0.00,'2023-11-10 08:29:38','2023-11-10 09:29:38'),(10,1,_binary '\0','GREV','Greves','',NULL,NULL,NULL,0.00,0.00,'2023-11-10 08:29:38','2023-11-10 09:29:38'),(11,1,_binary '\0','TUOP','Tumultos e Alterações da Ordem Pública','',NULL,NULL,NULL,0.00,0.00,'2023-11-10 08:29:38','2023-11-10 09:29:38'),(12,1,_binary '\0','PUSO','Privação de Uso','',NULL,NULL,NULL,0.00,0.00,'2023-11-10 08:29:38','2023-11-10 09:29:38'),(13,1,_binary '\0','OCPV','Ocupantes da Viatura','',NULL,NULL,NULL,0.00,0.00,'2023-11-10 08:29:38','2023-11-10 09:29:38');
 /*!40000 ALTER TABLE `cobertura` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -351,20 +413,24 @@ DROP TABLE IF EXISTS `pessoa`;
 CREATE TABLE `pessoa` (
   `ID` int NOT NULL AUTO_INCREMENT,
   `PESSOA_TIPO_ID` int NOT NULL,
-  `NOME` varchar(255) DEFAULT NULL,
-  `DATA_NASCIMENTO` date DEFAULT NULL,
-  `SEXO` varchar(1) DEFAULT NULL,
-  `NBI` varchar(64) DEFAULT NULL,
-  `NIF` varchar(64) DEFAULT NULL,
-  `ESTADO_CIVIL` varchar(1) DEFAULT NULL,
+  `ENDERECO_ID` int DEFAULT NULL,
+  `NOME` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `DATA_NASCIMENTO` date NOT NULL,
+  `SEXO` varchar(1) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `NBI` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `NIF` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `ESTADO_CIVIL` varchar(1) COLLATE utf8mb4_unicode_ci NOT NULL,
   `DATA_CRIACAO` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `DATA_ACTUALIZACAO` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `DATA_ACTUALIZACAO` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `NIF` (`NIF`),
   UNIQUE KEY `NBI` (`NBI`),
+  UNIQUE KEY `ENDERECO_ID_UNIQUE` (`ENDERECO_ID`),
   KEY `FKPESSOA892258` (`PESSOA_TIPO_ID`),
-  CONSTRAINT `FKPESSOA892258` FOREIGN KEY (`PESSOA_TIPO_ID`) REFERENCES `pessoa_tipo` (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `FKPESSOAADR_idx` (`ENDERECO_ID`),
+  CONSTRAINT `FKPESSOA892258` FOREIGN KEY (`PESSOA_TIPO_ID`) REFERENCES `pessoa_tipo` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FKPESSOAADR` FOREIGN KEY (`ENDERECO_ID`) REFERENCES `pessoa_endereco` (`ID`) ON DELETE SET NULL ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -373,7 +439,6 @@ CREATE TABLE `pessoa` (
 
 LOCK TABLES `pessoa` WRITE;
 /*!40000 ALTER TABLE `pessoa` DISABLE KEYS */;
-INSERT INTO `pessoa` VALUES (6,1,'Andre Marcos','1990-11-16','M','73365384565','43766465','S','2023-08-14 00:18:54','2023-08-14 01:18:54'),(7,1,'Semir Marcos','1959-11-16','M','73365354505','4378865','S','2023-08-14 00:18:54','2023-08-14 01:18:54');
 /*!40000 ALTER TABLE `pessoa` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -386,18 +451,18 @@ DROP TABLE IF EXISTS `pessoa_endereco`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `pessoa_endereco` (
   `ID` int NOT NULL AUTO_INCREMENT,
-  `PESSOA_ID` int NOT NULL,
-  `TELEFONE` varchar(80) DEFAULT NULL,
-  `TELEFONE_ALTERNATIVO` varchar(80) DEFAULT NULL,
-  `EMAIL` varchar(100) DEFAULT NULL,
+  `TELEFONE` varchar(80) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `TELEFONE_ALTERNATIVO` varchar(80) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `EMAIL` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `BAIRRO` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `CIDADE` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `PROVINCIA` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `DATA_CRIACAO` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `DATA_ACTUALIZACAO` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `DATA_ACTUALIZACAO` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `TELEFONE` (`TELEFONE`),
-  UNIQUE KEY `EMAIL` (`EMAIL`),
-  KEY `FKPESSOA_END360638` (`PESSOA_ID`),
-  CONSTRAINT `FKPESSOA_END360638` FOREIGN KEY (`PESSOA_ID`) REFERENCES `pessoa` (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  UNIQUE KEY `EMAIL` (`EMAIL`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -406,7 +471,6 @@ CREATE TABLE `pessoa_endereco` (
 
 LOCK TABLES `pessoa_endereco` WRITE;
 /*!40000 ALTER TABLE `pessoa_endereco` DISABLE KEYS */;
-INSERT INTO `pessoa_endereco` VALUES (1,6,'989884938','988989943','am@giant.ao','2023-08-14 00:29:43','2023-08-14 01:29:43'),(2,7,'997858746','999847746','sm@giant.ao','2023-08-14 00:29:43','2023-08-14 01:29:43');
 /*!40000 ALTER TABLE `pessoa_endereco` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -419,11 +483,11 @@ DROP TABLE IF EXISTS `pessoa_tipo`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `pessoa_tipo` (
   `ID` int NOT NULL AUTO_INCREMENT,
-  `NOME_TIPO` varchar(255) DEFAULT NULL,
+  `NOME_TIPO` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `DATA_CRIACAO` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `DATA_ACTUALIZACAO` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `DATA_ACTUALIZACAO` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -432,7 +496,7 @@ CREATE TABLE `pessoa_tipo` (
 
 LOCK TABLES `pessoa_tipo` WRITE;
 /*!40000 ALTER TABLE `pessoa_tipo` DISABLE KEYS */;
-INSERT INTO `pessoa_tipo` VALUES (1,'Pessoa Física','2023-08-13 23:58:43','2023-08-14 00:59:45'),(2,'Pessoa Jirídica','2023-08-13 23:58:43','2023-08-14 00:59:45');
+INSERT INTO `pessoa_tipo` VALUES (1,'Pessoa Física','2023-11-10 08:29:37','2023-11-10 09:29:37'),(2,'Pessoa Jurídica','2023-11-10 08:29:37','2023-11-10 09:29:37');
 /*!40000 ALTER TABLE `pessoa_tipo` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -445,23 +509,23 @@ DROP TABLE IF EXISTS `preco_cilindrada`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `preco_cilindrada` (
   `ID` int NOT NULL AUTO_INCREMENT,
-  `NOME` varchar(255) DEFAULT NULL,
-  `LOTACAO` int DEFAULT NULL,
+  `NOME` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `LOTACAO` int NOT NULL DEFAULT '0',
   `VEICULO_CATEGORIA_ID` int NOT NULL,
-  `PREMIO_TRIMESTRAL` decimal(13,2) DEFAULT NULL,
-  `PREMIO_SEMESTRAL` decimal(13,2) DEFAULT NULL,
-  `PREMIO_ANUAL` decimal(13,2) DEFAULT NULL,
-  `PESO_KG` int DEFAULT NULL,
-  `CILINDRADA_MIN` int DEFAULT NULL,
-  `CILINDRADA_MAX` int DEFAULT NULL,
+  `PREMIO_TRIMESTRAL` decimal(13,2) NOT NULL DEFAULT '0.00',
+  `PREMIO_SEMESTRAL` decimal(13,2) NOT NULL DEFAULT '0.00',
+  `PREMIO_ANUAL` decimal(13,2) NOT NULL DEFAULT '0.00',
+  `PESO_KG` int NOT NULL DEFAULT '0',
+  `CILINDRADA_MIN` int NOT NULL,
+  `CILINDRADA_MAX` int NOT NULL,
   `INSERIDO_POR` int DEFAULT NULL,
   `ACTUALIZADO_POR` int DEFAULT NULL,
   `DATA_CRIACAO` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `DATA_ACTUALIZACAO` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `DATA_ACTUALIZACAO` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`ID`),
   KEY `FKPRECO_CILI487359` (`VEICULO_CATEGORIA_ID`),
-  CONSTRAINT `FKPRECO_CILI487359` FOREIGN KEY (`VEICULO_CATEGORIA_ID`) REFERENCES `veiculo_categoria` (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `FKPRECO_CILI487359` FOREIGN KEY (`VEICULO_CATEGORIA_ID`) REFERENCES `veiculo_categoria` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -470,8 +534,39 @@ CREATE TABLE `preco_cilindrada` (
 
 LOCK TABLES `preco_cilindrada` WRITE;
 /*!40000 ALTER TABLE `preco_cilindrada` DISABLE KEYS */;
-INSERT INTO `preco_cilindrada` VALUES (2,'Ligeiro Particular',NULL,1,6351.00,12582.00,24923.00,NULL,0,1300,NULL,NULL,'2023-08-14 08:28:38','2023-08-14 09:36:43'),(3,'Ligeiro Particular',NULL,1,8080.00,16007.00,31708.00,NULL,1301,1600,NULL,NULL,'2023-08-14 08:28:38','2023-08-14 09:35:32'),(4,'Camioneta Particular',NULL,2,20380.00,40374.00,79976.00,3600,0,1500,NULL,NULL,'2023-08-14 08:38:52','2023-08-14 09:43:45'),(5,'Camioneta Particular',NULL,2,24241.00,48024.00,95130.00,3600,0,2500,NULL,NULL,'2023-08-14 08:43:45','2023-08-14 09:43:45'),(6,'Auto Caravana',9,3,14553.00,28832.00,57112.00,NULL,0,1600,NULL,NULL,'2023-08-14 08:45:55','2023-08-14 09:45:55'),(7,'Auto Caravana',9,3,18919.00,37481.00,74246.00,NULL,2500,0,NULL,NULL,'2023-08-14 08:48:10','2023-08-14 09:48:10'),(8,'Camião Particular',NULL,4,14553.00,28832.00,57112.00,10000,0,1500,NULL,NULL,'2023-08-14 08:53:17','2023-08-14 09:53:17'),(9,'Camião Particular',NULL,4,37089.00,73477.00,145551.00,10000,1500,NULL,NULL,NULL,'2023-08-14 08:53:17','2023-08-14 09:53:17');
+INSERT INTO `preco_cilindrada` VALUES (15,'Ligeiro Particular',0,1,6351.00,12582.00,24923.00,0,0,1300,NULL,NULL,'2023-11-10 08:34:47','2023-11-10 09:34:47'),(16,'Camioneta Particular',0,2,20380.00,40374.00,79976.00,0,0,1300,NULL,NULL,'2023-11-10 08:34:47','2023-11-10 09:34:47'),(17,'Camioneta Particular',0,2,24241.00,48024.00,95130.00,3600,0,2500,NULL,NULL,'2023-11-10 08:34:47','2023-11-10 09:34:47'),(18,'Auto Caravana',9,3,14553.00,28832.00,57112.00,0,0,1600,NULL,NULL,'2023-11-10 08:34:47','2023-11-10 09:34:47'),(19,'Auto Caravana',9,3,18919.00,37481.00,74246.00,0,0,2500,NULL,NULL,'2023-11-10 08:34:47','2023-11-10 09:34:47'),(20,'Camião Particular',0,4,14553.00,28832.00,57112.00,10000,1500,0,NULL,NULL,'2023-11-10 08:34:47','2023-11-10 09:34:47'),(21,'Camião Particular',0,4,37089.00,73477.00,145551.00,10000,0,1500,NULL,NULL,'2023-11-10 08:34:47','2023-11-10 09:34:47');
 /*!40000 ALTER TABLE `preco_cilindrada` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `seguradora`
+--
+
+DROP TABLE IF EXISTS `seguradora`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `seguradora` (
+  `ID` int NOT NULL AUTO_INCREMENT,
+  `NIF` varchar(45) NOT NULL,
+  `ENDERECO` varchar(200) NOT NULL,
+  `EMAIL` varchar(100) NOT NULL,
+  `TELEFONE` varchar(45) NOT NULL,
+  `TELEFONE_ALT` varchar(45) NOT NULL,
+  `WEB_SITE` varchar(150) NOT NULL,
+  `DATA_CRIACAO` datetime DEFAULT CURRENT_TIMESTAMP,
+  `DATA_ACTUALIZACAO` datetime DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `seguradora`
+--
+
+LOCK TABLES `seguradora` WRITE;
+/*!40000 ALTER TABLE `seguradora` DISABLE KEYS */;
+INSERT INTO `seguradora` VALUES (1,'5417588962','Ingombotas - Rua da Missão nº 79 | Luanda','geral@giantseguros.co.ao','929280828','929280602','www.giantseguros.ao','2023-11-10 09:29:38',NULL);
+/*!40000 ALTER TABLE `seguradora` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -484,17 +579,17 @@ DROP TABLE IF EXISTS `veiculo`;
 CREATE TABLE `veiculo` (
   `ID` int NOT NULL AUTO_INCREMENT,
   `VEICULO_CATEGORIA_ID` int NOT NULL,
-  `MATRICULA` varchar(24) DEFAULT NULL,
-  `MARCA` varchar(255) DEFAULT NULL,
-  `MODELO` varchar(255) DEFAULT NULL,
-  `ANO_AQUISICAO` int DEFAULT NULL,
-  `CAPITAL_AQUISICAO` decimal(13,2) DEFAULT NULL,
-  `PESO_BRUTO` int DEFAULT NULL,
-  `N_LOTACAO` int DEFAULT NULL,
-  `ANO_FABRICO` int DEFAULT NULL,
-  `CILINDRADA` int DEFAULT NULL,
-  `REF_CHASSI` varchar(64) DEFAULT NULL,
-  `DESCRICAO` varchar(4000) DEFAULT NULL,
+  `MATRICULA` varchar(24) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `MARCA` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `MODELO` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `ANO_AQUISICAO` int NOT NULL,
+  `CAPITAL_AQUISICAO` decimal(13,2) NOT NULL,
+  `PESO_BRUTO` int NOT NULL,
+  `N_LOTACAO` int NOT NULL,
+  `ANO_FABRICO` int NOT NULL,
+  `CILINDRADA` int NOT NULL,
+  `REF_CHASSI` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `DESCRICAO` varchar(4000) COLLATE utf8mb4_unicode_ci NOT NULL,
   `INSERIDO_POR` int DEFAULT NULL,
   `ACTUALIZADO_POR` int DEFAULT NULL,
   `REMOVIDO_POR` int DEFAULT NULL,
@@ -504,8 +599,8 @@ CREATE TABLE `veiculo` (
   PRIMARY KEY (`ID`),
   UNIQUE KEY `MATRICULA` (`MATRICULA`),
   KEY `FKVEICULO357677` (`VEICULO_CATEGORIA_ID`),
-  CONSTRAINT `FKVEICULO357677` FOREIGN KEY (`VEICULO_CATEGORIA_ID`) REFERENCES `veiculo_categoria` (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `FKVEICULO357677` FOREIGN KEY (`VEICULO_CATEGORIA_ID`) REFERENCES `veiculo_categoria` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -526,13 +621,13 @@ DROP TABLE IF EXISTS `veiculo_categoria`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `veiculo_categoria` (
   `ID` int NOT NULL AUTO_INCREMENT,
-  `NOME` varchar(255) DEFAULT NULL,
+  `NOME` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `REMOVIDO_POR` int DEFAULT NULL,
   `DATA_INSERCAO` timestamp NULL DEFAULT NULL,
   `DATA_ACTUALIZACAO` timestamp NULL DEFAULT NULL,
   `DATA_REMOCAO` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -544,6 +639,14 @@ LOCK TABLES `veiculo_categoria` WRITE;
 INSERT INTO `veiculo_categoria` VALUES (1,'Ligeriro ',NULL,NULL,NULL,NULL),(2,'Camionetas',NULL,NULL,NULL,NULL),(3,'Autocaravanas',NULL,NULL,NULL,NULL),(4,'Pesados',NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `veiculo_categoria` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Dumping events for database 'giant_db'
+--
+
+--
+-- Dumping routines for database 'giant_db'
+--
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -554,4 +657,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-08-18 16:16:12
+-- Dump completed on 2023-11-13 22:31:53

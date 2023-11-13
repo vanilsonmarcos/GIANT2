@@ -6,8 +6,9 @@ import { veiculo } from "@prisma/client";
 
 @Service()
 class VeiculoService {
+ 
     @Inject(()=> VeiculoRepository)
-    private repo: IVeiculoRepository<veiculo>;
+    private repo: VeiculoRepository;
 
     constructor () {}
 
@@ -34,6 +35,9 @@ class VeiculoService {
     async remover(id: string): Promise<boolean> {
         // check if object exist
         return this.repo.delete(id);
+    }   
+    async getAllVeiculoCategoria() {
+        return this.repo.getAllVeiculoCategoria();
     }
 } 
 

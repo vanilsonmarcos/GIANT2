@@ -23,7 +23,7 @@ class VeiculoController {
             const response = {
                 code: 401,
                 message: "Os dados dos veículos não foram encontrados",
-                data:  {},
+                data: {},
                 error: error
             };
             res.json(response)
@@ -32,8 +32,8 @@ class VeiculoController {
 
     async getByID(req: Request, res: Response) {
         const { unsafeId } = req.params;
-        const parsedID = Identifier.safeParse(unsafeId); 
-        if(!parsedID.success) {
+        const parsedID = Identifier.safeParse(unsafeId);
+        if (!parsedID.success) {
             return handleParsingError(res, parsedID.error);
         }
         const id = parsedID.data.toString();
@@ -56,7 +56,7 @@ class VeiculoController {
         }
 
     }
-    
+
     async getByMatricula(req: Request, res: Response) {
         const { matricula } = req.params;
         try {
@@ -69,8 +69,28 @@ class VeiculoController {
             res.json(response);
         } catch (error) {
             const response = {
-                code:401,
+                code: 401,
                 message: "Os dados do veiculo não foram encontrados usando o a matricula",
+                data: {},
+                error: error
+            };
+            res.json(response);
+        }
+    }
+
+    async getAllCategoria(req: Request, res: Response) {
+        try {
+            const veiculo_categoria = await this.veiculoService.getAllVeiculoCategoria();
+            const response = {
+                code: 200,
+                message: "Dados das categorias de veiculos foram encontrados com sucesso",
+                data: veiculo_categoria
+            };
+            res.json(response);
+        } catch (error) {
+            const response = {
+                code: 401,
+                message: "As categorias dos veiculos não foram encontrados",
                 data: {},
                 error: error
             };
@@ -112,7 +132,7 @@ class VeiculoController {
         // }
         // const safeVeiculo:Veiculo = parsedVeiculo.data;
 
-        if (veiculo.ID === undefined){
+        if (veiculo.ID === undefined) {
             return handleParsingError(res, Error("O Id do veiculo não foi definido"));
         }
         const id = veiculo.ID.toString();
@@ -138,8 +158,8 @@ class VeiculoController {
 
     async remover(req: Request, res: Response) {
         const { id } = req.params;
-        const parsedID = Identifier.safeParse(id); 
-        if(!parsedID.success) {
+        const parsedID = Identifier.safeParse(id);
+        if (!parsedID.success) {
             return handleParsingError(res, parsedID.error);
         }
         const safeId = parsedID.data.toString();
@@ -147,7 +167,7 @@ class VeiculoController {
             const veiculo = await this.veiculoService.remover(safeId);
             if (veiculo) {
                 const response = {
-                    code: 200, 
+                    code: 200,
                     message: "Dados do veiculo removidos com sucesso",
                     data: veiculo
                 };
@@ -156,7 +176,7 @@ class VeiculoController {
         } catch (error) {
             const response = {
                 code: 401,
-                message:"Ocorreu um erro ao remover os dados do veiculo", 
+                message: "Ocorreu um erro ao remover os dados do veiculo",
                 data: {},
                 error: error
             };
