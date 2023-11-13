@@ -3,11 +3,11 @@ import IGenericRepository from "../IGenericRepository";
 import prisma from '../PrismaClient';
 import { adenda, apolice, apolice_estado, pessoa } from "@prisma/client";
 import IApoliceAdenda from "../IApoliceAdenda";
-import IApoliceSegurado from "../IApoliceSegurado";
+import IAdendaSegurado from "../IAdendaSegurado";
 import IApoliceEstado from "../IApoliceEstado";
 @Service()
 class ApoliceRepository implements
-    IGenericRepository<apolice>, IApoliceAdenda<adenda>, IApoliceSegurado<pessoa>, IApoliceEstado<apolice_estado> {
+    IGenericRepository<apolice>, IApoliceAdenda<adenda>, IAdendaSegurado<pessoa>, IApoliceEstado<apolice_estado> {
         
     async getApoliceEstado(apoliceID: string): Promise<apolice_estado> {
         const apolice_estado = await prisma.apolice.findUnique({

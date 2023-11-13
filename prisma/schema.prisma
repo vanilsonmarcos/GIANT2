@@ -12,10 +12,8 @@ model apolice {
   APOLICE_TIPO_ID          Int
   APOLICE_ESTADO_ID        Int
   APOLICE_FRACIONAMENTO_ID Int
-  NUMERO                   String                @db.VarChar(64)
+  NUMERO                   String                @db.VarChar(20)
   TOMADOR_ID               Int
-  DATA_INICIO              DateTime?             @db.DateTime(0)
-  DATA_FIM                 DateTime?             @db.DateTime(0)
   VALOR_PREMIO             Decimal?              @db.Decimal(13, 2)
   INSERIDO_POR             Int?
   ACTUALIZADO_POR          Int?
@@ -231,6 +229,7 @@ model adenda_item_segurado {
   apolice_tipo      apolice_tipo? @relation(fields: [APOLICE_TIPO_ID], references: [ID], map: "FKADENDAAPOLICETIPO")
   veiculo           veiculo?      @relation(fields: [ITEM_ID], references: [ID], map: "FKADENDAITEMID")
 
+  @@unique([ADENDA_ID, ITEM_ID], map: "ADENDAITEM")
   @@index([APOLICE_TIPO_ID], map: "FKADENDAAPOLICETIPO_idx")
   @@index([ITEM_ID], map: "FKADENDAITEMID_idx")
   @@index([ADENDA_ID], map: "FKADENDA_idx")

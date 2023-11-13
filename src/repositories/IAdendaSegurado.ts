@@ -1,4 +1,4 @@
-interface IApoliceSegurado<T> {
+interface IAdendaSegurado<T> {
     getAllSeguradoByApoliceID(apoliceID: string): Promise<T[]>;
     getAllSeguradoByAdendaID(adendaID: string): Promise<T[]>;
 
@@ -12,4 +12,4 @@ interface IApoliceSegurado<T> {
     removeSeguradosByApoliceID(apoliceID: string, segurados: T[]): Promise<T[]>;
 }
 
-export default IApoliceSegurado;
+export default IAdendaSegurado;

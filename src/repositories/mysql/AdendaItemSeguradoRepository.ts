@@ -63,12 +63,12 @@ class AdendaItemSeguradoRepository implements IGenericRepository<adenda_item_seg
     }
 
     async delete(id: string): Promise<boolean> {
-        const adenda_pagamento = await prisma.adenda_pagamento.delete({
+        const adenda_item_segurado = await prisma.adenda_item_segurado.delete({
             where: {
                 ID: parseInt(id)
             }
         });
-        if (adenda_pagamento !== null) {
+        if (adenda_item_segurado !== null) {
             return true;
         }
         return false;

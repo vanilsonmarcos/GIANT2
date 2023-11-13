@@ -5,11 +5,13 @@ import AdendaPagamentoController from "../controllers/AdendaPagamentoController"
 
 
 const adendaPagamentoService: AdendaPagamentoService = Container.get(AdendaPagamentoService);
-const adendaPagamentoControllerr: AdendaPagamentoController = new AdendaPagamentoController(adendaPagamentoService);
+const adendaPagamentoController: AdendaPagamentoController = new AdendaPagamentoController(adendaPagamentoService);
 const adendaPagamentoRoutes = Router();
 
-adendaPagamentoRoutes.get('/adenda_pagamento/', adendaPagamentoControllerr.getAll.bind(adendaPagamentoControllerr));
-adendaPagamentoRoutes.get('/adenda_pagamento/:id', adendaPagamentoControllerr.getByID.bind(adendaPagamentoControllerr));
-adendaPagamentoRoutes.put('/adenda_pagamento/', adendaPagamentoControllerr.criar.bind(adendaPagamentoControllerr));
-adendaPagamentoRoutes.post('/adenda_pagamento/', adendaPagamentoControllerr.actualizar.bind(adendaPagamentoControllerr));
-adendaPagamentoRoutes.delete('/adenda_pagamento/:id', adendaPagamentoControllerr.remover.bind(adendaPagamentoControllerr));
+adendaPagamentoRoutes.get('/adenda_pagamento/', adendaPagamentoController.getAll.bind(adendaPagamentoController));
+adendaPagamentoRoutes.get('/adenda_pagamento/:id', adendaPagamentoController.getByID.bind(adendaPagamentoController));
+adendaPagamentoRoutes.put('/adenda_pagamento/', adendaPagamentoController.criar.bind(adendaPagamentoController));
+adendaPagamentoRoutes.post('/adenda_pagamento/', adendaPagamentoController.actualizar.bind(adendaPagamentoController));
+// adendaPagamentoRoutes.delete('/adenda_pagamento/:id', adendaPagamentoController.remover.bind(adendaPagamentoController));
+
+export default adendaPagamentoRoutes;

@@ -6,6 +6,7 @@ import { Service } from "typedi";
 
 @Service()
 class AdendaPagamentoRepository implements IGenericRepository<adenda_pagamento> {
+    
     async getAll(): Promise<adenda_pagamento[]> {
         const adenda_pagamento = await prisma.adenda_pagamento.findMany({
             orderBy: {

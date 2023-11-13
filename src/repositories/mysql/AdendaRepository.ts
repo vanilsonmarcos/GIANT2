@@ -3,10 +3,12 @@ import IGenericRepository from "../IGenericRepository";
 import prisma from "../PrismaClient";
 import IAdendaItemSegurado from "../IAdendaItemSegurado";
 import { Service } from "typedi";
+import { Decimal } from "@prisma/client/runtime/library";
+import Veiculo from "../../entities/Veiculo/Veiculo";
 
 @Service()
 class AdendaRepository implements IGenericRepository<adenda>, IAdendaItemSegurado<veiculo> {
-    
+
     async getAllItemSeguradoByAdendaID(adendaID: string): Promise<veiculo[]> {
         const veiculos = await prisma.veiculo.findMany({
             include: {
@@ -17,7 +19,7 @@ class AdendaRepository implements IGenericRepository<adenda>, IAdendaItemSegurad
                 },
             },
         });
-        
+
         if (veiculos === null) {
             throw new Error("Não foi encontrado nenhum item segurado nesta adenda");
         }
@@ -25,7 +27,80 @@ class AdendaRepository implements IGenericRepository<adenda>, IAdendaItemSegurad
         return veiculos;
     }
 
-    async getallItemsSeguradoByApoliceID(apoliceID: string): Promise<veiculo[]> {
+    async addAllItemSeguradoByAdendaID(adendaID: string, items: veiculo[]): Promise<veiculo[]> {
+        const veiculos = await Promise.all(
+            items.map((item) => {
+                return prisma.adenda_item_segurado.create({
+                    data: {
+                        ADENDA_ID: parseInt(adendaID),
+                        ITEM_ID: item.ID,
+                    }
+
+                }).veiculo();
+            })
+        );
+
+        const addedItems = veiculos.filter(item => item !== null) as veiculo[];
+        if (addedItems === null) {
+            throw new Error("Ocorreu um error ao remover os items segurados da adenda");
+        }
+        return addedItems;
+    }
+
+    async removeAllItemSeguradoByAdendaID(adendaID: string, items: veiculo[]): Promise<veiculo[]> {
+        const veiculos = await Promise.all(
+            items.map((item) => {
+                return prisma.adenda_item_segurado.delete({
+                    where: {
+                        ADENDA_ID_ITEM_ID: {
+                            ADENDA_ID: parseInt(adendaID),
+                            ITEM_ID: item.ID,
+                        }
+                    }
+                }).veiculo();
+            })
+        );
+        const addedItems = veiculos.filter(item => item !== null) as veiculo[];
+
+        if (addedItems === null) {
+            throw new Error("Não possivel remover os items segurados associados a adenda: " + adendaID);
+        }
+        return addedItems;
+    }
+
+    async addItemSeguradoByAdendaID(adendaID: string, items: veiculo): Promise<veiculo> {
+        const veiculo = await prisma.adenda_item_segurado.create({
+            data: {
+                ADENDA_ID: parseInt(adendaID),
+                ITEM_ID: items.ID
+            }
+        }).veiculo();
+        if (veiculo === null) {
+            throw new Error("Não foi encontrado o item segurado para a adenda: " + adendaID);
+        }
+        return veiculo;
+    }
+
+    async removeItemSeguradoByAdendaID(adendaID: string, item: veiculo): Promise<veiculo> {
+        const veiculo = await prisma.adenda_item_segurado.delete({
+            where: {
+                ADENDA_ID_ITEM_ID: {
+                    ADENDA_ID: parseInt(adendaID),
+                    ITEM_ID: item.ID
+                }
+            },
+            include: {
+                veiculo: true
+            }
+        }).veiculo();
+        if (veiculo === null) {
+            throw new Error("Não foi encontrado o item segurado para esta adenda");
+        }
+        return veiculo;
+    }
+
+
+    async getallItemSeguradoByApoliceID(apoliceID: string): Promise<veiculo[]> {
         const veiculos = await prisma.veiculo.findMany({
             include: {
                 adenda_item_segurado: {
@@ -36,7 +111,7 @@ class AdendaRepository implements IGenericRepository<adenda>, IAdendaItemSegurad
                             }
                         }
                     }
-                },     
+                },
             }
         });
         if (veiculos === null) {
@@ -51,7 +126,7 @@ class AdendaRepository implements IGenericRepository<adenda>, IAdendaItemSegurad
         });
         return adendas;
     }
-    
+
     async getByID(id: string): Promise<adenda> {
         const adenda = await prisma.adenda.findUnique({
             where: {
@@ -78,9 +153,9 @@ class AdendaRepository implements IGenericRepository<adenda>, IAdendaItemSegurad
         if (adenda === null) {
             throw new Error("Ocorreu um erro ao criar apólice");
         }
-        return adenda;    
+        return adenda;
     }
-    
+
     async update(id: string, item: adenda): Promise<adenda> {
         const adenda = await prisma.adenda.update({
             where: {
@@ -97,9 +172,9 @@ class AdendaRepository implements IGenericRepository<adenda>, IAdendaItemSegurad
         if (adenda === null) {
             throw new Error("Ocorreu um erro ao criar apólice");
         }
-        return adenda;    
+        return adenda;
     }
-    
+
     async delete(id: string): Promise<boolean> {
         const adenda = await prisma.adenda.delete({
             where: {
