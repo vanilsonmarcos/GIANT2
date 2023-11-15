@@ -12,13 +12,13 @@ services:
     ports:
       - 3000:3000
     depends_on:
-     - api_seguradora_db
+     - mysqldb
     networks:
       - seguradora_net
 
   mysqldb:
     image: mysql:8.0.21
-    container_name: api_seguradora_db
+    container_name: seguradora_db
     env_file:
       - ./.env
     ports:
