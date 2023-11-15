@@ -6,7 +6,7 @@ services:
       context: ./
       dockerfile: Dockerfile
     image: node-app
-    container_name: api_seguradora_app
+    container_name: seguradora_app
     volumes:
       - api_volume_files:/usr/src/app/storage:rw
     ports:
