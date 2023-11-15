@@ -23,6 +23,7 @@ services:
       - ./.env
     ports:
       - 3306:3306
+    command: --default-authentication-plugin=mysql_native_password
     volumes:
       - api_volume_db:/var/lib/mysql
       - ./my_conf.cnf:/etc/mysql/conf.d/my_conf.cnf:ro
