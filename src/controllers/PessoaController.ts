@@ -1,12 +1,10 @@
 import { Request, Response } from "express";
-import Pessoa from "../entities/Pessoa/Pessoa";
 import PessoaService from "../services/PessoaService";
 import Identifier from "../schema/Identifier";
 import handleParsingError from "../utils/HandleParsingErrors";
 import NbiSchema from "../schema/NbiSchema";
 import EmailSchema from "../schema/EmailSchema";
 import PhoneNumberSchema from "../schema/PhoneNumberSchema";
-import PessoaSchema from "../schema/PessoaSchema";
 import { pessoa } from "@prisma/client";
 
 class PessoaController {
