@@ -25,6 +25,7 @@ services:
       - 3306:3306
     volumes:
       - api_volume_db:/var/lib/mysql
+      - ./my_conf.cnf:/etc/mysql/conf.d/my_conf.cnf:ro
     networks:
       - seguradora_net
     restart: always
