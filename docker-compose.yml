@@ -30,7 +30,7 @@ services:
     restart: always
 
 networks:
-  api_owasp_net:
+  seguradora_net:
     driver: bridge
 
 volumes:
