@@ -18,7 +18,7 @@ services:
 
   mysqldb:
     image: mysql:8.0.21
-    container_name: seguradora_db
+    container_name: mysqldb
     env_file:
       - ./.env
     ports:
