@@ -1,0 +1,39 @@
+version: "3.7"
+
+services:
+  app:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    image: node-app
+    container_name: api_seguradora_app
+    volumes:
+      - api_volume_files:/usr/src/app/storage:rw
+    ports:
+      - 3000:3000
+    depends_on:
+     - api_seguradora_db
+    networks:
+      - seguradora_net
+
+  mysqldb:
+    image: mysql:8.0.21
+    container_name: api_seguradora_db
+    env_file:
+      - ./.env
+    ports:
+      - 3306:3306
+    volumes:
+      - api_volume_db:/var/lib/mysql
+    networks:
+      - seguradora_net
+    restart: always
+
+networks:
+  api_owasp_net:
+    driver: bridge
+
+volumes:
+  api_volume_db: {}
+  api_volume_files: {}
+  api_volume_logs: {}

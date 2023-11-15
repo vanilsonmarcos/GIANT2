@@ -127,7 +127,7 @@ class AdendaController {
 
     async calculatePremio(req: Request, res: Response) {
         const adenda: adenda = req.body;
-        await this.adendaService.calculatePremio(adenda.ID.toString());
+        await this.adendaService.calculateAdendaPremio(adenda.ID.toString());
         try {
             const response = {
                 code: 200,

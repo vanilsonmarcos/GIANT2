@@ -4,7 +4,7 @@ UMA APOLICE TEM VARIOS ELEMENTOS QUE SÂO:
 
 - TIPO(Apólice, automovel, saúde e multiriscos e outros).
 - Estado(Descreve em que estádo está a apólice, Activa, Desactiva, Cancelada, Expirada e outros).
-- Pagamantos(São os pagamentos feitos dentro de uma apólice, que dependem do fracionamento).
+- Pagamantos(São os pagamentos feitos dentro de uma adenda, que dependem do fracionamento da apólice).
 - Fracionamento(É a a divisão dos pagamentos de uma apólice que podem ser (3,6 e 12 meses)).
 - Coberturas(Coberturas são os termos que a apólice contempla) OBS: O preço da apólice pode variar de acordo as coberturas adicionadas.
 - Segurado(s)(Pessoa) é/são as pessoas que se beneficiam da apólice que são pessoas.
