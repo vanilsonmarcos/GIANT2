@@ -1,6 +1,6 @@
 import moment from "moment";
 import CustomError from "./CustomError";
-import { veiculo } from "@prisma/client";
+import { apolice_fracionamento, veiculo } from "@prisma/client";
 import prisma from "../repositories/PrismaClient";
 
 function isDateWithinIntervals(startDate: moment.Moment, endDate: moment.Moment, intervals: number[],) {
@@ -25,20 +25,7 @@ function validateAdendaDates(data_inicio: Date, data_fim: Date) {
   }
 }
 
-async function calculatePremio(adendaID: string, item: veiculo): Promise<number> {
-  const fc = await prisma.apolice_fracionamento.findFirst({
-    include: {
-      apolice: {
-        include: {
-          adenda: {
-            where: {
-              ID: parseInt(adendaID)
-            }
-          }
-        }
-      }
-    }
-  });
+async function calculatePremio(adendaID: string, item: veiculo, fc: apolice_fracionamento): Promise<number> {
   const pc = await prisma.preco_cilindrada.findFirst({
     include: {
       veiculo_categoria: {
@@ -53,15 +40,18 @@ async function calculatePremio(adendaID: string, item: veiculo): Promise<number>
     }
   });
 
-  switch (fc?.NO_FRACOES) {
-    case 1:
-      return 1 * pc?.PREMIO_ANUAL.toNumber()!;
-    case 2:
-      return 1 * pc?.PREMIO_SEMESTRAL.toNumber()!;
-    default:
-      return 1 * pc?.PREMIO_TRIMESTRAL.toNumber()!;
+  if (pc == null) {
+    throw new CustomError("Não fpi possivel encontrar uma categoria para precificar o Premio");
   }
-
+  
+  switch (fc.NO_FRACOES) {
+    case 1:
+      return 1 * pc.PREMIO_ANUAL.toNumber()!;
+    case 2:
+      return 1 * pc.PREMIO_SEMESTRAL.toNumber()!;
+    default:
+      return 1 * pc.PREMIO_TRIMESTRAL.toNumber()!;
+  }
 }
 
 

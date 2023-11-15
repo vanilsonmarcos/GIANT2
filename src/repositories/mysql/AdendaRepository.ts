@@ -4,9 +4,30 @@ import prisma from "../PrismaClient";
 import IAdendaItemSegurado from "../IAdendaItemSegurado";
 import { Service } from "typedi";
 import { calculatePremio } from "../../utils/helper";
+import CustomError from "../../utils/CustomError";
+import IAdendaCalculate from "../IAdendaCalculate";
+import { Decimal } from "@prisma/client/runtime/library";
 
 @Service()
-class AdendaRepository implements IGenericRepository<adenda>, IAdendaItemSegurado<veiculo> {
+class AdendaRepository implements IGenericRepository<adenda>, IAdendaItemSegurado<veiculo>, IAdendaCalculate<Decimal>{
+
+    async sumAdendaPremio(adendaID: string): Promise<Decimal> {
+        const premios = await prisma.adenda_item_segurado.aggregate({
+            _sum: {
+                PREMIO: true
+            },
+            where: {
+                ADENDA_ID: parseInt(adendaID)
+            }
+        });
+        const sumPremio = premios._sum.PREMIO;
+
+        if ( sumPremio === null) {
+            throw new CustomError("Não foi possivel selecionar e somar os premios dos items");
+        }
+
+       return sumPremio;
+    }
 
     async getAllItemSeguradoByAdendaID(adendaID: string): Promise<veiculo[]> {
         const veiculos = await prisma.veiculo.findMany({
@@ -20,20 +41,34 @@ class AdendaRepository implements IGenericRepository<adenda>, IAdendaItemSegurad
         });
 
         if (veiculos === null) {
-            throw new Error("Não foi encontrado nenhum item segurado nesta adenda");
+            throw new CustomError("Não foi encontrado nenhum item segurado nesta adenda");
         }
-
         return veiculos;
     }
 
     async addAllItemSeguradoByAdendaID(adendaID: string, items: veiculo[]): Promise<veiculo[]> {
+        const fracionamento = await prisma.apolice.findFirst({
+            include: {
+                adenda:{
+                    where: {
+                        ID: parseInt(adendaID)
+                    },
+                },
+                apolice_fracionamento: true
+            }
+        }).apolice_fracionamento();
+
+        if(fracionamento=== null) {
+            throw new CustomError("Não foi encontrado o tipo de fracionamento da apólice/adenda selecionada");
+        }
+
         const veiculos = await Promise.all(
             items.map(async (item) => {
                 return prisma.adenda_item_segurado.create({
                     data: {
                         ADENDA_ID: parseInt(adendaID),
                         ITEM_ID: item.ID,
-                        PREMIO: await calculatePremio(adendaID, item)
+                        PREMIO: await calculatePremio(adendaID, item, fracionamento)
                     }
                 }).veiculo();
             })
@@ -41,7 +76,7 @@ class AdendaRepository implements IGenericRepository<adenda>, IAdendaItemSegurad
 
         const addedItems = veiculos.filter(item => item !== null) as veiculo[];
         if (addedItems === null) {
-            throw new Error("Ocorreu um error ao remover os items segurados da adenda");
+            throw new Error("Ocorreu um error ao adicionar os items segurados da adenda");
         }
         return addedItems;
     }
@@ -68,17 +103,34 @@ class AdendaRepository implements IGenericRepository<adenda>, IAdendaItemSegurad
     }
 
     async addItemSeguradoByAdendaID(adendaID: string, item: veiculo): Promise<veiculo> {
-        const veiculo = await prisma.adenda_item_segurado.create({
+        const fracionamento = await prisma.apolice.findFirst({
+            include: {
+                adenda:{
+                    where: {
+                        ID: parseInt(adendaID)
+                    },
+                },
+                apolice_fracionamento: true
+            }
+        }).apolice_fracionamento();
+
+        if(fracionamento === null) {
+            throw new CustomError("Não foi encontrado o tipo de fracionamento da apólice/adenda selecionada");
+        }
+      
+        const savedItem = await prisma.adenda_item_segurado.create({
             data: {
                 ADENDA_ID: parseInt(adendaID),
                 ITEM_ID: item.ID,
-                PREMIO: await calculatePremio(adendaID, item)
+                PREMIO: await calculatePremio(adendaID, item, fracionamento)
             }
         }).veiculo();
-        if (veiculo === null) {
-            throw new Error("Não foi encontrado o item segurado para a adenda: " + adendaID);
+
+  
+        if (savedItem === null) {
+            throw new Error("Ocorreu um error ao adicionar os items segurados da adenda");
         }
-        return veiculo;
+        return savedItem;
     }
 
     async removeItemSeguradoByAdendaID(adendaID: string, item: veiculo): Promise<veiculo> {
@@ -98,7 +150,6 @@ class AdendaRepository implements IGenericRepository<adenda>, IAdendaItemSegurad
         }
         return veiculo;
     }
-
 
     async getallItemSeguradoByApoliceID(apoliceID: string): Promise<veiculo[]> {
         const veiculos = await prisma.veiculo.findMany({
@@ -135,7 +186,7 @@ class AdendaRepository implements IGenericRepository<adenda>, IAdendaItemSegurad
         });
 
         if (adenda === null) {
-            throw new Error("Não Foi encontrado apólice com o ID referenciado");
+            throw new CustomError("Não Foi encontrado apólice com o ID referenciado");
         }
         return adenda;
     }

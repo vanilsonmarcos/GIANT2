@@ -1,10 +1,7 @@
-import { veiculo } from './../../node_modules/.prisma/client/index.d';
 import { Service, Inject } from "typedi";
 import { adenda } from "@prisma/client";
 import AdendaRepository from "../repositories/mysql/AdendaRepository";
 import { validateAdendaDates } from "../utils/helper";
-import prisma from '../repositories/PrismaClient';
-
 @Service()
 class AdendaService {
 
@@ -35,24 +32,13 @@ class AdendaService {
         return this.repo.delete(id);
     }
 
-    async calculatePremio(id: string): Promise<adenda> {
-        //get all items from the adenda
-        // const items = await this.repo.getAllItemSeguradoByAdendaID(id);
-        // await Promise.all(
-        //      items.map((item) => {
-        //         return prisma.adenda_item_segurado.create({
-        //             data: {
-        //                 ADENDA_ID: parseInt(id),
-        //                 ITEM_ID: item.ID,
-                        
-        //             }
-        //         }).veiculo();
-        //     })
-        // );
-
-        // get the 
-        throw new Error("Not yet implemented");
+    async calculateAdendaPremio(id: string): Promise<adenda> {
+        const adenda = await this.repo.getByID(id);
+        adenda.PREMIO = await this.repo.sumAdendaPremio(id);
+        const updateAdenda = await this.repo.update(id, adenda)
+    
+        return updateAdenda;
     }
 }
 
-export default AdendaService; 
+export default AdendaService;
