@@ -55,8 +55,13 @@ async function calculatePremio(adendaID: string, item: veiculo, fc: apolice_frac
 }
 
 
+function isArrayEmpty<T>(array: T[]): boolean {
+  return array.length === 0;
+}
+
 export {
   isDateWithinIntervals,
   validateAdendaDates,
-  calculatePremio
+  calculatePremio,
+  isArrayEmpty
 }

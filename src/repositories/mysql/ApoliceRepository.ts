@@ -5,6 +5,8 @@ import { adenda, apolice, apolice_estado, pessoa } from "@prisma/client";
 import IApoliceAdenda from "../IApoliceAdenda";
 import IAdendaSegurado from "../IAdendaSegurado";
 import IApoliceEstado from "../IApoliceEstado";
+import CustomError from "../../utils/CustomError";
+import { isArrayEmpty } from "../../utils/helper";
 @Service()
 class ApoliceRepository implements
     IGenericRepository<apolice>, IApoliceAdenda<adenda>, IAdendaSegurado<pessoa>, IApoliceEstado<apolice_estado> {
@@ -15,8 +17,8 @@ class ApoliceRepository implements
                 ID: parseInt(apoliceID)
             }
         }).apolice_estado();
-        if(apolice_estado === null) {
-            throw new Error("Ocorreu um erro ao gerar carregar o estado da apólice");
+        if(apolice_estado === null || apolice_estado === undefined) {
+            throw new CustomError("Ocorreu um erro ao gerar carregar o estado da apólice");
         }
         return apolice_estado;
     }
@@ -64,8 +66,8 @@ class ApoliceRepository implements
                 }
             },
         }).pessoa();
-        if (segurado === null) {
-            throw new Error("Ocorreu um error ao remover o segurado da adenda");
+        if(segurado === null || segurado === undefined) {
+            throw new CustomError("Ocorreu um error ao remover o segurado da adenda");
         }
         return segurado;
     }
@@ -82,8 +84,8 @@ class ApoliceRepository implements
             })
         );
 
-        if (savedSegurados === null) {
-            throw new Error("Não Possivel associar os segurados a adenda");
+        if(savedSegurados === null || savedSegurados === undefined) {
+            throw new CustomError("Não Possivel associar os segurados a adenda");
         }
         return segurados;
     }
@@ -105,8 +107,8 @@ class ApoliceRepository implements
                 });
             })
         );
-        if (deletedSegurados === null) {
-            throw new Error("Ocorreu um error ao remover o segurado da adenda");
+        if(deletedSegurados === null || deletedSegurados === undefined) {
+            throw new CustomError("Ocorreu um error ao remover o segurado da adenda");
         }
         return segurados;
     }
@@ -123,8 +125,8 @@ class ApoliceRepository implements
             take: 100,
         });
 
-        if (adendas === null) {
-            throw Error("Esta apolice não possui adendas");
+        if(adendas === null || adendas === undefined) {
+            throw new CustomError("Esta apolice não possui adendas");
         }
         return adendas;
     }
@@ -139,8 +141,8 @@ class ApoliceRepository implements
             }
         });
 
-        if (adenda === null) {
-            throw Error("Esta apolice não possui adendas");
+        if(adenda === null || adenda === undefined) {
+            throw new CustomError("Esta apolice não possui adendas");
         }
         return adenda;
     }
@@ -155,8 +157,8 @@ class ApoliceRepository implements
             }
         });
 
-        if (adenda === null) {
-            throw Error("Esta apolice não possui adendas");
+        if(adenda === null || adenda === undefined) {
+            throw new CustomError("Esta apolice não possui adenda");
         }
         return adenda;
     }
@@ -165,6 +167,10 @@ class ApoliceRepository implements
         const apolices = await prisma.apolice.findMany({
             take: 100,
         });
+        if(isArrayEmpty(apolices) || apolices === null || apolices === undefined) {
+            throw new CustomError("Esta apolice não possui adenda");
+        }
+
         return apolices;
     }
 
@@ -175,8 +181,8 @@ class ApoliceRepository implements
             }
         });
 
-        if (apolice === null) {
-            throw Error("Não Foi encontrado apólice com o ID referenciado");
+        if (apolice === null || apolice === undefined) {
+            throw new CustomError("Não Foi encontrado apólice com o ID referenciado");
         }
         return apolice;
     }
@@ -197,8 +203,8 @@ class ApoliceRepository implements
             }
         });
 
-        if (apolice === null) {
-            throw Error("Ocorreu um erro ao criar apólice");
+        if(apolice === null || apolice === undefined) {
+            throw new CustomError("Ocorreu um erro ao criar apólice");
         }
         return apolice;
     }
@@ -216,8 +222,8 @@ class ApoliceRepository implements
                 TOMADOR_ID: item.TOMADOR_ID
             }
         });
-        if (apolice === null) {
-            throw Error("Ocorreu um erro ao actualizar a apólice")
+        if(apolice === null || apolice === undefined) {
+            throw new CustomError("Ocorreu um erro ao actualizar a apólice")
         }
         return apolice;
     }

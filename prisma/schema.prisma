@@ -22,7 +22,6 @@ model apolice {
   apolice_estado           apolice_estado        @relation(fields: [APOLICE_ESTADO_ID], references: [ID], onDelete: NoAction, map: "FKAPOLICE218101")
   apolice_tipo             apolice_tipo          @relation(fields: [APOLICE_TIPO_ID], references: [ID], onDelete: NoAction, map: "FKAPOLICE49224")
   apolice_fracionamento    apolice_fracionamento @relation(fields: [APOLICE_FRACIONAMENTO_ID], references: [ID], onDelete: NoAction, map: "FKAPOLICE599017")
-  apolice_pagamento        apolice_pagamento[]
 
   @@index([APOLICE_ESTADO_ID], map: "FKAPOLICE218101")
   @@index([TOMADOR_ID], map: "FKAPOLICE395825")
@@ -49,19 +48,6 @@ model apolice_fracionamento {
   DATA_INSERCAO     DateTime? @default(now()) @db.Timestamp(0)
   DATA_ACTUALIZACAO DateTime? @default(now()) @db.DateTime(0)
   apolice           apolice[]
-}
-
-model apolice_pagamento {
-  ID                Int       @id @default(autoincrement())
-  APOLICE_ID        Int
-  DESCONTOS         Decimal?  @db.Decimal(13, 2)
-  VALOR_PAGO        Decimal?  @db.Decimal(13, 2)
-  DATA_INSERCAO     DateTime? @default(now()) @db.Timestamp(0)
-  DATA_ACTUALIZACAO DateTime? @db.Timestamp(0)
-  DATA_REMOCAO      DateTime? @db.Timestamp(0)
-  apolice           apolice   @relation(fields: [APOLICE_ID], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "FKAPOLICE_PA210466")
-
-  @@index([APOLICE_ID], map: "FKAPOLICE_PA210466")
 }
 
 model apolice_tipo {
@@ -220,11 +206,11 @@ model adenda_item_segurado {
   ADENDA_ID         Int?
   APOLICE_TIPO_ID   Int?
   ITEM_ID           Int?
+  PREMIO            Decimal?      @db.Decimal(10, 2)
   DATA_INSERCAO     DateTime?     @default(now()) @db.DateTime(0)
   DATA_ACTUALIZACAO DateTime?     @db.DateTime(0)
   INSERIDO_POR      Int?
   ACTUALIZADO_POR   Int?
-  PREMIO            Decimal?      @db.Decimal(10, 2)
   adenda            adenda?       @relation(fields: [ADENDA_ID], references: [ID], map: "FKADENDAITEMSEG")
   apolice_tipo      apolice_tipo? @relation(fields: [APOLICE_TIPO_ID], references: [ID], map: "FKADENDAAPOLICETIPO")
   veiculo           veiculo?      @relation(fields: [ITEM_ID], references: [ID], map: "FKADENDAITEMID")

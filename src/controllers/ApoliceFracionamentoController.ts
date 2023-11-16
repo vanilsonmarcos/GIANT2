@@ -1,28 +1,28 @@
-import { Request, Response } from "express";
-import ApoliceService from "../services/ApoliceService";
-import handleParsingError from "../utils/HandleParsingErrors";
-import { apolice } from "@prisma/client";
-import CustomError from "../utils/CustomError";
+import { apolice_fracionamento } from '@prisma/client';
 
-class ApoliceController {
-    private apoliceService: ApoliceService;
-    constructor(vService: ApoliceService) {
-        this.apoliceService = vService;
+import { Request, Response } from "express";
+import ApoliceFracionamentoService from "../services/ApoliceFracionamentoService";
+import CustomError from '../utils/CustomError';
+
+class ApoliceFracionamentoController {
+    private apoliceFracService: ApoliceFracionamentoService;
+    constructor(aService: ApoliceFracionamentoService) {
+        this.apoliceFracService = aService;
     }
 
     async getAll(req: Request, res: Response) { 
         try {
-            const apolices = await this.apoliceService.getAll();
+            const apolice_fracionamentos = await this.apoliceFracService.getAll();
             const response = {
                 code: 200,
-                message: "Dados das apolices encontrados com sucesso",
-                data: apolices
+                message: "Dados dos fracionamentos encontrados com sucesso",
+                data: apolice_fracionamentos
             };
             res.json(response)
         } catch (error) {
             const response = {
                 code: 401,
-                message: "Os dados das apolices não foram encontrados",
+                message: "Os dados dos fracionamentos não foram encontrados",
                 data:  {},
                 error: error
             };
@@ -36,17 +36,17 @@ class ApoliceController {
     async getByID(req: Request, res: Response) {
         const { id } = req.params;
         try {
-            const apolice = await this.apoliceService.getByID(id);
+            const apolice_fracionamento = await this.apoliceFracService.getByID(id);
             const response = {
                 code: 200,
-                message: "Dados da apólice foram encontrados com sucesso",
-                data: apolice
+                message: "Dados do fracionamento foram encontrados com sucesso",
+                data: apolice_fracionamento
             };
             res.json(response);
         } catch (error) {
             const response = {
                 code: 401,
-                message: "Ocorreu um erro ao carregar os dados da apólice",
+                message: "Ocorreu um erro ao carregar os dados do fracionamento",
                 data: {},
                 error: error
             };
@@ -58,19 +58,19 @@ class ApoliceController {
     }
     
     async criar(req: Request, res: Response) {
-        const apolice: apolice = req.body; // parse body to person data
+        const apolice_fracionamento: apolice_fracionamento = req.body; // parse body to person data
         try {
-            const createdApolice = await this.apoliceService.criar(apolice);
+            const saved_ap = await this.apoliceFracService.criar(apolice_fracionamento);
             const response = {
                 code: 200,
-                message: "Dados da apólice inseridos com sucesso",
-                data: createdApolice
+                message: "Dados do fracionamento da apólice inseridos com sucesso",
+                data: saved_ap
             };
             res.json(response);
         } catch (error) {
             const response = {
                 code: 401,
-                message: "Ocorreu um erro ao inserir os dados da apólice",
+                message: "Ocorreu um erro ao inserir os dados do fracionamento da apólice",
                 data: {},
                 error: error
             };
@@ -82,25 +82,27 @@ class ApoliceController {
     }
     
     async actualizar(req: Request, res: Response) { 
-        const apolice: apolice = req.body;
-
-        if (apolice.ID === undefined){
-            return handleParsingError(res, Error("O Id da apólice não foi definido"));
-        }
-        const id = apolice.ID.toString();
+    
 
         try {
-            const updatedApolice = await this.apoliceService.actualizar(id, apolice);
+            const ap_fracionamento: apolice_fracionamento = req.body;
+
+            if (ap_fracionamento.ID === undefined){
+                throw new CustomError("O Id do fracionamento não é valido");
+            }
+            const id = ap_fracionamento.ID.toString();
+            const updated_ap_fracionamento = await this.apoliceFracService.actualizar(id, ap_fracionamento);
             const response = {
                 code: 200,
-                message: "Dados da apólice actualizados com sucesso",
-                data: updatedApolice
+                message: "Dados do fracionamento actualizados com sucesso",
+                data: updated_ap_fracionamento
             };
+            
             res.json(response);
         } catch (error) {
             const response = {
                 code: 401,
-                message: "Ocorreu um erro ao actualizar os dados da apólice",
+                message: "Ocorreu um erro ao actualizar os dados do fracionamento da apólice.",
                 data: {},
                 error: error
             };
@@ -114,19 +116,19 @@ class ApoliceController {
     async remover(req: Request, res: Response) {
         const { id } = req.params;
         try {
-            const apolice = await this.apoliceService.remover(id);
-            if (apolice) {
+            const updated_ap_fracionamento = await this.apoliceFracService.remover(id);
+            if (updated_ap_fracionamento) {
                 const response = {
                     code: 200,
-                    message: "Dados da apólice foram removidos com sucesso",
-                    data: apolice
+                    message: "Dados do fracionamento foram removidos com sucesso",
+                    data: updated_ap_fracionamento
                 };
                 res.json(response);
             }
         } catch (error) {
             const response = {
                 code: 401,
-                message: "Ocorreu um erro ao remover os dados da apólice",
+                message: "Ocorreu um erro ao remover os dados do fracionamento da apólice",
                 data: {},
                 error: error
             };
@@ -138,4 +140,4 @@ class ApoliceController {
     }
 }
 
-export default ApoliceController
+export default ApoliceFracionamentoController;

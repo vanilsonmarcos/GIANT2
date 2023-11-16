@@ -2,6 +2,7 @@ import { Service } from "typedi";
 import IApoliceTipo from "../IApoliceTipo";
 import {  apolice_tipo } from "@prisma/client";
 import prisma from "../PrismaClient";
+import CustomError from "../../utils/CustomError";
 
 @Service()
 class ApoliceTipoRepository implements IApoliceTipo<apolice_tipo> {
@@ -12,8 +13,8 @@ class ApoliceTipoRepository implements IApoliceTipo<apolice_tipo> {
                 ID: parseInt(id)
             },
         }).apolice_tipo();
-        if (apolice_tipo === null) {
-            throw Error("Ocorreu um erro ao actualizar od dados do tipo de apólice");
+        if (apolice_tipo === null || apolice_tipo == undefined) {
+            throw new CustomError("Ocorreu um erro ao actualizar od dados do tipo de apólice");
         }
         return apolice_tipo;
     }
@@ -22,7 +23,7 @@ class ApoliceTipoRepository implements IApoliceTipo<apolice_tipo> {
         const apolice_tipo = await prisma.apolice_tipo.findMany({
             take: 100
         });
-        if (apolice_tipo === null) {
+        if (apolice_tipo === null || apolice_tipo == undefined) {
             throw Error("Ocorreu um erro ao actualizar od dados do tipo de apólice");
         }
         return apolice_tipo;
@@ -34,8 +35,8 @@ class ApoliceTipoRepository implements IApoliceTipo<apolice_tipo> {
                 ID: parseInt(id)
             }
         });
-        if (apolice_tipo === null) {
-            throw Error("Ocorreu um erro ao actualizar od dados do tipo de apólice");
+        if (apolice_tipo === null || apolice_tipo == undefined) {
+            throw new CustomError("Ocorreu um erro ao actualizar od dados do tipo de apólice");
         }
         return apolice_tipo;
     }
@@ -49,8 +50,8 @@ class ApoliceTipoRepository implements IApoliceTipo<apolice_tipo> {
 
             }
         });
-        if (apolice_tipo === null) {
-            throw Error("Ocorreu um erro ao actualizar od dados do tipo de apólice");
+        if (apolice_tipo === null || apolice_tipo == undefined) {
+            throw new CustomError("Ocorreu um erro ao actualizar od dados do tipo de apólice");
         }
         return apolice_tipo;
     }
@@ -66,8 +67,8 @@ class ApoliceTipoRepository implements IApoliceTipo<apolice_tipo> {
                 DESCRICAO: item.DESCRICAO
             }
         });
-        if (apolice_tipo === null) {
-            throw Error("Ocorreu um erro ao actualizar od dados do tipo de apólice");
+        if (apolice_tipo === null || apolice_tipo == undefined) {
+            throw new CustomError("Ocorreu um erro ao actualizar od dados do tipo de apólice");
         }
         return apolice_tipo;
 

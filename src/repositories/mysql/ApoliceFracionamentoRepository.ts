@@ -2,19 +2,21 @@ import { apolice_fracionamento } from "@prisma/client";
 import IGenericRepository from "../IGenericRepository";
 import prisma from "../PrismaClient";
 import { Service } from "typedi";
+import { isArrayEmpty } from "../../utils/helper";
+import CustomError from "../../utils/CustomError";
 
 @Service()
 class ApoliceFracionamentoRepository  implements IGenericRepository<apolice_fracionamento>{
     async getAll(): Promise<apolice_fracionamento[]> {
-        const apolice_fracionamento = await prisma.apolice_fracionamento.findMany({
+        const apolice_fracionamentos = await prisma.apolice_fracionamento.findMany({
             orderBy: {
                 DATA_INSERCAO: 'asc'
             },
         });
-        if (apolice_fracionamento === null) {
-            throw Error("Ocorreu um erro ao carregar os fracionamentos")
+        if (isArrayEmpty(apolice_fracionamentos) || apolice_fracionamentos === null || apolice_fracionamentos === undefined) {
+            throw new CustomError("Ocorreu um erro ao carregar os fracionamentos")
         }
-        return apolice_fracionamento;
+        return apolice_fracionamentos;
     }
 
     async getByID(id: string): Promise<apolice_fracionamento> {
@@ -24,8 +26,8 @@ class ApoliceFracionamentoRepository  implements IGenericRepository<apolice_frac
             }
         });
 
-        if (apolice_fracionamento === null) {
-            throw Error("Ocorreu um erro ao carregar o fracionamento")
+        if (apolice_fracionamento === null || apolice_fracionamento === undefined) {
+            throw new CustomError("Ocorreu um erro ao carregar o fracionamento")
         }
         return apolice_fracionamento;
     }
@@ -37,8 +39,8 @@ class ApoliceFracionamentoRepository  implements IGenericRepository<apolice_frac
                 NO_FRACOES: item.NO_FRACOES
             }
         });
-        if (apolice_fracionamento === null) {
-            throw Error("Ocorreu um erro ao carregar o fracionamento")
+        if (apolice_fracionamento === null || apolice_fracionamento === undefined) {
+            throw new CustomError("Ocorreu um erro ao carregar o fracionamento")
         }
         return apolice_fracionamento;
     }
@@ -53,8 +55,8 @@ class ApoliceFracionamentoRepository  implements IGenericRepository<apolice_frac
                 NO_FRACOES: item.NO_FRACOES
             }
         });
-        if (apolice_fracionamento === null) {
-            throw Error("Ocorreu um erro ao actualizar o fracionamento")
+        if (apolice_fracionamento === null || apolice_fracionamento === undefined) {
+            throw new CustomError("Ocorreu um erro ao actualizar o fracionamento")
         }
         return apolice_fracionamento;
     }

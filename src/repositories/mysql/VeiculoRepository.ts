@@ -3,6 +3,8 @@ import IVeiculoRepository from "../IVeiculoRepository";
 import IVeiculoCategoria from "../IVeiculoCategoria";
 import { veiculo, veiculo_categoria } from "@prisma/client";
 import prisma from "../PrismaClient";
+import CustomError from "../../utils/CustomError";
+import { isArrayEmpty } from "../../utils/helper";
 
 @Service()
 class VeiculoRepository implements IVeiculoRepository<veiculo>, IVeiculoCategoria<veiculo_categoria>{
@@ -18,7 +20,7 @@ class VeiculoRepository implements IVeiculoRepository<veiculo>, IVeiculoCategori
         });    
 
         if (veiculo === null) {
-            throw Error("Não Foi encontrado um veiculo com a matricula referenciada");
+            throw new CustomError("Não Foi encontrado um veiculo com a matricula referenciada");
         }
         return veiculo;
     
@@ -31,6 +33,9 @@ class VeiculoRepository implements IVeiculoRepository<veiculo>, IVeiculoCategori
             },
             take: 100
         });
+        if(isArrayEmpty(veiculos) || veiculos === null || veiculos === undefined) {
+            throw new CustomError("Não foram encontrados veiculos registados");
+        }
         return veiculos;
     }
 
@@ -43,8 +48,8 @@ class VeiculoRepository implements IVeiculoRepository<veiculo>, IVeiculoCategori
                 veiculo_categoria: true
             }
         });
-        if (veiculo === null) {
-            throw Error("Não Foi encontrado um veiculo com a matricula referenciada");
+        if (veiculo === null || veiculo === undefined)  {
+            throw new CustomError("Não Foi encontrado um veiculo com a matricula referenciada");
         }
         
         return veiculo;
@@ -67,8 +72,8 @@ class VeiculoRepository implements IVeiculoRepository<veiculo>, IVeiculoCategori
                 DESCRICAO: item.DESCRICAO
             },
         }); 
-        if (veiculo === null) {
-            throw Error("Ocorreu um erro ao criar o veiculo"); // Set the id to the object after insert in database
+        if (veiculo === null || veiculo === undefined) {
+            throw new CustomError("Ocorreu um erro ao criar o veiculo"); // Set the id to the object after insert in database
         }
         return veiculo;
 
@@ -96,8 +101,8 @@ class VeiculoRepository implements IVeiculoRepository<veiculo>, IVeiculoCategori
             },
          
         });
-        if (veiculo === null) {
-            throw Error("Ocorreu um erro ao actualizar os dados do veiculo");
+        if (veiculo === null || veiculo === undefined) {
+            throw new CustomError("Ocorreu um erro ao actualizar os dados do veiculo");
         }
         return veiculo;
     }
@@ -128,8 +133,8 @@ class VeiculoRepository implements IVeiculoRepository<veiculo>, IVeiculoCategori
                 ID: parseInt(id)
             }
         });
-        if(veiculo_categoria === null) {
-            throw Error("Ocorreu um erro ao carregar a categoria do veiculo")
+        if(veiculo_categoria === null || veiculo_categoria === undefined) {
+            throw new CustomError("Ocorreu um erro ao carregar a categoria do veiculo")
         }
         return veiculo_categoria;
     }

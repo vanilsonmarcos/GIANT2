@@ -8,6 +8,7 @@ import apoliceGeneratePDFRoutes from './apoliceGeneratePDFRoutes';
 import adendaPagamentoRoutes from './adendaPagamentoRoute';
 import coberturaRoutes from './coberturaRoutes';
 import adendaRoutes from './adendaRoutes';
+import apoliceFracionamentoRoutes from './apoliceFracionamentoRoutes';
 
 const routes = Router();
 
@@ -19,6 +20,7 @@ routes.use(adendaRoutes);
 routes.use(adendaPagamentoRoutes);
 routes.use(apoliceRoutes);
 routes.use(apoliceTipoRoutes);
+routes.use(apoliceFracionamentoRoutes)
 routes.use(apoliceGeneratePDFRoutes);
 
 export default routes;

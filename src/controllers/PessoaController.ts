@@ -4,9 +4,9 @@ import Identifier from "../schema/Identifier";
 import handleParsingError from "../utils/HandleParsingErrors";
 import NbiSchema from "../schema/NbiSchema";
 import EmailSchema from "../schema/EmailSchema";
-import PhoneNumberSchema from "../schema/PhoneNumberSchema";
 import { pessoa } from "@prisma/client";
 import Pessoa from "../entities/Pessoa/Pessoa";
+import CustomError from "../utils/CustomError";
 
 class PessoaController {
 
@@ -32,6 +32,9 @@ class PessoaController {
                 data: {},
                 error: error
             }
+            if (error instanceof CustomError) {
+                response.message = error.message;
+            }
             return res.json(response);
         }
 
@@ -39,8 +42,8 @@ class PessoaController {
 
     async getByID(req: Request, res: Response) {
         const { id } = req.params;
-        const parsedID = Identifier.safeParse(id); 
-        if(!parsedID.success) {
+        const parsedID = Identifier.safeParse(id);
+        if (!parsedID.success) {
             return handleParsingError(res, parsedID.error);
         }
         const safeId = parsedID.data.toString();
@@ -61,14 +64,17 @@ class PessoaController {
                 data: {},
                 error: error
             }
+            if (error instanceof CustomError) {
+                response.message = error.message;
+            }
             res.json(response);
         }
     }
 
     async getByNBI(req: Request, res: Response) {
         const { nbi } = req.params;
-        const parsedNbi = NbiSchema.safeParse(nbi); 
-        if(!parsedNbi.success) {
+        const parsedNbi = NbiSchema.safeParse(nbi);
+        if (!parsedNbi.success) {
             return handleParsingError(res, parsedNbi.error);
         }
         const safeNbi = parsedNbi.data.toString();
@@ -89,14 +95,17 @@ class PessoaController {
                 data: {},
                 error: error
             }
+            if (error instanceof CustomError) {
+                response.message = error.message;
+            }
             res.json(response);
         }
     }
 
     async getByNIF(req: Request, res: Response) {
         const { nif } = req.params;
-        const parsedNif = NbiSchema.safeParse(nif); 
-        if(!parsedNif.success) {
+        const parsedNif = NbiSchema.safeParse(nif);
+        if (!parsedNif.success) {
             return handleParsingError(res, parsedNif.error);
         }
         const safeNif = parsedNif.data.toString();
@@ -116,18 +125,21 @@ class PessoaController {
                 data: {},
                 error: error
             }
+            if (error instanceof CustomError) {
+                response.message = error.message;
+            }
             res.json(response);
         }
     }
 
     async getByEmail(req: Request, res: Response) {
-        const { email } = req.params;
-        const parsedEmail = EmailSchema.safeParse(email); 
-        if(!parsedEmail.success) {
-            return handleParsingError(res, parsedEmail.error);
-        }
-        const safeEmail = parsedEmail.data.toString();
         try {
+            const { email } = req.params;
+            const parsedEmail = EmailSchema.safeParse(email);
+            if (!parsedEmail.success) {
+                throw new CustomError("Email Inválido");
+            }
+            const safeEmail = parsedEmail.data.toString();
             const pessoa = await this.pessoaService.getByEmail(safeEmail);
 
             const response = {
@@ -144,20 +156,18 @@ class PessoaController {
                 data: {},
                 error: error
             }
+            if (error instanceof CustomError) {
+                response.message = error.message;
+            }
             return res.json(response);
         }
 
     }
 
     async getByPhoneNumber(req: Request, res: Response) {
-        const { telefone } = req.params;
-        const parsedTelefone = PhoneNumberSchema.safeParse(telefone); 
-        if(!parsedTelefone.success) {
-            return handleParsingError(res, parsedTelefone.error);
-        }
-        const safeTelefone = parsedTelefone.data.toString();
         try {
-            const pessoa = await this.pessoaService.getByPhoneNumber(safeTelefone);
+            const { telefone } = req.params;
+            const pessoa = await this.pessoaService.getByPhoneNumber(telefone);
             const response = {
                 code: 200,
                 message: "Dados da pessoa foram encontrados com sucesso",
@@ -172,13 +182,16 @@ class PessoaController {
                 data: {},
                 error: error
             }
+            if (error instanceof CustomError) {
+                response.message = error.message;
+            }
             return res.json(response);
         }
     }
 
 
     async criar(req: Request, res: Response) {
-        const pessoa: pessoa = req.body;
+        const pessoa: Pessoa = req.body;
         // const parsedPessoa = PessoaSchema.safeParse(pessoa);
 
         // if(!parsedPessoa.success) {
@@ -202,19 +215,22 @@ class PessoaController {
                 data: {},
                 error: error
             }
+            if (error instanceof CustomError) {
+                response.message = error.message;
+            }
             return res.json(response);
         }
-    }  
+    }
 
     async actualizar(req: Request, res: Response) {
-        const pessoa: pessoa = req.body;
+        const pessoa: Pessoa = req.body;
         // const parsedPessoa = PessoaSchema.safeParse(pessoa);
         // if(!parsedPessoa.success) {
         //     return handleParsingError(res, parsedPessoa.error);
         // }
         // const safePessoa: Pessoa = parsedPessoa.data;
 
-        if(pessoa.ID === undefined) {
+        if (pessoa.ID === undefined) {
             return handleParsingError(res, Error("O Id da pessoa não foi fornecido"));
         }
         const id = pessoa.ID.toString();
@@ -232,17 +248,20 @@ class PessoaController {
             const response = {
                 code: 401,
                 message: "Ocorreu um erro ao actualizar os dados da Pessoa",
-                data: {}, 
-                error: error 
+                data: {},
+                error: error
+            }
+            if (error instanceof CustomError) {
+                response.message = error.message;
             }
             return res.json(response);
         }
-    } 
+    }
 
     async remover(req: Request, res: Response) {
         const { id } = req.params;
-        const parsedID = Identifier.safeParse(id); 
-        if(!parsedID.success) {
+        const parsedID = Identifier.safeParse(id);
+        if (!parsedID.success) {
             return handleParsingError(res, parsedID.error);
         }
         const safeId = parsedID.data.toString();
@@ -265,6 +284,9 @@ class PessoaController {
                 message: "Ocorreu um erro ao remover os dados do sistema",
                 data: {},
                 error: error
+            }
+            if (error instanceof CustomError) {
+                response.message = error.message;
             }
             return res.json(response);
         }

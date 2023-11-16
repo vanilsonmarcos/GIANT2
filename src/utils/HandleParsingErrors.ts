@@ -1,4 +1,5 @@
 import { Response } from 'express';
+import { ZodError } from 'zod';
 const handleParsingError = (res: Response, error: Error) => {
     const response = {
         code: 401,
@@ -6,6 +7,10 @@ const handleParsingError = (res: Response, error: Error) => {
         data: {},
         error: error,
     };
+
+    if (error instanceof ZodError) {
+        response.message = "Email inválido"
+      }
     return res.json(response);
 }
 

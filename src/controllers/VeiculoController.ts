@@ -3,6 +3,7 @@ import VeiculoService from "../services/VeiculoService";
 import Identifier from "../schema/Identifier";
 import handleParsingError from "../utils/HandleParsingErrors";
 import { veiculo } from "@prisma/client";
+import CustomError from "../utils/CustomError";
 
 class VeiculoController {
     private veiculoService: VeiculoService;
@@ -26,6 +27,9 @@ class VeiculoController {
                 data: {},
                 error: error
             };
+            if (error instanceof CustomError) {
+                response.message = error.message;
+            }
             res.json(response)
         }
     }
@@ -52,6 +56,9 @@ class VeiculoController {
                 data: {},
                 error: error
             };
+            if (error instanceof CustomError) {
+                response.message = error.message;
+            }
             res.json(response);
         }
 
@@ -74,6 +81,9 @@ class VeiculoController {
                 data: {},
                 error: error
             };
+            if (error instanceof CustomError) {
+                response.message = error.message;
+            }
             res.json(response);
         }
     }
@@ -94,17 +104,15 @@ class VeiculoController {
                 data: {},
                 error: error
             };
+            if (error instanceof CustomError) {
+                response.message = error.message;
+            }
             res.json(response);
         }
     }
 
     async criar(req: Request, res: Response) {
         const veiculo: veiculo = req.body; // parse body to person data
-        // const parsedVeiculo = VeiculoSchema.safeParse(veiculo);
-        // if(!parsedVeiculo.success) {
-        //     return handleParsingError(res, parsedVeiculo.error);
-        // }
-        // const safeVeiculo:Veiculo = parsedVeiculo.data;
         try {
             const createdVeiculo = await this.veiculoService.criar(veiculo);
             const response = {
@@ -120,18 +128,15 @@ class VeiculoController {
                 data: {},
                 error: error
             }
+            if (error instanceof CustomError) {
+                response.message = error.message;
+            }
             res.json(response);
         }
     }
 
     async actualizar(req: Request, res: Response) {
         const veiculo: veiculo = req.body;
-        // const parsedVeiculo = VeiculoSchema.safeParse(veiculo);
-        // if(!parsedVeiculo.success) {
-        //     return handleParsingError(res, parsedVeiculo.error);
-        // }
-        // const safeVeiculo:Veiculo = parsedVeiculo.data;
-
         if (veiculo.ID === undefined) {
             return handleParsingError(res, Error("O Id do veiculo não foi definido"));
         }
@@ -151,6 +156,9 @@ class VeiculoController {
                 message: "Ocorreu um erro ao actualizar os dados do veículo",
                 data: {},
                 error: error
+            }
+            if (error instanceof CustomError) {
+                response.message = error.message;
             }
             res.json(response);
         }
@@ -180,6 +188,9 @@ class VeiculoController {
                 data: {},
                 error: error
             };
+            if (error instanceof CustomError) {
+                response.message = error.message;
+            }
             res.json(response);
         }
     }

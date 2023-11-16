@@ -821,17 +821,24 @@ Body:
 
 ```json
 {
-    ID: number
-    PESSOA_TIPO_ID: number
-    ENDERECO_ID: number | null
-    NOME: string
-    DATA_NASCIMENTO: Date
-    SEXO: string
-    NBI: string | null
-    NIF: string
-    ESTADO_CIVIL: string
-    DATA_CRIACAO: Date | null
-    DATA_ACTUALIZACAO: Date | null
+    "NOME": "Pedro Nuno Santos",
+    "PESSOA_TIPO": {
+        "ID": 1,
+        "NOME": "Pessoa Física"
+    },
+    "DATA_NASCIMENTO": "Mon Jul 02 1962 01:00:00 GMT+0100 (Hora padrão da África Ocidental)",
+    "SEXO": "M",
+    "NBI": "003466243LA35",
+    "NIF": "003466243LA35",
+    "ESTADO_CIVIL": "S",
+    "ENDERECO": {
+        "TELEFONE": "933000300",
+        "TELEFONE_ALT": "933000301",
+        "BAIRRO": "Talatona",
+        "CIDADE": "Luanda",
+        "PROVINCIA": "Luanda",
+        "EMAIL": "psantos@infoco.ao"
+    }
 }
 ```
 
@@ -843,17 +850,26 @@ em caso de sucesso retorna o objecto inserido com o id definido.
     code: 200,
     message: "Dados da pessoa inseridos com sucesso",
     data: {
-        ID: number
-        PESSOA_TIPO_ID: number
-        ENDERECO_ID: number | null
-        NOME: string
-        DATA_NASCIMENTO: Date
-        SEXO: string
-        NBI: string | null
-        NIF: string
-        ESTADO_CIVIL: string
-        DATA_CRIACAO: Date | null
-        DATA_ACTUALIZACAO: Date | null
+        "ID": 1,
+        "NOME": "Pedro Nuno Santos",
+        "PESSOA_TIPO": {
+            "ID": 1,
+            "NOME": "Pessoa Física"
+        },
+        "DATA_NASCIMENTO": "Mon Jul 02 1962 01:00:00 GMT+0100 (Hora padrão da África Ocidental)",
+        "SEXO": "M",
+        "NBI": "003466243LA35",
+        "NIF": "003466243LA35",
+        "ESTADO_CIVIL": "S",
+        "ENDERECO": {
+            "ID": 1,
+            "TELEFONE": "933000300",
+            "TELEFONE_ALT": "933000301",
+            "BAIRRO": "Talatona",
+            "CIDADE": "Luanda",
+            "PROVINCIA": "Luanda",
+            "EMAIL": "psantos@infoco.ao"
+        }
     }
 }
 ```
@@ -876,17 +892,26 @@ Body:
 
 ```json
 {
-    ID: number
-    PESSOA_TIPO_ID: number
-    ENDERECO_ID: number | null
-    NOME: string
-    DATA_NASCIMENTO: Date
-    SEXO: string
-    NBI: string | null
-    NIF: string
-    ESTADO_CIVIL: string
-    DATA_CRIACAO: Date | null
-    DATA_ACTUALIZACAO: Date | null
+    "ID": 1,
+    "NOME": "Pedro Nuno Santos",
+    "PESSOA_TIPO": {
+        "ID": 1,
+        "NOME": "Pessoa Física"
+    },
+    "DATA_NASCIMENTO": "Mon Jul 02 1962 01:00:00 GMT+0100 (Hora padrão da África Ocidental)",
+    "SEXO": "M",
+    "NBI": "003466243LA35",
+    "NIF": "003466243LA35",
+    "ESTADO_CIVIL": "S",
+    "ENDERECO": {
+        "ID": 1,
+        "TELEFONE": "933000300",
+        "TELEFONE_ALT": "933000301",
+        "BAIRRO": "Talatona",
+        "CIDADE": "Luanda",
+        "PROVINCIA": "Luanda",
+        "EMAIL": "psantos@infoco.ao"
+    }
 }
 ```
 
@@ -900,17 +925,26 @@ em caso de sucesso retorna o objecto actualizado
     code: 200,
     message: "Dados da veiculo inseridos com sucesso",
     data: {
-        ID: number
-        PESSOA_TIPO_ID: number
-        ENDERECO_ID: number | null
-        NOME: string
-        DATA_NASCIMENTO: Date
-        SEXO: string
-        NBI: string | null
-        NIF: string
-        ESTADO_CIVIL: string
-        DATA_CRIACAO: Date | null
-        DATA_ACTUALIZACAO: Date | null
+        "ID": 1,
+        "NOME": "Pedro Nuno Santos",
+        "PESSOA_TIPO": {
+            "ID": 1,
+            "NOME": "Pessoa Física"
+        },
+        "DATA_NASCIMENTO": "Mon Jul 02 1962 01:00:00 GMT+0100 (Hora padrão da África Ocidental)",
+        "SEXO": "M",
+        "NBI": "003466243LA35",
+        "NIF": "003466243LA35",
+        "ESTADO_CIVIL": "S",
+        "ENDERECO": {
+            "ID": 1,
+            "TELEFONE": "933000300",
+            "TELEFONE_ALT": "933000301",
+            "BAIRRO": "Talatona",
+            "CIDADE": "Luanda",
+            "PROVINCIA": "Luanda",
+            "EMAIL": "psantos@infoco.ao"
+        }
     }
 }
 
@@ -925,17 +959,26 @@ em caso de sucesso retorna:
     code: 200,
     message: "Dados da veiculo inseridos com sucesso",
     data: {
-        ID: number
-        PESSOA_TIPO_ID: number
-        ENDERECO_ID: number | null
-        NOME: string
-        DATA_NASCIMENTO: Date
-        SEXO: string
-        NBI: string | null
-        NIF: string
-        ESTADO_CIVIL: string
-        DATA_CRIACAO: Date | null
-        DATA_ACTUALIZACAO: Date | null
+       "ID": 1,
+        "NOME": "Pedro Nuno Santos",
+        "PESSOA_TIPO": {
+            "ID": 1,
+            "NOME": "Pessoa Física"
+        },
+        "DATA_NASCIMENTO": "Mon Jul 02 1962 01:00:00 GMT+0100 (Hora padrão da África Ocidental)",
+        "SEXO": "M",
+        "NBI": "003466243LA35",
+        "NIF": "003466243LA35",
+        "ESTADO_CIVIL": "S",
+        "ENDERECO": {
+            "ID": 1,
+            "TELEFONE": "933000300",
+            "TELEFONE_ALT": "933000301",
+            "BAIRRO": "Talatona",
+            "CIDADE": "Luanda",
+            "PROVINCIA": "Luanda",
+            "EMAIL": "psantos@infoco.ao"
+        }
     }
 }
 ```
