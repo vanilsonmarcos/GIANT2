@@ -2,22 +2,24 @@ import { adenda_pagamento } from "@prisma/client";
 import IGenericRepository from "../IGenericRepository";
 import prisma from "../PrismaClient";
 import { Service } from "typedi";
+import CustomError from "../../utils/CustomError";
+import { isArrayEmpty } from "../../utils/helper";
 
 
 @Service()
 class AdendaPagamentoRepository implements IGenericRepository<adenda_pagamento> {
     
     async getAll(): Promise<adenda_pagamento[]> {
-        const adenda_pagamento = await prisma.adenda_pagamento.findMany({
+        const adenda_pagamentos = await prisma.adenda_pagamento.findMany({
             orderBy: {
                 DATA_INSERCAO: 'asc'
             },
         });
 
-        if (adenda_pagamento === null) {
-            throw Error("Ocorreu um erro ao criar a adenda ou acta");
+        if (isArrayEmpty(adenda_pagamentos) || adenda_pagamentos === null || adenda_pagamentos === undefined) {
+            throw new CustomError("Não foram encontradas adendas/actas registadas");
         }
-        return adenda_pagamento;
+        return adenda_pagamentos;
     }
 
     async getByID(id: string): Promise<adenda_pagamento> {
@@ -27,8 +29,8 @@ class AdendaPagamentoRepository implements IGenericRepository<adenda_pagamento> 
             }
         });
 
-        if (adenda_pagamento === null) {
-            throw Error("Ocorreu um erro ao criar a adenda ou acta");
+        if (adenda_pagamento === null || adenda_pagamento === undefined) {
+            throw new CustomError("não foi encontrada a adenda/acta");
         }
         return adenda_pagamento;
     }
@@ -42,8 +44,8 @@ class AdendaPagamentoRepository implements IGenericRepository<adenda_pagamento> 
             }
         });
 
-        if (adenda_pagamento === null) {
-            throw Error("Ocorreu um erro ao criar a adenda ou acta");
+        if (adenda_pagamento === null || adenda_pagamento === undefined) {
+            throw new CustomError("Ocorreu um erro ao criar a adenda ou acta");
         }
         return adenda_pagamento;
     }
@@ -60,8 +62,8 @@ class AdendaPagamentoRepository implements IGenericRepository<adenda_pagamento> 
             }
         });
 
-        if (adenda_pagamento === null) {
-            throw Error("Ocorreu um erro ao actualizar a adenda ou acta");
+        if (adenda_pagamento === null || adenda_pagamento === undefined) {
+            throw new CustomError("Ocorreu um erro ao actualizar a adenda ou acta");
         }
         return adenda_pagamento;
     }

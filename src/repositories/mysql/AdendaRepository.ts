@@ -1,12 +1,12 @@
+import { Service } from "typedi";
+import prisma from "../PrismaClient";
+import { Decimal } from "@prisma/client/runtime/library";
 import { adenda, veiculo } from "@prisma/client";
 import IGenericRepository from "../IGenericRepository";
-import prisma from "../PrismaClient";
 import IAdendaItemSegurado from "../IAdendaItemSegurado";
-import { Service } from "typedi";
-import { calculatePremio } from "../../utils/helper";
+import { calculatePremio, isArrayEmpty } from "../../utils/helper";
 import CustomError from "../../utils/CustomError";
 import IAdendaCalculate from "../IAdendaCalculate";
-import { Decimal } from "@prisma/client/runtime/library";
 
 @Service()
 class AdendaRepository implements IGenericRepository<adenda>, IAdendaItemSegurado<veiculo>, IAdendaCalculate<Decimal>{
@@ -22,7 +22,7 @@ class AdendaRepository implements IGenericRepository<adenda>, IAdendaItemSegurad
         });
         const sumPremio = premios._sum.PREMIO;
 
-        if ( sumPremio === null) {
+        if (sumPremio === null || sumPremio == undefined) {
             throw new CustomError("Não foi possivel selecionar e somar os premios dos items");
         }
 
@@ -40,7 +40,7 @@ class AdendaRepository implements IGenericRepository<adenda>, IAdendaItemSegurad
             },
         });
 
-        if (veiculos === null) {
+        if (veiculos === null || veiculos === undefined) {
             throw new CustomError("Não foi encontrado nenhum item segurado nesta adenda");
         }
         return veiculos;
@@ -58,7 +58,7 @@ class AdendaRepository implements IGenericRepository<adenda>, IAdendaItemSegurad
             }
         }).apolice_fracionamento();
 
-        if(fracionamento=== null) {
+        if(fracionamento === null || fracionamento === undefined) {
             throw new CustomError("Não foi encontrado o tipo de fracionamento da apólice/adenda selecionada");
         }
 
@@ -96,8 +96,8 @@ class AdendaRepository implements IGenericRepository<adenda>, IAdendaItemSegurad
         );
         const addedItems = veiculos.filter(item => item !== null) as veiculo[];
 
-        if (addedItems === null) {
-            throw new Error("Não possivel remover os items segurados associados a adenda: " + adendaID);
+        if (addedItems === null || addedItems === undefined) {
+            throw new CustomError("Não possivel remover os items segurados associados a adenda");
         }
         return addedItems;
     }
@@ -114,7 +114,7 @@ class AdendaRepository implements IGenericRepository<adenda>, IAdendaItemSegurad
             }
         }).apolice_fracionamento();
 
-        if(fracionamento === null) {
+        if(fracionamento === null || fracionamento === undefined) {
             throw new CustomError("Não foi encontrado o tipo de fracionamento da apólice/adenda selecionada");
         }
       
@@ -145,8 +145,8 @@ class AdendaRepository implements IGenericRepository<adenda>, IAdendaItemSegurad
                 veiculo: true
             }
         }).veiculo();
-        if (veiculo === null) {
-            throw new Error("Não foi encontrado o item segurado para esta adenda");
+        if (veiculo === null || veiculo === undefined) {
+            throw new CustomError("Não foi encontrado o item segurado para esta adenda");
         }
         return veiculo;
     }
@@ -165,7 +165,7 @@ class AdendaRepository implements IGenericRepository<adenda>, IAdendaItemSegurad
                 },
             }
         });
-        if (veiculos === null) {
+        if (isArrayEmpty(veiculos) || veiculos === null || veiculos === undefined) {
             throw new Error("Não foi encontrado nenhum item segurado nesta apólice");
         }
         return veiculos;
@@ -175,6 +175,9 @@ class AdendaRepository implements IGenericRepository<adenda>, IAdendaItemSegurad
         const adendas = await prisma.adenda.findMany({
             take: 100,
         });
+        if (adendas === null || adendas === undefined) {
+            throw new CustomError("Não foram encontradas adendas registadas no sistema"); 
+        }
         return adendas;
     }
 
@@ -185,7 +188,7 @@ class AdendaRepository implements IGenericRepository<adenda>, IAdendaItemSegurad
             }
         });
 
-        if (adenda === null) {
+        if (adenda === null || adenda === undefined) {
             throw new CustomError("Não Foi encontrado apólice com o ID referenciado");
         }
         return adenda;
@@ -201,8 +204,8 @@ class AdendaRepository implements IGenericRepository<adenda>, IAdendaItemSegurad
             }
         });
 
-        if (adenda === null) {
-            throw new Error("Ocorreu um erro ao criar a adenda");
+        if (adenda === null || adenda === undefined) {
+            throw new CustomError("Ocorreu um erro ao criar a adenda");
         }
         return adenda;
     }
@@ -220,8 +223,8 @@ class AdendaRepository implements IGenericRepository<adenda>, IAdendaItemSegurad
             }
         });
 
-        if (adenda === null) {
-            throw new Error("Ocorreu um erro ao criar apólice");
+        if (adenda === null || adenda === undefined) {
+            throw new CustomError("Ocorreu um erro ao criar apólice");
         }
         return adenda;
     }

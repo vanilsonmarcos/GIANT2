@@ -2,6 +2,7 @@ import { adenda_item_segurado } from "@prisma/client";
 import IGenericRepository from "../IGenericRepository";
 import prisma from "../PrismaClient";
 import { Service } from "typedi";
+import CustomError from "../../utils/CustomError";
 
 @Service()
 class AdendaItemSeguradoRepository implements IGenericRepository<adenda_item_segurado>{
@@ -10,8 +11,8 @@ class AdendaItemSeguradoRepository implements IGenericRepository<adenda_item_seg
             take:100
         });
 
-        if (adenda_item_segurados === null) {
-            throw Error("Ocorreu um erro ao actualizar a adenda item segurado ");
+        if (adenda_item_segurados === null || adenda_item_segurados === undefined) {
+            throw new CustomError("Ocorreu um erro ao actualizar a adenda item segurado ");
         }
         return adenda_item_segurados;
     }
@@ -23,8 +24,8 @@ class AdendaItemSeguradoRepository implements IGenericRepository<adenda_item_seg
            }
         });
 
-        if (adenda_item_segurado === null) {
-            throw Error("Ocorreu um erro ao carregar a a adenda item segurado ");
+        if (adenda_item_segurado === null || adenda_item_segurado === undefined) {
+            throw new CustomError("Ocorreu um erro ao carregar a a adenda item segurado ");
         }
         return adenda_item_segurado;
     }
@@ -38,8 +39,8 @@ class AdendaItemSeguradoRepository implements IGenericRepository<adenda_item_seg
             }
         });
 
-        if (adenda_item_segurado === null) {
-            throw Error("Ocorreu um erro ao actualizar a adenda item segurado ");
+        if (adenda_item_segurado === null || adenda_item_segurado === undefined) {
+            throw new CustomError("Ocorreu um erro ao actualizar a adenda item segurado ");
         }
         return adenda_item_segurado;
     }
@@ -56,8 +57,8 @@ class AdendaItemSeguradoRepository implements IGenericRepository<adenda_item_seg
             }
         });
 
-        if (adenda_item_segurado === null) {
-            throw Error("Ocorreu um erro ao actualizar a adenda item segurado ");
+        if (adenda_item_segurado === null || adenda_item_segurado) {
+            throw new CustomError("Ocorreu um erro ao actualizar a adenda item segurado ");
         }
         return adenda_item_segurado;
     }

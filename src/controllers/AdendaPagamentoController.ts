@@ -2,6 +2,7 @@ import { adenda_pagamento } from '@prisma/client';
 import { Request, Response } from "express";
 import AdendaPagamentoService from "../services/AdendaPagamentoService";
 import handleParsingError from '../utils/HandleParsingErrors';
+import CustomError from '../utils/CustomError';
 
 class AdendaPagamentoController {
     private adendaPService: AdendaPagamentoService;
@@ -27,6 +28,9 @@ class AdendaPagamentoController {
                 data:  {},
                 error: error
             };
+            if (error instanceof CustomError) {
+                response.message = error.message;
+            }
             res.json(response)
         }
      }
@@ -48,6 +52,9 @@ class AdendaPagamentoController {
                 data: {},
                 error: error
             };
+            if (error instanceof CustomError) {
+                response.message = error.message;
+            }
             res.json(response);
         }
      }
@@ -68,6 +75,9 @@ class AdendaPagamentoController {
                 message: "Ocorreu um erro ao inserir os dados dõ pagamento da  adenda",
                 data: {},
                 error: error
+            };
+            if (error instanceof CustomError) {
+                response.message = error.message;
             }
             res.json(response);
         }
@@ -95,6 +105,9 @@ class AdendaPagamentoController {
                 message: "Ocorreu um erro ao actualizar os dados do pagamento da adenda",
                 data: {},
                 error: error
+            };
+            if (error instanceof CustomError) {
+                response.message = error.message;
             }
             res.json(response);
         }
@@ -119,6 +132,9 @@ class AdendaPagamentoController {
                 data: {},
                 error: error
             };
+            if (error instanceof CustomError) {
+                response.message = error.message;
+            }
             res.json(response);
         }
     }
