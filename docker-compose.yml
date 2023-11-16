@@ -15,6 +15,7 @@ services:
      - mysqldb
     networks:
       - seguradora_net
+    restart: on-failure 
 
   mysqldb:
     image: mysql:8.0.21
