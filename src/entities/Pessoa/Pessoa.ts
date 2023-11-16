@@ -1,15 +1,15 @@
 import PessoaTipo from './PessoaTipo';
 import PessoaEndereco from './PessoaEndereco';
 interface Pessoa {
-    id?: number
-    nome: string,
-    pessoa_tipo: PessoaTipo,
-    data_nascimento: string,
-    sexo: string,
-    nbi?: string,
-    nif: string,
-    estado_civil: string,
-    endereco?: PessoaEndereco
+    ID?: number
+    NOME: string,
+    PESSOA_TIPO: PessoaTipo,
+    DATA_NASCIMENTO: string,
+    SEXO: string,
+    NBI?: string,
+    NIF: string,
+    ESTADO_CIVIL: string,
+    ENDERECO?: PessoaEndereco
 }
 
 export default Pessoa;

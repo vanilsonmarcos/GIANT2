@@ -6,6 +6,7 @@ import NbiSchema from "../schema/NbiSchema";
 import EmailSchema from "../schema/EmailSchema";
 import PhoneNumberSchema from "../schema/PhoneNumberSchema";
 import { pessoa } from "@prisma/client";
+import Pessoa from "../entities/Pessoa/Pessoa";
 
 class PessoaController {
 

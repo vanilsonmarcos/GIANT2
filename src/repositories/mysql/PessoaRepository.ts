@@ -1,23 +1,28 @@
-import { pessoa } from '@prisma/client';
 import { Service } from "typedi";
 import IPessoaRepository from "../IPessoaRepository";
 import prisma from '../PrismaClient';
+import CustomError from '../../utils/CustomError';
+import Pessoa from '../../entities/Pessoa/Pessoa';
+import { generatePessoa, generatePessoas } from '../../entities/Pessoa/PessoaHelper';
 
 @Service()
-class PessoaRepository implements IPessoaRepository<pessoa> {
-    async getAll(): Promise<pessoa[]> {
+class PessoaRepository implements IPessoaRepository<Pessoa> {
+    async getAll(): Promise<Pessoa[]> {
         const pessoas = await prisma.pessoa.findMany({
-            include: {
+            include: { 
                 pessoa_tipo: true,
                 pessoa_endereco: true
             },
             take: 100
         });
+        if (pessoas == null) {
+            throw new CustomError("Não foram encontradas pessoas registadas no sistema");
+        }
 
-        return pessoas;
+        return generatePessoas(pessoas);
     }
 
-    async getByID(id: string): Promise<pessoa> {
+    async getByID(id: string): Promise<Pessoa> {
         const pessoa = await prisma.pessoa.findUnique({
             where: {
                 ID: parseInt(id)
@@ -30,41 +35,82 @@ class PessoaRepository implements IPessoaRepository<pessoa> {
         if (pessoa === null) {
             throw Error("Não foi possivel encontrar os dados da pessoa");
         }
-        return pessoa;
+        return generatePessoa(pessoa);
     }
 
-    async create(item: pessoa): Promise<pessoa> {
+    async create(item: Pessoa): Promise<Pessoa> {
+
+        const pessoa_endereco = await prisma.pessoa_endereco.create({
+            data: {
+                TELEFONE: item.ENDERECO?.TELEFONE,
+                TELEFONE_ALTERNATIVO: item.ENDERECO?.TELEFONE,
+                EMAIL: item.ENDERECO?.EMAIL,
+                BAIRRO: item.ENDERECO?.BAIRRO,
+                CIDADE: item.ENDERECO?.CIDADE,
+                PROVINCIA: item.ENDERECO?.PROVINCIA,
+            }
+        });
         const pessoa = await prisma.pessoa.create({
             data: {
-                PESSOA_TIPO_ID: item.PESSOA_TIPO_ID,
                 NOME: item.NOME,
                 DATA_NASCIMENTO: item.DATA_NASCIMENTO,
                 SEXO: item.SEXO,
                 NBI: item.NBI,
                 NIF: item.NIF,
-                ESTADO_CIVIL: item.ESTADO_CIVIL,   
+                ESTADO_CIVIL: item.ESTADO_CIVIL,
+                pessoa_tipo: {
+                    connect: {
+                        ID: item.PESSOA_TIPO.ID
+                    }
+                },
+                pessoa_endereco: {
+                    connect: {
+                        ID: pessoa_endereco.ID
+                    }
+                }
+            },
+            include: {
+                pessoa_endereco: true,
+                pessoa_tipo: true
             }
         });
-        if(pessoa === null) {
+
+
+
+        if (pessoa === null) {
             throw Error("Ocorreu um erro inserir os dados da pessoa");
         }
-        return pessoa;
+        return generatePessoa(pessoa);
     }
 
-    async update(id: string, item: pessoa): Promise<pessoa> {
+    async update(id: string, item: Pessoa): Promise<Pessoa> {
         const pessoa = await prisma.pessoa.update({
             where: {
                 ID: parseInt(id)
             },
             data: {
-                PESSOA_TIPO_ID: item.PESSOA_TIPO_ID,
-                NOME: item.NOME, 
-                DATA_NASCIMENTO: item.DATA_NASCIMENTO, 
-                SEXO: item.SEXO, 
-                NBI: item.NBI, 
-                NIF: item.NIF, 
+                
+                NOME: item.NOME,
+                DATA_NASCIMENTO: item.DATA_NASCIMENTO,
+                SEXO: item.SEXO,
+                NBI: item.NBI,
+                NIF: item.NIF,
                 ESTADO_CIVIL: item.ESTADO_CIVIL,
-                ENDERECO_ID: item.ENDERECO_ID
+                pessoa_tipo: {
+                    connect: { 
+                       ID : item.PESSOA_TIPO.ID
+                   }
+                },
+                pessoa_endereco: {
+                    update: {
+                        TELEFONE: item.ENDERECO?.TELEFONE,
+                        TELEFONE_ALTERNATIVO:item.ENDERECO?.TELEFONE,
+                        EMAIL: item.ENDERECO?.EMAIL,
+                        BAIRRO: item.ENDERECO?.BAIRRO,
+                        CIDADE: item.ENDERECO?.CIDADE,
+                        PROVINCIA: item.ENDERECO?.PROVINCIA,
+                    }
+                }
             },
             include: {
                 pessoa_endereco: true,
@@ -73,9 +119,9 @@ class PessoaRepository implements IPessoaRepository<pessoa> {
         });
 
         if (pessoa === null) {
-            throw Error("Ocorreu um erro ao actualizar os dados da pessoa");
+            throw new CustomError("Ocorreu um erro ao actualizar os dados da pessoa");
         }
-        return pessoa;
+        return generatePessoa(pessoa);
     }
 
     async delete(id: string): Promise<boolean> {
@@ -88,70 +134,83 @@ class PessoaRepository implements IPessoaRepository<pessoa> {
                 ID: parseInt(id)
             }
         });
-        if(pessoa !== null){
+        if (pessoa !== null) {
             return true;
         }
         return false;
     }
 
-    async getPersonByPhoneNumber(phoneNumber: string): Promise<pessoa> {
-        const pessoa = await prisma.pessoa_endereco.findUnique({ 
-            where: {
-                TELEFONE: phoneNumber
+    async getPersonByPhoneNumber(phoneNumber: string): Promise<Pessoa> {
+        const pessoa = await prisma.pessoa.findFirst({
+            include: {
+                pessoa_endereco: {
+                    where: {
+                        TELEFONE: phoneNumber
+                    }
+                },
+                pessoa_tipo: true
+
             }
-        }).pessoa();
-       
-        if (pessoa === null) {
-            throw Error("Não foram encontrados os dados da pessoa");
+        });
+
+        if (pessoa === undefined || pessoa === null ) {
+            throw new CustomError("Não foram encontrados os dados da pessoa");
         }
-        return pessoa;
+
+        return generatePessoa(pessoa);
     }
 
-    async getPersonByEmail(email: string): Promise<pessoa> {
-        const pessoa = await prisma.pessoa_endereco.findUnique({ 
-            where: {
-                EMAIL: email
+    async getPersonByEmail(email: string): Promise<Pessoa> {
+        const pessoa = await prisma.pessoa.findFirst({
+            include: {
+                pessoa_endereco: {
+                    where: {
+                        EMAIL: email
+                    }
+                },
+                pessoa_tipo: true
+
             }
-        }).pessoa();
-       
-        if (pessoa === null) {
-            throw Error("Não foram encontrados os dados da pessoa");
+        });
+
+        if (pessoa === undefined || pessoa === null ) {
+            throw new CustomError("Não foram encontrados os dados da pessoa");
         }
-        return pessoa;
+        return generatePessoa(pessoa);
     }
 
-    async getPersonByNIF(nif: string): Promise<pessoa> {
+    async getPersonByNIF(nif: string): Promise<Pessoa> {
         const pessoa = await prisma.pessoa.findUnique({
             include: {
                 pessoa_endereco: true,
                 pessoa_tipo: true
-            }, 
+            },
             where: {
-               NIF : nif
+                NIF: nif
             }
         });
-       
+
         if (pessoa === null) {
-            throw Error("Não foram encontrados os dados da pessoa");
+            throw new CustomError("Não foram encontrados os dados da pessoa");
         }
-        return pessoa;
+        return generatePessoa(pessoa);
     }
 
-    async getPersonByNBI(nbi: string): Promise<pessoa>{
+    async getPersonByNBI(nbi: string): Promise<Pessoa> {
         const pessoa = await prisma.pessoa.findFirst({
             where: {
-                NBI: nbi 
+                NBI: nbi
             },
             include: {
                 pessoa_endereco: true,
                 pessoa_tipo: true
             }
         });
-       
+
         if (pessoa === null) {
-            throw Error("Não foram encontrados os dados da pessoa");
+            throw new CustomError("Não foram encontrados os dados da pessoa");
         }
-        return pessoa;
+        return generatePessoa(pessoa);
     }
 }
 
