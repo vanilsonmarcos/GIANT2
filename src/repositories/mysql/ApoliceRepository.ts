@@ -7,17 +7,18 @@ import IAdendaSegurado from "../IAdendaSegurado";
 import IApoliceEstado from "../IApoliceEstado";
 import CustomError from "../../utils/CustomError";
 import { isArrayEmpty } from "../../utils/helper";
+import PessoaSchema from "../../schema/PessoaSchema";
 @Service()
 class ApoliceRepository implements
     IGenericRepository<apolice>, IApoliceAdenda<adenda>, IAdendaSegurado<pessoa>, IApoliceEstado<apolice_estado> {
-        
+
     async getApoliceEstado(apoliceID: string): Promise<apolice_estado> {
         const apolice_estado = await prisma.apolice.findUnique({
             where: {
                 ID: parseInt(apoliceID)
             }
         }).apolice_estado();
-        if(apolice_estado === null || apolice_estado === undefined) {
+        if (apolice_estado === null || apolice_estado === undefined) {
             throw new CustomError("Ocorreu um erro ao gerar carregar o estado da apólice");
         }
         return apolice_estado;
@@ -29,14 +30,35 @@ class ApoliceRepository implements
                 ID: parseInt(apoliceID)
             },
             data: {
-               APOLICE_ESTADO_ID: apoliceEstado.ID
+                APOLICE_ESTADO_ID: apoliceEstado.ID
             }
         }).apolice_estado();
         return apolice_estado;
     }
 
-    getAllSeguradoByApoliceID(apoliceID: string): Promise<pessoa[]> {
-        throw new Error("Method not implemented.");
+    async getAllSeguradoByApoliceID(apoliceID: string): Promise<pessoa[]> {
+        const adenda = await prisma.adenda.findFirst({
+            where: {
+                APOLICE_ID: parseInt(apoliceID)
+            }
+        });
+
+        const pessoas = await prisma.pessoa.findMany({
+            include: {
+                adenda_segurado: {
+                    where: {
+                        ADENDA_ID: adenda?.ID
+                    }
+                }
+            }
+        });
+        
+        if (isArrayEmpty(pessoas) || pessoas === null || pessoas === undefined) {
+            throw new CustomError("Ocorreu um erro ao carregar os segurados da apólice");
+        }
+
+        return pessoas;
+
     }
 
     async getAllSeguradoByAdendaID(adendaID: string): Promise<pessoa[]> {
@@ -53,8 +75,42 @@ class ApoliceRepository implements
         return segurados;
     }
 
-    removeSeguradoByApoliceID(apoliceID: string, seguradoID: string): Promise<pessoa> {
-        throw new Error("Method not implemented.");
+    async removeSeguradoByApoliceID(apoliceID: string, seguradoID: string): Promise<pessoa> {
+
+        const adenda = await prisma.adenda.findFirst({
+            where: {
+                APOLICE_ID: parseInt(apoliceID)
+            }
+        });
+
+
+        if (adenda === null || adenda === undefined) {
+            throw new CustomError("Ocorreu um error carragar a adenda correspondente a apólice");
+        }
+
+
+        const segurando = await prisma.pessoa.findUnique({
+            where: {
+                ID: parseInt(seguradoID)
+            }
+        });
+
+        if (segurando === null || segurando === undefined) {
+            throw new CustomError("Ocorreu um error carregar o segurado correspondente a apólice");
+        }
+
+        const deletedSegurados = await prisma.adenda_segurado.deleteMany({
+            where: {
+                ADENDA_ID: adenda.ID,
+                SEGURADO_ID: parseInt(seguradoID)
+            }
+        });
+
+        if (deletedSegurados === null || deletedSegurados === undefined || deletedSegurados.count !== 1) {
+            throw new CustomError("Ocorreu um error ao remover o segurado correspondente a apólice");
+        }
+
+        return segurando;
     }
 
     async removeSeguradoByAdendaID(adendaID: string, seguradoID: string): Promise<pessoa> {
@@ -66,7 +122,7 @@ class ApoliceRepository implements
                 }
             },
         }).pessoa();
-        if(segurado === null || segurado === undefined) {
+        if (segurado === null || segurado === undefined) {
             throw new CustomError("Ocorreu um error ao remover o segurado da adenda");
         }
         return segurado;
@@ -84,14 +140,60 @@ class ApoliceRepository implements
             })
         );
 
-        if(savedSegurados === null || savedSegurados === undefined) {
+        if (savedSegurados === null || savedSegurados === undefined) {
             throw new CustomError("Não Possivel associar os segurados a adenda");
         }
         return segurados;
     }
 
-    addSeguradosByApoliceID(apoliceID: string, segurados: pessoa[]): Promise<pessoa[]> {
-        throw new Error("Method not implemented.");
+    async addSeguradosByApoliceID(apoliceID: string, segurados: pessoa[]): Promise<pessoa[]> {
+        const adenda = await prisma.adenda.findFirst({
+            where: {
+                APOLICE_ID: parseInt(apoliceID)
+            },
+            orderBy: {
+                DATA_INSERCAO: 'desc'
+            }
+        });
+        if (adenda === null || adenda === undefined) {
+            throw new CustomError("Ocorreu um erro ao carregar a adenda mais actualizada da apólice");
+        }
+
+        const loadedSegurados = await prisma.pessoa.findMany({
+            include: {
+                adenda_segurado: {
+                    where: {
+                        ADENDA_ID: adenda.ID
+                    }
+                }
+            }
+        });
+        
+        if (isArrayEmpty(loadedSegurados) || loadedSegurados === null || loadedSegurados === undefined) {
+            throw new CustomError("Ocorreu um erro ao carregar os segurados da apólice");
+        }
+
+        const savedSegurados = await Promise.all(
+            loadedSegurados.map((segurado) => {
+                return prisma.adenda_segurado.create({
+                    data: {
+                        SEGURADO_ID: segurado.ID,
+                        ADENDA_ID: adenda.ID
+                        
+                    }
+                });
+            })
+        );
+
+        if (isArrayEmpty(savedSegurados) || savedSegurados === null || savedSegurados === undefined) {
+            throw new CustomError("Ocorreu um erro ao adicionar os segurados a apólice");
+        }
+
+        if(savedSegurados.length !== loadedSegurados.length) {
+            throw new CustomError("Ocorreu um erro ao adicionar algumas segurados a a apólice");
+        }
+
+        return loadedSegurados;
     }
 
     async removeSeguradosByAdendaID(adendaID: string, segurados: pessoa[]): Promise<pessoa[]> {
@@ -107,14 +209,54 @@ class ApoliceRepository implements
                 });
             })
         );
-        if(deletedSegurados === null || deletedSegurados === undefined) {
+        if (deletedSegurados === null || deletedSegurados === undefined) {
             throw new CustomError("Ocorreu um error ao remover o segurado da adenda");
         }
         return segurados;
     }
 
-    removeSeguradosByApoliceID(apoliceID: string, segurados: pessoa[]): Promise<pessoa[]> {
-        throw new Error("Method not implemented.");
+    async removeSeguradosByApoliceID(apoliceID: string, segurados: pessoa[]): Promise<pessoa[]> {
+        const adenda = await prisma.adenda.findFirst({
+            where: {
+                APOLICE_ID: parseInt(apoliceID)
+            }
+        });
+
+        if (adenda === null || adenda === undefined) {
+            throw new CustomError("Ocorreu um error carregar a adenda correspondente a apólice");
+        }
+
+
+        const newSegurandos = await prisma.pessoa.findMany({
+            where: {
+                ID: {
+                    in: segurados.map((segurado) => segurado.ID)
+                }
+            }
+        });
+
+        if (newSegurandos === null || newSegurandos === undefined) {
+            throw new CustomError("Ocorreu um error carregar os segurados correspondentes a apólice");
+        }
+
+        const deletedSegurados = await prisma.adenda_segurado.deleteMany({
+            where: {
+                ADENDA_ID: adenda.ID,
+                SEGURADO_ID: {
+                    in: newSegurandos.map((segurado) => segurado.ID)
+                }
+            }
+        });
+
+        if (deletedSegurados === null || deletedSegurados === undefined || deletedSegurados.count !== 1) {
+            throw new CustomError("Ocorreu um error ao remover os segurados correspondentes a apólice");
+        }
+
+        if(deletedSegurados.count!== segurados.length) {
+            throw new CustomError("Não foram removidos todos os segurados correspondentes a apólice");
+        }
+
+        return newSegurandos;
     }
 
     async getAllApoliceAdenda(apoliceID: string): Promise<adenda[]> {
@@ -125,7 +267,7 @@ class ApoliceRepository implements
             take: 100,
         });
 
-        if(adendas === null || adendas === undefined) {
+        if (adendas === null || adendas === undefined) {
             throw new CustomError("Esta apolice não possui adendas");
         }
         return adendas;
@@ -141,7 +283,7 @@ class ApoliceRepository implements
             }
         });
 
-        if(adenda === null || adenda === undefined) {
+        if (adenda === null || adenda === undefined) {
             throw new CustomError("Esta apolice não possui adendas");
         }
         return adenda;
@@ -157,7 +299,7 @@ class ApoliceRepository implements
             }
         });
 
-        if(adenda === null || adenda === undefined) {
+        if (adenda === null || adenda === undefined) {
             throw new CustomError("Esta apolice não possui adenda");
         }
         return adenda;
@@ -167,7 +309,7 @@ class ApoliceRepository implements
         const apolices = await prisma.apolice.findMany({
             take: 100,
         });
-        if(isArrayEmpty(apolices) || apolices === null || apolices === undefined) {
+        if (isArrayEmpty(apolices) || apolices === null || apolices === undefined) {
             throw new CustomError("Esta apolice não possui adenda");
         }
 
@@ -203,7 +345,7 @@ class ApoliceRepository implements
             }
         });
 
-        if(apolice === null || apolice === undefined) {
+        if (apolice === null || apolice === undefined) {
             throw new CustomError("Ocorreu um erro ao criar apólice");
         }
         return apolice;
@@ -222,7 +364,7 @@ class ApoliceRepository implements
                 TOMADOR_ID: item.TOMADOR_ID
             }
         });
-        if(apolice === null || apolice === undefined) {
+        if (apolice === null || apolice === undefined) {
             throw new CustomError("Ocorreu um erro ao actualizar a apólice")
         }
         return apolice;
