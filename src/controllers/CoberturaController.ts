@@ -1,8 +1,6 @@
 import { Request, Response } from "express";
-import Cobertura from "../entities/Cobertura";
 import CoberturaService from "../services/CoberturaService";
-import CoberturaSchema from "../schema/CoberturaSchema";
-import handleParsingError from "../utils/HandleParsingErrors";
+import { apolice_tipo, cobertura } from "@prisma/client";
 class CoberturaController {
     private coberturaService: CoberturaService;
 
@@ -13,7 +11,7 @@ class CoberturaController {
     // Read/Query  
     async getAll(req: Request, res: Response) {
         try {
-            const coberturas: Cobertura[] = await this.coberturaService.getAll();
+            const coberturas: cobertura[] = await this.coberturaService.getAll();
             const response = {
                 code: 200,
                 message: "Dados das Coberturas foram encontrados com sucesso",
@@ -34,7 +32,7 @@ class CoberturaController {
     async getByID(req: Request, res: Response) {
         const { id } = req.params;
         try {
-            const cobertura: Cobertura = await this.coberturaService.getByID(id);
+            const cobertura: cobertura = await this.coberturaService.getByID(id);
             const response = {
                 code: 200,
                 message: "Dados da Cobertura foram encontrados com sucesso",
@@ -44,7 +42,28 @@ class CoberturaController {
         } catch (error) {
             const response = {
                 code: 400,
-                message: "",
+                message: "Ocorreu um erro ao carregar os dados da Cobertura",
+                data: {},
+                error: error
+            };
+            return res.json(response)
+        }
+    }
+
+    async getByApoliceTipo(req: Request, res: Response) {
+        const apolice_tipo: apolice_tipo = req.body;
+        try {
+            const cobertura: cobertura = await this.coberturaService.getByID(apolice_tipo.ID.toString());
+            const response = {
+                code: 200,
+                message: "Dados das Coberturas foram encontrados com sucesso",
+                data: cobertura
+            }
+            return res.json(response);
+        } catch (error) {
+            const response = {
+                code: 400,
+                message: "Ocorreu um erro ao carregar os dados das Coberturas",
                 data: {},
                 error: error
             };
@@ -53,14 +72,9 @@ class CoberturaController {
     }
 
     async criar(req: Request, res: Response) {
-        const c: Cobertura = req.body;
-        const parsedData = CoberturaSchema.safeParse(c);
-        if (!parsedData.success) {
-            return handleParsingError(res, parsedData.error);
-        }
-
+        const c: cobertura = req.body;
         try {
-            const cobertura: Cobertura = await this.coberturaService.criar(parsedData.data);
+            const cobertura: cobertura = await this.coberturaService.criar(c);
             const response = {
                 code: 200,
                 message: "Dados da Cobertura inseridos com sucesso",
@@ -79,18 +93,9 @@ class CoberturaController {
     }
 
     async actualizar(req: Request, res: Response) {
-        const c: Cobertura = req.body
-        const parsedData = CoberturaSchema.safeParse(c);
-        if (!parsedData.success) {
-            return handleParsingError(res, parsedData.error);
-        }
-        
-        if (parsedData.data.id === undefined){
-            return handleParsingError(res, Error("O Id da cobertura não foi criado"));
-        }
-
+        const c: cobertura = req.body
         try {
-            const cobertura: Cobertura = await this.coberturaService.actualizar(parsedData.data.id.toString(), parsedData.data);
+            const cobertura: cobertura = await this.coberturaService.actualizar(c.ID.toString(), c);
             const response = {
                 code: 200,
                 message: "Dados da Cobertura actualizados com sucesso",

@@ -16,6 +16,7 @@ adendaRoutes.delete('/adenda/:id', adendaController.remover.bind(adendaControlle
 
 adendaRoutes.post('/adenda/segurados', adendaController.adicionarSegurados.bind(adendaController));
 adendaRoutes.post('/adenda/veiculos', adendaController.adicionarItemsSegurado.bind(adendaController));
+adendaRoutes.post('/adenda/calcular_premio', adendaController.calculatePremio.bind(adendaController));
 
 
 export default adendaRoutes;

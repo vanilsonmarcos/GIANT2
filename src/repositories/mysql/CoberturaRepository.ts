@@ -3,6 +3,7 @@ import ICobertura from "../ICobertura";
 import IGenericRepository from "../IGenericRepository";
 import prisma from "../PrismaClient";
 import { cobertura } from "@prisma/client";
+import CustomError from "../../utils/CustomError";
 
 @Service()
 class CoberturaRepository implements IGenericRepository<cobertura>, ICobertura {
@@ -43,9 +44,32 @@ class CoberturaRepository implements IGenericRepository<cobertura>, ICobertura {
         });
 
         if (cobertura === null) {
-            throw Error("Não foram encontrados os dados da Cobertura");
+            throw new CustomError("Não foram encontrados os dados da Cobertura");
         }
         return cobertura;
+    }
+
+    async getByApoliceTipo(id: string): Promise<cobertura[]> {
+        const apolice_tipo = await prisma.apolice_tipo.findUnique({
+            where: {
+                ID: parseInt(id)
+            }
+        });
+
+        if(apolice_tipo === null || undefined) {
+            throw new CustomError("Não foram encontrados os dados do tipo de apolice");
+        }
+
+        const coberturas = await prisma.cobertura.findMany({
+            where: {
+                APOLICE_TIPO_ID: apolice_tipo.ID
+            },
+        });
+
+        if (coberturas === null) {
+            throw new CustomError("Não foram encontrados os dados da Cobertura");
+        }
+        return coberturas;
     }
 
     async create(item: cobertura): Promise<cobertura> {
@@ -62,7 +86,7 @@ class CoberturaRepository implements IGenericRepository<cobertura>, ICobertura {
         });
 
         if (cobertura === null) {
-            throw Error("Ocorreu um erro ao criar a Cobertura");
+            throw new CustomError("Ocorreu um erro ao criar a Cobertura");
         }
         return cobertura;
     }
@@ -82,7 +106,7 @@ class CoberturaRepository implements IGenericRepository<cobertura>, ICobertura {
             }
         });
         if (cobertura === null) {
-            throw Error("Ocorreu um erro ao actualizar od dados da Cobertura")
+            throw new CustomError("Ocorreu um erro ao actualizar od dados da Cobertura")
         }
         return cobertura;
     }
