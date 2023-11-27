@@ -31,7 +31,7 @@ class CoberturaService {
         return this.repo.update(id, cobertura);
     }
 
-    async remover(id: string): Promise<Boolean> {
+    async remover(id: string): Promise<boolean> {
         // check if object exist
         return this.repo.delete(id);
     }
