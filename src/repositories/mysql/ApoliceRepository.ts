@@ -7,10 +7,20 @@ import IAdendaSegurado from "../IAdendaSegurado";
 import IApoliceEstado from "../IApoliceEstado";
 import CustomError from "../../utils/CustomError";
 import { isArrayEmpty } from "../../utils/helper";
-import PessoaSchema from "../../schema/PessoaSchema";
 @Service()
 class ApoliceRepository implements
     IGenericRepository<apolice>, IApoliceAdenda<adenda>, IAdendaSegurado<pessoa>, IApoliceEstado<apolice_estado> {
+    
+    async getAllApoliceEstado(): Promise<apolice_estado[]> {
+        const apolice_estados =  await prisma.apolice_estado.findMany({
+            take: 10,
+
+        });
+        if (isArrayEmpty(apolice_estados) || apolice_estados === null || apolice_estados === undefined) {
+            throw new CustomError("Ocorreu um erro ao carregar os estados das apólices");
+        }
+        return apolice_estados;  
+    }
 
     async getApoliceEstado(apoliceID: string): Promise<apolice_estado> {
         const apolice_estado = await prisma.apolice.findUnique({

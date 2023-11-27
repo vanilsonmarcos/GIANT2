@@ -1,9 +1,10 @@
 import { Request, Response } from "express";
-import { adenda, apolice } from "@prisma/client";
+import { adenda } from "@prisma/client";
 import AdendaService from "../services/AdendaService";
 import handleParsingError from "../utils/HandleParsingErrors";
 import CustomError from "../utils/CustomError";
-import prisma from "../repositories/PrismaClient";
+import IAdendaItems from "../entities/IAdendaItems";
+import IAdendaSegurados from "../entities/IAdendaSegurados";
 
 class AdendaController {
     private adendaService: AdendaService;
@@ -139,6 +140,55 @@ class AdendaController {
             const response = {
                 code: 401,
                 message: "Ocorreu um ao efectuar os calculos do premio da adenda",
+                data: {},
+                error: error
+            }
+            if (error instanceof CustomError) { 
+              response.message = error.message
+            }
+            res.json(response);
+        }
+    }
+
+    async adicionarItemsSegurado(req: Request, res:Response) {
+        const data:IAdendaItems = req.body; 
+        try {
+            const createdAdenda = await this.adendaService.adicionarItemsSegurado(data.adenda.ID.toString(), data.items);
+            const response = {
+                code: 200,
+                message: "Items da adenda inseridos com sucesso",
+                data: createdAdenda
+            };
+            res.json(response);
+        } catch (error) {
+            const response = {
+                code: 401,
+                message: "Ocorreu um erro ao inserir os items a adenda",
+                data: {},
+                error: error
+            }
+            if (error instanceof CustomError) { 
+              response.message = error.message
+            }
+            res.json(response);
+        }
+
+    }
+
+    async adicionarSegurados(req: Request, res:Response) {
+        const data: IAdendaSegurados = req.body; 
+        try {
+            const createdAdenda = await this.adendaService.adicionarSegurados(data.adenda.ID.toString(), data.segurados);
+            const response = {
+                code: 200,
+                message: "Segurados adicionados a adenda adicionados com sucesso",
+                data: createdAdenda
+            };
+            res.json(response);
+        } catch (error) {
+            const response = {
+                code: 401,
+                message: "Ocorreu um erro ao adicionar os segurados a adenda",
                 data: {},
                 error: error
             }

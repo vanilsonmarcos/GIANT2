@@ -1,12 +1,11 @@
 import { Service, Inject } from "typedi";
-import IGenericRepository from "../repositories/IGenericRepository";
 import ApoliceRepository from "../repositories/mysql/ApoliceRepository";
 import { apolice } from "@prisma/client";
 
 @Service()
 class ApoliceService {
     @Inject(()=> ApoliceRepository)
-    private repo: IGenericRepository<apolice>;
+    private repo: ApoliceRepository;
 
     constructor () {}
 
@@ -30,6 +29,10 @@ class ApoliceService {
         // check if object exist
         return this.repo.delete(id);
     }
+
+    async getAllApoliceEstado() {
+        return this.repo.getAllApoliceEstado();
+    } 
 
 }
 

@@ -9,6 +9,8 @@ const apoliceController:ApoliceController = new ApoliceController(apoliceService
 const apoliceRoutes = Router();
 
 apoliceRoutes.get('/apolice/', apoliceController.getAll.bind(apoliceController));
+apoliceRoutes.get('/apolice/estado/', apoliceController.getAllApoliceEstado.bind(apoliceController));
+
 apoliceRoutes.get('/apolice/:id', apoliceController.getByID.bind(apoliceController));
 apoliceRoutes.post('/apolice/', apoliceController.criar.bind(apoliceController));
 apoliceRoutes.put('/apolice/', apoliceController.actualizar.bind(apoliceController));

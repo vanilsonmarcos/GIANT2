@@ -136,6 +136,29 @@ class ApoliceController {
             res.json(response);
         }
     }
+
+    async getAllApoliceEstado(req: Request, res: Response) {
+        try {
+            const apolices = await this.apoliceService.getAllApoliceEstado();
+            const response = {
+                code: 200,
+                message: "Dados dos estados das apolices encontrados com sucesso",
+                data: apolices
+            };
+            res.json(response)
+        } catch (error) {
+            const response = {
+                code: 401,
+                message: "Os dados dos estados das apolices não foram encontrados",
+                data:  {},
+                error: error
+            };
+            if (error instanceof CustomError) {
+                response.message = error.message;
+            }
+            res.json(response)
+        }
+    }
 }
 
 export default ApoliceController

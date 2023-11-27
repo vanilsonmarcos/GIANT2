@@ -14,4 +14,8 @@ adendaRoutes.post('/adenda/', adendaController.criar.bind(adendaController));
 adendaRoutes.put('/adenda/', adendaController.actualizar.bind(adendaController));
 adendaRoutes.delete('/adenda/:id', adendaController.remover.bind(adendaController));
 
+adendaRoutes.post('/adenda/segurados', adendaController.adicionarSegurados.bind(adendaController));
+adendaRoutes.post('/adenda/veiculos', adendaController.adicionarItemsSegurado.bind(adendaController));
+
+
 export default adendaRoutes;

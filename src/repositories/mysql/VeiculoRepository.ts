@@ -124,6 +124,9 @@ class VeiculoRepository implements IVeiculoRepository<veiculo>, IVeiculoCategori
         const veiculo_categorias = await prisma.veiculo_categoria.findMany({
             take: 10
         });
+        if(isArrayEmpty(veiculo_categorias)|| veiculo_categorias === null || veiculo_categorias === undefined) {
+            throw new CustomError("Ocorreu um erro ao carregar as categorias dos veiculos");
+        }
         return veiculo_categorias;
     }
 
@@ -134,7 +137,7 @@ class VeiculoRepository implements IVeiculoRepository<veiculo>, IVeiculoCategori
             }
         });
         if(veiculo_categoria === null || veiculo_categoria === undefined) {
-            throw new CustomError("Ocorreu um erro ao carregar a categoria do veiculo")
+            throw new CustomError("Ocorreu um erro ao carregar a categoria do veiculo");
         }
         return veiculo_categoria;
     }
