@@ -8,6 +8,34 @@ import { isArrayEmpty } from "../../utils/helper";
 
 @Service()
 class PessoaRepository implements IPessoaRepository<Pessoa> {
+    async getAllClientes(): Promise<Pessoa[]> {
+        const clientes_id = await prisma.apolice.findMany({
+            select:{
+                TOMADOR_ID: true
+            },
+            distinct: ["TOMADOR_ID"]
+
+        });
+        const ids = clientes_id.map((item) => item.TOMADOR_ID);
+
+        const pessoas = await prisma.pessoa.findMany({
+            where: {
+                ID: {
+                    in: ids
+                }
+            },
+            include: { 
+                pessoa_tipo: true,
+                pessoa_endereco: true,
+            },
+            take: 100
+        });
+        if (isArrayEmpty(pessoas) || pessoas === null || pessoas === undefined) {
+            throw new CustomError("Não foram encontrados clientes registadas no sistema");
+        }
+        return generatePessoas(pessoas);
+    }
+
     async getAll(): Promise<Pessoa[]> {
         const pessoas = await prisma.pessoa.findMany({
             include: { 
@@ -19,8 +47,6 @@ class PessoaRepository implements IPessoaRepository<Pessoa> {
         if (isArrayEmpty(pessoas)|| pessoas === null || pessoas === undefined) {
             throw new CustomError("Não foram encontradas pessoas registadas no sistema");
         }
-
-
         return generatePessoas(pessoas);
     }
 

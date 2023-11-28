@@ -9,6 +9,8 @@ const pessoaController: PessoaController = new PessoaController(pessoaService);
 const pessoaRoutes = Router();
 
 pessoaRoutes.get('/pessoa/', pessoaController.getAll.bind(pessoaController));
+pessoaRoutes.get('/clientes/', pessoaController.getAllClientes.bind(pessoaController));
+
 pessoaRoutes.get('/pessoa/:id', pessoaController.getByID.bind(pessoaController));
 pessoaRoutes.get('/pessoa/nbi/:nbi', pessoaController.getByNBI.bind(pessoaController));
 pessoaRoutes.get('/pessoa/nif/:nif', pessoaController.getByNIF.bind(pessoaController));

@@ -14,6 +14,10 @@ class PessoaService {
     getAll(): Promise<Pessoa[]> {
         return this.repo.getAll();         
     }
+    
+    getAllclientes(): Promise<Pessoa[]> {
+        return this.repo.getAllClientes();
+    }
 
     getByID(id: string): Promise<Pessoa>{
         return this.repo.getByID(id);

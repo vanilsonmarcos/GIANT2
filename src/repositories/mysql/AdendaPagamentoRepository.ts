@@ -17,7 +17,7 @@ class AdendaPagamentoRepository implements IGenericRepository<adenda_pagamento> 
         });
 
         if (isArrayEmpty(adenda_pagamentos) || adenda_pagamentos === null || adenda_pagamentos === undefined) {
-            throw new CustomError("Não foram encontradas adendas/actas registadas");
+            throw new CustomError("Não foram encontrados pagamentos registados.");
         }
         return adenda_pagamentos;
     }
@@ -30,7 +30,7 @@ class AdendaPagamentoRepository implements IGenericRepository<adenda_pagamento> 
         });
 
         if (adenda_pagamento === null || adenda_pagamento === undefined) {
-            throw new CustomError("não foi encontrada a adenda/acta");
+            throw new CustomError("Não foi encontrado o pagamento com o ID referenciado.");
         }
         return adenda_pagamento;
     }
@@ -45,7 +45,7 @@ class AdendaPagamentoRepository implements IGenericRepository<adenda_pagamento> 
         });
 
         if (adenda_pagamento === null || adenda_pagamento === undefined) {
-            throw new CustomError("Ocorreu um erro ao criar a adenda ou acta");
+            throw new CustomError("Ocorreu um erro ao adicionar o pagamento a adenda.");
         }
         return adenda_pagamento;
     }

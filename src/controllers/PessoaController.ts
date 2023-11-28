@@ -4,7 +4,6 @@ import Identifier from "../schema/Identifier";
 import handleParsingError from "../utils/HandleParsingErrors";
 import NbiSchema from "../schema/NbiSchema";
 import EmailSchema from "../schema/EmailSchema";
-import { pessoa } from "@prisma/client";
 import Pessoa from "../entities/Pessoa/Pessoa";
 import CustomError from "../utils/CustomError";
 
@@ -29,6 +28,30 @@ class PessoaController {
             const response = {
                 code: 404,
                 message: "Ocorreu um erro ao colectar dos dados das pessoas",
+                data: {},
+                error: error
+            }
+            if (error instanceof CustomError) {
+                response.message = error.message;
+            }
+            return res.json(response);
+        }
+
+    }
+
+    async getAllClientes(req: Request, res: Response) {
+        try {
+            const pessoas = await this.pessoaService.getAll();
+            const response = {
+                code: 200,
+                message: "Dados das clientes foram encontrados com sucesso",
+                data: pessoas
+            }
+            return res.json(response);
+        } catch (error) {
+            const response = {
+                code: 404,
+                message: "Ocorreu um erro ao colectar dos dados dos Clientes",
                 data: {},
                 error: error
             }
