@@ -318,21 +318,22 @@ em caso de error retorna:
 }
 ```
 
-## Veiculo Categoraia
+## Veiculo Categoria
 
 Metodo: GET
 URL: /veiculo/categoria/
-Resposta:
-em caso de sucesso retorna:
+Resposta em caso de sucesso retorna:
 
 ```json
 {
-    "ID": number
-    "NOME": string
-    "REMOVIDO_POR": number | null
-    "DATA_INSERCAO": Date | null
-    "DATA_ACTUALIZACAO": Date | null
-    "DATA_REMOCAO": Date | null
+    "code":200,
+    "message":"Dados das categorias de veiculos foram encontrados com sucesso",
+    "data":[
+        {"ID":1,"NOME":"Ligeriro ","REMOVIDO_POR":null,"DATA_INSERCAO":null,"DATA_ACTUALIZACAO":null,"DATA_REMOCAO":null},
+        {"ID":2,"NOME":"Camionetas","REMOVIDO_POR":null,"DATA_INSERCAO":null,"DATA_ACTUALIZACAO":null,"DATA_REMOCAO":null},
+        {"ID":3,"NOME":"Autocaravanas","REMOVIDO_POR":null,"DATA_INSERCAO":null,"DATA_ACTUALIZACAO":null,"DATA_REMOCAO":null},
+        {"ID":4,"NOME":"Pesados","REMOVIDO_POR":null,"DATA_INSERCAO":null,"DATA_ACTUALIZACAO":null,"DATA_REMOCAO":null}
+    ]
 }
 ```
 
@@ -346,16 +347,24 @@ em caso de sucesso retorna:
 
 ```json
 
-{"code":200,"message":"Dados das apolices encontrados com sucesso","data":[{"ID":2,"APOLICE_TIPO_ID":1,"APOLICE_ESTADO_ID":6,"APOLICE_FRACIONAMENTO_ID":1,"NUMERO":"34343","TOMADOR_ID":1,"INSERIDO_POR":null,"ACTUALIZADO_POR":null,"DATA_INSERCAO":"2023-11-11T12:58:03.000Z","DATA_ACTUALIZACAO":null},{"ID":3,"APOLICE_TIPO_ID":1,"APOLICE_ESTADO_ID":6,"APOLICE_FRACIONAMENTO_ID":1,"NUMERO":"1 12.112023/0","TOMADOR_ID":1,"INSERIDO_POR":null,"ACTUALIZADO_POR":null,"DATA_INSERCAO":"2023-11-12T00:12:23.000Z","DATA_ACTUALIZACAO":null},{"ID":4,"APOLICE_TIPO_ID":1,"APOLICE_ESTADO_ID":3,"APOLICE_FRACIONAMENTO_ID":1,"NUMERO":"1 12 11.2023/0001","TOMADOR_ID":1,"INSERIDO_POR":null,"ACTUALIZADO_POR":null,"DATA_INSERCAO":"2023-11-12T00:18:56.000Z","DATA_ACTUALIZACAO":null}]}
+{
+    "code":200,
+    "message":"Dados das apolices encontrados com sucesso",
+    "data":[
+        {"ID":2,"APOLICE_TIPO_ID":1,"APOLICE_ESTADO_ID":6,"APOLICE_FRACIONAMENTO_ID":1,"NUMERO":"34343","TOMADOR_ID":1,"INSERIDO_POR":null,"ACTUALIZADO_POR":null,"DATA_INSERCAO":"2023-11-11T12:58:03.000Z","DATA_ACTUALIZACAO":null},
+        {"ID":3,"APOLICE_TIPO_ID":1,"APOLICE_ESTADO_ID":6,"APOLICE_FRACIONAMENTO_ID":1,"NUMERO":"1 12.112023/0","TOMADOR_ID":1,"INSERIDO_POR":null,"ACTUALIZADO_POR":null,"DATA_INSERCAO":"2023-11-12T00:12:23.000Z","DATA_ACTUALIZACAO":null},
+        {"ID":4,"APOLICE_TIPO_ID":1,"APOLICE_ESTADO_ID":3,"APOLICE_FRACIONAMENTO_ID":1,"NUMERO":"1 12 11.2023/0001","TOMADOR_ID":1,"INSERIDO_POR":null,"ACTUALIZADO_POR":null,"DATA_INSERCAO":"2023-11-12T00:18:56.000Z","DATA_ACTUALIZACAO":null}
+        ]
+    }
  ```
 
  em caso de erro
  ```json
  {
-    code: 401,
-    message:"Ocorreu um erro ao carregar os dados das apolices",
-    data: {},
-    error: {error}
+    "code": 401,
+    "message":"Ocorreu um erro ao carregar os dados das apolices",
+    "data": {},
+    "error": {error}
  }
  ```
 
@@ -366,7 +375,22 @@ Resposta:
 em caso de sucesso retorna:
 
  ```json
-{"code":200,"message":"Dados da apólice foram encontrados com sucesso","data":{"ID":2,"APOLICE_TIPO_ID":1,"APOLICE_ESTADO_ID":6,"APOLICE_FRACIONAMENTO_ID":1,"NUMERO":"34343","TOMADOR_ID":1,"INSERIDO_POR":null,"ACTUALIZADO_POR":null,"DATA_INSERCAO":"2023-11-11T12:58:03.000Z","DATA_ACTUALIZACAO":null}}
+{
+    "code":200,
+    "message":"Dados da apólice foram encontrados com sucesso",
+    "data":{
+        "ID":2,
+        "APOLICE_TIPO_ID":1,
+        "APOLICE_ESTADO_ID":6,
+        "APOLICE_FRACIONAMENTO_ID":1,
+        "NUMERO":"34343",
+        "TOMADOR_ID":1,
+        "INSERIDO_POR":null,
+        "ACTUALIZADO_POR":null,
+        "DATA_INSERCAO":"2023-11-11T12:58:03.000Z",
+        "DATA_ACTUALIZACAO":null
+    }
+}
  ```
 
 Visualizar os estados de uma apolice
@@ -377,7 +401,82 @@ Resposta:
 em caso de sucesso retorna:
 
 ```json
-{"code":200,"message":"Dados dos estados das apolices encontrados com sucesso","data":[{"ID":1,"NOME":"Em Processamento","DESCRICAO":"A Apolice está em processamento; é um estado temporário em que a se encontra","INSERIDO_POR":null,"ACTUALIZADO_POR":null,"REMOVIDO_POR":null,"DATA_INSERCAO":"2023-11-10T09:29:37.000Z","DATA_ACTUALIZACAO":"2023-11-10T09:29:37.000Z"},{"ID":2,"NOME":"Suspensa","DESCRICAO":"A apolice está suspensa","INSERIDO_POR":null,"ACTUALIZADO_POR":null,"REMOVIDO_POR":null,"DATA_INSERCAO":"2023-11-10T09:29:37.000Z","DATA_ACTUALIZACAO":"2023-11-10T09:29:37.000Z"},{"ID":3,"NOME":"Cancelada","DESCRICAO":"A apólice está cancelada","INSERIDO_POR":null,"ACTUALIZADO_POR":null,"REMOVIDO_POR":null,"DATA_INSERCAO":"2023-11-10T09:29:37.000Z","DATA_ACTUALIZACAO":"2023-11-10T09:29:37.000Z"},{"ID":4,"NOME":"Expirada","DESCRICAO":"A apólice passou a data de renovação","INSERIDO_POR":null,"ACTUALIZADO_POR":null,"REMOVIDO_POR":null,"DATA_INSERCAO":"2023-11-10T09:29:37.000Z","DATA_ACTUALIZACAO":"2023-11-10T09:29:37.000Z"},{"ID":5,"NOME":"Activa","DESCRICAO":"A apólice está valida durante o tempo em que é visualizada","INSERIDO_POR":null,"ACTUALIZADO_POR":null,"REMOVIDO_POR":null,"DATA_INSERCAO":"2023-11-10T09:29:37.000Z","DATA_ACTUALIZACAO":"2023-11-10T09:29:37.000Z"},{"ID":6,"NOME":"Em Simulação","DESCRICAO":"A apolice ainda está em estado de simulação","INSERIDO_POR":null,"ACTUALIZADO_POR":null,"REMOVIDO_POR":null,"DATA_INSERCAO":"2023-11-10T09:29:37.000Z","DATA_ACTUALIZACAO":"2023-11-10T09:29:37.000Z"},{"ID":7,"NOME":"Inactiva","DESCRICAO":"A apólice foi paga","INSERIDO_POR":null,"ACTUALIZADO_POR":null,"REMOVIDO_POR":null,"DATA_INSERCAO":"2023-11-10T09:29:37.000Z","DATA_ACTUALIZACAO":"2023-11-10T09:29:37.000Z"}]}
+{
+    "code":200,
+    "message":"Dados dos estados das apolices encontrados com sucesso",
+    "data":[
+        {
+            "ID":1,
+            "NOME":"Em Processamento",
+            "DESCRICAO":"A Apolice está em processamento; é um estado temporário em que a se encontra",
+            "INSERIDO_POR":null,
+            "ACTUALIZADO_POR":null,
+            "REMOVIDO_POR":null,
+            "DATA_INSERCAO":"2023-11-10T09:29:37.000Z",
+            "DATA_ACTUALIZACAO":"2023-11-10T09:29:37.000Z"
+        },
+        {
+            "ID":2,
+            "NOME":"Suspensa",
+            "DESCRICAO":"A apolice está suspensa",
+            "INSERIDO_POR":null,
+            "ACTUALIZADO_POR":null,
+            "REMOVIDO_POR":null,
+            "DATA_INSERCAO":"2023-11-10T09:29:37.000Z",
+            "DATA_ACTUALIZACAO":"2023-11-10T09:29:37.000Z"
+        },
+        {
+            "ID":3,
+            "NOME":"Cancelada",
+            "DESCRICAO":"A apólice está cancelada",
+            "INSERIDO_POR":null,
+            "ACTUALIZADO_POR":null,
+            "REMOVIDO_POR":null,
+            "DATA_INSERCAO":"2023-11-10T09:29:37.000Z",
+            "DATA_ACTUALIZACAO":"2023-11-10T09:29:37.000Z"
+        },
+        {
+            "ID":4,
+            "NOME":"Expirada",
+            "DESCRICAO":"A apólice passou a data de renovação",
+            "INSERIDO_POR":null,
+            "ACTUALIZADO_POR":null,
+            "REMOVIDO_POR":null,
+            "DATA_INSERCAO":"2023-11-10T09:29:37.000Z",
+            "DATA_ACTUALIZACAO":"2023-11-10T09:29:37.000Z"
+        },
+        {
+            "ID":5,
+            "NOME":"Activa",
+            "DESCRICAO":"A apólice está valida durante o tempo em que é visualizada",
+            "INSERIDO_POR":null,
+            "ACTUALIZADO_POR":null,
+            "REMOVIDO_POR":null,
+            "DATA_INSERCAO":"2023-11-10T09:29:37.000Z",
+            "DATA_ACTUALIZACAO":"2023-11-10T09:29:37.000Z"
+        },
+        {
+            "ID":6,
+            "NOME":"Em Simulação",
+            "DESCRICAO":"A apolice ainda está em estado de simulação",
+            "INSERIDO_POR":null,
+            "ACTUALIZADO_POR":null,
+            "REMOVIDO_POR":null,
+            "DATA_INSERCAO":"2023-11-10T09:29:37.000Z",
+            "DATA_ACTUALIZACAO":"2023-11-10T09:29:37.000Z"
+        },
+        {
+            "ID":7,
+            "NOME":"Inactiva",
+            "DESCRICAO":"A apólice foi paga",
+            "INSERIDO_POR":null,
+            "ACTUALIZADO_POR":null,
+            "REMOVIDO_POR":null,
+            "DATA_INSERCAO":"2023-11-10T09:29:37.000Z",
+            "DATA_ACTUALIZACAO":"2023-11-10T09:29:37.000Z"
+        }
+    ]
+}
 ```
 
 em caso de erro retorna:
@@ -493,7 +592,7 @@ Resposta em caso de erro retorna:
     "code": 401,
     "message": "Ocorreu um erro ao remover os dados da apólice",
     "data": {},
-    "error": error
+    "error": {error}
 }
 ```
 
@@ -621,11 +720,9 @@ em caso de sucesso retorna:
 
 ```json
 {
-    code: 200,
-    message: "Dados dos preços por cilindrada foram encontrados com sucesso",
-    data: [
-        {precoCilindrada 1 }, {precoCilindrada 2}, {...}
-    ]
+    "code": 200,
+    "message": "Dados dos preços por cilindrada foram encontrados com sucesso",
+    "data": [preco_cilindrada_1 , preco_cilindrada_2, ...]
 }
 ```
 
@@ -633,14 +730,14 @@ em caso de erro retorna:
 
 ```json
 {
-    code: 401,
-    message: "Ocorreu um erro ao colectar os dados  dos preços por cilindrada",
-    data: {}, 
-    error: {erro}
+    "code": 401,
+    "message": "Ocorreu um erro ao colectar os dados  dos preços por cilindrada",
+    "data": {}, 
+    "error": {erro}
 }
 ```
 
-Visualizar preco_cilindrada pelo id 
+Visualizar preco_cilindrada pelo id
 Metodo: GET
 URL: /preco_cilindrada/:id
 Resposta:
@@ -648,9 +745,9 @@ em caso de sucesso retorna:
 
 ```json
 {
-    code: 200,
-    message: "Dados dos preços por cilindrada foram encontrados com sucesso",
-    data: { precoCilindrada 1 }
+    "code": 200,
+    "message": "Dados dos preços por cilindrada foram encontrados com sucesso",
+    "data": { precoCilindrada 1 }
     
 }
 ```
@@ -659,10 +756,10 @@ em caso de erro retorna:
 
 ```json
 {
-    code: 401,
-    message: "Ocorreu um erro ao inserir os dados preço por cilindrada",
-    data: {}, 
-    error: {erro}
+    "code": 401,
+    "message": "Ocorreu um erro ao inserir os dados preço por cilindrada",
+    "data": {}, 
+    "error": {erro}
 }
 ```
 
@@ -673,21 +770,17 @@ Body:
 
 ```json
 {
-    ID: number
-    NOME: string
-    LOTACAO: number
-    VEICULO_CATEGORIA_ID: number
-    PREMIO_TRIMESTRAL: Prisma.Decimal
-    PREMIO_SEMESTRAL: Prisma.Decimal
-    PREMIO_ANUAL: Prisma.Decimal
-    PESO_KG: number
-    CILINDRADA_MIN: number
-    CILINDRADA_MAX: number
-    INSERIDO_POR: number | null
-    ACTUALIZADO_POR: number | null
-    DATA_CRIACAO: Date | null
-    DATA_ACTUALIZACAO: Date | null
+    "NOME":"Ligeiro Particular",
+    "LOTACAO":0,
+    "VEICULO_CATEGORIA_ID":1,
+    "PREMIO_TRIMESTRAL":"6351",
+    "PREMIO_SEMESTRAL":"12582",
+    "PREMIO_ANUAL":"24923",
+    "PESO_KG":0,
+    "CILINDRADA_MIN":0,
+    "CILINDRADA_MAX":1300
 }
+
 ```
 
 Resposta:
@@ -695,23 +788,23 @@ em caso de sucesso retorna o objecto inserido com o id definido.
 
 ```json
 {
-    code: 200,
-    message: "Dados do preço por cilindrada inseridos com sucesso",
-    data: {
-        ID: number
-        NOME: string
-        LOTACAO: number
-        VEICULO_CATEGORIA_ID: number
-        PREMIO_TRIMESTRAL: Prisma.Decimal
-        PREMIO_SEMESTRAL: Prisma.Decimal
-        PREMIO_ANUAL: Prisma.Decimal
-        PESO_KG: number
-        CILINDRADA_MIN: number
-        CILINDRADA_MAX: number
-        INSERIDO_POR: number | null
-        ACTUALIZADO_POR: number | null
-        DATA_CRIACAO: Date | null
-        DATA_ACTUALIZACAO: Date | null
+    "code": 200,
+    "message": "Dados do preço por cilindrada inseridos com sucesso",
+    "data": {
+        "ID":15,
+        "NOME":"Ligeiro Particular",
+        "LOTACAO":0,
+        "VEICULO_CATEGORIA_ID":1,
+        "PREMIO_TRIMESTRAL":"6351",
+        "PREMIO_SEMESTRAL":"12582",
+        "PREMIO_ANUAL":"24923",
+        "PESO_KG":0,
+        "CILINDRADA_MIN":0,
+        "CILINDRADA_MAX":1300,
+        "INSERIDO_POR":null,
+        "ACTUALIZADO_POR":null,
+        "DATA_CRIACAO":"2023-11-10T09:34:47.000Z",
+        "DATA_ACTUALIZACAO":"2023-11-10T09:34:47.000Z",
     }
 }
 ```
@@ -720,10 +813,10 @@ em caso de erro retorna:
 
 ```json
 {
-    code: 401,
-    message: "Ocorreu um erro ao inserir os dados preço por cilindrada",
-    data: {},
-    error: {error}
+    "code": 401,
+    "message": "Ocorreu um erro ao inserir os dados preço por cilindrada",
+    "data": {},
+    "error": {error}
 }
 ```
 
@@ -734,20 +827,16 @@ Body:
 
 ```json
 {
-    ID: number
-      NOME: string
-      LOTACAO: number
-      VEICULO_CATEGORIA_ID: number
-      PREMIO_TRIMESTRAL: Prisma.Decimal
-      PREMIO_SEMESTRAL: Prisma.Decimal
-      PREMIO_ANUAL: Prisma.Decimal
-      PESO_KG: number
-      CILINDRADA_MIN: number
-      CILINDRADA_MAX: number
-      INSERIDO_POR: number | null
-      ACTUALIZADO_POR: number | null
-      DATA_CRIACAO: Date | null
-      DATA_ACTUALIZACAO: Date | null
+    "ID":15,
+    "NOME":"Ligeiro Particular",
+    "LOTACAO":4,
+    "VEICULO_CATEGORIA_ID":2,
+    "PREMIO_TRIMESTRAL":"6351",
+    "PREMIO_SEMESTRAL":"12582",
+    "PREMIO_ANUAL":"24923",
+    "PESO_KG":0,
+    "CILINDRADA_MIN":0,
+    "CILINDRADA_MAX":1300
 }
 ```
 
@@ -756,23 +845,23 @@ em caso de sucesso retorna o objecto inserido com o id definido.
 
 ```json
 {
-    code: 200,
-    message: "Dados do preço por cilindrada actualizados com sucesso",
-    data: {
-        ID: number
-        NOME: string
-        LOTACAO: number
-        VEICULO_CATEGORIA_ID: number
-        PREMIO_TRIMESTRAL: Prisma.Decimal
-        PREMIO_SEMESTRAL: Prisma.Decimal
-        PREMIO_ANUAL: Prisma.Decimal
-        PESO_KG: number
-        CILINDRADA_MIN: number
-        CILINDRADA_MAX: number
-        INSERIDO_POR: number | null
-        ACTUALIZADO_POR: number | null
-        DATA_CRIACAO: Date | null
-        DATA_ACTUALIZACAO: Date | null
+    "code": 200,
+    "message": "Dados do preço por cilindrada actualizados com sucesso",
+    "data": {
+        "ID":15,
+        "NOME":"Ligeiro Particular",
+        "LOTACAO":4,
+        "VEICULO_CATEGORIA_ID":2,
+        "PREMIO_TRIMESTRAL":"6351",
+        "PREMIO_SEMESTRAL":"12582",
+        "PREMIO_ANUAL":"24923",
+        "PESO_KG":0,
+        "CILINDRADA_MIN":0,
+        "CILINDRADA_MAX":1300,
+        "INSERIDO_POR":null,
+        "ACTUALIZADO_POR":null,
+        "DATA_CRIACAO":"2023-11-10T09:34:47.000Z",
+        "DATA_ACTUALIZACAO":"2023-11-10T09:34:47.000Z",
     }
 }
 ```
@@ -781,10 +870,10 @@ em caso de erro retorna:
 
 ```json
 {
-    code: 401,
-    message: "Ocorreu um erro ao actualizar os dados do preço cilindrada",
-    data: {},
-    error: {error}
+    "code": 401,
+    "message": "Ocorreu um erro ao actualizar os dados do preço cilindrada",
+    "data": {},
+    "error": {error}
 }
 ```
 
@@ -796,23 +885,23 @@ em caso de sucesso retorna:
 
 ```json
 {
-    code: 200,
-    message: "Dados do preço cilindrada removidos com sucesso",
-    data: {
-        ID: number
-        NOME: string
-        LOTACAO: number
-        VEICULO_CATEGORIA_ID: number
-        PREMIO_TRIMESTRAL: Prisma.Decimal
-        PREMIO_SEMESTRAL: Prisma.Decimal
-        PREMIO_ANUAL: Prisma.Decimal
-        PESO_KG: number
-        CILINDRADA_MIN: number
-        CILINDRADA_MAX: number
-        INSERIDO_POR: number | null
-        ACTUALIZADO_POR: number | null
-        DATA_CRIACAO: Date | null
-        DATA_ACTUALIZACAO: Date | null
+    "code": 200,
+    "message": "Dados do preço cilindrada removidos com sucesso",
+    "data": {
+        "ID":15,
+        "NOME":"Ligeiro Particular",
+        "LOTACAO":4,
+        "VEICULO_CATEGORIA_ID":2,
+        "PREMIO_TRIMESTRAL":"6351",
+        "PREMIO_SEMESTRAL":"12582",
+        "PREMIO_ANUAL":"24923",
+        "PESO_KG":0,
+        "CILINDRADA_MIN":0,
+        "CILINDRADA_MAX":1300,
+        "INSERIDO_POR":null,
+        "ACTUALIZADO_POR":null,
+        "DATA_CRIACAO":"2023-11-10T09:34:47.000Z",
+        "DATA_ACTUALIZACAO":"2023-11-10T09:34:47.000Z",
     }
 }
 ```
@@ -821,10 +910,10 @@ em caso de error retorna:
 
 ```json
 {
-    code: 401,
-    message: "Ocorreu um erro ao remover os dados do preço cilindrada",
-    data: {},
-    error: {error}
+    "code": 401,
+    "message": "Ocorreu um erro ao remover os dados do preço cilindrada",
+    "data": {},
+    "error": {error}
 }
 ```
 
@@ -838,10 +927,118 @@ em caso de sucesso retorna:
 
 ```json
 {
-    code: 200,
-    message: "Dados das pessoas foram encontrados com sucesso",
-    data: [
-        {pessoa 1 }, {pessoa 2}, {...}
+    "code":200,
+    "message":"Dados das pessoas foram encontrados com sucesso",
+    "data":[
+        {
+            "ID":1,
+            "NOME":"Pedro Nuno Santos",
+            "PESSOA_TIPO": {
+                "ID":1,
+                "NOME":"Pessoa Física"
+            },
+            "DATA_NASCIMENTO":"1962-07-02",
+            "SEXO":"M",
+            "NBI":"003466243LA35",
+            "NIF":"003466243LA35",
+            "ESTADO_CIVIL":"S",
+            "ENDERECO": {
+                "ID":1,
+                "TELEFONE":"933000300",
+                "TELEFONE_ALT":"933000301",
+                "BAIRRO":"Talatona",
+                "CIDADE":"Luanda",
+                "PROVINCIA":"Luanda",
+                "EMAIL":"psantos@infoco.ao"
+            }
+        },
+        {
+            "ID":2,
+            "NOME":"Andre Vieira",
+            "PESSOA_TIPO": {
+                "ID":1,
+                "NOME":"Pessoa Física"
+            },
+            "DATA_NASCIMENTO":"1977-11-06",
+            "SEXO":"M",
+            "NBI":"004556243LA24",
+            "NIF":"004556243LA24",
+            "ESTADO_CIVIL":"C",
+            "ENDERECO": {
+                "ID":2,
+                "TELEFONE":"944000400",
+                "TELEFONE_ALT":"944000401",
+                "BAIRRO":"Boa fé",
+                "CIDADE":"Luanda",
+                "PROVINCIA":"Luanda",
+                "EMAIL":"avieira@infoco.ao"
+            }
+        },
+        {
+            "ID":3,
+            "NOME":"Maria Miguel",
+            "PESSOA_TIPO": { 
+                "ID":1,
+                "NOME":"Pessoa Física"
+            },
+            "DATA_NASCIMENTO":"1986-04-12",
+            "SEXO":"F",
+            "NBI":"005674243LA33",
+            "NIF":"005674243LA33",
+            "ESTADO_CIVIL":"C",
+            "ENDERECO": {
+                "ID":3,
+                "TELEFONE":"955000500",
+                "TELEFONE_ALT":"955000501",
+                "BAIRRO":"Luanda Sul",
+                "CIDADE":"Luanda",
+                "PROVINCIA":"Luanda",
+                "EMAIL":"mmiguel@infoco.ao"
+            }
+        },
+        {
+            "ID":4,
+            "NOME":"Alexandre Vicente",
+            "PESSOA_TIPO": { 
+                "ID":1,"NOME":"Pessoa Física"
+            },
+            "DATA_NASCIMENTO":"1988-03-24",
+            "SEXO":"M",
+            "NBI":"002556243LA22",
+            "NIF":"002556243LA22",
+            "ESTADO_CIVIL":"C",
+            "ENDERECO": {
+                "ID":4,
+                "TELEFONE":"966000600",
+                "TELEFONE_ALT":"966000601",
+                "BAIRRO":"Dangereux",
+                "CIDADE":"Luanda",
+                "PROVINCIA":"Luanda",
+                "EMAIL":"avicente@infoco.ao"
+            }
+        },    
+        {
+            "ID":5,
+            "NOME":"Talita Aleixo",
+            "PESSOA_TIPO": { 
+                "ID":1,
+                "NOME":"Pessoa Física"
+            },
+            "DATA_NASCIMENTO":"1990-01-07",
+            "SEXO":"F",
+            "NBI":"005236243LA03",
+            "NIF":"005236243LA03",
+            "ESTADO_CIVIL":"S",
+            "ENDERECO": {
+                "ID":5,
+                "TELEFONE":"977000700",
+                "TELEFONE_ALT":"966000701",
+                "BAIRRO":"Camama",
+                "CIDADE":"Luanda",
+                "PROVINCIA":"Luanda",
+                "EMAIL":"taleixo@infoco.ao"
+            }
+        }
     ]
 }
 ```
@@ -850,35 +1047,43 @@ em caso de erro retorna:
 
 ```json
 {
-    code: 401,
-    message: "Occoreu um erro ao colectar dos dados das pessoas",
-    data: {}, 
-    error: {erro}
+    "code": 401,
+    "message": "Ocoreu um erro ao colectar dos dados das pessoas",
+    "data": {}, 
+    "error": {erro}
 }
 ```
 
-Vissualizar pesssoa pelo id
+Visualizar pesssoa pelo id
 Metodo: GET
-URL: /pessoa/:id
-Resposta:
-em caso de sucesso retorna:
+URL: /pessoa/5
+Resposta em caso de sucesso retorna:
 
 ```json
 {
-    code: 200,
-    message: "Dados da pessoa foram encontrados com sucesso",
-    data: {    
-        ID: number
-        PESSOA_TIPO_ID: number
-        ENDERECO_ID: number | null
-        NOME: string
-        DATA_NASCIMENTO: Date
-        SEXO: string
-        NBI: string | null
-        NIF: string
-        ESTADO_CIVIL: string
-        DATA_CRIACAO: Date | null
-        DATA_ACTUALIZACAO: Date | null
+    "code": 200,
+    "message": "Dados da pessoa foram encontrados com sucesso",
+    "data": {    
+        "ID":5,
+        "NOME":"Talita Aleixo",
+        "PESSOA_TIPO": { 
+            "ID":1,
+            "NOME":"Pessoa Física"
+        },
+        "DATA_NASCIMENTO":"1990-01-07",
+        "SEXO":"F",
+        "NBI":"005236243LA03",
+        "NIF":"005236243LA03",
+        "ESTADO_CIVIL":"S",
+        "ENDERECO": {
+            "ID":5,
+            "TELEFONE":"977000700",
+            "TELEFONE_ALT":"966000701",
+            "BAIRRO":"Camama",
+            "CIDADE":"Luanda",
+            "PROVINCIA":"Luanda",
+            "EMAIL":"taleixo@infoco.ao"
+        }
     }
 }
 ```
@@ -887,10 +1092,10 @@ em caso de erro retorna:
 
 ```json
 {
-    code: 401,
-    message: "Os dados da pessoa não foram encontrados usando o id de utilizador : X",
-    data: {}, 
-    error: {error}
+    "code": 401,
+    "message": "Os dados da pessoa não foram encontrados usando o id de utilizador",
+    "data": {}, 
+    "error": {error}
 }
 ```
 
@@ -902,20 +1107,29 @@ em caso de sucesso:
 
 ```json
 {
-    code: 200,
-    message: "Dados da pessoa foram encontrados com sucesso",
-    data: {
-        ID: number
-        PESSOA_TIPO_ID: number
-        ENDERECO_ID: number | null
-        NOME: string
-        DATA_NASCIMENTO: Date
-        SEXO: string
-        NBI: string | null
-        NIF: string
-        ESTADO_CIVIL: string
-        DATA_CRIACAO: Date | null
-        DATA_ACTUALIZACAO: Date | null
+    "code": 200,
+    "message": "Dados da pessoa foram encontrados com sucesso",
+    "data": {
+        "ID":5,
+        "NOME":"Talita Aleixo",
+        "PESSOA_TIPO": { 
+            "ID":1,
+            "NOME":"Pessoa Física"
+        },
+        "DATA_NASCIMENTO":"1990-01-07",
+        "SEXO":"F",
+        "NBI":"005236243LA03",
+        "NIF":"005236243LA03",
+        "ESTADO_CIVIL":"S",
+        "ENDERECO": {
+            "ID":5,
+            "TELEFONE":"977000700",
+            "TELEFONE_ALT":"966000701",
+            "BAIRRO":"Camama",
+            "CIDADE":"Luanda",
+            "PROVINCIA":"Luanda",
+            "EMAIL":"taleixo@infoco.ao"
+        }
     }
 }
 ```
@@ -924,10 +1138,10 @@ em caso de erro:
 
 ```json
 {
-    code: 401,
-    message: "Os dados da pessoa não foram encontrados usando o id de utilizador : X",
-    data: {},
-    error: {error}
+    "code": 401,
+    "message": "Os dados da pessoa não foram encontrados usando o id de utilizador : X",
+    "data": {},
+    "error": {error}
 }
 ```
 
@@ -939,9 +1153,9 @@ em caso de sucesso:
 
 ```json
 {
-    code: 200,
-    message: "Dados da foram encontrados com sucesso",
-    data: {pessoa 1 }
+    "code": 200,
+    "message": "Dados da foram encontrados com sucesso",
+    "data": {pessoa 1 }
 }
 ```
 
@@ -949,10 +1163,10 @@ em caso de erro:
 
 ```json
 {
-    code: 401,
-    message: "Os dados da pessoa não foram encontrados usando o E-mail: X",
-    data: {},
-    error: {error}
+    "code": 401,
+    "message": "Os dados da pessoa não foram encontrados usando o E-mail: X",
+    "data": {},
+    "error": {error}
 }
 ```
 
@@ -964,9 +1178,9 @@ em caso de sucesso:
 
 ```json
 {
-    code: 200,
-    message: "Dados da pedssoa foram encontrados com sucesso",
-    data: {pessoa 1 }
+    "code": 200,
+    "message": "Dados da pessoa foram encontrados com sucesso",
+    "data": { pessoa 1 }
 }
 ```
 
@@ -974,10 +1188,10 @@ em caso de erro:
 
 ```json
 {
-    code: 401,
-    message: "Os dados da pessoa não foram encontrados usando o numero de telefone: X",
-    data: {},
-    error: {error}
+    "code": 401,
+    "message": "Os dados da pessoa não foram encontrados usando o numero de telefone: X",
+    "data": {},
+    "error": {error}
 }
 ```
 
@@ -1014,9 +1228,9 @@ em caso de sucesso retorna o objecto inserido com o id definido.
 
 ```json
 {
-    code: 200,
-    message: "Dados da pessoa inseridos com sucesso",
-    data: {
+    "code": 200,
+    "message": "Dados da pessoa inseridos com sucesso",
+    "data": {
         "ID": 1,
         "NOME": "Pedro Nuno Santos",
         "PESSOA_TIPO": {
@@ -1045,10 +1259,10 @@ em caso de erro retorna:
 
 ```json
 {
-    code: 401,
-    message: "Ocorreu um erro ao inserir os dados da pessoa",
-    data: {},
-    error: {error}
+    "code": 401,
+    "message": "Ocorreu um erro ao inserir os dados da pessoa",
+    "data": {},
+    "error": {error}
 }
 ```
 
@@ -1123,9 +1337,9 @@ em caso de sucesso retorna:
 
 ```json
 {
-    code: 200,
-    message: "Dados da veiculo inseridos com sucesso",
-    data: {
+    "code": 200,
+    "message": "Dados da veiculo inseridos com sucesso",
+    "data": {
        "ID": 1,
         "NOME": "Pedro Nuno Santos",
         "PESSOA_TIPO": {
@@ -1154,9 +1368,9 @@ em caso de error retorna:
 
 ```json
 {
-    code: 401,
-    message: "Ocorreu um erro ao remover os dados da pessoa",
-    data: {},
-    error: {error}
+    "code": 401,
+    "message": "Ocorreu um erro ao remover os dados da pessoa",
+    "data": {},
+    "error": {error}
 }
 ```
