@@ -35,12 +35,7 @@ class VeiculoController {
     }
 
     async getByID(req: Request, res: Response) {
-        const { unsafeId } = req.params;
-        const parsedID = Identifier.safeParse(unsafeId);
-        if (!parsedID.success) {
-            return handleParsingError(res, parsedID.error);
-        }
-        const id = parsedID.data.toString();
+        const { id } = req.params;
         try {
             const veiculo = await this.veiculoService.getByID(id);
             const response = {
@@ -52,7 +47,7 @@ class VeiculoController {
         } catch (error) {
             const response = {
                 code: 401,
-                message: "Ocorreu um erro ao inserir os dados do veículo",
+                message: "Ocorreu um erro ao carregar os dados do veículo",
                 data: {},
                 error: error
             };

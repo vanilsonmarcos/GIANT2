@@ -22,7 +22,7 @@ class ApoliceController {
         } catch (error) {
             const response = {
                 code: 401,
-                message: "Os dados das apolices não foram encontrados",
+                message: "Ocorreu um erro ao carregar os dados das apolices",
                 data:  {},
                 error: error
             };

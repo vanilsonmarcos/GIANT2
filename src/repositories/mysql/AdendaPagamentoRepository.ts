@@ -35,6 +35,21 @@ class AdendaPagamentoRepository implements IGenericRepository<adenda_pagamento> 
         return adenda_pagamento;
     }
 
+    async getByAdendaID(adenda_id: string): Promise<adenda_pagamento[]> {
+        const adenda_pagamentos = await prisma.adenda_pagamento.findMany({
+            where:{
+                ADENDA_ID: parseInt(adenda_id)
+            }, 
+            orderBy: {
+                DATA_INSERCAO: 'asc'
+            },
+        });
+        if (isArrayEmpty(adenda_pagamentos) || adenda_pagamentos === null || adenda_pagamentos === undefined) {
+            throw new CustomError("Não foram encontrados pagamentos registados.");
+        }
+        return adenda_pagamentos;
+    }
+
     async create(item: adenda_pagamento): Promise<adenda_pagamento> {
         const adenda_pagamento = await prisma.adenda_pagamento.create({
             data: {

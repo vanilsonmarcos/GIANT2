@@ -81,11 +81,9 @@ em caso de sucesso retorna:
 
 ```json
 {
-    code: 200,
-    message: "Dados dos veiculos foram encontrados com sucesso",
-    data: [
-        {veiculo 1 }, {veiculo 2}, {...}
-    ]
+    "code": 200,
+    "message": "Dados dos veiculos foram encontrados com sucesso",
+    "data": [veiculo 1, veiculo 2, ...]
 }
 ```
 
@@ -93,24 +91,24 @@ em caso de erro retorna:
 
 ```json
 {
-    code: 401,
-    message: "Os dados dos veiculos não foram encontrados",
-    data: {}, 
-    error: {erro}
+    "code": 401,
+    "message": "Os dados dos veiculos não foram encontrados",
+    "data": {}, 
+    "error": {erro}
 }
 ```
 
 Veiculo pelo id na base de dados
 Metodo: GET
-URL: /veiculo/:id
+URL: /veiculo/1
 Resposta:
 em caso de sucesso retorna:
 
 ```json
 {
-    code: 200,
-    message: "Dados dos veiculo foram encontrados com sucesso",
-    data: {veiculo 1 }
+    "code": 200,
+    "message": "Dados dos veiculo foram encontrados com sucesso",
+    "data": { veiculo 1 }
 }
 ```
 
@@ -118,10 +116,10 @@ em caso de erro retorna:
 
 ```json
 {
-    code: 401,
-    message: "Os dados do veiculo não foram encontrados",
-    data: {}, 
-    error: {error}
+   "code": 401,
+   "message": "Os dados do veiculo não foram encontrados",
+   "data": {}, 
+   "error": {error}
 }
 ```
 
@@ -133,9 +131,9 @@ em caso de sucesso:
 
 ```json
 {
-    code: 200,
-    message: "Dados dos veiculo foram encontrados com sucesso",
-    data: {veiculo 1 }
+    "code": 200,
+    "message": "Dados dos veiculo foram encontrados com sucesso",
+    "data": {veiculo 1 }
 }
 ```
 
@@ -143,10 +141,10 @@ em caso de erro:
 
 ```json
 {
-    code: 401,
-    message: "Dados dos veiculo não foram encontrados",
-    data: {},
-    error: {error}
+    "code": 401,
+    "message": "Dados dos veiculo não foram encontrados",
+    "data": {},
+    "error": {error}
 }
 ```
 
@@ -157,21 +155,18 @@ Body:
 
 ```json
 {
-    id?: Number,
-    veiculo_categoria: VeiculoCategoria ,
-    matricula: String,
-    marca: String,
-    modelo: String,
-    ano_aquisicao: Number,
-    capital_aquisicao: Number,
-    peso_bruto: Number,
-    n_lotacao: Number,
-    ano_fabrico: Number,
-    cilindrada: number,
-    ref_chassi: String,
-    descricao: String,
-    inserido_por?: Number,
-    actualizado_por?: Number 
+      "VEICULO_CATEGORIA_ID": 1,
+      "MATRICULA": "LD-14-15-AD",
+      "MARCA": "Kia",
+      "MODELO": "Sportage",
+      "ANO_AQUISICAO": 2014,
+      "CAPITAL_AQUISICAO": 6700000,
+      "PESO_BRUTO": 23567,
+      "N_LOTACAO": 4,
+      "ANO_FABRICO": 2014,
+      "CILINDRADA": 1243,
+      "REF_CHASSI": "287632BMVSV03",
+      "DESCRICAO": "Simples descrição do veiculo"
 }
 ```
 
@@ -180,28 +175,28 @@ em caso de sucesso retorna o objecto inserido com o id definido.
 
 ```json
 {
-    code: 200,
-    message: "Dados da veiculo inseridos com sucesso",
-    data: {
-        ID: number
-        VEICULO_CATEGORIA_ID: number
-        MATRICULA: string
-        MARCA: string
-        MODELO: string
-        ANO_AQUISICAO: number
-        CAPITAL_AQUISICAO: Prisma.Decimal
-        PESO_BRUTO: number
-        N_LOTACAO: number
-        ANO_FABRICO: number
-        CILINDRADA: number
-        REF_CHASSI: string
-        DESCRICAO: string
-        INSERIDO_POR: number | null
-        ACTUALIZADO_POR: number | null
-        REMOVIDO_POR: number | null
-        DATA_INSERCAO: Date | null
-        DATA_ACTUALIZACAO: Date | null
-        DATA_REMOCAO: Date | null
+    "code": 200,
+    "message": "Dados da veiculo inseridos com sucesso",
+    "data": {
+        "ID": 1,
+        "VEICULO_CATEGORIA_ID": 1,
+        "MATRICULA": "",
+        "MARCA": "Kia",
+        "MODELO": "",
+        "ANO_AQUISICAO": 2014,
+        "CAPITAL_AQUISICAO": 6700000,
+        "PESO_BRUTO": 23567,
+        "N_LOTACAO": 4,
+        "ANO_FABRICO": 2014,
+        "CILINDRADA": 1243,
+        "REF_CHASSI": "287632BMVSV03",
+        "DESCRICAO": "Simples descrição do veiculo",
+        "INSERIDO_POR": null,
+        "ACTUALIZADO_POR": null,
+        "REMOVIDO_POR": null,
+        "DATA_INSERCAO": "2023-11-12T00:18:56.000Z",
+        "DATA_ACTUALIZACAO": "2023-11-12T00:18:56.000Z",
+        "DATA_REMOCAO": "2023-11-12T00:18:56.000Z"
     }
 }
 ```
@@ -210,10 +205,10 @@ em caso de erro retorna:
 
 ```json
 {
-    code: 401,
-    message: "Ocorreu um erro ao inserir os dados da veiculo",
-    data: {},
-    error: {error}
+    "code": 401,
+    "message": "Ocorreu um erro ao inserir os dados da veiculo",
+    "data": {},
+    "error": {error}
 }
 ```
 
@@ -224,25 +219,25 @@ Body:
 
 ```json
 {
-    ID: number
-    VEICULO_CATEGORIA_ID: number
-    MATRICULA: string
-    MARCA: string
-    MODELO: string
-    ANO_AQUISICAO: number
-    CAPITAL_AQUISICAO: Prisma.Decimal
-    PESO_BRUTO: number
-    N_LOTACAO: number
-    ANO_FABRICO: number
-    CILINDRADA: number
-    REF_CHASSI: string
-    DESCRICAO: string
-    INSERIDO_POR: number | null
-    ACTUALIZADO_POR: number | null
-    REMOVIDO_POR: number | null
-    DATA_INSERCAO: Date | null
-    DATA_ACTUALIZACAO: Date | null
-    DATA_REMOCAO: Date | null
+    "ID": 1,
+    "VEICULO_CATEGORIA_ID": 1,
+    "MATRICULA": "",
+    "MARCA": "Kia",
+    "MODELO": "",
+    "ANO_AQUISICAO": 2009,
+    "CAPITAL_AQUISICAO": 10700000,
+    "PESO_BRUTO": 23567,
+    "N_LOTACAO": 5,
+    "ANO_FABRICO": 2008,
+    "CILINDRADA": 1243,
+    "REF_CHASSI": "287632BMVSV03",
+    "DESCRICAO": "Simples descrição do veiculo",
+    "INSERIDO_POR": null,
+    "ACTUALIZADO_POR": null,
+    "REMOVIDO_POR": null,
+    "DATA_INSERCAO": "2023-11-12T00:18:56.000Z",
+    "DATA_ACTUALIZACAO": "2023-11-12T00:18:56.000Z",
+    "DATA_REMOCAO": "2023-11-12T00:18:56.000Z"
 }
 ```
 
@@ -253,28 +248,28 @@ em caso de sucesso retorna o objecto actualizado
 
 ```json
 {
-    code: 200,
-    message: "Dados da veiculo inseridos com sucesso",
-    data: {
-        ID: number
-        VEICULO_CATEGORIA_ID: number
-        MATRICULA: string
-        MARCA: string
-        MODELO: string
-        ANO_AQUISICAO: number
-        CAPITAL_AQUISICAO: Prisma.Decimal
-        PESO_BRUTO: number
-        N_LOTACAO: number
-        ANO_FABRICO: number
-        CILINDRADA: number
-        REF_CHASSI: string
-        DESCRICAO: string
-        INSERIDO_POR: number | null
-        ACTUALIZADO_POR: number | null
-        REMOVIDO_POR: number | null
-        DATA_INSERCAO: Date | null
-        DATA_ACTUALIZACAO: Date | null
-        DATA_REMOCAO: Date | null
+    "code": 200,
+    "message": "Dados da veiculo inseridos com sucesso",
+    "data": {
+        "ID": 1,
+        "VEICULO_CATEGORIA_ID": 1,
+        "MATRICULA": "",
+        "MARCA": "Kia",
+        "MODELO": "",
+        "ANO_AQUISICAO": 2009,
+        "CAPITAL_AQUISICAO": 10700000,
+        "PESO_BRUTO": 23567,
+        "N_LOTACAO": 5,
+        "ANO_FABRICO": 2008,
+        "CILINDRADA": 1243,
+        "REF_CHASSI": "287632BMVSV03",
+        "DESCRICAO": "Simples descrição do veiculo",
+        "INSERIDO_POR": null,
+        "ACTUALIZADO_POR": null,
+        "REMOVIDO_POR": null,
+        "DATA_INSERCAO": "2023-11-12T00:18:56.000Z",
+        "DATA_ACTUALIZACAO": "2023-11-12T00:18:56.000Z",
+        "DATA_REMOCAO": "2023-11-12T00:18:56.000Z"
     }
 }
 
@@ -286,28 +281,28 @@ em caso de sucesso retorna:
 
 ```json
 {
-    code: 200,
-    message: "Dados da veiculo inseridos com sucesso",
-    data: {
-        ID: number
-        VEICULO_CATEGORIA_ID: number
-        MATRICULA: string
-        MARCA: string
-        MODELO: string
-        ANO_AQUISICAO: number
-        CAPITAL_AQUISICAO: Prisma.Decimal
-        PESO_BRUTO: number
-        N_LOTACAO: number
-        ANO_FABRICO: number
-        CILINDRADA: number
-        REF_CHASSI: string
-        DESCRICAO: string
-        INSERIDO_POR: number | null
-        ACTUALIZADO_POR: number | null
-        REMOVIDO_POR: number | null
-        DATA_INSERCAO: Date | null
-        DATA_ACTUALIZACAO: Date | null
-        DATA_REMOCAO: Date | null
+    "code": 200,
+    "message": "Dados da veiculo inseridos com sucesso",
+    "data": {
+        "ID": 1,
+        "VEICULO_CATEGORIA_ID": 1,
+        "MATRICULA": "",
+        "MARCA": "Kia",
+        "MODELO": "",
+        "ANO_AQUISICAO": 2009,
+        "CAPITAL_AQUISICAO": 10700000,
+        "PESO_BRUTO": 23567,
+        "N_LOTACAO": 5,
+        "ANO_FABRICO": 2008,
+        "CILINDRADA": 1243,
+        "REF_CHASSI": "287632BMVSV03",
+        "DESCRICAO": "Simples descrição do veiculo",
+        "INSERIDO_POR": null,
+        "ACTUALIZADO_POR": null,
+        "REMOVIDO_POR": null,
+        "DATA_INSERCAO": "2023-11-12T00:18:56.000Z",
+        "DATA_ACTUALIZACAO": "2023-11-12T00:18:56.000Z",
+        "DATA_REMOCAO": "2023-11-12T00:18:56.000Z"
     }
 }
 ```
@@ -316,10 +311,10 @@ em caso de error retorna:
 
 ```json
 {
-    code: 401,
-    message: "Ocorreu um erro ao remover os dados da veiculo",
-    data: {},
-    error: {error}
+    "code": 401,
+    "message": "Ocorreu um erro ao remover os dados da veiculo",
+    "data": {},
+    "error": {error}
 }
 ```
 
@@ -332,87 +327,268 @@ em caso de sucesso retorna:
 
 ```json
 {
-      ID: number
-      NOME: string
-      REMOVIDO_POR: number | null
-      DATA_INSERCAO: Date | null
-      DATA_ACTUALIZACAO: Date | null
-      DATA_REMOCAO: Date | null
+    "ID": number
+    "NOME": string
+    "REMOVIDO_POR": number | null
+    "DATA_INSERCAO": Date | null
+    "DATA_ACTUALIZACAO": Date | null
+    "DATA_REMOCAO": Date | null
 }
 ```
 
 ## Apolice
 
-
-## Adenda Pagamento
-
-Visualizar "Pagamento de uma adenda" adenda pagamento pelo id da adenda
+Visualizar todas as apolices
 Metodo: GET
-URL: /adenda_pagamento/:id
+URL: /apolice/
+Resposta:
+em caso de sucesso retorna:
+
+```json
+
+{"code":200,"message":"Dados das apolices encontrados com sucesso","data":[{"ID":2,"APOLICE_TIPO_ID":1,"APOLICE_ESTADO_ID":6,"APOLICE_FRACIONAMENTO_ID":1,"NUMERO":"34343","TOMADOR_ID":1,"INSERIDO_POR":null,"ACTUALIZADO_POR":null,"DATA_INSERCAO":"2023-11-11T12:58:03.000Z","DATA_ACTUALIZACAO":null},{"ID":3,"APOLICE_TIPO_ID":1,"APOLICE_ESTADO_ID":6,"APOLICE_FRACIONAMENTO_ID":1,"NUMERO":"1 12.112023/0","TOMADOR_ID":1,"INSERIDO_POR":null,"ACTUALIZADO_POR":null,"DATA_INSERCAO":"2023-11-12T00:12:23.000Z","DATA_ACTUALIZACAO":null},{"ID":4,"APOLICE_TIPO_ID":1,"APOLICE_ESTADO_ID":3,"APOLICE_FRACIONAMENTO_ID":1,"NUMERO":"1 12 11.2023/0001","TOMADOR_ID":1,"INSERIDO_POR":null,"ACTUALIZADO_POR":null,"DATA_INSERCAO":"2023-11-12T00:18:56.000Z","DATA_ACTUALIZACAO":null}]}
+ ```
+
+ em caso de erro
+ ```json
+ {
+    code: 401,
+    message:"Ocorreu um erro ao carregar os dados das apolices",
+    data: {},
+    error: {error}
+ }
+ ```
+
+Visualizar a apolice pelo ID (Identificador)
+Metodo: GET
+URL: /apolice/2
+Resposta:
+em caso de sucesso retorna:
+
+ ```json
+{"code":200,"message":"Dados da apólice foram encontrados com sucesso","data":{"ID":2,"APOLICE_TIPO_ID":1,"APOLICE_ESTADO_ID":6,"APOLICE_FRACIONAMENTO_ID":1,"NUMERO":"34343","TOMADOR_ID":1,"INSERIDO_POR":null,"ACTUALIZADO_POR":null,"DATA_INSERCAO":"2023-11-11T12:58:03.000Z","DATA_ACTUALIZACAO":null}}
+ ```
+
+Visualizar os estados de uma apolice
+
+Metodo: GET
+URL: /apolice/estado/
+Resposta:
+em caso de sucesso retorna:
+
+```json
+{"code":200,"message":"Dados dos estados das apolices encontrados com sucesso","data":[{"ID":1,"NOME":"Em Processamento","DESCRICAO":"A Apolice está em processamento; é um estado temporário em que a se encontra","INSERIDO_POR":null,"ACTUALIZADO_POR":null,"REMOVIDO_POR":null,"DATA_INSERCAO":"2023-11-10T09:29:37.000Z","DATA_ACTUALIZACAO":"2023-11-10T09:29:37.000Z"},{"ID":2,"NOME":"Suspensa","DESCRICAO":"A apolice está suspensa","INSERIDO_POR":null,"ACTUALIZADO_POR":null,"REMOVIDO_POR":null,"DATA_INSERCAO":"2023-11-10T09:29:37.000Z","DATA_ACTUALIZACAO":"2023-11-10T09:29:37.000Z"},{"ID":3,"NOME":"Cancelada","DESCRICAO":"A apólice está cancelada","INSERIDO_POR":null,"ACTUALIZADO_POR":null,"REMOVIDO_POR":null,"DATA_INSERCAO":"2023-11-10T09:29:37.000Z","DATA_ACTUALIZACAO":"2023-11-10T09:29:37.000Z"},{"ID":4,"NOME":"Expirada","DESCRICAO":"A apólice passou a data de renovação","INSERIDO_POR":null,"ACTUALIZADO_POR":null,"REMOVIDO_POR":null,"DATA_INSERCAO":"2023-11-10T09:29:37.000Z","DATA_ACTUALIZACAO":"2023-11-10T09:29:37.000Z"},{"ID":5,"NOME":"Activa","DESCRICAO":"A apólice está valida durante o tempo em que é visualizada","INSERIDO_POR":null,"ACTUALIZADO_POR":null,"REMOVIDO_POR":null,"DATA_INSERCAO":"2023-11-10T09:29:37.000Z","DATA_ACTUALIZACAO":"2023-11-10T09:29:37.000Z"},{"ID":6,"NOME":"Em Simulação","DESCRICAO":"A apolice ainda está em estado de simulação","INSERIDO_POR":null,"ACTUALIZADO_POR":null,"REMOVIDO_POR":null,"DATA_INSERCAO":"2023-11-10T09:29:37.000Z","DATA_ACTUALIZACAO":"2023-11-10T09:29:37.000Z"},{"ID":7,"NOME":"Inactiva","DESCRICAO":"A apólice foi paga","INSERIDO_POR":null,"ACTUALIZADO_POR":null,"REMOVIDO_POR":null,"DATA_INSERCAO":"2023-11-10T09:29:37.000Z","DATA_ACTUALIZACAO":"2023-11-10T09:29:37.000Z"}]}
+```
+
+em caso de erro retorna:
+
+```json
+{
+    "code": 401,
+    "message":"Os dados dos estados das apolices não foram encontrados",
+    "data": {},
+    "error": {error}
+}```
+
+
+
+Criar uma Apolice
+
+Metodo: POST
+URL: /apolice/
+BODY
+ ```json
+{
+    "APOLICE_TIPO_ID": 1,
+    "APOLICE_ESTADO_ID": 1,
+    "APOLICE_FRACIONAMENTO_ID": 1,
+    "TOMADOR_ID": 1
+}
+ ```
+
+Resposta em caso de sucesso retorna:
+
+```json
+{
+    "code": 200,
+    "message": "Dados da apólice inseridos com sucesso",
+    "data": {
+        "ID": 1,
+        "APOLICE_TIPO_ID": 1,
+        "APOLICE_ESTADO_ID": 1,
+        "APOLICE_FRACIONAMENTO_ID": 1,
+        "TOMADOR_ID": 1
+    }
+}
+```
+
+em caso de erro: 
+
+```json
+{
+    "code": 401,
+    "message": "Ocorreu um erro ao inserir os dados da apólice",
+    "data": {},
+    "error": error
+}
+```
+
+Actualizar uma Apolice
+Metodo: PUT
+URL: /apolice/
+BODY
+
+```json
+{
+    "ID": 1,
+    "APOLICE_TIPO_ID": 1,
+    "APOLICE_ESTADO_ID": 2,
+    "APOLICE_FRACIONAMENTO_ID": 1,
+    "TOMADOR_ID": 2
+}
+```
+
+Resposta em caso de sucesso retorna:
+
+```json
+{
+    "code": 200,
+    "message": "Dados da apólice actualizados com sucesso",
+    "data": {
+        "ID": 1,
+        "APOLICE_TIPO_ID": 1,
+        "APOLICE_ESTADO_ID": 2,
+        "APOLICE_FRACIONAMENTO_ID": 1,
+        "TOMADOR_ID": 2
+    }
+}
+```
+
+Remover uma Apolice
+
+Metodo: DELETE
+URL: /apolice/1
+BODY
 Resposta:
 em caso de sucesso retorna:
 
 ```json
 {
-    code: 200,
-    message: "Os pagamentos associados a adenda foram carregados com sucesso",
-    data: { ApolicePagamento 1 }, 
-    
+    "code": 200,
+    "message": "Dados da apólice foram removidos com sucesso",
+    "data": {
+        "ID": 1,
+        "APOLICE_TIPO_ID": 1,
+        "APOLICE_ESTADO_ID": 2,
+        "APOLICE_FRACIONAMENTO_ID": 1,
+        "TOMADOR_ID": 2
+    }
+}
+```
+
+Resposta em caso de erro retorna:
+
+```json
+{
+    "code": 401,
+    "message": "Ocorreu um erro ao remover os dados da apólice",
+    "data": {},
+    "error": error
+}
+```
+
+## Adenda Pagamento
+
+Visualizar a tabala adenda_pagamento
+Metodo: GET
+URL: /adenda_pagamento/
+Resposta:
+em caso de sucesso retorna:
+
+```json
+{
+    "code": 200,
+    "message": "Dados dos pagamentos das adendas encontrados com sucesso",
+    "data": [ adenda_pagamento_1, adenda_pagamento_2,...]     
 }
 ```
 
 em caso de erro
- ```json
- {
-    code: 401,
-    message:"Ocorreu um erro na pesquisa do(s) pagamento(s) associados a adenda",
-    data: {},
-    error: {error}
- }
+
+```json
+{
+    "code": 401,
+    "message":"Ocorreu um erro na pesquisa do(s) pagamento(s) associados a adenda",
+    "data": {},
+    "error": {error}
+}
+ ```
+
+Visualizar a adenda_pagamento pelo ID do pagamento
+Metodo: GET
+URL: /adenda_pagamento/1
+Resposta:
+em caso de sucesso retorna:
+
+```json
+{
+    "code": 200,
+    "message": "Dados dos pagamentos das adendas encontrados com sucesso",
+    "data": {
+        "ID": 1,
+        "ADENDA_ID": 1,
+        "DESCONTOS": 213.54,
+        "VALOR_PAGO": 12123.54,
+    }  
+}
+```
+
+em caso de erro
+
+```json
+{
+    "code": 401,
+    "message":"Ocorreu um erro na pesquisa do pagamento associado a adenda",
+    "data": {},
+    "error": {error}
+}
  ```
 
 Visualizar "Pagamentos de uma adenda" adenda pagamento pelo id da adenda
 Metodo: GET
-URL: /adenda_pagamento/adenda/:id
-Resposta:
-em caso de sucesso retorna:
+URL: /adenda_pagamento/adenda/1
+Resposta em caso de sucesso retorna:
 
 ```json
 {
-    code: 200,
-    message: "Os pagamentos associados a adenda foram carregados com sucesso",
-    data: [
-        { AdendaPagamento 1 }, { AdendaPagamento 2}
-    ] 
+    "code": 200,
+    "message": "Os pagamentos associados a adenda foram carregados com sucesso",
+    "data": [ adenda_pagamento_1, adenda_pagamento_2, ...] 
     
 }
 ```
 
-em caso de erro
- ```json
- {
-    code: 401,
-    message:"Ocorreu um erro na pesquisa do(s) pagamento(s) associados a adenda",
-    data: {},
-    error: {error}
- }
- ```
+Resposta em caso de erro
 
-Adicionar  "Pagamentos de uma adenda" apolice pagamento pelo id da adenda
-Metodo: POST
-URL: /adenda_pagamento/
-Body: 
 ```json
 {
-    ID: number
-    ADENDA_ID: number | null
-    DESCONTOS: Prisma.Decimal
-    VALOR_PAGO: Prisma.Decimal
-    DATA_INSERCAO: Date | null
-    DATA_ACTUALIZACAO: Date | null
-    DATA_REMOCACAO: Date | null
-    INSERIDO_POR: number | null
-    ACTUALIZADO_POR: number | null
+    "code": 401,
+    "message":"Ocorreu um erro na pesquisa do(s) pagamento(s) associados a adenda",
+    "data": {},
+    "error": {error}
+}
+ ```
+
+Criar/Efetuar pagamento a uma adenda
+Metodo: POST
+URL: /adenda_pagamento/
+Body:
+
+```json
+{
+    "ADENDA_ID": 1,
+    "DESCONTOS": 213.54,
+    "VALOR_PAGO": 12123.54,
 }
 ```
 
@@ -421,27 +597,18 @@ em caso de sucesso retorna:
 
 ```json
 {
-    ID: number
-    ADENDA_ID: number | null
-    DESCONTOS: Prisma.Decimal
-    VALOR_PAGO: Prisma.Decimal
-    DATA_INSERCAO: Date | null
-    DATA_ACTUALIZACAO: Date | null
-    DATA_REMOCACAO: Date | null
-    INSERIDO_POR: number | null
-    ACTUALIZADO_POR: number | null
+    "ID": 1,
+    "ADENDA_ID": 1,
+    "DESCONTOS": 20.88,
+    "VALOR_PAGO": 129.98,
+    "DATA_INSERCAO": "2023-11-10T09:29:37.000Z",
+    "DATA_ACTUALIZACAO": "2023-11-10T09:29:37.000Z",
+    "DATA_REMOCACAO": "2023-11-10T09:29:37.000Z",
+    "INSERIDO_POR": null,
+    "ACTUALIZADO_POR": null,
 }
 ```
 
-em caso de erro
- ```json
- {
-    code: 401,
-    message: "Ocorreu um erro ao  adicionar/associar o pagamento a apólice",
-    data: {},
-    error: {error}
- }
- ```
 
 
 ## Preço Cilindrada

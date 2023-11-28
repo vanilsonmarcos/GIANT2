@@ -6,7 +6,7 @@ import IGenericRepository from "../repositories/IGenericRepository";
 @Service()
 class AdendaPagamentoService {
     @Inject(()=> AdendaPagamentoRepository)
-    private repo: IGenericRepository<adenda_pagamento>;
+    private repo: AdendaPagamentoRepository;
 
     constructor () {}
 
@@ -16,6 +16,10 @@ class AdendaPagamentoService {
 
     async getByID(id: string): Promise<adenda_pagamento>{
         return this.repo.getByID(id);
+    }
+
+    async getByAdendaID(id: string): Promise<adenda_pagamento[]> {
+        return this.repo.getByAdendaID(id);
     }
 
     async criar(item: adenda_pagamento): Promise<adenda_pagamento> {

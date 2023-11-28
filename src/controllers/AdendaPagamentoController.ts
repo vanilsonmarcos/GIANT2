@@ -25,7 +25,7 @@ class AdendaPagamentoController {
             const response = {
                 code: 401,
                 message: "Os dados dos  pagamentos das adendas não foram encontrados",
-                data:  {},
+                data: {},
                 error: error
             };
             if (error instanceof CustomError) {
@@ -33,7 +33,7 @@ class AdendaPagamentoController {
             }
             res.json(response)
         }
-     }
+    }
 
     async getByID(req: Request, res: Response) {
         const { id } = req.params;
@@ -57,7 +57,32 @@ class AdendaPagamentoController {
             }
             res.json(response);
         }
-     }
+    }
+
+    
+    async getByAdendaID(req: Request, res: Response) {
+        const { id } = req.params;
+        try {
+            const adenda_pagamento = await this.adendaPService.getByAdendaID(id.toString());
+            const response = {
+                code: 200,
+                message: "Dados do pagamento da adenda foram encontrados com sucesso",
+                data: adenda_pagamento
+            };
+            res.json(response);
+        } catch (error) {
+            const response = {
+                code: 401,
+                message: "Ocorreu um erro ao carregar os dados do pagamento da adenda",
+                data: {},
+                error: error
+            };
+            if (error instanceof CustomError) {
+                response.message = error.message;
+            }
+            res.json(response);
+        }
+    }
 
     async criar(req: Request, res: Response) {
         const adenda_pagamento: adenda_pagamento = req.body; // parse body to person data
@@ -81,12 +106,12 @@ class AdendaPagamentoController {
             }
             res.json(response);
         }
-     }
+    }
 
-    async actualizar(req: Request, res: Response) { 
+    async actualizar(req: Request, res: Response) {
         const adenda_pagamento: adenda_pagamento = req.body;
 
-        if (adenda_pagamento.ID === undefined){
+        if (adenda_pagamento.ID === undefined) {
             return handleParsingError(res, Error("O Id do pagamento da adenda não foi definido"));
         }
         const id = adenda_pagamento.ID.toString();

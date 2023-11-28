@@ -1,7 +1,5 @@
 import { Service, Inject } from "typedi";
 import VeiculoRepository from "../repositories/mysql/VeiculoRepository";
-import Veiculo from "../entities/Veiculo/Veiculo";
-import IVeiculoRepository from "../repositories/IVeiculoRepository";
 import { veiculo } from "@prisma/client";
 
 @Service()

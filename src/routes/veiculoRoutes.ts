@@ -10,10 +10,9 @@ const veiculoController: VeiculoController = new VeiculoController(veiculoServic
 const veiculoRoutes = Router();
 
 veiculoRoutes.get('/veiculo/', veiculoController.getAll.bind(veiculoController));
-veiculoRoutes.get('/veiculo/:id', veiculoController.getByID.bind(veiculoController));
 veiculoRoutes.get('/veiculo/categoria/', veiculoController.getAllCategoria.bind(veiculoController));
-
 veiculoRoutes.get('/veiculo/matricula/:matricula', veiculoController.getByMatricula.bind(veiculoController));
+veiculoRoutes.get('/veiculo/:id', veiculoController.getByID.bind(veiculoController));
 
 veiculoRoutes.post('/veiculo/', veiculoController.criar.bind(veiculoController));
 veiculoRoutes.put('/veiculo/', veiculoController.actualizar.bind(veiculoController));
