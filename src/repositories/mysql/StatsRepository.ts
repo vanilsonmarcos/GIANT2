@@ -1,5 +1,3 @@
-import { pessoa } from '@prisma/client';
-
 import { Service } from "typedi";
 import ClienteStats from "../../entities/ClienteStats";
 import ApoliceStats from "../../entities/ApoliceStats";
@@ -9,33 +7,38 @@ import prisma from "../PrismaClient";
 @Service()
 class StatsRepository {
 
-    // async getAllByInterval(start: Date, end: Date): Promise<AllStats> {
-    //     const CLIENTES = await prisma.$queryRaw`
-    //     SELECT COUNT(DISTINCT TOMADOR_ID)
-    //     FROM apolice
-    //     WHERE DATA_INSERCAO BETWEEN ${start} AND ${end};
-    //   `;
+    async getAllClienteByInterval(start: Date, end: Date): Promise<ClienteStats> {
+        const CLIENTES = await prisma.$queryRaw`
+        SELECT COUNT(DISTINCT TOMADOR_ID)
+        FROM apolice
+        WHERE DATA_INSERCAO BETWEEN ${start} AND ${end};
+      `;
 
-    //     const TOTAL_CLIENTES = CLIENTES?? 0; 
+        const TOTAL_CLIENTES = CLIENTES as number?? 0; 
 
-    //     const SEGURADOS = await prisma.$queryRaw`
-    //     SELECT COUNT(DISTINCT SEGURADO_ID)
-    //     FROM adenda_segurado
-    //     WHERE DATA_INSERCAO BETWEEN ${start} AND ${end};
-    //     `;
-    //     const TOTAL_CLIENTES = CLIENTES?? 0; 
-
-
-    //     const UTENTES = await prisma.$queryRaw`
-    //     SELECT COUNT(ID)
-    //     FROM pessoa
-    //     WHERE DATA_INSERCAO BETWEEN ${start} AND ${end};
-    //     `;
+        const SEGURADOS = await prisma.$queryRaw`
+        SELECT COUNT(DISTINCT SEGURADO_ID)
+        FROM adenda_segurado
+        WHERE DATA_INSERCAO BETWEEN ${start} AND ${end};
+        `;
+        const TOTAL_SEGURADOS = SEGURADOS as number?? 0; 
 
 
+        const UTENTES = await prisma.$queryRaw`
+        SELECT COUNT(ID)
+        FROM pessoa
+        WHERE DATA_INSERCAO BETWEEN ${start} AND ${end};
+        `;
+        const TOTAL_UTENTES = UTENTES as number?? 0; 
 
+        const clientStats: ClienteStats = {
+            TOTAL_CLIENTES: TOTAL_CLIENTES,
+            TOTAL_SEGURADOS: TOTAL_SEGURADOS,
+            TOTAL_UTENTES: TOTAL_UTENTES
+        }
 
-    // }
+        return clientStats;
+    }
 
     async getAllCliente(): Promise<ClienteStats> {
         const TOTAL_CLIENTES = await prisma.apolice.count({
