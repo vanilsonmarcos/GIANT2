@@ -25,6 +25,17 @@ function validateAdendaDates(data_inicio: Date, data_fim: Date) {
   }
 }
 
+
+function isValidInterval(data_inicio: Date, data_fim: Date) {
+  const m_data_inicio = moment(data_inicio);
+  const m_data_fim = moment(data_fim);
+
+  if (m_data_inicio.isAfter(m_data_fim)) {
+    throw new CustomError("A data de inicio deve ser inferior à data do fim");
+  }
+}
+
+
 async function calculatePremio(adendaID: string, item: veiculo, fc: apolice_fracionamento): Promise<number> {
   const pc = await prisma.preco_cilindrada.findFirst({
     include: {
@@ -63,5 +74,6 @@ export {
   isDateWithinIntervals,
   validateAdendaDates,
   calculatePremio,
-  isArrayEmpty
+  isArrayEmpty,
+  isValidInterval
 }

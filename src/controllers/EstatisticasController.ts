@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import EstatisticasService from "../services/EstatisticasService";
 import CustomError from "../utils/CustomError";
+import { isValidInterval } from "../utils/helper";
 
 class EstatisticasController {
     private estatService: EstatisticasService;
@@ -32,6 +33,39 @@ class EstatisticasController {
             return res.json(response)
         }
     }
+
+    async getAllByInterval(req: Request, res: Response) {
+        const { inicio, fim }  = req.params;
+        try {
+            // Parse the Date parameters
+            const data_inicio = new Date(inicio);
+            const data_fim = new Date(fim);
+
+            isValidInterval(data_inicio, data_fim);
+
+  
+            const allStats = this.estatService.getAllByInterval(data_inicio, data_fim)
+            const response = {
+                code: 200,
+                message: "Dados estatisticos carregados com sucesso",
+                data: allStats
+            };
+            return res.json(response);
+        } catch (error) {
+            const response = {
+                code: 404,
+                message: "Ocorreu um erro ao carregar dos dados estatisticos",
+                data: {},
+                error: error
+            };
+            if (error instanceof CustomError) {
+                response.message = error.message;
+            }
+            return res.json(response)
+        }
+    }
+
+
 
     async getAllApolice (req: Request, res: Response) {
         try {

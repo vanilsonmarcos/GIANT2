@@ -39,6 +39,30 @@ class PessoaController {
 
     }
 
+    async getAllPessoaTipo(req: Request, res: Response) {
+        try {
+            const pessoas = await this.pessoaService.getAllPessoaTipo();
+            const response = {
+                code: 200,
+                message: "Os tipos de pessoas carregados com sucesso",
+                data: pessoas
+            }
+            return res.json(response);
+        } catch (error) {
+            const response = {
+                code: 404,
+                message: "Ocorreu um erro ao colectar dos dados dos tipos de pessoas",
+                data: {},
+                error: error
+            }
+            if (error instanceof CustomError) {
+                response.message = error.message;
+            }
+            return res.json(response);
+        }
+
+    }
+
     async getAllClientes(req: Request, res: Response) {
         try {
             const pessoas = await this.pessoaService.getAll();

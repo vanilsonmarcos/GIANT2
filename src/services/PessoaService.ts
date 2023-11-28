@@ -1,55 +1,63 @@
 import { Inject, Service } from "typedi";
 import PessoaRepository from "../repositories/mysql/PessoaRepository";
 import IPessoaRepository from "../repositories/IPessoaRepository";
-import { pessoa } from "@prisma/client";
+import { pessoa, pessoa_tipo } from "@prisma/client";
 import Pessoa from "../entities/Pessoa/Pessoa";
+import PessoaTipoRepository from "../repositories/mysql/PessoaTipoRepository";
 
 @Service()
 class PessoaService {
     @Inject(() => PessoaRepository)
-    private repo:IPessoaRepository<Pessoa>;
+    private pessoa_repo:IPessoaRepository<Pessoa>;
+    @Inject(() => PessoaTipoRepository)
+    private pessoa_tipo_repo:PessoaTipoRepository;
 
+    
     constructor () {}
-
+    
+    getAllPessoaTipo():Promise<pessoa_tipo[]> {
+        return this.pessoa_tipo_repo.getAll();
+    }
+    
     getAll(): Promise<Pessoa[]> {
-        return this.repo.getAll();         
+        return this.pessoa_repo.getAll();         
     }
     
     getAllclientes(): Promise<Pessoa[]> {
-        return this.repo.getAllClientes();
+        return this.pessoa_repo.getAllClientes();
     }
 
     getByID(id: string): Promise<Pessoa>{
-        return this.repo.getByID(id);
+        return this.pessoa_repo.getByID(id);
     }
     
     getByPhoneNumber(phoneNumber: string) :Promise<Pessoa> {
-        return this.repo.getPersonByPhoneNumber(phoneNumber);
+        return this.pessoa_repo.getPersonByPhoneNumber(phoneNumber);
     }
 
     getByEmail(email: string): Promise<Pessoa>{
-        return this.repo.getPersonByEmail(email);
+        return this.pessoa_repo.getPersonByEmail(email);
     }
 
     getByNIF(nif: string): Promise<Pessoa> {
-        return this.repo.getPersonByNIF(nif);
+        return this.pessoa_repo.getPersonByNIF(nif);
     }
 
     getByNBI(nbi: string): Promise<Pessoa> {
-        return this.repo.getPersonByNBI(nbi);
+        return this.pessoa_repo.getPersonByNBI(nbi);
     }
 
     criar(pessoa: Pessoa): Promise<Pessoa> {
-        return this.repo.create(pessoa);
+        return this.pessoa_repo.create(pessoa);
     } 
 
     actualizar(id: string, pessoa: Pessoa) {
-        return this.repo.update(id, pessoa);
+        return this.pessoa_repo.update(id, pessoa);
     }
 
     remover(id: string): Promise<boolean> {
         // check if object exist
-        return this.repo.delete(id);
+        return this.pessoa_repo.delete(id);
     }
 }
 

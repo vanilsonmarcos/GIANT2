@@ -1,3 +1,4 @@
+import { pessoa } from '@prisma/client';
 
 import { Service } from "typedi";
 import ClienteStats from "../../entities/ClienteStats";
@@ -7,6 +8,35 @@ import prisma from "../PrismaClient";
 
 @Service()
 class StatsRepository {
+
+    // async getAllByInterval(start: Date, end: Date): Promise<AllStats> {
+    //     const CLIENTES = await prisma.$queryRaw`
+    //     SELECT COUNT(DISTINCT TOMADOR_ID)
+    //     FROM apolice
+    //     WHERE DATA_INSERCAO BETWEEN ${start} AND ${end};
+    //   `;
+
+    //     const TOTAL_CLIENTES = CLIENTES?? 0; 
+
+    //     const SEGURADOS = await prisma.$queryRaw`
+    //     SELECT COUNT(DISTINCT SEGURADO_ID)
+    //     FROM adenda_segurado
+    //     WHERE DATA_INSERCAO BETWEEN ${start} AND ${end};
+    //     `;
+    //     const TOTAL_CLIENTES = CLIENTES?? 0; 
+
+
+    //     const UTENTES = await prisma.$queryRaw`
+    //     SELECT COUNT(ID)
+    //     FROM pessoa
+    //     WHERE DATA_INSERCAO BETWEEN ${start} AND ${end};
+    //     `;
+
+
+
+
+    // }
+
     async getAllCliente(): Promise<ClienteStats> {
         const TOTAL_CLIENTES = await prisma.apolice.count({
             where: {},
@@ -39,19 +69,19 @@ class StatsRepository {
             where: {
                 APOLICE_ESTADO_ID: 5
             }
-        })?? 0;
+        }) ?? 0;
 
         const TOTAL_APOLICES_EXPIRADAS = await prisma.apolice.count({
             where: {
                 APOLICE_ESTADO_ID: 4
             }
-        })?? 0;
+        }) ?? 0;
 
         const TOTAL_APOLICES_CANCELADAS = await prisma.apolice.count({
             where: {
                 APOLICE_ESTADO_ID: 3
             }
-        })?? 0;
+        }) ?? 0;
 
         const apoliceStats: ApoliceStats = {
             APOLICES_EMITIDAS: TOTAL_APOLICES,

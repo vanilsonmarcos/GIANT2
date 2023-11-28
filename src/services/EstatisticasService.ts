@@ -15,6 +15,10 @@ class EstatisticasService {
         return this.repo.getAll();
     }
 
+    getAllByInterval(start: Date, end: Date): Promise<AllStats> {
+        return this.repo.getAllByInterval(start, end);
+    }
+
     getAllApolice(): Promise<ApoliceStats> {
         return this.repo.getAllApolice();
     }
