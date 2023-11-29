@@ -12,4 +12,8 @@ estatisticaRoutes.post("/estatistica_todos/", estatisticaController.getAll.bind(
 estatisticaRoutes.post("/estatistica_apolices/", estatisticaController.getAllApolice.bind(estatisticaController));
 estatisticaRoutes.post("/estatistica_clientes/", estatisticaController.getAllClients.bind(estatisticaController));
 
+estatisticaRoutes.post("/estatistica_todos/:inicio/:fim/", estatisticaController.getAllByInterval.bind(estatisticaController));
+estatisticaRoutes.post("/estatistica_apolices/:inicio/:fim/", estatisticaController.getAllApoliceByInterval.bind(estatisticaController));
+estatisticaRoutes.post("/estatistica_clientes/:inicio/:fim/", estatisticaController.getAllClientsByInterval.bind(estatisticaController));
+
 export default estatisticaRoutes;

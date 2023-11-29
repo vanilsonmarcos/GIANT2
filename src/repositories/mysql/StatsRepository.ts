@@ -1,5 +1,3 @@
-import { adenda_item_segurado } from '@prisma/client';
-import { apolice } from '@prisma/client';
 import { Service } from "typedi";
 import ClienteStats from "../../entities/ClienteStats";
 import ApoliceStats from "../../entities/ApoliceStats";

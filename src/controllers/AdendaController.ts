@@ -181,7 +181,7 @@ class AdendaController {
             const createdAdenda = await this.adendaService.adicionarSegurados(data.adenda.ID.toString(), data.segurados);
             const response = {
                 code: 200,
-                message: "Segurados adicionados a adenda adicionados com sucesso",
+                message: "Segurados adicionados a adenda com sucesso",
                 data: createdAdenda
             };
             res.json(response);
