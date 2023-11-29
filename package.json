@@ -12,7 +12,8 @@
     "start": "nodemon src/server.ts",
     "test": "jest --runInBand --detectOpenHandles",
     "seed": "ts-node --transpile-only prisma/seed.ts",
-    "prisma_generate":"npx prisma db pull && npx prisma generate"
+    "prisma_generate":"npx prisma db pull && npx prisma generate",
+    "prisma_migrate":"npx prisma migrate deploy"
   },
 
   "keywords": [],
