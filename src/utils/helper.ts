@@ -3,6 +3,13 @@ import CustomError from "./CustomError";
 import { apolice_fracionamento, veiculo } from "@prisma/client";
 import prisma from "../repositories/PrismaClient";
 
+
+function isValidDateFormat(dateStr: string): boolean {
+  const datePattern = /^\d{4}-\d{2}-\d{2}$/;
+  return datePattern.test(dateStr);
+}
+
+
 function isDateWithinIntervals(startDate: moment.Moment, endDate: moment.Moment, intervals: number[],) {
   // Calculate the difference in months between the start and end dates
   const monthsDiff = endDate.diff(startDate, 'months');
@@ -29,10 +36,7 @@ function validateAdendaDates(data_inicio: Date, data_fim: Date) {
 function isValidInterval(data_inicio: Date, data_fim: Date) {
   const m_data_inicio = moment(data_inicio);
   const m_data_fim = moment(data_fim);
-
-  if (m_data_inicio.isAfter(m_data_fim)) {
-    throw new CustomError("A data de inicio deve ser inferior à data do fim");
-  }
+  return m_data_inicio.isBefore(m_data_fim)
 }
 
 
@@ -75,5 +79,6 @@ export {
   validateAdendaDates,
   calculatePremio,
   isArrayEmpty,
-  isValidInterval
+  isValidInterval,
+  isValidDateFormat
 }
