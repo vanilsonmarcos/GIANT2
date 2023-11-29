@@ -1207,7 +1207,7 @@ Body:
         "ID": 1,
         "NOME": "Pessoa Física"
     },
-    "DATA_NASCIMENTO": "Mon Jul 02 1962 01:00:00 GMT+0100 (Hora padrão da África Ocidental)",
+    "DATA_NASCIMENTO": "1998-12-12",
     "SEXO": "M",
     "NBI": "003466243LA35",
     "NIF": "003466243LA35",
@@ -1303,9 +1303,9 @@ em caso de sucesso retorna o objecto actualizado
 
 ```json
 {
-    code: 200,
-    message: "Dados da veiculo inseridos com sucesso",
-    data: {
+    "code": 200,
+    "message": "Dados da veiculo inseridos com sucesso",
+    "data": {
         "ID": 1,
         "NOME": "Pedro Nuno Santos",
         "PESSOA_TIPO": {

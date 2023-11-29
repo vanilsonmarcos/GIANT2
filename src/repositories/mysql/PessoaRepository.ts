@@ -78,32 +78,27 @@ class PessoaRepository implements IPessoaRepository<Pessoa> {
                 PROVINCIA: item.ENDERECO?.PROVINCIA,
             }
         });
+
+        if(pessoa_endereco=== null || undefined) {
+            throw new CustomError("Não foi possivel adicionar os dados da pessoa ao sistema");
+        }
+
         const pessoa = await prisma.pessoa.create({
             data: {
                 NOME: item.NOME,
-                DATA_NASCIMENTO: item.DATA_NASCIMENTO,
+                DATA_NASCIMENTO: new Date(item.DATA_NASCIMENTO),
                 SEXO: item.SEXO,
                 NBI: item.NBI,
                 NIF: item.NIF,
                 ESTADO_CIVIL: item.ESTADO_CIVIL,
-                pessoa_tipo: {
-                    connect: {
-                        ID: item.PESSOA_TIPO.ID
-                    }
-                },
-                pessoa_endereco: {
-                    connect: {
-                        ID: pessoa_endereco.ID
-                    }
-                }
+                ENDERECO_ID: pessoa_endereco.ID,
+                PESSOA_TIPO_ID: item.PESSOA_TIPO.ID
             },
             include: {
                 pessoa_endereco: true,
                 pessoa_tipo: true
             }
         });
-
-
 
         if (pessoa === null) {
             throw Error("Ocorreu um erro inserir os dados da pessoa");

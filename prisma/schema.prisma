@@ -10,9 +10,9 @@ datasource db {
 model apolice {
   ID                       Int                   @id @default(autoincrement())
   APOLICE_TIPO_ID          Int
-  APOLICE_ESTADO_ID        Int
-  APOLICE_FRACIONAMENTO_ID Int
   NUMERO                   String                @db.VarChar(20)
+  APOLICE_FRACIONAMENTO_ID Int
+  APOLICE_ESTADO_ID        Int
   TOMADOR_ID               Int
   INSERIDO_POR             Int?
   ACTUALIZADO_POR          Int?
@@ -35,8 +35,7 @@ model apolice_estado {
   DESCRICAO         String    @db.VarChar(255)
   INSERIDO_POR      Int?
   ACTUALIZADO_POR   Int?
-  REMOVIDO_POR      Int?
-  DATA_INSERCAO     DateTime? @default(now()) @db.Timestamp(0)
+  DATA_INSERCAO     DateTime? @default(now()) @db.DateTime(0)
   DATA_ACTUALIZACAO DateTime? @default(now()) @db.DateTime(0)
   apolice           apolice[]
 }
@@ -45,7 +44,9 @@ model apolice_fracionamento {
   ID                Int       @id @default(autoincrement())
   FRACIONADO_EM     String    @db.VarChar(10)
   NO_FRACOES        Int
-  DATA_INSERCAO     DateTime? @default(now()) @db.Timestamp(0)
+  INSERIDO_POR      Int?
+  ACTUALIZADO_POR   Int?
+  DATA_INSERCAO     DateTime? @default(now()) @db.DateTime(0)
   DATA_ACTUALIZACAO DateTime? @default(now()) @db.DateTime(0)
   apolice           apolice[]
 }
@@ -57,7 +58,6 @@ model apolice_tipo {
   DESCRICAO            String                 @db.MediumText
   INSERIDO_POR         Int?
   ACTUALIZADO_POR      Int?
-  REMOVIDO_POR         Int?
   DATA_CRIACAO         DateTime?              @default(now()) @db.DateTime(0)
   DATA_ACTUALIZACAO    DateTime?              @default(now()) @db.DateTime(0)
   adenda_item_segurado adenda_item_segurado[]
@@ -72,12 +72,11 @@ model cobertura {
   SIGLA             String        @unique(map: "SIGLA") @db.VarChar(30)
   NOME              String        @db.VarChar(255)
   DESCRICAO         String        @db.LongText
-  INSERIDO_POR      Int?
-  ACTUALIZADO_POR   Int?
-  REMOVIDO_POR      Int?
   VALOR_A_PAGAR     Decimal       @default(0.00) @db.Decimal(13, 2)
   DESCONTO          Decimal       @default(0.00) @db.Decimal(13, 2)
-  DATA_CRIACAO      DateTime?     @default(now()) @db.Timestamp(0)
+  INSERIDO_POR      Int?
+  ACTUALIZADO_POR   Int?
+  DATA_CRIACAO      DateTime?     @default(now()) @db.DateTime(0)
   DATA_ACTUALIZACAO DateTime?     @default(now()) @db.DateTime(0)
   apolice_tipo      apolice_tipo? @relation(fields: [APOLICE_TIPO_ID], references: [ID], map: "FKAPOLICE_CO255895")
 
@@ -94,6 +93,8 @@ model pessoa {
   NBI               String?           @unique(map: "NBI") @db.VarChar(64)
   NIF               String            @unique(map: "NIF") @db.VarChar(64)
   ESTADO_CIVIL      String            @db.VarChar(1)
+  INSERIDO_POR      Int?
+  ACTUALIZADO_POR   Int?
   DATA_CRIACAO      DateTime?         @default(now()) @db.Timestamp(0)
   DATA_ACTUALIZACAO DateTime?         @default(now()) @db.DateTime(0)
   adenda_segurado   adenda_segurado[]
@@ -112,6 +113,8 @@ model pessoa_endereco {
   BAIRRO               String?   @db.VarChar(100)
   CIDADE               String?   @db.VarChar(45)
   PROVINCIA            String?   @db.VarChar(45)
+  INSERIDO_POR         Int?
+  ACTUALIZADO_POR      Int?
   DATA_CRIACAO         DateTime? @default(now()) @db.DateTime(0)
   DATA_ACTUALIZACAO    DateTime? @default(now()) @db.DateTime(0)
   pessoa               pessoa?
@@ -120,6 +123,8 @@ model pessoa_endereco {
 model pessoa_tipo {
   ID                Int       @id @default(autoincrement())
   NOME_TIPO         String?   @db.VarChar(255)
+  INSERIDO_POR      Int?
+  ACTUALIZADO_POR   Int?
   DATA_CRIACAO      DateTime? @default(now()) @db.DateTime(0)
   DATA_ACTUALIZACAO DateTime? @default(now()) @db.DateTime(0)
   pessoa            pessoa[]
@@ -161,10 +166,8 @@ model veiculo {
   DESCRICAO            String                 @db.VarChar(4000)
   INSERIDO_POR         Int?
   ACTUALIZADO_POR      Int?
-  REMOVIDO_POR         Int?
   DATA_INSERCAO        DateTime?              @default(now()) @db.DateTime(0)
   DATA_ACTUALIZACAO    DateTime?              @default(now()) @db.DateTime(0)
-  DATA_REMOCAO         DateTime?              @db.DateTime(0)
   adenda_item_segurado adenda_item_segurado[]
   veiculo_categoria    veiculo_categoria      @relation(fields: [VEICULO_CATEGORIA_ID], references: [ID], onDelete: Cascade, map: "FKVEICULO357677")
 
@@ -174,10 +177,10 @@ model veiculo {
 model veiculo_categoria {
   ID                Int                @id @default(autoincrement())
   NOME              String             @db.VarChar(255)
-  REMOVIDO_POR      Int?
+  INSERIDO_POR      Int?
+  ACTUALIZADO_POR   Int?
   DATA_INSERCAO     DateTime?          @default(now()) @db.DateTime(0)
   DATA_ACTUALIZACAO DateTime?          @default(now()) @db.DateTime(0)
-  DATA_REMOCAO      DateTime?          @db.DateTime(0)
   preco_cilindrada  preco_cilindrada[]
   veiculo           veiculo[]
 }
@@ -189,10 +192,10 @@ model adenda {
   PREMIO               Decimal                @db.Decimal(10, 2)
   DATA_INICIO          DateTime               @db.DateTime(0)
   DATA_FIM             DateTime               @db.DateTime(0)
-  DATA_INSERCAO        DateTime?              @default(now()) @db.DateTime(0)
-  DATA_ACTUALIZACAO    DateTime?              @default(now()) @db.DateTime(0)
   INSERIDO_POR         Int?
   ACTUALIZADO_POR      Int?
+  DATA_INSERCAO        DateTime?              @default(now()) @db.DateTime(0)
+  DATA_ACTUALIZACAO    DateTime?              @default(now()) @db.DateTime(0)
   apolice              apolice?               @relation(fields: [APOLICE_ID], references: [ID], map: "FKADENDAPOLICE")
   adenda_item_segurado adenda_item_segurado[]
   adenda_pagamento     adenda_pagamento[]
@@ -206,14 +209,14 @@ model adenda_item_segurado {
   ADENDA_ID         Int?
   APOLICE_TIPO_ID   Int?
   ITEM_ID           Int?
-  PREMIO            Decimal?      @db.Decimal(10, 2)
-  DATA_INSERCAO     DateTime?     @default(now()) @db.DateTime(0)
-  DATA_ACTUALIZACAO DateTime?     @default(now()) @db.DateTime(0)
+  PREMIO            Decimal?      @default(0.00) @db.Decimal(10, 2)
   INSERIDO_POR      Int?
   ACTUALIZADO_POR   Int?
-  adenda            adenda?       @relation(fields: [ADENDA_ID], references: [ID], map: "FKADENDAITEMSEG")
+  DATA_INSERCAO     DateTime?     @default(now()) @db.DateTime(0)
+  DATA_ACTUALIZACAO DateTime?     @default(now()) @db.DateTime(0)
   apolice_tipo      apolice_tipo? @relation(fields: [APOLICE_TIPO_ID], references: [ID], map: "FKADENDAAPOLICETIPO")
   veiculo           veiculo?      @relation(fields: [ITEM_ID], references: [ID], map: "FKADENDAITEMID")
+  adenda            adenda?       @relation(fields: [ADENDA_ID], references: [ID], map: "FKADENDAITEMSEG")
 
   @@unique([ADENDA_ID, ITEM_ID], map: "ADENDAITEM")
   @@index([APOLICE_TIPO_ID], map: "FKADENDAAPOLICETIPO_idx")
@@ -224,13 +227,13 @@ model adenda_item_segurado {
 model adenda_pagamento {
   ID                Int       @id @default(autoincrement())
   ADENDA_ID         Int?
-  DESCONTOS         Decimal   @db.Decimal(10, 2)
-  VALOR_PAGO        Decimal   @db.Decimal(10, 2)
-  DATA_INSERCAO     DateTime? @default(now()) @db.DateTime(0)
-  DATA_ACTUALIZACAO DateTime? @default(now()) @db.DateTime(0)
-  DATA_REMOCACAO    DateTime? @db.DateTime(0)
+  DESCONTOS         Decimal   @default(0.00) @db.Decimal(10, 2)
+  VALOR_A_PAGAR     Decimal   @default(0.00) @db.Decimal(10, 2)
+  VALOR_PAGO        Decimal   @default(0.00) @db.Decimal(10, 2)
   INSERIDO_POR      Int?
   ACTUALIZADO_POR   Int?
+  DATA_INSERCAO     DateTime? @default(now()) @db.DateTime(0)
+  DATA_ACTUALIZACAO DateTime? @default(now()) @db.DateTime(0)
   adenda            adenda?   @relation(fields: [ADENDA_ID], references: [ID], map: "FKADENDAPAG")
 
   @@index([ADENDA_ID], map: "FKADENDAPAGA_idx")
@@ -240,10 +243,10 @@ model adenda_segurado {
   ID                Int       @id @default(autoincrement())
   SEGURADO_ID       Int?
   ADENDA_ID         Int?
-  DATA_INSERCAO     DateTime? @default(now()) @db.DateTime(0)
-  DATA_ACTUALIZACAO DateTime? @db.DateTime(0)
   INSERIDO_POR      Int?
   ACTUALIZADO_POR   Int?
+  DATA_INSERCAO     DateTime? @default(now()) @db.DateTime(0)
+  DATA_ACTUALIZACAO DateTime? @default(now()) @db.DateTime(0)
   adenda            adenda?   @relation(fields: [ADENDA_ID], references: [ID], map: "FRKADENADEN")
   pessoa            pessoa?   @relation(fields: [SEGURADO_ID], references: [ID], map: "FRKADENPESS")
 
@@ -260,6 +263,8 @@ model seguradora {
   TELEFONE          String    @db.VarChar(45)
   TELEFONE_ALT      String    @db.VarChar(45)
   WEB_SITE          String    @db.VarChar(150)
+  INSERIDO_POR      Int?
+  ACTUALIZADO_POR   Int?
   DATA_CRIACAO      DateTime? @default(now()) @db.DateTime(0)
-  DATA_ACTUALIZACAO DateTime? @db.DateTime(0)
+  DATA_ACTUALIZACAO DateTime? @default(now()) @db.DateTime(0)
 }
