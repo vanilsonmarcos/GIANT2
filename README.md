@@ -708,8 +708,6 @@ em caso de sucesso retorna:
 }
 ```
 
-
-
 ## Preço Cilindrada
 
 Visualizar preco_cilindrada

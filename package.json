@@ -34,7 +34,7 @@
     "reflect-metadata": "^0.1.13",
     "typedi": "^0.10.0",
     "validator": "^13.11.0",
-    "zod": "^3.22.1"
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@faker-js/faker": "^8.0.2",
