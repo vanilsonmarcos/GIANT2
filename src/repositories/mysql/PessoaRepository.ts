@@ -114,7 +114,7 @@ class PessoaRepository implements IPessoaRepository<Pessoa> {
             data: {
                 
                 NOME: item.NOME,
-                DATA_NASCIMENTO: item.DATA_NASCIMENTO,
+                DATA_NASCIMENTO: new Date(item.DATA_NASCIMENTO),
                 SEXO: item.SEXO,
                 NBI: item.NBI,
                 NIF: item.NIF,
