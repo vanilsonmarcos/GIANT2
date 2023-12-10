@@ -12,8 +12,8 @@ const coberturaRoutes =  Router();
 coberturaRoutes.get('/cobertura/', coberturaController.getAll.bind(coberturaController));
 coberturaRoutes.get('/cobertura/:id', coberturaController.getByID.bind(coberturaController));
 coberturaRoutes.post('/cobertura/', coberturaController.criar.bind(coberturaController));
-coberturaRoutes.post('/cobertura/apolice_tipo/', coberturaController.getByApoliceTipo.bind(coberturaController));
 coberturaRoutes.put('/cobertura/', coberturaController.actualizar.bind(coberturaController));
 coberturaRoutes.delete('/cobertura/:id', coberturaController.remover.bind(coberturaController));
+coberturaRoutes.get('/cobertura/apolice_tipo/:id', coberturaController.getByApoliceTipo.bind(coberturaController));
 
 export default coberturaRoutes;

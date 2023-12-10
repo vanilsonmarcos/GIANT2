@@ -51,9 +51,9 @@ class CoberturaController {
     }
 
     async getByApoliceTipo(req: Request, res: Response) {
-        const apolice_tipo: apolice_tipo = req.body;
+        const { id } = req.params
         try {
-            const cobertura: cobertura = await this.coberturaService.getByID(apolice_tipo.ID.toString());
+            const cobertura: cobertura = await this.coberturaService.getByID(id);
             const response = {
                 code: 200,
                 message: "Dados das Coberturas foram encontrados com sucesso",
