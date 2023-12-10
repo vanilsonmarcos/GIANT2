@@ -1372,3 +1372,208 @@ em caso de error retorna:
     "error": {error}
 }
 ```
+
+
+
+
+## Cobertura
+
+Visualizar as coberturas
+Metodo: GET
+URL: /cobertura/
+Resposta:
+em caso de sucesso retorna:
+
+```json
+{
+    "code": 200,
+    "message": "Dados das Coberturas foram encontrados com sucesso",
+    "data": [cobertura_1, cobertura_2, .cobertura_3,...]
+}
+```
+em caso de erro:
+
+```json
+{
+    "code": 404,
+    "message": "Ocorreu um erro ao colectar dos dados das Coberturas",
+    "data": {},
+    "error": {error}
+}
+```
+
+Visualizar cobertura pelo ID
+Metodo: GET
+URL: /cobertura/1
+Resposta:
+em caso de sucesso retorna:
+```json 
+{
+    "code":200,
+    "message":"Dados da Cobertura foram encontrados com sucesso",
+    "data":{
+        "ID":1,
+        "APOLICE_TIPO_ID":1,
+        "COBERTURA_BASE":true,
+        "SIGLA":"RTER",
+        "NOME":"Responsabilidade civil perante terceiros",
+        "DESCRICAO":"A pessoa responderá por ato causado por terceiro, sendo para tanto necessário que exista um vínculo jurídico entre o responsável e o causador do dano. Em regra, tal responsabilidade gera responsabilidade solidária, com algumas exceções, como o caso do incapaz que responde subsidiariamente.",
+        "VALOR_A_PAGAR":"0",
+        "DESCONTO":"0",
+        "INSERIDO_POR":null,
+        "ACTUALIZADO_POR":null,
+        "DATA_CRIACAO":"2023-11-29T14:38:17.000Z",
+        "DATA_ACTUALIZACAO":"2023-11-29T14:38:17.000Z",
+        "apolice_tipo":{
+            "ID":1,
+            "SIGLA":"APSAT",
+            "NOME":"Apólice de seguro automóvel",
+            "DESCRICAO":"O seguro automotivo, também conhecido apenas como seguro auto, é outra possibilidade popular no mercado brasileiro. Como o nome sugere, ele é voltado para proteger veículos automotores. Além de carros, essa alternativa pode servir para proteger motos e caminhões,","INSERIDO_POR":null,
+            "ACTUALIZADO_POR":null,
+            "DATA_CRIACAO":"2023-11-29T14:38:17.000Z",
+            "DATA_ACTUALIZACAO":"2023-11-29T14:38:17.000Z"
+        }
+    }
+}
+```
+
+em caso de erro:
+
+```json
+{
+
+    "code": 404,
+    "message": "Ocorreu um erro ao colectar dos dados das Coberturas",
+    "data": {},
+    "error": {error}
+}
+```
+
+Criar/ Inserir uma nova Cobertura
+Metodo: POST
+URL: /cobertura/
+BODY:
+
+```json
+{
+    "APOLICE_TIPO_ID": 1,
+    "COBERTURA_BASE": false,
+    "SIGLA": "UPDFT",
+    "NOME": "Cobertura para terceiros",
+    "DESCRICAO": "isto é uma simples descrição",
+    "VALOR_A_PAGAR": 243524.32,
+    "DESCONTO": 2345.43
+}
+```
+
+em caso de sucesso:
+
+```json
+{
+    "code": 200,
+    "message": "Dados da Cobertura inseridos com sucesso",
+    "data": {
+        "ID": 9, 
+        "APOLICE_TIPO_ID": 1,
+        "COBERTURA_BASE": false,
+        "SIGLA": "UPDFT",
+        "NOME": "Cobertura para terceiros",
+        "DESCRICAO": "isto é uma simples descrição",
+        "VALOR_A_PAGAR": 243524.32,
+        "DESCONTO": 2345.43
+    }
+}
+```
+
+em caso de erro:
+
+```json
+{
+    "code": 404,
+    "message": "Ocorreu um erro ao inserir os dados da Cobertura",
+    "data": {},
+    "error": {error}
+}
+
+Actualizar uma Cobertura
+Metodo: PUT
+URL: /cobertura/
+BODY:
+
+```json
+{
+    "ID": 9,
+    "APOLICE_TIPO_ID": 1,
+    "COBERTURA_BASE": false,
+    "SIGLA": "UPDFT",
+    "NOME": "Cobertura para terceiros",
+    "DESCRICAO": "isto é uma simples descrição",
+    "VALOR_A_PAGAR": 243524.32,
+    "DESCONTO": 2345.43
+}
+```
+
+em caso de sucesso:
+
+```json
+{
+    "code": 200,
+    "message": "Dados da Cobertura inseridos com sucesso",
+    "data": {
+        "ID": 9,
+        "APOLICE_TIPO_ID": 1,
+        "COBERTURA_BASE": false,
+        "SIGLA": "UPDFT",
+        "NOME": "Cobertura para terceiros",
+        "DESCRICAO": "isto é uma simples descrição",
+        "VALOR_A_PAGAR": 243524.32,
+        "DESCONTO": 2345.43
+    }
+}
+```
+
+em caso de erro:
+
+```json
+{
+    "code": 404,
+    "message": "Ocorreu um erro ao inserir os dados da Cobertura",
+    "data": {},
+    "error": {error}
+}
+```
+
+Remover uma Cobertura
+Metodo: DELETE
+URL: /cobertura/1
+BODY: NONE
+
+em caso de sucesso:
+
+```json
+{
+    "code": 200,
+    "message": "Dados da Cobertura removidos com sucesso",
+    "data": {
+        "ID": 9,
+        "APOLICE_TIPO_ID": 1,
+        "COBERTURA_BASE": false,
+        "SIGLA": "UPDFT",
+        "NOME": "Cobertura para terceiros",
+        "DESCRICAO": "isto é uma simples descrição",
+        "VALOR_A_PAGAR": 243524.32,
+        "DESCONTO": 2345.43
+    }
+}
+```
+
+em caso de erro:
+
+```json
+{
+    "code": 401,
+    "message": "Ocorreu um erro ao remover os dados da Cobertura",
+    "data": {},
+    "error": {error}
+}
+```

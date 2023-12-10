@@ -112,7 +112,6 @@ class PessoaRepository implements IPessoaRepository<Pessoa> {
                 ID: parseInt(id)
             },
             data: {
-                
                 NOME: item.NOME,
                 DATA_NASCIMENTO: new Date(item.DATA_NASCIMENTO),
                 SEXO: item.SEXO,

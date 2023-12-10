@@ -21,7 +21,7 @@ class CoberturaController {
         } catch (error) {
             const response = {
                 code: 404,
-                message: "Occoreu um erro ao colectar dos dados das Coberturas",
+                message: "Ocorreu um erro ao colectar dos dados das Coberturas",
                 data: {},
                 error: error
             };
@@ -137,7 +137,8 @@ class CoberturaController {
             const response = {
                 code: 401,
                 message: "Ocorreu um erro ao remover os dados da Cobertura",
-                data: {}
+                data: {},
+                error: error
             }
             return res.json(response);
         }
