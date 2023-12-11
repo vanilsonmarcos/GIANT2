@@ -52,6 +52,27 @@ class AdendaController {
             res.json(response);
         }
     }
+
+    async getByApoliceID(req: Request, res: Response) {
+        const { id } = req.params;
+        try {
+            const adenda = await this.adendaService.getByApoliceID(id);
+            const response = {
+                code: 200,
+                message: "Dados da adenda foram encontrados com sucesso",
+                data: adenda
+            };
+            res.json(response);
+        } catch (error) {
+            const response = {
+                code: 401,
+                message: "Ocorreu um erro ao carregar os dados da adenda",
+                data: {},
+                error: error
+            };
+            res.json(response);
+        }
+    }
     
     async criar(req: Request, res: Response) {
         const adenda: adenda = req.body; // parse body to person data

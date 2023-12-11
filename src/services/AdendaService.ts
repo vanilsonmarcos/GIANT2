@@ -5,6 +5,7 @@ import { validateAdendaDates } from "../utils/helper";
 import ApoliceRepository from "../repositories/mysql/ApoliceRepository";
 @Service()
 class AdendaService {
+   
 
     @Inject(() => AdendaRepository)
     private adenda_repo: AdendaRepository;
@@ -22,6 +23,11 @@ class AdendaService {
     async getByID(id: string): Promise<adenda> {
         return this.adenda_repo.getByID(id);
     }
+
+    async getByApoliceID(id: string):Promise<adenda[]> {
+        return this.apolice_repo.getAllAdendaByApoliceID(id);
+    }
+
     async criar(item: adenda): Promise<adenda> {
         validateAdendaDates(item.DATA_INICIO, item.DATA_FIM);
         return this.adenda_repo.create(item);

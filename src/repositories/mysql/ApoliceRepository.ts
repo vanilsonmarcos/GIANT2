@@ -269,10 +269,13 @@ class ApoliceRepository implements
         return newSegurandos;
     }
 
-    async getAllApoliceAdenda(apoliceID: string): Promise<adenda[]> {
+    async getAllAdendaByApoliceID(apoliceID: string): Promise<adenda[]> {
         const adendas = await prisma.adenda.findMany({
             where: {
                 APOLICE_ID: parseInt(apoliceID)
+            },
+            orderBy: {
+                DATA_INSERCAO:'desc'
             },
             take: 100,
         });

@@ -10,6 +10,7 @@ const adendaRoutes = Router();
 
 adendaRoutes.get('/adenda/', adendaController.getAll.bind(adendaController));
 adendaRoutes.get('/adenda/:id', adendaController.getByID.bind(adendaController));
+adendaRoutes.get('/adenda/apolice/:id', adendaController.getByApoliceID.bind(adendaController));
 adendaRoutes.post('/adenda/', adendaController.criar.bind(adendaController));
 adendaRoutes.put('/adenda/', adendaController.actualizar.bind(adendaController));
 adendaRoutes.delete('/adenda/:id', adendaController.remover.bind(adendaController));

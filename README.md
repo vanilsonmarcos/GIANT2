@@ -10,7 +10,7 @@ UMA APOLICE TEM VARIOS ELEMENTOS QUE SÂO:
 - Segurado(s)(Pessoa) é/são as pessoas que se beneficiam da apólice que são pessoas.
 - Tomador(Pessoa) é a pessoa que adjudica a apólice que pode ser pessoa física ou jurídica.
 
-#### A apólice
+### A apólice
 
 É um contracto estabelecido entre uma entidade seguradora e uma entidade pessoal.
 
@@ -629,6 +629,80 @@ Resposta em caso de erro retorna:
 ```
 
 ## Adenda
+
+Visualizar as adendas de uma apólice
+METODO: GET
+URL:/adenda/apolice/1
+BODY: NONE
+
+Resposta em caso de sucesso:
+
+```json
+{
+    "code":200,
+    "message":"Dados das adendas encontrados com sucesso",
+    "data":[
+        {
+            "ID":1,
+            "APOLICE_ID":5,
+            "NUMERO":"1 80 2023/0001",
+            "PREMIO":"11500000.64",
+            "DATA_INICIO":"2023-10-10T00:00:00.000Z",
+            "DATA_FIM":"2024-12-12T00:00:00.000Z",
+            "INSERIDO_POR":null,
+            "ACTUALIZADO_POR":null,
+            "DATA_INSERCAO":"2023-12-11T14:20:49.000Z",
+            "DATA_ACTUALIZACAO":"2023-12-11T14:20:49.000Z"},
+        {
+            "ID":2,
+            "APOLICE_ID":5,
+            "NUMERO":"1 80 2023/0002",
+            "PREMIO":"10500000.34",
+            "DATA_INICIO":"2023-10-10T00:00:00.000Z",
+            "DATA_FIM":"2024-12-12T00:00:00.000Z",
+            "INSERIDO_POR":null,
+            "ACTUALIZADO_POR":null,
+            "DATA_INSERCAO":"2023-12-11T14:20:49.000Z",
+            "DATA_ACTUALIZACAO":"2023-12-11T14:20:49.000Z"
+        },
+        {
+            "ID":3,
+            "APOLICE_ID":6,
+            "NUMERO":"1 80 2023/0003",
+            "PREMIO":"12000000.64",
+            "DATA_INICIO":"2023-10-10T00:00:00.000Z",
+            "DATA_FIM":"2024-12-12T00:00:00.000Z",
+            "INSERIDO_POR":null,
+            "ACTUALIZADO_POR":null,
+            "DATA_INSERCAO":"2023-12-11T14:20:49.000Z",
+            "DATA_ACTUALIZACAO":"2023-12-11T14:20:49.000Z"
+            },
+        {
+            "ID":4,
+            "APOLICE_ID":6,
+            "NUMERO":"1 80 2023/0004",
+            "PREMIO":"12000000.64",
+            "DATA_INICIO":"2023-10-10T00:00:00.000Z",
+            "DATA_FIM":"2024-12-12T00:00:00.000Z",
+            "INSERIDO_POR":null,
+            "ACTUALIZADO_POR":null,
+            "DATA_INSERCAO":"2023-12-11T14:20:49.000Z",
+            "DATA_ACTUALIZACAO":"2023-12-11T14:20:49.000Z"
+        }
+    ]
+}
+```
+
+resposta em caso de erro:
+
+```json
+{
+    "code": 404,
+    "message": "Os dados das adendas não foram encontrados",
+    "data": {},
+    "error": { error }
+}
+```
 
 Visualizar todos os dados das adendas
 METODO: GET
