@@ -28,6 +28,9 @@ class AdendaController {
                 data:  {},
                 error: error
             };
+            if (error instanceof CustomError) { 
+                response.message = error.message
+            }
             res.json(response)
         }
     }
@@ -49,6 +52,9 @@ class AdendaController {
                 data: {},
                 error: error
             };
+            if (error instanceof CustomError) { 
+                response.message = error.message
+            }
             res.json(response);
         }
     }
@@ -123,6 +129,9 @@ class AdendaController {
                 data: {},
                 error: error
             }
+            if (error instanceof CustomError) { 
+                response.message = error.message
+            }
             res.json(response);
         }
     }
@@ -146,6 +155,9 @@ class AdendaController {
                 data: {},
                 error: error
             };
+            if (error instanceof CustomError) { 
+                response.message = error.message
+            }
             res.json(response);
         }
     }
