@@ -280,7 +280,7 @@ class ApoliceRepository implements
             take: 100,
         });
 
-        if (adendas === null || adendas === undefined) {
+        if (isArrayEmpty(adendas) || adendas === null || adendas === undefined) {
             throw new CustomError("Esta apolice não possui adendas");
         }
         return adendas;
