@@ -1777,9 +1777,6 @@ em caso de error retorna:
 }
 ```
 
-
-
-
 ## Cobertura
 
 Visualizar as coberturas
