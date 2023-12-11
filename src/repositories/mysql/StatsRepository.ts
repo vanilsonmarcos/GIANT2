@@ -9,20 +9,22 @@ import { JsDateToYYYMMDD } from "../../utils/helper";
 class StatsRepository {
 
     async getAllCliente(): Promise<ClienteStats> {
-        // const TOTAL_CLIENTES = await prisma.apolice.count({
-        //     where: {},
-        //     distinct: ['TOMADOR_ID'],
-        // }) ?? 0;
+        const CLIENTES:any = await prisma.$queryRaw`
+        SELECT COUNT(DISTINCT TOMADOR_ID) AS CLIENTES
+        FROM apolice`;
+
+        const TOTAL_CLIENTES = Number(CLIENTES[0].CLIENTES?? 0);
+
+        const SEGURADOS:any = await prisma.$queryRaw`
+        SELECT COUNT(DISTINCT SEGURADO_ID) AS SEGURADOS
+        FROM adenda_segurado;`;
+
+        const TOTAL_SEGURADOS = Number(SEGURADOS[0].SEGURADOS?? 0); 
 
 
-        // const TOTAL_SEGURADOS = await prisma.adenda_segurado.count({
-        //     where: {},
-        //     distinct: ['SEGURADO_ID']
-        // }) ?? 0;
+        // const TOTAL_CLIENTES = 0;
 
-        const TOTAL_CLIENTES = 0;
-
-        const TOTAL_SEGURADOS = 0;
+        // const TOTAL_SEGURADOS = 0;
 
         const TOTAL_UTENTES = await prisma.pessoa.count() ?? 0;
 
