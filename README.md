@@ -351,14 +351,48 @@ em caso de sucesso retorna:
     "code":200,
     "message":"Dados das apolices encontrados com sucesso",
     "data":[
-        {"ID":2,"APOLICE_TIPO_ID":1,"APOLICE_ESTADO_ID":6,"APOLICE_FRACIONAMENTO_ID":1,"NUMERO":"34343","TOMADOR_ID":1,"INSERIDO_POR":null,"ACTUALIZADO_POR":null,"DATA_INSERCAO":"2023-11-11T12:58:03.000Z","DATA_ACTUALIZACAO":null},
-        {"ID":3,"APOLICE_TIPO_ID":1,"APOLICE_ESTADO_ID":6,"APOLICE_FRACIONAMENTO_ID":1,"NUMERO":"1 12.112023/0","TOMADOR_ID":1,"INSERIDO_POR":null,"ACTUALIZADO_POR":null,"DATA_INSERCAO":"2023-11-12T00:12:23.000Z","DATA_ACTUALIZACAO":null},
-        {"ID":4,"APOLICE_TIPO_ID":1,"APOLICE_ESTADO_ID":3,"APOLICE_FRACIONAMENTO_ID":1,"NUMERO":"1 12 11.2023/0001","TOMADOR_ID":1,"INSERIDO_POR":null,"ACTUALIZADO_POR":null,"DATA_INSERCAO":"2023-11-12T00:18:56.000Z","DATA_ACTUALIZACAO":null}
-        ]
-    }
+        {
+            "ID":2,
+            "APOLICE_TIPO_ID":1,
+            "APOLICE_ESTADO_ID":6,
+            "APOLICE_FRACIONAMENTO_ID":1,
+            "NUMERO":"34343",
+            "TOMADOR_ID":1,
+            "INSERIDO_POR":null,
+            "ACTUALIZADO_POR":null,
+            "DATA_INSERCAO":"2023-11-11T12:58:03.000Z",
+            "DATA_ACTUALIZACAO":null
+        },
+        {
+            "ID":3,
+            "APOLICE_TIPO_ID":1,
+            "APOLICE_ESTADO_ID":6,
+            "APOLICE_FRACIONAMENTO_ID":1,
+            "NUMERO":"1 12.112023/0",
+            "TOMADOR_ID":1,
+            "INSERIDO_POR":null,
+            "ACTUALIZADO_POR":null,
+            "DATA_INSERCAO":"2023-11-12T00:12:23.000Z",
+            "DATA_ACTUALIZACAO":null
+        },
+        {
+            "ID":4,
+            "APOLICE_TIPO_ID":1,
+            "APOLICE_ESTADO_ID":3,
+            "APOLICE_FRACIONAMENTO_ID":1,
+            "NUMERO":"1 12 11.2023/0001",
+            "TOMADOR_ID":1,
+            "INSERIDO_POR":null,
+            "ACTUALIZADO_POR":null,
+            "DATA_INSERCAO":"2023-11-12T00:18:56.000Z",
+            "DATA_ACTUALIZACAO":null
+        }
+    ]
+}
  ```
 
  em caso de erro
+
  ```json
  {
     "code": 401,
@@ -593,6 +627,376 @@ Resposta em caso de erro retorna:
     "message": "Ocorreu um erro ao remover os dados da apólice",
     "data": {},
     "error": {error}
+}
+```
+
+
+
+## Adenda
+
+Visualizar todos os dados das adendas
+METODO: GET
+URL:/adenda/
+BODY: NONE
+
+Resposta em caso de sucesso:
+
+```json
+{
+    "code":200,
+    "message":"Dados das adendas encontrados com sucesso",
+    "data":[
+        {
+            "ID":1,
+            "APOLICE_ID":5,
+            "NUMERO":"1 80 2023/0001",
+            "PREMIO":"11500000.64",
+            "DATA_INICIO":"2023-10-10T00:00:00.000Z",
+            "DATA_FIM":"2024-12-12T00:00:00.000Z",
+            "INSERIDO_POR":null,
+            "ACTUALIZADO_POR":null,
+            "DATA_INSERCAO":"2023-12-11T14:20:49.000Z",
+            "DATA_ACTUALIZACAO":"2023-12-11T14:20:49.000Z"},
+        {
+            "ID":2,
+            "APOLICE_ID":5,
+            "NUMERO":"1 80 2023/0002",
+            "PREMIO":"10500000.34",
+            "DATA_INICIO":"2023-10-10T00:00:00.000Z",
+            "DATA_FIM":"2024-12-12T00:00:00.000Z",
+            "INSERIDO_POR":null,
+            "ACTUALIZADO_POR":null,
+            "DATA_INSERCAO":"2023-12-11T14:20:49.000Z",
+            "DATA_ACTUALIZACAO":"2023-12-11T14:20:49.000Z"
+        },
+        {
+            "ID":3,
+            "APOLICE_ID":6,
+            "NUMERO":"1 80 2023/0003",
+            "PREMIO":"12000000.64",
+            "DATA_INICIO":"2023-10-10T00:00:00.000Z",
+            "DATA_FIM":"2024-12-12T00:00:00.000Z",
+            "INSERIDO_POR":null,
+            "ACTUALIZADO_POR":null,
+            "DATA_INSERCAO":"2023-12-11T14:20:49.000Z",
+            "DATA_ACTUALIZACAO":"2023-12-11T14:20:49.000Z"
+            },
+        {
+            "ID":4,
+            "APOLICE_ID":6,
+            "NUMERO":"1 80 2023/0004",
+            "PREMIO":"12000000.64",
+            "DATA_INICIO":"2023-10-10T00:00:00.000Z",
+            "DATA_FIM":"2024-12-12T00:00:00.000Z",
+            "INSERIDO_POR":null,
+            "ACTUALIZADO_POR":null,
+            "DATA_INSERCAO":"2023-12-11T14:20:49.000Z",
+            "DATA_ACTUALIZACAO":"2023-12-11T14:20:49.000Z"
+        }
+    ]
+}
+```
+
+resposta em caso de erro:
+
+```json
+{
+    "code": 404,
+    "message": "Os dados das adendas não foram encontrados",
+    "data": {},
+    "error": { error }
+}
+```
+
+Visualizar todos os dados da adenda pelo ID
+METODO: GET
+URL:/adenda/1
+BODY: NONE
+
+Resposta em caso de sucesso:
+
+```json
+{
+    "code":200,
+    "message":"Dados da adenda foram encontrados com sucesso",
+    "data":{
+        "ID":1,
+        "APOLICE_ID":5,
+        "NUMERO":"1 80 2023/0001",
+        "PREMIO":"11500000.64",
+        "DATA_INICIO":"2023-10-10T00:00:00.000Z",
+        "DATA_FIM":"2024-12-12T00:00:00.000Z",
+        "INSERIDO_POR":null,
+        "ACTUALIZADO_POR":null,
+        "DATA_INSERCAO":"2023-12-11T14:20:49.000Z",
+        "DATA_ACTUALIZACAO":"2023-12-11T14:20:49.000Z"
+    }
+}
+```
+
+resposta em caso de erro:
+
+```json
+{
+    "code": 404,
+    "message": "Os dados das adenda não foram encontrados",
+    "data": {},
+    "error": { error }
+}
+```
+
+Criar uma adenda e associar a uma apolice
+Metodo: POST
+URL:/adenda/
+Body:
+
+```json
+{
+    "APOLICE_ID": 1,
+    "PREMIO": 12425454435.345,
+    "DATA_INICIO": 2023-10-10,
+    "DATA_FIM": 2024-04-12
+}
+```
+
+resposta em caso de sucesso:
+
+```json
+{
+    "code": 200,
+    "message": "Adenda criada com sucesso",
+    "data": {
+        "ID":1,
+        "APOLICE_ID":5,
+        "NUMERO":"1 80 2023/0001",
+        "PREMIO":"11500000.64",
+        "DATA_INICIO":"2023-10-10T00:00:00.000Z",
+        "DATA_FIM":"2024-12-12T00:00:00.000Z",
+        "INSERIDO_POR":null,
+        "ACTUALIZADO_POR":null,
+        "DATA_INSERCAO":"2023-12-11T14:20:49.000Z",
+        "DATA_ACTUALIZACAO":"2023-12-11T14:20:49.000Z"
+    }
+}
+```
+
+Resposta em caso de erro:
+
+```json
+{
+    "code": 401,
+    "message": "Ocorreu um erro ao inserir os dados da adenda",
+    "data": {},
+    "error": { error }
+}
+```
+
+Editar uma adenda e associar a uma apolice~
+Metodo: PUT
+URL:/adenda/
+Body:
+
+```json
+{
+    "APOLICE_ID":5,
+    "NUMERO":"1 80 2023/0001",
+    "PREMIO":"11500000.64",
+    "DATA_INICIO":"2023-10-10",
+    "DATA_FIM":"2024-12-12",
+}
+```
+
+resposta em caso de sucesso:
+
+```json
+{
+    "code": 200,
+    "message": "Adenda removida com sucesso",
+    "data": {
+        "ID":1,
+        "APOLICE_ID":5,
+        "NUMERO":"1 80 2023/0001",
+        "PREMIO":"11500000.64",
+        "DATA_INICIO":"2023-10-10T00:00:00.000Z",
+        "DATA_FIM":"2024-12-12T00:00:00.000Z",
+        "INSERIDO_POR":null,
+        "ACTUALIZADO_POR":null,
+        "DATA_INSERCAO":"2023-12-11T14:20:49.000Z",
+        "DATA_ACTUALIZACAO":"2023-12-11T14:20:49.000Z"
+    }
+}
+```
+
+Resposta em caso de erro:
+
+```json
+{
+    "code": 401,
+    "message": "Ocorreu um erro ao actualizar a adenda",
+    "data": {},
+    "error": { error }
+}
+```
+
+Remover uma adenda e associar a uma apolice
+Metodo: Delete
+URL:/adenda/1
+Body:NONE
+
+resposta em caso de sucesso:
+
+```json
+{
+    "code": 200,
+    "message": "Adenda removida com sucesso",
+    "data": {
+        "ID":1,
+        "APOLICE_ID":5,
+        "NUMERO":"1 80 2023/0001",
+        "PREMIO":"11500000.64",
+        "DATA_INICIO":"2023-10-10T00:00:00.000Z",
+        "DATA_FIM":"2024-12-12T00:00:00.000Z",
+        "INSERIDO_POR":null,
+        "ACTUALIZADO_POR":null,
+        "DATA_INSERCAO":"2023-12-11T14:20:49.000Z",
+        "DATA_ACTUALIZACAO":"2023-12-11T14:20:49.000Z"
+    }
+}
+```
+
+Resposta em caso de erro:
+
+```json
+{
+    "code": 401,
+    "message": "Ocorreu um erro ao remover a adenda",
+    "data": {},
+    "error": { error }
+}
+```
+
+Associar Veiculos a uma adenda
+Metodo: POST
+URL:/adenda/veiculos
+BODY:
+
+```json
+{
+    "adenda": {
+        "ID":1,
+        "APOLICE_ID":5,
+        "NUMERO":"1 80 2023/0001",
+        "PREMIO":"11500000.64",
+        "DATA_INICIO":"2023-10-10",
+        "DATA_FIM":"2024-12-12",
+    },
+    "items": [veiculo_1, veiculo_2, veiculo_3, ...] 
+}
+```
+
+resposta em caso de sucesso:
+
+```json
+{
+    "code": 200,
+    "message": "Items da adenda inseridos com sucesso",
+    "data": {
+
+    }
+}
+```
+
+resposta em caso de erro:
+
+```json
+{
+    "code": 401,
+    "message": "Ocorreu um erro ao inserir os items a adenda",
+    "data": {},
+    "error": { error }
+}
+```
+
+Associar Segurados a uma adenda
+Metodo: POST
+URL:/adenda/segurados
+BODY:
+
+```json
+{
+    "adenda": {
+        "ID":1,
+        "APOLICE_ID":5,
+        "NUMERO":"1 80 2023/0001",
+        "PREMIO":"11500000.64",
+        "DATA_INICIO":"2023-10-10",
+        "DATA_FIM":"2024-12-12",
+    },
+    "segurados": [segurado_1, segurado_2, segurado_3, ...]
+}
+```
+
+resposta em caso de sucesso:
+
+```json
+{
+    "code": 200,
+    "message": "Segurados adicionados a adenda com sucesso",
+    "data": [segurado_1, segurado_2, segurado_3, ...]
+}
+```
+
+resposta em caso de erro:
+
+```json
+{
+    "code": 401,
+    "message": "Ocorreu um erro ao adicionar os segurados a adenda",
+    "data": {},
+    "error": { error }
+}
+```
+
+Calcular o premio de uma adenda
+Metodo: POST
+URL:/adenda/calcular_premio/
+BODY:
+
+```json
+{
+    "ID": 1,
+    "APOLICE_ID":1,
+    "NUMERO": "1 80 2023/0001",
+    "DATA_INICIO": "2023-10-10",
+    "DATA_FIM": "2024-12-12"
+}
+```
+
+resposta em caso de sucesso:
+
+```json
+{
+    "code": 200,
+    "message": "O premio da adenda foi calculado e adicionado com sucesso",
+    "data": {
+        "ID": 1,
+        "APOLICE_ID":1,
+        "NUMERO": "1 80 2023/0001",
+        "PREMIO": 42345346.76,
+        "DATA_INICIO": "2023-10-10",
+        "DATA_FIM": "2024-12-12"
+    }
+}
+```
+
+resposta em caso de erro:
+
+```json
+{
+    "code": 401,
+    "message": "Ocorreu um ao efectuar os calculos do premio da adenda",
+    "data": {},
+    "error": { error }
 }
 ```
 
@@ -1046,7 +1450,7 @@ em caso de erro retorna:
 ```json
 {
     "code": 401,
-    "message": "Ocoreu um erro ao colectar dos dados das pessoas",
+    "message": "Ocorreu um erro ao colectar dos dados das pessoas",
     "data": {}, 
     "error": {erro}
 }

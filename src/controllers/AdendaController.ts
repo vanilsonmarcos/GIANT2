@@ -128,12 +128,12 @@ class AdendaController {
 
     async calculatePremio(req: Request, res: Response) {
         const adenda: adenda = req.body;
-        await this.adendaService.calculateAdendaPremio(adenda.ID.toString());
+        const adenda_premio = await this.adendaService.calculateAdendaPremio(adenda.ID.toString());
         try {
             const response = {
                 code: 200,
-                message: "O premio da adenda foi calculado com sucesso",
-                data: {}
+                message: "O premio da adenda foi calculado e adicionado com sucesso",
+                data: adenda_premio
             };
             res.json(response);
         } catch (error) {
