@@ -19,7 +19,7 @@ class EstatisticasService {
 
     getAllByInterval(start: Date, end: Date): Promise<AllStats> {
         // Validate dates and intervals 
-        if(isValidInterval(start, end)) {
+        if(!isValidInterval(start, end)) {
             throw new CustomError("O intervalo a data de inicio é maior que a data do fim");
         };
         return this.repo.getAllByInterval(start, end);

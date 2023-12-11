@@ -13,7 +13,7 @@ class EstatisticasController {
 
     async getAll(req: Request, res: Response) {
         try {
-            const allStats = this.estatService.getAll()
+            const allStats = await this.estatService.getAll()
             const response = {
                 code: 200,
                 message: "Dados estatisticos carregados com sucesso",
@@ -47,7 +47,7 @@ class EstatisticasController {
             
             const data_inicio = new Date(inicio);
             const data_fim = new Date(fim);
-            const allStats = this.estatService.getAllByInterval(data_inicio, data_fim)
+            const allStats = await this.estatService.getAllByInterval(data_inicio, data_fim)
             const response = {
                 code: 200,
                 message: "Dados estatisticos carregados com sucesso",
@@ -69,10 +69,9 @@ class EstatisticasController {
     }
 
 
-
     async getAllApolice (req: Request, res: Response) {
         try {
-            const allApoliceStats = this.estatService.getAllApolice()
+            const allApoliceStats = await this.estatService.getAllApolice()
 
             const response = {
                 code: 200,
@@ -107,7 +106,7 @@ class EstatisticasController {
             
             const data_inicio = new Date(inicio);
             const data_fim = new Date(fim);
-            const allApoliceStats = this.estatService.getAllApoliceByInterval(data_inicio, data_fim);
+            const allApoliceStats = await this.estatService.getAllApoliceByInterval(data_inicio, data_fim);
 
             const response = {
                 code: 200,
@@ -176,7 +175,7 @@ class EstatisticasController {
         } catch (error) {
             const response = {
                 code: 404,
-                message: "Ocorreu um erro ao carregar dos dados estatisticos das apólices",
+                message: "Ocorreu um erro ao carregar dos dados estatisticos dos clientes",
                 data: {},
                 error: error
             };

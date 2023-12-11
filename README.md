@@ -1392,6 +1392,7 @@ em caso de sucesso retorna:
     "data": [cobertura_1, cobertura_2, .cobertura_3,...]
 }
 ```
+
 em caso de erro:
 
 ```json
@@ -1402,7 +1403,6 @@ em caso de erro:
     "error": {error}
 }
 ```
-
 
 Visualizar coberturas pelos tipos de apolice
 Metodo: GET
@@ -1459,6 +1459,7 @@ URL: /cobertura/1
 BODY: NONE
 Resposta:
 em caso de sucesso retorna:
+
 ```json 
 {
     "code":200,
@@ -1627,5 +1628,225 @@ em caso de erro:
     "message": "Ocorreu um erro ao remover os dados da Cobertura",
     "data": {},
     "error": {error}
+}
+```
+
+## Estatistica
+
+Visualizar todos os dados Estatisticos
+METODO: GET
+URL:/estatistica_todos/
+BODY: NONE
+
+Resposta em caso de sucesso:
+
+```json
+{
+    "code":200,
+    "message":"Dados estatisticos carregados com sucesso",
+    "data":{
+        "APOLICE_STATS":{
+            "APOLICES_EMITIDAS":12,
+            "APOLICES_CANCELADAS":1,
+            "APOLICE_ADJUDICADAS":22,
+            "APOLICES_EXPIRADAS":0
+            },
+        "CLIENT_STATS":{
+            "TOTAL_CLIENTES":33,
+            "TOTAL_SEGURADOS":34,
+            "TOTAL_UTENTES":31
+        },
+        "SINISTROS_STATS":{
+            "TOTAL_SINISTRO_ACIDENTE_TRABALHO":0,
+            "TOTAL_SINISTRO_AUTOMOVEL":0,
+            "TOTAL_SINISTRO_SAUDE":0,
+            "TOTAL_SINISTROS":0
+        }
+    }
+}
+```
+
+resposta em caso de erro:
+
+```json
+{
+    "code": 404,
+    "message": "Ocorreu um erro ao carregar dos dados estatisticos",
+    "data": {},
+    "error": { error }
+}
+```
+
+Visualizar todos os dados Estatisticos baseados em intervalos de tempo
+METODO: GET
+URL:/estatistica_todos/2020-01-01/2023-12-10/
+BODY: NONE
+
+Resposta em caso de sucesso:
+
+```json
+{
+    "code":200,
+    "message":"Dados estatisticos carregados com sucesso",
+    "data":{
+        "APOLICE_STATS":{
+            "APOLICES_EMITIDAS":0,
+            "APOLICES_CANCELADAS":0,
+            "APOLICE_ADJUDICADAS":0,
+            "APOLICES_EXPIRADAS":0
+            },
+        "CLIENT_STATS":{
+            "TOTAL_CLIENTES":0,
+            "TOTAL_SEGURADOS":0,
+            "TOTAL_UTENTES":1
+        },
+        "SINISTROS_STATS":{
+            "TOTAL_SINISTRO_ACIDENTE_TRABALHO":0,
+            "TOTAL_SINISTRO_AUTOMOVEL":0,
+            "TOTAL_SINISTRO_SAUDE":0,
+            "TOTAL_SINISTROS":0
+        }
+    }
+}
+```
+
+resposta em caso de erro:
+
+```json
+{
+    "code": 404,
+    "message": "Ocorreu um erro ao carregar dos dados estatisticos",
+    "data": {},
+    "error": { error }
+}
+```
+
+Visualizar todos os dados Estatisticos da Apolice
+METODO: GET
+URL:/estatistica_apolices/
+BODY: NONE
+
+Resposta em caso de sucesso:
+
+```json
+{
+    "code":200,
+    "message":"Dados estatisticos carregados com sucesso",
+    "data":{
+        "APOLICE_STATS":{
+            "APOLICES_EMITIDAS":0,
+            "APOLICES_CANCELADAS":0,
+            "APOLICE_ADJUDICADAS":0,
+            "APOLICES_EXPIRADAS":0
+        }
+    }
+}
+```
+
+resposta em caso de erro:
+
+```json
+{
+    "code": 404,
+    "message": "Ocorreu um erro ao carregar dos dados estatisticos das apólices",
+    "data": {},
+    "error": { error }
+}
+```
+
+Visualizar todos os dados Estatisticos da Apolice em um periodo
+METODO: GET
+URL:/estatistica_apolices/2020-01-01/2023-12-10/
+BODY: NONE
+
+Resposta em caso de sucesso:
+
+```json
+{
+    "code":200,
+    "message":"Dados estatisticos carregados com sucesso",
+    "data":{
+        "APOLICE_STATS":{
+            "APOLICES_EMITIDAS":0,
+            "APOLICES_CANCELADAS":0,
+            "APOLICE_ADJUDICADAS":0,
+            "APOLICES_EXPIRADAS":0
+        }
+    }
+}
+```
+
+resposta em caso de erro:
+
+```json
+{
+    "code": 404,
+    "message": "Ocorreu um erro ao carregar dos dados estatisticos das apólices",
+    "data": {},
+    "error": { error }
+}
+```
+
+Visualizar todos os dados Estatisticos dos clientes
+METODO: GET
+URL:/estatistica_clientes/
+BODY: NONE
+
+Resposta em caso de sucesso:
+
+```json
+{
+    "code":200,
+    "message":"Dados estatisticos dos clientes carregados com sucesso",
+    "data": {
+        "CLIENT_STATS": {
+        "TOTAL_CLIENTES":0,
+        "TOTAL_SEGURADOS":0,
+        "TOTAL_UTENTES":1
+        }
+    }
+}
+```
+
+resposta em caso de erro:
+
+```json
+{
+    "code": 404,
+    "message": "Ocorreu um erro ao carregar dos dados estatisticos dos clientes",
+    "data": {},
+    "error": { error }
+}
+```
+
+Visualizar todos os dados Estatisticos dos clientes em um periodo
+METODO: GET
+URL:/estatistica_clientes/2020-01-01/2023-12-10/
+BODY: NONE
+
+Resposta em caso de sucesso:
+
+```json
+{
+    "code":200,
+    "message":"Dados estatisticos dos clientes carregados com sucesso",
+    "data":{
+            "CLIENT_STATS":{
+            "TOTAL_CLIENTES":0,
+            "TOTAL_SEGURADOS":0,
+            "TOTAL_UTENTES":1
+        }
+    }
+}
+```
+
+resposta em caso de erro:
+
+```json
+{
+    "code": 404,
+    "message": "Ocorreu um erro ao carregar dos dados estatisticos dos clientes",
+    "data": {},
+    "error": { error }
 }
 ```

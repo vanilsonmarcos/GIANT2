@@ -4,6 +4,17 @@ import { apolice_fracionamento, veiculo } from "@prisma/client";
 import prisma from "../repositories/PrismaClient";
 
 
+function JsDateToYYYMMDD(date: Date): string {
+  // Extract year, month, and day
+  const year = date.getFullYear();
+  const month = ('0' + (date.getMonth() + 1)).slice(-2); // Months are zero-based
+  const day = ('0' + date.getDate()).slice(-2);
+
+  // Format the date as YYYY-MM-DD
+  const formattedDate = year + '-' + month + '-' + day;
+  return formattedDate;
+}
+
 function isValidDateFormat(dateStr: string): boolean {
   const datePattern = /^\d{4}-\d{2}-\d{2}$/;
   return datePattern.test(dateStr);
@@ -33,7 +44,7 @@ function validateAdendaDates(data_inicio: Date, data_fim: Date) {
 }
 
 
-function isValidInterval(data_inicio: Date, data_fim: Date) {
+function isBefore(data_inicio: Date, data_fim: Date) {
   const m_data_inicio = moment(data_inicio);
   const m_data_fim = moment(data_fim);
   return m_data_inicio.isBefore(m_data_fim)
@@ -75,10 +86,11 @@ function isArrayEmpty<T>(array: T[]): boolean {
 }
 
 export {
+  JsDateToYYYMMDD,
   isDateWithinIntervals,
   validateAdendaDates,
   calculatePremio,
   isArrayEmpty,
-  isValidInterval,
+  isBefore as isValidInterval,
   isValidDateFormat
 }

@@ -9,6 +9,7 @@ import adendaPagamentoRoutes from './adendaPagamentoRoute';
 import coberturaRoutes from './coberturaRoutes';
 import adendaRoutes from './adendaRoutes';
 import apoliceFracionamentoRoutes from './apoliceFracionamentoRoutes';
+import estatisticaRoutes from './estatisticaRoutes';
 
 const routes = Router();
 
@@ -22,5 +23,6 @@ routes.use(apoliceRoutes);
 routes.use(apoliceTipoRoutes);
 routes.use(apoliceFracionamentoRoutes)
 routes.use(apoliceGeneratePDFRoutes);
+routes.use(estatisticaRoutes);
 
 export default routes;
