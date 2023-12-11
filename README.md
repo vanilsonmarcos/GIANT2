@@ -8,7 +8,7 @@ UMA APOLICE TEM VARIOS ELEMENTOS QUE SÂO:
 - Fracionamento(É a a divisão dos pagamentos de uma apólice que podem ser (3,6 e 12 meses)).
 - Coberturas(Coberturas são os termos que a apólice contempla) OBS: O preço da apólice pode variar de acordo as coberturas adicionadas.
 - Segurado(s)(Pessoa) é/são as pessoas que se beneficiam da apólice que são pessoas.
-- Tomador(Pessoa) é a pessoa que adjudica a apólice que pode ser pessoa físisca ou jurídica.
+- Tomador(Pessoa) é a pessoa que adjudica a apólice que pode ser pessoa física ou jurídica.
 
 #### A apólice
 
@@ -523,8 +523,6 @@ em caso de erro retorna:
     "error": {error}
 }```
 
-
-
 Criar uma Apolice
 
 Metodo: POST
@@ -555,7 +553,7 @@ Resposta em caso de sucesso retorna:
 }
 ```
 
-em caso de erro: 
+em caso de erro:
 
 ```json
 {
@@ -629,8 +627,6 @@ Resposta em caso de erro retorna:
     "error": {error}
 }
 ```
-
-
 
 ## Adenda
 
@@ -1861,7 +1857,7 @@ BODY: NONE
 Resposta:
 em caso de sucesso retorna:
 
-```json 
+```json
 {
     "code":200,
     "message":"Dados da Cobertura foram encontrados com sucesso",

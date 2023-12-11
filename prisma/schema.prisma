@@ -10,7 +10,7 @@ datasource db {
 model apolice {
   ID                       Int                   @id @default(autoincrement())
   APOLICE_TIPO_ID          Int
-  NUMERO                   String                @db.VarChar(20)
+  NUMERO                   String?               @db.VarChar(20)
   APOLICE_FRACIONAMENTO_ID Int
   APOLICE_ESTADO_ID        Int
   TOMADOR_ID               Int
@@ -95,7 +95,7 @@ model pessoa {
   ESTADO_CIVIL      String            @db.VarChar(1)
   INSERIDO_POR      Int?
   ACTUALIZADO_POR   Int?
-  DATA_CRIACAO      DateTime?         @default(now()) @db.Timestamp(0)
+  DATA_INSERCAO     DateTime?         @default(now()) @db.Timestamp(0)
   DATA_ACTUALIZACAO DateTime?         @default(now()) @db.DateTime(0)
   adenda_segurado   adenda_segurado[]
   pessoa_tipo       pessoa_tipo       @relation(fields: [PESSOA_TIPO_ID], references: [ID], onDelete: Cascade, map: "FKPESSOA892258")
