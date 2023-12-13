@@ -13,8 +13,7 @@ class ApoliceRepository implements
     
     async getAllApoliceEstado(): Promise<apolice_estado[]> {
         const apolice_estados =  await prisma.apolice_estado.findMany({
-            take: 10,
-
+            take: 100,
         });
         if (isArrayEmpty(apolice_estados) || apolice_estados === null || apolice_estados === undefined) {
             throw new CustomError("Ocorreu um erro ao carregar os estados das apólices");

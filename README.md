@@ -628,6 +628,61 @@ Resposta em caso de erro retorna:
 }
 ```
 
+## Apolice Fracionamento(O fracionamentos não precisam ser editaveis)
+
+Visualizar o Fracionamento do apólice.
+URL:/apolice_fracionamento/
+BODY: NONE
+
+resposta me caso de sucesso:
+
+```json
+{
+    "code":200,
+    "message":"Dados dos estados das apolices encontrados com sucesso",
+    "data":[
+        {
+            "ID":1,
+            "FRACIONADO_EM":"Anual",
+            "NO_FRACOES":1,
+            "INSERIDO_POR":null,
+            "ACTUALIZADO_POR":null,
+            "DATA_INSERCAO":"2023-11-29T14:38:17.000Z",
+            "DATA_ACTUALIZACAO":"2023-11-29T14:38:17.000Z"
+        },
+        {
+            "ID":2,
+            "FRACIONADO_EM":"Semestral",
+            "NO_FRACOES":2,
+            "INSERIDO_POR":null,
+            "ACTUALIZADO_POR":null,
+            "DATA_INSERCAO":"2023-11-29T14:38:17.000Z",
+            "DATA_ACTUALIZACAO":"2023-11-29T14:38:17.000Z"
+        },
+        {
+            "ID":3,
+            "FRACIONADO_EM":"Trimestral",
+            "NO_FRACOES":4,
+            "INSERIDO_POR":null,
+            "ACTUALIZADO_POR":null,
+            "DATA_INSERCAO":"2023-11-29T14:38:17.000Z",
+            "DATA_ACTUALIZACAO":"2023-11-29T14:38:17.000Z"
+        }
+    ]
+}
+```
+
+resposta em caso de erro:
+
+```json
+{
+    "code": 404,
+    "message": "Os dados dos estados das apolices não foram encontrados",
+    "data": {},
+    "error": { error }
+}
+```
+
 ## Adenda
 
 Visualizar as adendas de uma apólice
