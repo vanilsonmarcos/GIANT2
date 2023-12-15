@@ -13,7 +13,7 @@ function generatePessoa(pessoa: {
             NOME: pessoa.pessoa_tipo.NOME_TIPO!
         },
         DATA_NASCIMENTO: pessoa.DATA_NASCIMENTO.toISOString().slice(0, 10),
-        SEXO: pessoa.SEXO!,
+        SEXO: pessoa.SEXO,
         NBI: pessoa.NBI!,
         NIF: pessoa.NIF,
         ESTADO_CIVIL: pessoa.ESTADO_CIVIL,

@@ -82,6 +82,54 @@ class AdendaController {
             res.json(response);
         }
     }
+
+    async getSeguradosByAdendaID(req: Request, res:Response) {
+        const { id } = req.params;
+        try {
+            const segurados = await this.adendaService.getSeguradosByAdendaID(id);
+            const response = {
+                code: 200,
+                message: "Dados dos segurados da adenda foram encontrados com sucesso",
+                data: segurados
+            };
+            res.json(response);
+        } catch (error) {
+            const response = {
+                code: 401,
+                message: "Ocorreu um erro ao carregar os dados dos segurados da adenda",
+                data: {},
+                error: error
+            };
+            if (error instanceof CustomError) { 
+                response.message = error.message
+            }
+            res.json(response);
+        }
+    }
+
+    async getVeiculosByAdendaID(req: Request, res:Response) {
+        const { id } = req.params;
+        try {
+            const veiculos = await this.adendaService.getVeiculosByAdendaID(id);
+            const response = {
+                code: 200,
+                message: "Dados dos veículos da adenda foram encontrados com sucesso",
+                data: veiculos
+            };
+            res.json(response);
+        } catch (error) {
+            const response = {
+                code: 401,
+                message: "Ocorreu um erro ao carregar os dados veículos da adenda",
+                data: {},
+                error: error
+            };
+            if (error instanceof CustomError) { 
+                response.message = error.message
+            }
+            res.json(response);
+        }
+    }
     
     async criar(req: Request, res: Response) {
         const adenda: adenda = req.body; // parse body to person data

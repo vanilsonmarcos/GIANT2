@@ -78,9 +78,10 @@ class ApoliceRepository implements
                         ADENDA_ID: parseInt(adendaID)
                     }
                 },
+                pessoa_endereco: true,
+                pessoa_tipo: true
             },
         });
-
         return segurados;
     }
 
