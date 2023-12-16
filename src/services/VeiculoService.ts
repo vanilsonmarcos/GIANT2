@@ -1,6 +1,7 @@
 import { Service, Inject } from "typedi";
 import VeiculoRepository from "../repositories/mysql/VeiculoRepository";
 import { veiculo } from "@prisma/client";
+import CustomError from "../utils/CustomError";
 
 @Service()
 class VeiculoService {
@@ -18,6 +19,11 @@ class VeiculoService {
         return this.repo.getByID(id);
     }
 
+    async exists(id: string) {
+        const item = await this.getByID(id);
+        return item !== null && item !== undefined;
+    }
+
     async getByMatricola(matricola: string): Promise<veiculo> {
         return this.repo.getVeiculoByMatricula(matricola);
     }
@@ -32,6 +38,9 @@ class VeiculoService {
 
     async remover(id: string): Promise<boolean> {
         // check if object exist
+        if(!await this.exists(id)) {
+            throw new CustomError("O Veículo que deseja remover não existe!");
+        }
         return this.repo.delete(id);
     }   
     async getAllVeiculoCategoria() {

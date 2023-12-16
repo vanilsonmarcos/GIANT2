@@ -2,6 +2,7 @@ import { Service, Inject } from "typedi";
 import AdendaPagamentoRepository from "../repositories/mysql/AdendaPagamentoRepository";
 import { adenda_pagamento } from "@prisma/client";
 import IGenericRepository from "../repositories/IGenericRepository";
+import CustomError from "../utils/CustomError";
 
 @Service()
 class AdendaPagamentoService {
@@ -14,8 +15,13 @@ class AdendaPagamentoService {
         return this.repo.getAll();         
     }
 
-    async getByID(id: string): Promise<adenda_pagamento>{
+    async getByID(id: string): Promise<adenda_pagamento> {
         return this.repo.getByID(id);
+    }
+
+    async exists(id:string): Promise<boolean> {
+        const item = await this.getByID(id);
+        return item !== null && item !== undefined;
     }
 
     async getByAdendaID(id: string): Promise<adenda_pagamento[]> {
@@ -32,6 +38,9 @@ class AdendaPagamentoService {
 
     async remover(id: string): Promise<boolean> {
         // check if object exist
+        if(!await this.exists(id)) {
+            throw new CustomError("O Pagamento da Adenda que deseja remover não existe!");
+        }
         return this.repo.delete(id);
     }
 

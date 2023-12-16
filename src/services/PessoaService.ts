@@ -4,6 +4,7 @@ import IPessoaRepository from "../repositories/IPessoaRepository";
 import { pessoa, pessoa_tipo } from "@prisma/client";
 import Pessoa from "../entities/Pessoa/Pessoa";
 import PessoaTipoRepository from "../repositories/mysql/PessoaTipoRepository";
+import CustomError from "../utils/CustomError";
 
 @Service()
 class PessoaService {
@@ -15,48 +16,56 @@ class PessoaService {
     
     constructor () {}
     
-    getAllPessoaTipo():Promise<pessoa_tipo[]> {
+    async getAllPessoaTipo():Promise<pessoa_tipo[]> {
         return this.pessoa_tipo_repo.getAll();
     }
     
-    getAll(): Promise<Pessoa[]> {
+    async getAll(): Promise<Pessoa[]> {
         return this.pessoa_repo.getAll();         
     }
     
-    getAllclientes(): Promise<Pessoa[]> {
+    async getAllclientes(): Promise<Pessoa[]> {
         return this.pessoa_repo.getAllClientes();
     }
 
-    getByID(id: string): Promise<Pessoa>{
+    async getByID(id: string): Promise<Pessoa>{
         return this.pessoa_repo.getByID(id);
     }
+
+    async exists(id: string): Promise<boolean> {
+        const item = await this.getByID(id);
+        return item !== null && item !== undefined;
+    }
     
-    getByPhoneNumber(phoneNumber: string) :Promise<Pessoa> {
+    async getByPhoneNumber(phoneNumber: string) :Promise<Pessoa> {
         return this.pessoa_repo.getPersonByPhoneNumber(phoneNumber);
     }
 
-    getByEmail(email: string): Promise<Pessoa>{
+    async getByEmail(email: string): Promise<Pessoa>{
         return this.pessoa_repo.getPersonByEmail(email);
     }
 
-    getByNIF(nif: string): Promise<Pessoa> {
+    async getByNIF(nif: string): Promise<Pessoa> {
         return this.pessoa_repo.getPersonByNIF(nif);
     }
 
-    getByNBI(nbi: string): Promise<Pessoa> {
+    async getByNBI(nbi: string): Promise<Pessoa> {
         return this.pessoa_repo.getPersonByNBI(nbi);
     }
 
-    criar(pessoa: Pessoa): Promise<Pessoa> {
+    async criar(pessoa: Pessoa): Promise<Pessoa> {
         return this.pessoa_repo.create(pessoa);
     } 
 
-    actualizar(id: string, pessoa: Pessoa) {
+    async actualizar(id: string, pessoa: Pessoa) {
         return this.pessoa_repo.update(id, pessoa);
     }
 
-    remover(id: string): Promise<boolean> {
+    async remover(id: string): Promise<boolean> {
         // check if object exist
+        if(!await this.exists(id)) {
+            throw new CustomError("A Pessoa que deseja remover não existe!");
+        }
         return this.pessoa_repo.delete(id);
     }
 }

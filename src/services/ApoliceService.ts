@@ -1,6 +1,7 @@
 import { Service, Inject } from "typedi";
 import ApoliceRepository from "../repositories/mysql/ApoliceRepository";
 import { apolice } from "@prisma/client";
+import CustomError from "../utils/CustomError";
 
 @Service()
 class ApoliceService {
@@ -17,6 +18,11 @@ class ApoliceService {
         return this.repo.getByID(id);
     }
 
+    async exists(id:string): Promise<boolean> {
+        const item = await this.getByID(id);
+        return item !== null && item !== undefined;
+    }
+
     async criar(apolice: apolice): Promise<apolice> {
         return this.repo.create(apolice);
     } 
@@ -27,6 +33,9 @@ class ApoliceService {
 
     async remover(id: string): Promise<boolean> {
         // check if object exist
+        if(!await this.exists(id)) {
+            throw new CustomError("A Apólice que deseja remover não existe!");
+        }
         return this.repo.delete(id);
     }
 

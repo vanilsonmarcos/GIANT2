@@ -13,11 +13,11 @@ class EstatisticasService {
 
     constructor() { }
 
-    getAll(): Promise<AllStats> {
+    async getAll(): Promise<AllStats> {
         return this.repo.getAll();
     }
 
-    getAllByInterval(start: Date, end: Date): Promise<AllStats> {
+    async getAllByInterval(start: Date, end: Date): Promise<AllStats> {
         // Validate dates and intervals 
         if(!isValidInterval(start, end)) {
             throw new CustomError("O intervalo a data de inicio é maior que a data do fim");
@@ -25,11 +25,11 @@ class EstatisticasService {
         return this.repo.getAllByInterval(start, end);
     }
 
-    getAllApolice(): Promise<ApoliceStats> {
+    async getAllApolice(): Promise<ApoliceStats> {
         return this.repo.getAllApolice();
     }
 
-    getAllApoliceByInterval(start: Date, end: Date): Promise<ApoliceStats> {
+    async getAllApoliceByInterval(start: Date, end: Date): Promise<ApoliceStats> {
         // Validate dates and intervals 
         if(isValidInterval(start, end)) {
             throw new CustomError("O intervalo a data de inicio é maior que a data do fim");
@@ -37,11 +37,11 @@ class EstatisticasService {
         return this.repo.getAllApoliceByInterval(start, end);
     }
 
-    getAllCliente(): Promise<ClienteStats> {
+    async getAllCliente(): Promise<ClienteStats> {
         return this.repo.getAllCliente();
     }
 
-    getAllClienteByInterval(start: Date, end: Date): Promise<ClienteStats> {
+    async getAllClienteByInterval(start: Date, end: Date): Promise<ClienteStats> {
         // Validate dates and intervals 
         if(isValidInterval(start, end)) {
             throw new CustomError("O intervalo a data de inicio é maior que a data do fim");
