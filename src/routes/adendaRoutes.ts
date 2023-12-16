@@ -22,6 +22,4 @@ adendaRoutes.post('/adenda/calcular_premio', adendaController.calculatePremio.bi
 adendaRoutes.put('/adenda/', adendaController.actualizar.bind(adendaController));
 adendaRoutes.delete('/adenda/:id', adendaController.remover.bind(adendaController));
 
-
-
 export default adendaRoutes;

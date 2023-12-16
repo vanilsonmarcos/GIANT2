@@ -29,7 +29,7 @@ class ApoliceRepository implements
             }
         }).apolice_estado();
         if (apolice_estado === null || apolice_estado === undefined) {
-            throw new CustomError("Ocorreu um erro ao gerar carregar o estado da apólice");
+            throw new CustomError("Ocorreu um erro ao carregar o estado da apólice");
         }
         return apolice_estado;
     }

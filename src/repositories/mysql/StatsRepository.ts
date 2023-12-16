@@ -21,22 +21,14 @@ class StatsRepository {
 
         const TOTAL_SEGURADOS = Number(SEGURADOS[0].SEGURADOS?? 0); 
 
-
-        // const TOTAL_CLIENTES = 0;
-
-        // const TOTAL_SEGURADOS = 0;
-
         const TOTAL_UTENTES = await prisma.pessoa.count() ?? 0;
-
 
         const clientStats: ClienteStats = {
             TOTAL_CLIENTES: TOTAL_CLIENTES,
             TOTAL_SEGURADOS: TOTAL_SEGURADOS,
             TOTAL_UTENTES: TOTAL_UTENTES
         }
-
         return clientStats
-
     }
 
     async getAllClienteByInterval(start: Date, end: Date): Promise<ClienteStats> {
@@ -99,7 +91,6 @@ class StatsRepository {
             APOLICE_ADJUDICADAS: TOTAL_APOLICES_ADJUDICADAS,
             APOLICES_EXPIRADAS: TOTAL_APOLICES_EXPIRADAS,
         }
-
         return apoliceStats;
     }
 
@@ -144,7 +135,6 @@ class StatsRepository {
             APOLICE_ADJUDICADAS: TOTAL_APOLICES_ADJUDICADAS,
             APOLICES_EXPIRADAS: TOTAL_APOLICES_EXPIRADAS,
         }
-
         return apoliceStats;
     }
 
@@ -174,7 +164,6 @@ class StatsRepository {
             }
         }
     }
-
 }
 
 export default StatsRepository;
