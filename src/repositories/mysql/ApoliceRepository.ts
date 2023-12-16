@@ -72,12 +72,14 @@ class ApoliceRepository implements
 
     async getAllSeguradoByAdendaID(adendaID: string): Promise<pessoa[]> {
         const segurados = await prisma.pessoa.findMany({
-            include: {
+            where: {
                 adenda_segurado: {
-                    where: {
-                        ADENDA_ID: parseInt(adendaID)
-                    }
-                },
+                  every: {
+                    ADENDA_ID: parseInt(adendaID)
+                  }
+                }
+            },
+            include: {
                 pessoa_endereco: true,
                 pessoa_tipo: true
             },

@@ -3,8 +3,6 @@ import { adenda, pessoa, veiculo } from "@prisma/client";
 import AdendaRepository from "../repositories/mysql/AdendaRepository";
 import { validateAdendaDates } from "../utils/helper";
 import ApoliceRepository from "../repositories/mysql/ApoliceRepository";
-import Pessoa from "../entities/Pessoa/Pessoa";
-import { generatePessoa, generatePessoas } from "../entities/Pessoa/PessoaHelper";
 @Service()
 class AdendaService {
  
@@ -35,10 +33,9 @@ class AdendaService {
     }
      
     async getSeguradosByAdendaID(id: string): Promise<pessoa[]> {
-        return this.apolice_repo.getAllSeguradoByAdendaID(id);
+        return this.adenda_repo.getAllSeguradoByAdendaID(id);
     }
    
-
     async criar(item: adenda): Promise<adenda> {
         validateAdendaDates(item.DATA_INICIO, item.DATA_FIM);
         return this.adenda_repo.create(item);
@@ -58,7 +55,6 @@ class AdendaService {
         const adenda = await this.adenda_repo.getByID(id);
         adenda.PREMIO = await this.adenda_repo.sumAdendaPremio(id);
         const updateAdenda = await this.adenda_repo.update(id, adenda)
-    
         return updateAdenda;
     }
 
