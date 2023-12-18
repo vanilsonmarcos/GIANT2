@@ -90,14 +90,14 @@ class AdendaPagamentoController {
             const createdAdenda = await this.adendaPService.criar(adenda_pagamento);
             const response = {
                 code: 200,
-                message: "Dados da adenda inseridos com sucesso",
+                message: "Dados do pagamento da adenda inseridos com sucesso",
                 data: createdAdenda
             };
             res.json(response);
         } catch (error) {
             const response = {
                 code: 401,
-                message: "Ocorreu um erro ao inserir os dados dõ pagamento da  adenda",
+                message: "Ocorreu um erro ao inserir os dados dõ pagamento da adenda",
                 data: {},
                 error: error
             };

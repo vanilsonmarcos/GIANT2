@@ -256,7 +256,6 @@ class AdendaController {
             }
             res.json(response);
         }
-
     }
 
     async adicionarSegurados(req: Request, res:Response) {

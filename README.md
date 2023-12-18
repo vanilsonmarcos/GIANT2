@@ -916,7 +916,7 @@ Resposta em caso de erro:
 }
 ```
 
-Editar uma adenda e associar a uma apolice~
+Editar uma adenda e associar a uma apolice
 Metodo: PUT
 URL:/adenda/
 Body:
@@ -963,7 +963,7 @@ Resposta em caso de erro:
 }
 ```
 
-Remover uma adenda e associar a uma apolice
+Remover uma adenda
 Metodo: Delete
 URL:/adenda/1
 Body:NONE
@@ -1015,7 +1015,38 @@ BODY:
         "DATA_INICIO":"2023-10-10",
         "DATA_FIM":"2024-12-12",
     },
-    "items": [veiculo_1, veiculo_2, veiculo_3, ...] 
+    "items": [
+        {
+            "ID":1,
+            "VEICULO_CATEGORIA_ID":1,
+            "MATRICULA":"LD-34-20",
+            "MARCA":"Toyota",
+            "MODELO":"Prious",
+            "ANO_AQUISICAO":2022,
+            "CAPITAL_AQUISICAO":"20000000",
+            "PESO_BRUTO":300000,
+            "N_LOTACAO":5,
+            "ANO_FABRICO":2021,
+            "CILINDRADA":43200,
+            "REF_CHASSI":"325AFi54834",
+            "DESCRICAO":"Excelente Veículo",
+        },
+        {
+            "ID":2,
+            "VEICULO_CATEGORIA_ID":3,
+            "MATRICULA":"LD-34-20",
+            "MARCA":"GMC",
+            "MODELO":"Sierra",
+            "ANO_AQUISICAO":2023,
+            "CAPITAL_AQUISICAO":"100000000",
+            "PESO_BRUTO":300000,
+            "N_LOTACAO":6,
+            "ANO_FABRICO":2022,
+            "CILINDRADA":43200,
+            "REF_CHASSI":"325AFi54834",
+            "DESCRICAO":"Excelente Veículo, 4x4",
+        }
+    ] 
 }
 ```
 
@@ -1025,9 +1056,38 @@ resposta em caso de sucesso:
 {
     "code": 200,
     "message": "Items da adenda inseridos com sucesso",
-    "data": {
-
-    }
+    "data": [
+        {
+            "ID":1,
+            "VEICULO_CATEGORIA_ID":1,
+            "MATRICULA":"LD-34-20",
+            "MARCA":"Toyota",
+            "MODELO":"Prious",
+            "ANO_AQUISICAO":2022,
+            "CAPITAL_AQUISICAO":"20000000",
+            "PESO_BRUTO":300000,
+            "N_LOTACAO":5,
+            "ANO_FABRICO":2021,
+            "CILINDRADA":43200,
+            "REF_CHASSI":"325AFi54834",
+            "DESCRICAO":"Excelente Veículo",
+        },
+        {
+            "ID":2,
+            "VEICULO_CATEGORIA_ID":3,
+            "MATRICULA":"LD-34-20",
+            "MARCA":"GMC",
+            "MODELO":"Sierra",
+            "ANO_AQUISICAO":2023,
+            "CAPITAL_AQUISICAO":"100000000",
+            "PESO_BRUTO":300000,
+            "N_LOTACAO":6,
+            "ANO_FABRICO":2022,
+            "CILINDRADA":43200,
+            "REF_CHASSI":"325AFi54834",
+            "DESCRICAO":"Excelente Veículo, 4x4",
+        }
+    ]
 }
 ```
 
@@ -1057,7 +1117,30 @@ BODY:
         "DATA_INICIO":"2023-10-10",
         "DATA_FIM":"2024-12-12",
     },
-    "segurados": [segurado_1, segurado_2, segurado_3, ...]
+    "segurados": [
+        {
+            "ID":1,
+            "NOME":"Pedro Nuno Santos",
+            "PESSOA_TIPO_ID":1,
+            "DATA_NASCIMENTO":"1998-12-12",
+            "SEXO":"M",
+            "NBI":"003466243LA35",
+            "NIF":"003466243LA35",
+            "ESTADO_CIVIL":"S",
+            "ENDERECO_ID":1
+        },
+        {
+            "ID":2,
+            "NOME":"António Costa",
+            "PESSOA_TIPO_ID":1,
+            "DATA_NASCIMENTO":"1995-10-22",
+            "SEXO":"M",
+            "NBI":"003466243LA35",
+            "NIF":"003466243LA35",
+            "ESTADO_CIVIL":"c",
+            "ENDERECO_ID":2
+        }   
+    ]
 }
 ```
 
@@ -1067,7 +1150,30 @@ resposta em caso de sucesso:
 {
     "code": 200,
     "message": "Segurados adicionados a adenda com sucesso",
-    "data": [segurado_1, segurado_2, segurado_3, ...]
+    "data": [
+        {
+            "ID":1,
+            "NOME":"Pedro Nuno Santos",
+            "PESSOA_TIPO_ID":1,
+            "DATA_NASCIMENTO":"1998-12-12",
+            "SEXO":"M",
+            "NBI":"003466243LA35",
+            "NIF":"003466243LA35",
+            "ESTADO_CIVIL":"S",
+            "ENDERECO_ID":1
+        },
+        {
+            "ID":2,
+            "NOME":"António Costa",
+            "PESSOA_TIPO_ID":1,
+            "DATA_NASCIMENTO":"1995-10-22",
+            "SEXO":"M",
+            "NBI":"003466243LA35",
+            "NIF":"003466243LA35",
+            "ESTADO_CIVIL":"c",
+            "ENDERECO_ID":2
+        }   
+    ]
 }
 ```
 
@@ -1127,7 +1233,7 @@ resposta em caso de erro:
 
 ## Adenda Pagamento
 
-Visualizar a tabala adenda_pagamento
+Visualizar a tabela adenda_pagamento
 Metodo: GET
 URL: /adenda_pagamento/
 Resposta:
@@ -1135,9 +1241,32 @@ em caso de sucesso retorna:
 
 ```json
 {
-    "code": 200,
-    "message": "Dados dos pagamentos das adendas encontrados com sucesso",
-    "data": [ adenda_pagamento_1, adenda_pagamento_2,...]     
+    "code":200,
+    "message":"Dados dos pagamentos das adendas encontrados com sucesso",
+    "data":[
+        {
+            "ID":1,
+            "ADENDA_ID":1,
+            "DESCONTOS":"1500",
+            "VALOR_A_PAGAR":"30000",
+            "VALOR_PAGO":"10000",
+            "INSERIDO_POR":null,
+            "ACTUALIZADO_POR":null,
+            "DATA_INSERCAO":"2023-12-18T06:42:30.000Z",
+            "DATA_ACTUALIZACAO":"2023-12-18T06:45:16.000Z"
+        },
+        {
+            "ID":2,
+            "ADENDA_ID":2,
+            "DESCONTOS":"3000",
+            "VALOR_A_PAGAR":"60000",
+            "VALOR_PAGO":"15000",
+            "INSERIDO_POR":null,
+            "ACTUALIZADO_POR":null,
+            "DATA_INSERCAO":"2023-12-18T06:45:16.000Z",
+            "DATA_ACTUALIZACAO":"2023-12-18T06:45:16.000Z"
+        }
+    ]
 }
 ```
 
@@ -1160,14 +1289,19 @@ em caso de sucesso retorna:
 
 ```json
 {
-    "code": 200,
-    "message": "Dados dos pagamentos das adendas encontrados com sucesso",
+    "code":200,
+    "message":"Dados do pagamento da adenda foram encontrados com sucesso",
     "data": {
-        "ID": 1,
-        "ADENDA_ID": 1,
-        "DESCONTOS": 213.54,
-        "VALOR_PAGO": 12123.54,
-    }  
+        "ID":1,
+        "ADENDA_ID":1,
+        "DESCONTOS":"1500",
+        "VALOR_A_PAGAR":"30000",
+        "VALOR_PAGO":"10000",
+        "INSERIDO_POR":null,
+        "ACTUALIZADO_POR":null,
+        "DATA_INSERCAO":"2023-12-18T06:42:30.000Z",
+        "DATA_ACTUALIZACAO":"2023-12-18T06:45:16.000Z"
+    }
 }
 ```
 
@@ -1182,17 +1316,26 @@ em caso de erro
 }
  ```
 
-Visualizar "Pagamentos de uma adenda" adenda pagamento pelo id da adenda
+Visualizar "Pagamento de uma adenda" adenda pagamento pelo id da adenda
 Metodo: GET
-URL: /adenda_pagamento/adenda/1
+URL: /adenda_pagamento/adenda/2
 Resposta em caso de sucesso retorna:
 
 ```json
 {
-    "code": 200,
-    "message": "Os pagamentos associados a adenda foram carregados com sucesso",
-    "data": [ adenda_pagamento_1, adenda_pagamento_2, ...] 
-    
+    "code":200,
+    "message":"Dados do pagamento da adenda foram encontrados com sucesso",
+    "data": {
+        "ID":2,
+        "ADENDA_ID":2,
+        "DESCONTOS":"3000",
+        "VALOR_A_PAGAR":"60000",
+        "VALOR_PAGO":"15000",
+        "INSERIDO_POR":null,
+        "ACTUALIZADO_POR":null,
+        "DATA_INSERCAO":"2023-12-18T06:45:16.000Z",
+        "DATA_ACTUALIZACAO":"2023-12-18T06:45:16.000Z"
+    }
 }
 ```
 
@@ -1214,9 +1357,9 @@ Body:
 
 ```json
 {
-    "ADENDA_ID": 1,
-    "DESCONTOS": 213.54,
-    "VALOR_PAGO": 12123.54,
+    "ADENDA_ID": 2,
+    "DESCONTOS": "2133.54",
+    "VALOR_PAGO": "34123.00"
 }
 ```
 
@@ -1225,15 +1368,19 @@ em caso de sucesso retorna:
 
 ```json
 {
-    "ID": 1,
-    "ADENDA_ID": 1,
-    "DESCONTOS": 20.88,
-    "VALOR_PAGO": 129.98,
-    "DATA_INSERCAO": "2023-11-10T09:29:37.000Z",
-    "DATA_ACTUALIZACAO": "2023-11-10T09:29:37.000Z",
-    "DATA_REMOCACAO": "2023-11-10T09:29:37.000Z",
-    "INSERIDO_POR": null,
-    "ACTUALIZADO_POR": null,
+    "code":200,
+    "message":"Dados da adenda inseridos com sucesso",
+    "data": {
+        "ID":3,
+        "ADENDA_ID":1,
+        "DESCONTOS":"2000",
+        "VALOR_A_PAGAR":"0",
+        "VALOR_PAGO":"40000",
+        "INSERIDO_POR":null,
+        "ACTUALIZADO_POR":null,
+        "DATA_INSERCAO":"2023-12-18T06:11:34.000Z",
+        "DATA_ACTUALIZACAO":"2023-12-18T06:11:34.000Z"
+    }
 }
 ```
 
