@@ -5,6 +5,7 @@ import handleParsingError from "../utils/HandleParsingErrors";
 import CustomError from "../utils/CustomError";
 import IAdendaItems from "../entities/IAdendaItems";
 import IAdendaSegurados from "../entities/IAdendaSegurados";
+import prisma from "../repositories/PrismaClient";
 
 class AdendaController {
     private adendaService: AdendaService;
@@ -211,9 +212,9 @@ class AdendaController {
     }
 
     async calculatePremio(req: Request, res: Response) {
-        const adenda: adenda = req.body;
-        const adenda_premio = await this.adendaService.calculateAdendaPremio(adenda.ID.toString());
         try {
+            const adenda: adenda = req.body;
+            const adenda_premio = await this.adendaService.calculateAdendaPremio(adenda.ID.toString());
             const response = {
                 code: 200,
                 message: "O premio da adenda foi calculado e adicionado com sucesso",

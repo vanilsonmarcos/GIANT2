@@ -55,19 +55,12 @@ async function calculatePremio(adenda: adenda, item: veiculo, fc: apolice_fracio
   const preco_cilindrada = await prisma.preco_cilindrada.findFirst({
     where: {
       VEICULO_CATEGORIA_ID: item.VEICULO_CATEGORIA_ID,
-      AND: {
-        CILINDRADA_MIN:{
-          lte: item.CILINDRADA
-        },
-        CILINDRADA_MAX: {
-          gte: item.CILINDRADA
-        }
-      }
+      CILINDRADA_MAX: { lte: item.CILINDRADA },
     }
   });
-
-  if (preco_cilindrada == null || preco_cilindrada === undefined) {
-    throw new CustomError("Não foi possivel encontrar uma categoria do veiculo  para precificar o Prémio");
+console.log(preco_cilindrada)
+  if (preco_cilindrada === null || preco_cilindrada === undefined) {
+    throw new CustomError("Não foi possivel encontrar uma categoria do veículo para precificar o Prémio");
   }
   
   switch (fc.NO_FRACOES) {
