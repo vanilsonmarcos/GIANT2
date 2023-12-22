@@ -1,13 +1,15 @@
+import { adenda } from "@prisma/client";
+
 interface IAdendaItemSegurado<T> {
-    getAllItemSeguradoByAdendaID(adendaID: string): Promise<T[]>;
+    getAllItemSeguradoByAdenda(adenda: adenda): Promise<T[]>;
 
-    addAllItemSeguradoByAdendaID(adendaID: string, items: T[]): Promise<T[]>;
+    addAllItemSeguradoByAdenda(adenda: adenda, items: T[]): Promise<T[]>;
 
-    removeAllItemSeguradoByAdendaID(adendaID: string, items: T[]): Promise<T[]>;
+    removeAllItemSeguradoByAdenda(adenda: adenda, items: T[]): Promise<T[]>;
 
-    addItemSeguradoByAdendaID(adendaID: string, item: T): Promise<T>;
+    addItemSeguradoByAdenda(adenda: adenda, item: T): Promise<T>;
 
-    removeItemSeguradoByAdendaID(adendaID: string, item: T): Promise<T>;
+    removeItemSeguradoByAdenda(adenda: adenda, item: T): Promise<T>;
 }
 
 export default IAdendaItemSegurado;

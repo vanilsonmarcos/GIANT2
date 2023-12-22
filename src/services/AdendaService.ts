@@ -32,8 +32,9 @@ class AdendaService {
         return this.apolice_repo.getAllAdendaByApoliceID(id);
     }
 
-    async getVeiculosByAdendaID(id: string): Promise<veiculo[]> {
-        return this.adenda_repo.getAllItemSeguradoByAdendaID(id);
+    async getVeiculosByAdendaID(adendaID: string): Promise<veiculo[]> {
+        const adenda = await this.adenda_repo.getByID(adendaID);
+        return this.adenda_repo.getAllItemSeguradoByAdenda(adenda);
     }
      
     async getSeguradosByAdendaID(id: string): Promise<pessoa[]> {
@@ -65,8 +66,8 @@ class AdendaService {
         return updateAdenda;
     }
 
-    async adicionarItemsSegurado(id: string, items: veiculo[]): Promise<veiculo[]> {
-        return this.adenda_repo.addAllItemSeguradoByAdendaID(id, items);
+    async adicionarItemsSegurado(adenda: adenda, items: veiculo[]): Promise<veiculo[]> {
+        return this.adenda_repo.addAllItemSeguradoByAdenda(adenda, items);
     }
 
     async adicionarSegurados(id: string, segurados:pessoa[]): Promise<pessoa[]>{

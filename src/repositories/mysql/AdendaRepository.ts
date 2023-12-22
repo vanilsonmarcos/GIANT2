@@ -68,7 +68,6 @@ class AdendaRepository implements IGenericRepository<adenda>, IAdendaSegurado<pe
             throw new CustomError("Ocorreu um error carragar a adenda correspondente a apólice");
         }
 
-
         const segurando = await prisma.pessoa.findUnique({
             where: {
                 ID: parseInt(seguradoID)
@@ -251,18 +250,18 @@ class AdendaRepository implements IGenericRepository<adenda>, IAdendaSegurado<pe
         const sumPremio = premios._sum.PREMIO;
 
         if (sumPremio === null || sumPremio == undefined) {
-            throw new CustomError("Não foi possivel selecionar e somar os premios dos items");
+            throw new CustomError("Não foi possivel calcular O prémio da adenda.");
         }
 
        return sumPremio;
     }
 
-    async getAllItemSeguradoByAdendaID(adendaID: string): Promise<veiculo[]> {
+    async getAllItemSeguradoByAdenda(adenda: adenda): Promise<veiculo[]> {
         const veiculos = await prisma.veiculo.findMany({
             include: {
                 adenda_item_segurado: {
                     where: {
-                        ADENDA_ID: parseInt(adendaID)
+                        ADENDA_ID: adenda.ID
                     }
                 },
             },
@@ -274,17 +273,31 @@ class AdendaRepository implements IGenericRepository<adenda>, IAdendaSegurado<pe
         return veiculos;
     }
 
-    async addAllItemSeguradoByAdendaID(adendaID: string, items: veiculo[]): Promise<veiculo[]> {
-        const fracionamento = await prisma.apolice.findFirst({
+    async addAllItemSeguradoByAdenda(adenda: adenda, items: veiculo[]): Promise<veiculo[]> {
+
+        // get fracionamento based in adenda
+        // Get fracionamento based on apolice
+        if(adenda.APOLICE_ID === null || adenda.APOLICE_ID === undefined){
+            throw new CustomError("A adenda selecionada não está associada a uma apólice")
+        }
+        const apolice = await prisma.apolice.findUnique({
+            where: {
+               ID: adenda.APOLICE_ID
+            },
             include: {
-                adenda:{
-                    where: {
-                        ID: parseInt(adendaID)
-                    },
-                },
                 apolice_fracionamento: true
             }
-        }).apolice_fracionamento();
+        });
+
+        if(apolice === null || apolice === undefined){
+            throw new CustomError("A apólice associada a está adenda não existe")
+        }
+
+        const fracionamento = await prisma.apolice_fracionamento.findUnique({
+            where: {
+                ID: apolice.APOLICE_FRACIONAMENTO_ID
+            }
+        })
 
         if(fracionamento === null || fracionamento === undefined) {
             throw new CustomError("Não foi encontrado o tipo de fracionamento da apólice/adenda selecionada");
@@ -294,9 +307,10 @@ class AdendaRepository implements IGenericRepository<adenda>, IAdendaSegurado<pe
             items.map(async (item) => {
                 return prisma.adenda_item_segurado.create({
                     data: {
-                        ADENDA_ID: parseInt(adendaID),
+                        ADENDA_ID: adenda.ID,
                         ITEM_ID: item.ID,
-                        PREMIO: await calculatePremio(adendaID, item, fracionamento)
+                        APOLICE_TIPO_ID: apolice.APOLICE_TIPO_ID,
+                        PREMIO: await calculatePremio(adenda, item, fracionamento)
                     }
                 }).veiculo();
             })
@@ -309,13 +323,13 @@ class AdendaRepository implements IGenericRepository<adenda>, IAdendaSegurado<pe
         return addedItems;
     }
 
-    async removeAllItemSeguradoByAdendaID(adendaID: string, items: veiculo[]): Promise<veiculo[]> {
+    async removeAllItemSeguradoByAdenda(adenda: adenda, items: veiculo[]): Promise<veiculo[]> {
         const veiculos = await Promise.all(
             items.map((item) => {
                 return prisma.adenda_item_segurado.delete({
                     where: {
                         ADENDA_ID_ITEM_ID: {
-                            ADENDA_ID: parseInt(adendaID),
+                            ADENDA_ID: adenda.ID,
                             ITEM_ID: item.ID,
                         }
                     }
@@ -330,42 +344,54 @@ class AdendaRepository implements IGenericRepository<adenda>, IAdendaSegurado<pe
         return addedItems;
     }
 
-    async addItemSeguradoByAdendaID(adendaID: string, item: veiculo): Promise<veiculo> {
-        const fracionamento = await prisma.apolice.findFirst({
+    async addItemSeguradoByAdenda(adenda: adenda, item: veiculo): Promise<veiculo> {
+
+        // get fracionamento based in adenda
+        // Get fracionamento based on apolice
+        if(adenda.APOLICE_ID === null || adenda.APOLICE_ID === undefined){
+            throw new CustomError("A adenda selecionada não está associada a uma apólice")
+        }
+        const apolice = await prisma.apolice.findUnique({
+            where: {
+               ID: adenda.APOLICE_ID
+            },
             include: {
-                adenda:{
-                    where: {
-                        ID: parseInt(adendaID)
-                    },
-                },
                 apolice_fracionamento: true
             }
-        }).apolice_fracionamento();
+        });
+
+        if(apolice === null || apolice === undefined){
+            throw new CustomError("A apólice associada a está adenda não existe")
+        }
+
+        const fracionamento = await prisma.apolice_fracionamento.findUnique({
+            where: {
+                ID: apolice.APOLICE_FRACIONAMENTO_ID
+            }
+        })
 
         if(fracionamento === null || fracionamento === undefined) {
             throw new CustomError("Não foi encontrado o tipo de fracionamento da apólice/adenda selecionada");
         }
-      
         const savedItem = await prisma.adenda_item_segurado.create({
             data: {
-                ADENDA_ID: parseInt(adendaID),
+                ADENDA_ID: adenda.ID,
                 ITEM_ID: item.ID,
-                PREMIO: await calculatePremio(adendaID, item, fracionamento)
+                PREMIO: await calculatePremio(adenda, item, fracionamento)
             }
         }).veiculo();
 
-  
         if (savedItem === null) {
-            throw new Error("Ocorreu um error ao adicionar os items segurados da adenda");
+            throw new Error("Ocorreu um error ao adicionar o item segurado à adenda");
         }
         return savedItem;
     }
 
-    async removeItemSeguradoByAdendaID(adendaID: string, item: veiculo): Promise<veiculo> {
+    async removeItemSeguradoByAdenda(adenda: adenda, item: veiculo): Promise<veiculo> {
         const veiculo = await prisma.adenda_item_segurado.delete({
             where: {
                 ADENDA_ID_ITEM_ID: {
-                    ADENDA_ID: parseInt(adendaID),
+                    ADENDA_ID: adenda.ID,
                     ITEM_ID: item.ID
                 }
             },
@@ -373,6 +399,7 @@ class AdendaRepository implements IGenericRepository<adenda>, IAdendaSegurado<pe
                 veiculo: true
             }
         }).veiculo();
+
         if (veiculo === null || veiculo === undefined) {
             throw new CustomError("Não foi encontrado o item segurado para esta adenda");
         }

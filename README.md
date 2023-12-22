@@ -1102,6 +1102,69 @@ resposta em caso de erro:
 }
 ```
 
+Listar Segurados associados a uma adenda pelo ID da adenda
+Metodo: GET
+URL:/adenda/segurados/1
+BODY: NONE
+
+resposta em caso de sucesso:
+
+```json
+{
+    "code":200,
+    "message":"Dados dos segurados da adenda foram encontrados com sucesso",
+    "data":[
+        {
+            "ID":1,
+            "PESSOA_TIPO_ID":1,
+            "ENDERECO_ID":5,
+            "NOME":"Pedro Nuno Santos",
+            "DATA_NASCIMENTO":"1998-12-12T00:00:00.000Z",
+            "SEXO":"M",
+            "NBI":"003466243LA35",
+            "NIF":"003466243LA35",
+            "ESTADO_CIVIL":"S",
+            "INSERIDO_POR":null,
+            "ACTUALIZADO_POR":null,
+            "DATA_INSERCAO":"2023-11-29T14:20:10.000Z",
+            "DATA_ACTUALIZACAO":"2023-11-29T14:20:10.000Z",
+            "pessoa_endereco":{
+                "ID":5,
+                "TELEFONE":"933000300",
+                "TELEFONE_ALTERNATIVO":"933000300",
+                "EMAIL":"psantos@infoco.ao",
+                "BAIRRO":"Talatona",
+                "CIDADE":"Luanda",
+                "PROVINCIA":"Luanda",
+                "INSERIDO_POR":null,
+                "ACTUALIZADO_POR":null,
+                "DATA_CRIACAO":"2023-11-29T14:20:10.000Z",
+                "DATA_ACTUALIZACAO":"2023-11-29T14:20:10.000Z"
+            },
+            "pessoa_tipo":{
+                "ID":1,
+                "NOME_TIPO":"Pessoa Física",
+                "INSERIDO_POR":null,
+                "ACTUALIZADO_POR":null,
+                "DATA_CRIACAO":"2023-11-29T15:07:41.000Z",
+                "DATA_ACTUALIZACAO":"2023-11-29T15:07:41.000Z"
+            }
+        }
+    ]
+}
+```
+
+resposta em caso de erro:
+
+```json
+{
+    "code": 401,
+    "message": "Ocorreu um erro ao carregar os dados dos segurados da adenda",
+    "data": {},
+    "error": { error }
+}
+```
+
 Associar Segurados a uma adenda
 Metodo: POST
 URL:/adenda/segurados
@@ -1187,6 +1250,63 @@ resposta em caso de erro:
     "error": { error }
 }
 ```
+
+Listar Items/Veiculos associados a uma adenda pelo ID da adenda
+Metodo: GET
+URL:/adenda/veiculos/1
+BODY: NONE
+
+resposta em caso de sucesso:
+
+```json
+{
+    "code":200,
+    "message":"Dados dos veículos da adenda foram encontrados com sucesso",
+    "data":[
+        {
+            "ID":1,
+            "VEICULO_CATEGORIA_ID":1,
+            "MATRICULA":"LD-34-20",
+            "MARCA":"Toyota",
+            "MODELO":"Prious",
+            "ANO_AQUISICAO":2022,
+            "CAPITAL_AQUISICAO":"20000000",
+            "PESO_BRUTO":300000,
+            "N_LOTACAO":5,
+            "ANO_FABRICO":2021,
+            "CILINDRADA":43200,
+            "REF_CHASSI":"325AFi54834",
+            "DESCRICAO":"Excelente Veículo",
+            "INSERIDO_POR":null,
+            "ACTUALIZADO_POR":null,
+            "DATA_INSERCAO":"2023-12-18T07:24:54.000Z",
+            "DATA_ACTUALIZACAO":"2023-12-18T07:24:54.000Z",
+            "adenda_item_segurado":[
+            {
+                "ID":1,
+                "ADENDA_ID":1,
+                "APOLICE_TIPO_ID":null,
+                "ITEM_ID":1,"PREMIO":"12343.34",
+                "INSERIDO_POR":null,
+                "ACTUALIZADO_POR":null,
+                "DATA_INSERCAO":"2023-12-22T17:36:49.000Z",
+                "DATA_ACTUALIZACAO":"2023-12-22T17:36:49.000Z"}
+        ]}]
+}
+```
+
+resposta em caso de erro:
+
+```json
+{
+    "code": 401,
+    "message": "Ocorreu um erro ao carregar os dados veículos da adenda",
+    "data": {},
+    "error": { error }
+}
+```
+
+
 
 Calcular o premio de uma adenda
 Metodo: POST

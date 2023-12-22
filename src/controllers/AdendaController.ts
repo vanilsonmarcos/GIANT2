@@ -237,7 +237,7 @@ class AdendaController {
     async adicionarItemsSegurado(req: Request, res:Response) {
         const data:IAdendaItems = req.body; 
         try {
-            const createdAdenda = await this.adendaService.adicionarItemsSegurado(data.adenda.ID.toString(), data.items);
+            const createdAdenda = await this.adendaService.adicionarItemsSegurado(data.adenda, data.items);
             const response = {
                 code: 200,
                 message: "Items da adenda inseridos com sucesso",
@@ -247,7 +247,7 @@ class AdendaController {
         } catch (error) {
             const response = {
                 code: 401,
-                message: "Ocorreu um erro ao inserir os items a adenda",
+                message: "Ocorreu um erro ao inserir os items à adenda",
                 data: {},
                 error: error
             }
