@@ -39,12 +39,21 @@ class AdendaRepository implements IGenericRepository<adenda>, IAdendaSegurado<pe
     }
 
     async getAllSeguradoByAdendaID(adendaID: string): Promise<pessoa[]> {
+        const IDS = await prisma.adenda_segurado.findMany({
+            select: {
+                SEGURADO_ID: true
+            },
+            where: {
+                ADENDA_ID: parseInt(adendaID)
+            }
+        }); 
+        if (IDS === null || IDS === undefined) {
+            throw new CustomError("Não foram encontrados segurados na adenda");
+        }
         const segurados = await prisma.pessoa.findMany({
             where: {
-                adenda_segurado: {
-                  every: {
-                    ADENDA_ID: parseInt(adendaID)
-                  }
+                ID:{
+                    in: IDS.map((x) => x.SEGURADO_ID!)
                 }
             },
             include: {
@@ -257,18 +266,31 @@ class AdendaRepository implements IGenericRepository<adenda>, IAdendaSegurado<pe
     }
 
     async getAllItemSeguradoByAdenda(adenda: adenda): Promise<veiculo[]> {
-        const veiculos = await prisma.veiculo.findMany({
-            include: {
-                adenda_item_segurado: {
-                    where: {
-                        ADENDA_ID: adenda.ID
-                    }
-                },
+
+        const IDS = await prisma.adenda_item_segurado.findMany({
+            select: {
+                ITEM_ID: true
             },
+            where: {
+                ADENDA_ID: adenda.ID
+            }
+        }); 
+        if (IDS === null || IDS === undefined) {
+            throw new CustomError("Não foram encontrados items/veículos na adenda");
+        }
+        const veiculos = await prisma.veiculo.findMany({
+            where: {
+                ID:{
+                    in: IDS.map((x) => x.ITEM_ID!)
+                }
+            },
+            include: {
+                adenda_item_segurado: true
+            }
         });
 
         if (veiculos === null || veiculos === undefined) {
-            throw new CustomError("Não foi encontrado nenhum item segurado nesta adenda");
+            throw new CustomError("Não foi encontrado nenhum item/veículo segurado nesta adenda");
         }
         return veiculos;
     }
@@ -480,7 +502,7 @@ class AdendaRepository implements IGenericRepository<adenda>, IAdendaSegurado<pe
         });
 
         if (adenda === null || adenda === undefined) {
-            throw new CustomError("Ocorreu um erro ao criar apólice");
+            throw new CustomError("Ocorreu um erro ao actualizar a adenda");
         }
         return adenda;
     }
