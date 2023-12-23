@@ -1328,14 +1328,18 @@ resposta em caso de sucesso:
 ```json
 {
     "code": 200,
-    "message": "O premio da adenda foi calculado e adicionado com sucesso",
+    "message": "O prémio da adenda foi calculado e adicionado com sucesso",
     "data": {
         "ID": 1,
-        "APOLICE_ID":1,
+        "APOLICE_ID": 5,
         "NUMERO": "1 80 2023/0001",
-        "PREMIO": 42345346.76,
-        "DATA_INICIO": "2023-10-10",
-        "DATA_FIM": "2024-12-12"
+        "PREMIO": "24923",
+        "DATA_INICIO": "2023-10-10T00:00:00.000Z",
+        "DATA_FIM": "2024-12-12T00:00:00.000Z",
+        "INSERIDO_POR": null,
+        "ACTUALIZADO_POR": null,
+        "DATA_INSERCAO": "2023-12-11T14:20:49.000Z",
+        "DATA_ACTUALIZACAO": "2023-12-23T01:14:12.000Z"
     }
 }
 ```

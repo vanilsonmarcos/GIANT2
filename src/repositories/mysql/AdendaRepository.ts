@@ -305,14 +305,15 @@ class AdendaRepository implements IGenericRepository<adenda>, IAdendaSegurado<pe
 
         const veiculos = await Promise.all(
             items.map(async (item) => {
-                return prisma.adenda_item_segurado.create({
+                const adenda_item_segurado = await prisma.adenda_item_segurado.create({
                     data: {
                         ADENDA_ID: adenda.ID,
                         ITEM_ID: item.ID,
                         APOLICE_TIPO_ID: apolice.APOLICE_TIPO_ID,
                         PREMIO: await calculatePremio(adenda, item, fracionamento)
                     }
-                }).veiculo();
+                });
+                return item;
             })
         );
 
@@ -444,7 +445,7 @@ class AdendaRepository implements IGenericRepository<adenda>, IAdendaSegurado<pe
         });
 
         if (adenda === null || adenda === undefined) {
-            throw new CustomError("Não Foi encontrado apólice com o ID referenciado");
+            throw new CustomError("Não Foi encontrado a adenda com o ID referenciado");
         }
         return adenda;
     }

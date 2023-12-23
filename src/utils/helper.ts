@@ -58,7 +58,6 @@ async function calculatePremio(adenda: adenda, item: veiculo, fc: apolice_fracio
       CILINDRADA_MAX: { lte: item.CILINDRADA },
     }
   });
-console.log(preco_cilindrada)
   if (preco_cilindrada === null || preco_cilindrada === undefined) {
     throw new CustomError("Não foi possivel encontrar uma categoria do veículo para precificar o Prémio");
   }

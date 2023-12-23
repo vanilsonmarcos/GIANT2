@@ -189,7 +189,7 @@ model adenda {
   ID                   Int                    @id @default(autoincrement())
   APOLICE_ID           Int?
   NUMERO               String?                @db.VarChar(45)
-  PREMIO               Decimal                @db.Decimal(10, 2)
+  PREMIO               Decimal                @default(0.00) @db.Decimal(10, 2)
   DATA_INICIO          DateTime               @db.DateTime(0)
   DATA_FIM             DateTime               @db.DateTime(0)
   INSERIDO_POR         Int?

@@ -1,9 +1,11 @@
+import { Decimal } from '@prisma/client/runtime/library';
 import { Service, Inject } from "typedi";
 import { adenda, pessoa, veiculo } from "@prisma/client";
 import AdendaRepository from "../repositories/mysql/AdendaRepository";
 import { validateAdendaDates } from "../utils/helper";
 import ApoliceRepository from "../repositories/mysql/ApoliceRepository";
 import CustomError from "../utils/CustomError";
+import prisma from '../repositories/PrismaClient';
 @Service()
 class AdendaService {
  
