@@ -2647,3 +2647,71 @@ resposta em caso de erro:
     "error": { error }
 }
 ```
+
+## Gerar Documentos(Contracto da Apólice)
+
+Gerar O contracto da Apólice
+METODO: GET
+URL:/generate_apolice/apolice/1
+BODY: NONE
+
+Resposta em caso de sucesso:
+
+```json
+{
+    "code":200,
+    "message":"Dados estatisticos dos clientes carregados com sucesso",
+    "data": {
+        "CLIENT_STATS": {
+        "TOTAL_CLIENTES":0,
+        "TOTAL_SEGURADOS":0,
+        "TOTAL_UTENTES":1
+        }
+    }
+}
+```
+
+resposta em caso de erro:
+
+```json
+{
+    "code": 404,
+    "message": "Ocorreu um erro ao gerar o contracto da Apólice.",
+    "data": {},
+    "error": { error }
+}
+```
+
+## Gerar Dístico/Certificado do Veículo(s)
+
+Gerar O contracto da Apólice
+METODO: GET
+URL:/generate_certificado/adenda/1
+BODY: NONE
+
+Resposta em caso de sucesso:
+
+```json
+{
+    "code":200,
+    "message":"Dados estatisticos dos clientes carregados com sucesso",
+    "data": {
+        "CLIENT_STATS": {
+        "TOTAL_CLIENTES":0,
+        "TOTAL_SEGURADOS":0,
+        "TOTAL_UTENTES":1
+        }
+    }
+}
+```
+
+resposta em caso de erro:
+
+```json
+{
+    "code": 404,
+    "message": "Ocorreu um erro ao gerar o certificado do(s) veiculo(s).",
+    "data": {},
+    "error": { error }
+}
+```

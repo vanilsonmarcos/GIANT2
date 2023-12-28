@@ -301,7 +301,7 @@
         }
 
         .z-75 {
-            transform: scale(0.75);
+            transform: scale(0.70);
             transform-origin: center center;
         }
 
@@ -330,38 +330,18 @@
     </style>
 
     <script>
-        async function getData() {
-            const xhr = new XMLHttpRequest();
-            const url = 'http://localhost:3000/certificado/';
-            xhr.open("GET", url, true);
-            xhr.onreadystatechange = function () {
-                if (this.readyState === 4) { 
-                    const obj = JSON.parse(xhr.responseText);
-                    nome.innerHTML = "";
-                    n_carta_conducao.innerHTML = "";
-                    nome_titular.innerHTML = "";
-                    morada.innerHTML = "";
-                    n_apolice.innerHTML = "";
-                    categoria_veiculo.innerHTML = ""; 
-                    marca.innerHTML = "";
-                    matricola.innerHTML = "";
-                    modelo.innerHTML = "";
-                    chassi.innerHTML = "";
-                    data_inicio.innerHTML ="";
-                    data_fim.innerHTML = "";
-                    limite_indemnizacao ="";
+        // windows.onload = function() {
+        //   data = window.injectedData;
+        //   const nome = document.getElementById('nome');
+        //   if(nome) {
+        //     nome.innerHTML = data.NOME_TOMADOR;
+        //   } 
+        //   const data_fim_2 = document.getElementById('data_fim_2');
+        //   if (data_fim_2) {
+        //     data_fim_2.innerHTML = data.DATA_FIM_2;
+        //   }
+        // }
 
-                    // info related about distico
-
-                    distico.innerHTML = "";
-                    seguradora.innerHTML = "";
-                    n_apolice_2.innerHTML = "";
-                    matricola_2.innerHTML = "";
-                    data_inicio_2.innerHTML = "01-10-2022"
-                    data_fim_2.innerHTML = "30-09-202";
-                }
-            }
-        }
     </script>
 </head>
 
@@ -397,29 +377,29 @@
                         <p id="nome" style="background-color: rgba(179, 178, 178, 0.418);" class="text-upper mtb-5">
                             Cirilo
                             Bartolomeu Costa</p>
-                        <p id="n_carta_conducao" style="background-color: rgba(179, 178, 178, 0.418);"
+                        <p id="n_carta_conducao" style="background-color: rgba(179, 178, 178, 0.418)!important;"
                             class="text-upper mtb-5 bk-grey">&nbsp;
                         </p>
-                        <p id="nome_titular" style="background-color: rgba(179, 178, 178, 0.418);"
+                        <p id="nome_titular" style="background-color: rgba(179, 178, 178, 0.418)!important;"
                             class="text-upper mtb-5 bk-grey">&nbsp;
                         </p>
-                        <p id="morada" style="background-color: rgba(179, 178, 178, 0.418);"
+                        <p id="morada" style="background-color: rgba(179, 178, 178, 0.418)!important;"
                             class="text-upper mtb-5 bk-grey">&nbsp;
                         </p>
-                        <p id="n_apolice" style="background-color: rgba(179, 178, 178, 0.418);"
+                        <p id="n_apolice" style="background-color: rgba(179, 178, 178, 0.418)!important;"
                             class="text-upper mtb-5 bk-grey">1
                             90.2022/4608</p>
-                        <p id="categoria_veiculo" style="background-color: rgba(179, 178, 178, 0.418);"
+                        <p id="categoria_veiculo" style="background-color: rgba(179, 178, 178, 0.418)!important;"
                             class="text-upper mtb-5 bk-grey">
                             LP2-Ligeiros Particulares de 1301CC até 1600CC</p>
                         <div class="row-two-inverted">
                             <div>
-                                <p id="marca" style="background-color: #b3b2b26b;" class="text-upper mb-5 mr-5 bk-grey">
+                                <p id="marca" style="background-color: #b3b2b26b!important;" class="text-upper mb-5 mr-5 bk-grey">
                                     Hyundai</p>
-                                <p id="matricola" style="background-color: #b3b2b26b;"
+                                <p id="matricola" style="background-color: #b3b2b26b!important;"
                                     class="text-upper mtb-5 mr-5 bk-grey">
                                     LD-54-52-FN</p>
-                                <p id="data_inicio" style="background-color: rgba(179, 178, 178, 0.418);"
+                                <p id="data_inicio" style="background-color: rgba(179, 178, 178, 0.418)!important;"
                                     class="text-upper mt-5 mr-5 bk-grey">01-10-2022</p>
                             </div>
                             <div class="row-two-inverted">
@@ -476,7 +456,6 @@
                             <p id="matricola_2" class="m-b-3 plr-5 text-upper bk-grey">LD-54-52-FN</p>
                         </div>
                     </div>
-                    <br>
                     <p>
                         Dístico emitido ao abrigo do certificado <br>de seguro de
                         Responsabilidade Civil e automóvel Nº:<span class="bk-grey"> testes</span>
@@ -523,5 +502,4 @@
         </div>
     </div>
 </body>
-
 </html>

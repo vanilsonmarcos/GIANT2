@@ -266,7 +266,6 @@ class AdendaRepository implements IGenericRepository<adenda>, IAdendaSegurado<pe
     }
 
     async getAllItemSeguradoByAdenda(adenda: adenda): Promise<veiculo[]> {
-
         const IDS = await prisma.adenda_item_segurado.findMany({
             select: {
                 ITEM_ID: true
@@ -285,7 +284,9 @@ class AdendaRepository implements IGenericRepository<adenda>, IAdendaSegurado<pe
                 }
             },
             include: {
-                adenda_item_segurado: true
+                adenda_item_segurado: true,
+                veiculo_categoria: true,
+
             }
         });
 
