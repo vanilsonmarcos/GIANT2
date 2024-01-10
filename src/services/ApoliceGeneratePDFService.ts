@@ -1,6 +1,4 @@
-import { adenda } from '@prisma/client';
-import { veiculo_categoria } from '@prisma/client';
-import { veiculo } from '@prisma/client';
+ 
 import { Service, Inject } from "typedi";
 import ApoliceRepository from "../repositories/mysql/ApoliceRepository";
 import AdendaRepository from '../repositories/mysql/AdendaRepository';
@@ -30,13 +28,12 @@ class ApoliceGeneratePDFService {
   async generatePDF() {}
 
   async getCertificadosByAdendaID(adendaID: string): Promise<ICertificado[]> {
-;
     const adenda = await this.adenda_repo.getByID(adendaID);
   
     const apoliceID = adenda.APOLICE_ID
 
     if(apoliceID === null || undefined) {
-      throw new CustomError("A adenda definida não está associada a uma apólice.")
+      throw new CustomError("A adenda definida não está associada a uma apólice.");
     }
     const apolice = await this.apolice_repo.getByID(apoliceID.toString());
 
@@ -48,7 +45,7 @@ class ApoliceGeneratePDFService {
       return {
         NOME_TOMADOR: pessoa.NOME,
         N_CARTA_CONDUCAO: '',
-        NOME_TITULAR: '',
+        NOME_TITULAR: '', 
         MORADA: `${pessoa.ENDERECO?.BAIRRO}, ${pessoa.ENDERECO?.CIDADE}, ${pessoa.ENDERECO?.PROVINCIA}`,
         N_APOLICE: apolice.NUMERO ?? '',
         CATEGORIA_VEICULO: data.VEICULO_CATEGORIA_ID.toString(),

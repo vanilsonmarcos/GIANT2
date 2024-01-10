@@ -24,6 +24,8 @@ class ApoliceGeneratePDFController {
 
       await page.goto(resolve(__dirname + '/../html/apolice.html'));
 
+
+      
       const apolice = await page.pdf({
         path: apoliceDocPath,
         format: 'A4',
@@ -56,35 +58,10 @@ class ApoliceGeneratePDFController {
   }
 
   async getCertificado(req: Request, res: Response) {
-    const emptyCertificado: ICertificado = {
-      NOME_TOMADOR: '',
-      N_CARTA_CONDUCAO: '',
-      NOME_TITULAR: '',
-      MORADA: '',
-      N_APOLICE: '',
-      CATEGORIA_VEICULO: '',
-      MARCA: '',
-      MATRICOLA: '',
-      MODELO: '',
-      CHASSI: '',
-      DATA_INICIO: '',
-      DATA_FIM: '',
-      LIMITE_INDEMNIZACAO: '',
-      DISTICO: '',
-      SEGURADORA: '',
-      N_APOLICE_2: '',
-      MATRICOLA_2: '',
-      DATA_INICIO_2: '',
-      DATA_FIM_2: '',
-    };
     const filePath = resolve(__dirname + '/../storage/downloads') + '/certificado.pdf';
-    const elementsIDs = Object.getOwnPropertyNames(emptyCertificado);
-
     try {
       const { id } = req.params;
       const certificados: ICertificado[] = await this.apoliceGeneratePDF.getCertificadosByAdendaID(id);
-      // console.log(certificados)
-      // console.log(elementsIDs)
       const merger = new PDFMerger();
       console.log(certificados)
       for (const element of certificados) {
@@ -188,7 +165,7 @@ class ApoliceGeneratePDFController {
           if(data_fim_2) {
             data_fim_2.innerHTML = data.DATA_FIM_2.trim() === '' ? '&nbsp;' : data.DATA_FIM_2;
           }
-          }, data);
+        }, data);
        
         // page.pdf() is currently supported only in headless mode.
         // @see https://bugs.chromium.org/p/chromium/issues/detail?id=753118
